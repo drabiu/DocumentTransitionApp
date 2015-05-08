@@ -1,0 +1,24 @@
+﻿<Window x:Class="DocumentTransitionApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+		<Button Content="Docx" HorizontalAlignment="Left" Margin="278,132,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+		<Button Content="XML" HorizontalAlignment="Left" Margin="114,89,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+		<Button Content="Run this Sh**!" HorizontalAlignment="Left" Margin="225,242,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+		<TextBox Name="docxTextBox" HorizontalAlignment="Left" Height="23" Margin="114,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="393" IsReadOnlyCaretVisible="True"/>
+		<TextBox Name="xmlTextBox" HorizontalAlignment="Left" Height="23" Margin="114,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="393" IsReadOnlyCaretVisible="True"/>
+		<Label Content="docx" HorizontalAlignment="Left" Margin="71,10,0,0" VerticalAlignment="Top" Height="23"/>
+		<Label Content="xml" HorizontalAlignment="Left" Margin="71,38,0,0" VerticalAlignment="Top" Height="23" RenderTransformOrigin="0.5,0.5">
+			<Label.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform/>
+					<SkewTransform/>
+					<RotateTransform Angle="0.058"/>
+					<TranslateTransform/>
+				</TransformGroup>
+			</Label.RenderTransform>
+		</Label>
+
+	</Grid>
+</Window>
