@@ -1,23 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Document xmlns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/" Name="">
-	<Person Email="">
-		<UniversalMarker>
-			<ElementId></ElementId>
-			<SelectionLastelementId></SelectionLastelementId>
-		</UniversalMarker>
-		<TextMarker>
-			<ElementId></ElementId>
-			<SelectionLastelementId></SelectionLastelementId>
-		</TextMarker>
-		<TableMarker>
-			<ElementId></ElementId>
-			<SelectionLastelementId></SelectionLastelementId>
-		</TableMarker>
-		<PictureMarker>
-			<ElementId></ElementId>
-			<SelectionLastelementId></SelectionLastelementId>
-		</PictureMarker>
-	</Person>
-	<Person Email="">
-	</Person>
-</Document>
+<Split xmlns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/">
+	<Document>
+		<Name></Name>
+		<Person Email="">
+			<UniversalMarker>
+				<ElementId></ElementId>
+				<SelectionLastelementId></SelectionLastelementId>
+			</UniversalMarker>
+			<TextMarker>
+				<ElementId></ElementId>
+				<SelectionLastelementId></SelectionLastelementId>
+			</TextMarker>
+			<TableMarker>
+				<ElementId></ElementId>
+				<SelectionLastelementId></SelectionLastelementId>
+			</TableMarker>
+			<PictureMarker>
+				<ElementId></ElementId>
+				<SelectionLastelementId></SelectionLastelementId>
+			</PictureMarker>
+		</Person>
+		<Person Email="">
+		</Person>
+	</Document>
+</Split>

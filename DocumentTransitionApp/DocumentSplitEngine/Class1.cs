@@ -27,10 +27,11 @@ namespace DocumentSplitEngine
 		{
 			//split XML Read
 			var xml = System.IO.File.ReadAllText(xmlFilePath);
+			Split splitXml;
 			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
 			{
-				XmlSerializer serializer = new XmlSerializer(typeof(NewDataSet));
-				NewDataSet splitXml = (NewDataSet)serializer.Deserialize(stream);
+				XmlSerializer serializer = new XmlSerializer(typeof(Split));
+				splitXml = (Split)serializer.Deserialize(stream);
 			}
 
 			// Open a WordprocessingDocument for editing using the filepath.
