@@ -15,9 +15,14 @@ using SplitDescriptionObjects;
 namespace DocumentSplitEngine
 {
 	public class OpenXMDocumentPart
-	{ 
-		public IList<OpenXmlCompositeElement> CompositeElements { get; set; }
-		string PartOwner { get; set; }
+	{
+		public IList<OpenXmlElement> CompositeElements { get; set; }
+		public string PartOwner { get; set; }
+
+		public OpenXMDocumentPart()
+		{
+			CompositeElements = new List<OpenXmlElement>();
+		}
 	}
 
 	public class MarkerMapper
@@ -40,8 +45,9 @@ namespace DocumentSplitEngine
 			return new UniversalDocumentMarker(DocumentBody);
 		}
 
-		public string[] Run()
+		public IList<OpenXMDocumentPart> Run()
 		{
+			IList<OpenXMDocumentPart> documentElements = new List<OpenXMDocumentPart>();
 			if (SplitDocumentObj != null)
 			{
 				foreach (SplitDocumentPerson person in SplitDocumentObj.Person)
@@ -75,16 +81,35 @@ namespace DocumentSplitEngine
 					{
 					}
 				}
+
+				string email = string.Empty;
+				OpenXMDocumentPart part = new OpenXMDocumentPart();				
+				for (int index = 0; index < DocumentBody.ChildElements.Count; index++)
+				{
+					if (SubdividedParagraphs[index] != email)
+					{
+						part = new OpenXMDocumentPart();
+						part.CompositeElements.Add(DocumentBody.ChildElements[index]);
+						email = SubdividedParagraphs[index];
+						if (string.IsNullOrEmpty(email))
+							part.PartOwner = "undefined";
+						else
+							part.PartOwner = email;
+						
+						documentElements.Add(part);
+					}
+
+					part.CompositeElements.Add(DocumentBody.ChildElements[index]);
+				}
 			}
 
-			return SubdividedParagraphs;
+			return documentElements;
 		}
 	}
 
     public class Class1
     {
 		IList<OpenXMDocumentPart> DocumentElements;
-		//string[] SubdividedParagraphs;
 
 		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
 		{
@@ -104,14 +129,31 @@ namespace DocumentSplitEngine
 			// Assign a reference to the existing document body.
 			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
 			MarkerMapper mapping = new MarkerMapper(Path.GetFileNameWithoutExtension(docxFilePath), splitXml, body);
-			mapping.Run();
-			//SubdividedParagraphs = new string[body.ChildElements.Count];
-
-			//for (int index = 0; index < body.ChildElements.Count; index++)
-			//{
-			//}
+			DocumentElements = mapping.Run();
 
 			// Close the handle explicitly.
+			wordprocessingDocument.Close();
+		}
+
+		private void SaveSplitDocument(string docxFilePath)
+		{
+			WordprocessingDocument wordprocessingDocument =
+			WordprocessingDocument.Open(docxFilePath, true);
+
+			// Assign a reference to the existing document body.
+			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
+
+			// Close the handle explicitly.
+			
+			if (Directory.Exists(path))
+			{
+				Console.WriteLine("That path exists already.");
+				return;
+			}
+
+			// Try to create the directory.
+			DirectoryInfo di = Directory.CreateDirectory(path);
+
 			wordprocessingDocument.Close();
 		}
 

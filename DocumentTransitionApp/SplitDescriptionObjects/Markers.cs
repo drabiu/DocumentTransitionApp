@@ -50,14 +50,14 @@ namespace SplitDescriptionObjects
 				if (element is Paragraph)
 				{
 					if ((element as Paragraph).ParagraphId.Value == id)
-						startSelection = true;
-
-					if (startSelection)
-						indexes.Add(index);
+						startSelection = true;			
 
 					if ((element as Paragraph).ParagraphId.Value == id2)
 						break;
 				}
+
+				if (startSelection)
+					indexes.Add(index);
 			}
 
 			return indexes;
