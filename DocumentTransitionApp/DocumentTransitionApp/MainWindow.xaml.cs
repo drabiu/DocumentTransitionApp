@@ -72,7 +72,8 @@ namespace DocumentTransitionApp
 
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
-			Class1.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
+			Class1 run = new Class1();
+			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
 		}
 	}
 }

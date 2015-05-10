@@ -10,6 +10,7 @@ using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
 
 using UnmarshallingSplitXml;
+using SplitDescriptionObjects;
 
 namespace DocumentSplitEngine
 {
@@ -19,12 +20,73 @@ namespace DocumentSplitEngine
 		string PartOwner { get; set; }
 	}
 
+	public class MarkerMapper
+	{
+		Split Xml { get; set; }
+		SplitDocument SplitDocumentObj { get; set; }
+		Wordproc.Body DocumentBody { get; set; }
+		string[] SubdividedParagraphs { get; set; }
+
+		public MarkerMapper(string documentName, Split xml, Wordproc.Body body)
+		{
+			Xml = xml;
+			SplitDocumentObj = Xml.Items.Where(it => string.Equals(it.Name, documentName)).SingleOrDefault();
+			DocumentBody = body;
+			SubdividedParagraphs = new string[body.ChildElements.Count];
+		}
+
+		public UniversalDocumentMarker GetEquivalentMarker(SplitDocumentPersonUniversalMarker marker)
+		{
+			return new UniversalDocumentMarker(DocumentBody);
+		}
+
+		public string[] Run()
+		{
+			if (SplitDocumentObj != null)
+			{
+				foreach (SplitDocumentPerson person in SplitDocumentObj.Person)
+				{
+					if (person.UniversalMarker != null)
+					{
+						foreach (SplitDocumentPersonUniversalMarker marker in person.UniversalMarker)
+						{
+							IList<int> result = GetEquivalentMarker(marker).GetCrossedElements(marker.ElementId, marker.SelectionLastelementId);
+							foreach (int index in result)
+							{
+								if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
+								{
+									SubdividedParagraphs[index] = person.Email;
+								}
+								else
+									throw new ElementToPersonPairException();
+							}
+						}
+					}
+
+					if (person.TextMarker != null)
+					{
+					}
+
+					if (person.PictureMarker != null)
+					{
+					}
+
+					if (person.TableMarker != null)
+					{
+					}
+				}
+			}
+
+			return SubdividedParagraphs;
+		}
+	}
+
     public class Class1
     {
 		IList<OpenXMDocumentPart> DocumentElements;
-		bool[] SubdividedParagraphs;
+		//string[] SubdividedParagraphs;
 
-		public static void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
+		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
 		{
 			//split XML Read
 			var xml = System.IO.File.ReadAllText(xmlFilePath);
@@ -41,9 +103,13 @@ namespace DocumentSplitEngine
 
 			// Assign a reference to the existing document body.
 			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-			for (int index = 0; index < body.ChildElements.Count; index++)
-			{
-			}
+			MarkerMapper mapping = new MarkerMapper(Path.GetFileNameWithoutExtension(docxFilePath), splitXml, body);
+			mapping.Run();
+			//SubdividedParagraphs = new string[body.ChildElements.Count];
+
+			//for (int index = 0; index < body.ChildElements.Count; index++)
+			//{
+			//}
 
 			// Close the handle explicitly.
 			wordprocessingDocument.Close();
