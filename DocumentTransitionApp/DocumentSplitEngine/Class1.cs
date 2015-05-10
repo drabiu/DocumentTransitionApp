@@ -14,8 +14,9 @@ using UnmarshallingSplitXml;
 namespace DocumentSplitEngine
 {
 	public class OpenXMDocumentPart
-	{
-		IList<OpenXmlCompositeElement> CompositeElements { get; set; }
+	{ 
+		public IList<OpenXmlCompositeElement> CompositeElements { get; set; }
+		string PartOwner { get; set; }
 	}
 
     public class Class1

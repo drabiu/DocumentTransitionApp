@@ -14,7 +14,7 @@ namespace SplitDescriptionObjects
 		IList<OpenXmlCompositeElement> GetCrossedElements(string id, string id2);
 	}
 
-	public class DocumentMarker : IDocumentMarker
+	public abstract class DocumentMarker : IDocumentMarker
 	{
 		Body DocumentBody;
 
@@ -31,6 +31,18 @@ namespace SplitDescriptionObjects
 		public IList<OpenXmlCompositeElement> GetCrossedElements(string id, string id2)
 		{
 			throw new NotImplementedException();
+		}
+	}
+
+	interface IUniversalDocumentMarker
+	{
+	}
+
+	public class UniversalDocumentMarker : DocumentMarker, IUniversalDocumentMarker
+	{
+		public UniversalDocumentMarker(Body body) :
+			base(body)
+		{
 		}
 	}
 }
