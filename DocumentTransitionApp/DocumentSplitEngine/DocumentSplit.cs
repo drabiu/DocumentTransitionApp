@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using System.IO;
+using System.Reflection;
 
 using DocumentFormat.OpenXml.Packaging;
 using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
@@ -135,6 +136,10 @@ namespace DocumentSplitEngine
 			wordprocessingDocument.Close();
 		}
 
+		private void CreateMergeXml()
+		{
+		}
+
 		private void SaveSplitDocument(string docxFilePath)
 		{
 			WordprocessingDocument wordprocessingDocument =
@@ -144,7 +149,7 @@ namespace DocumentSplitEngine
 			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
 
 			// Close the handle explicitly.
-
+			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentSplit)).CodeBase);
 			if (Directory.Exists(docxFilePath))
 			{
 				Console.WriteLine("That path exists already.");

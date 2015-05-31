@@ -72,7 +72,7 @@ namespace DocumentTransitionApp
 
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
-			Class1 run = new Class1();
+			Transition run = new Transition();
 			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
 		}
 	}

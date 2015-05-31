@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnmarshallingSplitXml", "Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentSplitEngine", "DocumentSplitEngine\DocumentSplitEngine.csproj", "{13BC6BC9-E590-491C-8EB3-37559C25994C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMergeEngine", "DocumentMergeEngine\DocumentMergeEngine.csproj", "{9FA41EDE-2545-4F48-901B-E29E4605967B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -35,6 +37,10 @@ Global
 		{13BC6BC9-E590-491C-8EB3-37559C25994C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13BC6BC9-E590-491C-8EB3-37559C25994C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13BC6BC9-E590-491C-8EB3-37559C25994C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA41EDE-2545-4F48-901B-E29E4605967B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA41EDE-2545-4F48-901B-E29E4605967B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA41EDE-2545-4F48-901B-E29E4605967B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA41EDE-2545-4F48-901B-E29E4605967B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
