@@ -107,7 +107,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-    public class Class1
+    public class Split
     {
 		IList<OpenXMDocumentPart> DocumentElements;
 
@@ -144,15 +144,15 @@ namespace DocumentSplitEngine
 			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
 
 			// Close the handle explicitly.
-			
-			if (Directory.Exists(path))
+
+			if (Directory.Exists(docxFilePath))
 			{
 				Console.WriteLine("That path exists already.");
 				return;
 			}
 
 			// Try to create the directory.
-			DirectoryInfo di = Directory.CreateDirectory(path);
+			DirectoryInfo di = Directory.CreateDirectory(docxFilePath);
 
 			wordprocessingDocument.Close();
 		}
