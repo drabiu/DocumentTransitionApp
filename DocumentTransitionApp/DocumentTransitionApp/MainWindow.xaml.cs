@@ -72,8 +72,9 @@ namespace DocumentTransitionApp
 
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
-			Transition run = new Transition();
+			DocumentSplit run = new DocumentSplit();
 			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
+			run.SaveSplitDocument(docxTextBox.Text);
 		}
 	}
 }

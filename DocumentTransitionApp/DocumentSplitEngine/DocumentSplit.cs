@@ -19,9 +19,11 @@ namespace DocumentSplitEngine
 	{
 		public IList<OpenXmlElement> CompositeElements { get; set; }
 		public string PartOwner { get; set; }
+		public Guid Guid { get; private set; }
 
 		public OpenXMDocumentPart()
 		{
+			this.Guid = Guid.NewGuid();
 			CompositeElements = new List<OpenXmlElement>();
 		}
 	}
@@ -140,26 +142,48 @@ namespace DocumentSplitEngine
 		{
 		}
 
-		private void SaveSplitDocument(string docxFilePath)
+		public void SaveSplitDocument(string docxFilePath)
 		{
-			WordprocessingDocument wordprocessingDocument =
-			WordprocessingDocument.Open(docxFilePath, true);
+			DirectoryInfo initDi;
+			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentSplit)).Location);
+			if (!Directory.Exists(appPath + @"\Files"))
+				initDi = Directory.CreateDirectory(appPath + @"\Files");
 
-			// Assign a reference to the existing document body.
-			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-
-			// Close the handle explicitly.
-			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentSplit)).CodeBase);
-			if (Directory.Exists(docxFilePath))
+			byte[] byteArray = File.ReadAllBytes(docxFilePath);
+			using (MemoryStream mem = new MemoryStream())
 			{
-				Console.WriteLine("That path exists already.");
-				return;
+				mem.Write(byteArray, 0, (int)byteArray.Length);
+				using (WordprocessingDocument wordDoc =
+					WordprocessingDocument.Open(mem, true))
+				{
+					foreach (OpenXMDocumentPart element in DocumentElements)
+					{
+						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+						body = new Wordproc.Body();
+						foreach (OpenXmlElement compo in element.CompositeElements)
+							body.Append(compo.CloneNode(true));
+
+						string directoryPath = appPath + @"\Files" + @"\" + element.PartOwner;
+						DirectoryInfo currentDi;
+						if (!Directory.Exists(directoryPath))
+						{
+							currentDi = Directory.CreateDirectory(directoryPath);
+						}
+
+						using (FileStream fileStream = new FileStream(directoryPath + @"\" + element.Guid.ToString() + ".docx",
+							System.IO.FileMode.CreateNew))
+						{
+							mem.CopyTo(fileStream);
+						}
+					}
+				}
+				// At this point, the memory stream contains the modified document.
+				// We could write it back to a SharePoint document library or serve
+				// it from a web server.
+
+				// In this example, we serialize back to the file system to verify
+				// that the code worked properly.			
 			}
-
-			// Try to create the directory.
-			DirectoryInfo di = Directory.CreateDirectory(docxFilePath);
-
-			wordprocessingDocument.Close();
 		}
 
 		public static void CreateDocumentPart(OpenXMDocumentPart documentPart)
