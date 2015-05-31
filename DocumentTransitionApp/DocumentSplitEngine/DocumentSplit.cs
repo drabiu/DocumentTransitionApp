@@ -27,12 +27,12 @@ namespace DocumentSplitEngine
 
 	public class MarkerMapper
 	{
-		DocumentSplit Xml { get; set; }
+		Split Xml { get; set; }
 		SplitDocument SplitDocumentObj { get; set; }
 		Wordproc.Body DocumentBody { get; set; }
 		string[] SubdividedParagraphs { get; set; }
 
-		public MarkerMapper(string documentName, DocumentSplit xml, Wordproc.Body body)
+		public MarkerMapper(string documentName, Split xml, Wordproc.Body body)
 		{
 			Xml = xml;
 			SplitDocumentObj = Xml.Items.Where(it => string.Equals(it.Name, documentName)).SingleOrDefault();
@@ -115,11 +115,11 @@ namespace DocumentSplitEngine
 		{
 			//split XML Read
 			var xml = System.IO.File.ReadAllText(xmlFilePath);
-			DocumentSplit splitXml;
+			Split splitXml;
 			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
 			{
-				XmlSerializer serializer = new XmlSerializer(typeof(DocumentSplit));
-				splitXml = (DocumentSplit)serializer.Deserialize(stream);
+				XmlSerializer serializer = new XmlSerializer(typeof(Split));
+				splitXml = (Split)serializer.Deserialize(stream);
 			}
 
 			// Open a WordprocessingDocument for editing using the filepath.
