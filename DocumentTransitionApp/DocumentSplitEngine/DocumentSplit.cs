@@ -157,11 +157,13 @@ namespace DocumentSplitEngine
 					WordprocessingDocument.Open(mem, true))
 				{
 					foreach (OpenXMDocumentPart element in DocumentElements)
-					{
+					{						
+						wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
 						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
-						body = new Wordproc.Body();
 						foreach (OpenXmlElement compo in element.CompositeElements)
 							body.Append(compo.CloneNode(true));
+
+						wordDoc.MainDocumentPart.Document.Save();
 
 						string directoryPath = appPath + @"\Files" + @"\" + element.PartOwner;
 						DirectoryInfo currentDi;
@@ -173,7 +175,7 @@ namespace DocumentSplitEngine
 						using (FileStream fileStream = new FileStream(directoryPath + @"\" + element.Guid.ToString() + ".docx",
 							System.IO.FileMode.CreateNew))
 						{
-							mem.CopyTo(fileStream);
+							mem.WriteTo(fileStream);
 						}
 					}
 				}

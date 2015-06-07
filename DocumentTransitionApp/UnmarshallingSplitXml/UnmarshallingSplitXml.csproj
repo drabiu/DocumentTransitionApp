@@ -41,6 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="mergeXmlDefinitionTemplate.cs">
+      <DependentUpon>mergeXmlDefinitionTemplate.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="mergeXmlDefinitionTemplate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>mergeXmlDefinitionTemplate.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="splitXmlDefinitionTemplate.cs">
       <DependentUpon>splitXmlDefinitionTemplate.xsd</DependentUpon>
@@ -52,9 +60,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="mergeXmlDefinitionTemplate.xml" />
     <Content Include="splitXmlDefinitionTemplate.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="mergeXmlDefinitionTemplate.xsc">
+      <DependentUpon>mergeXmlDefinitionTemplate.xsd</DependentUpon>
+    </None>
+    <None Include="mergeXmlDefinitionTemplate.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>mergeXmlDefinitionTemplate.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="mergeXmlDefinitionTemplate.xss">
+      <DependentUpon>mergeXmlDefinitionTemplate.xsd</DependentUpon>
+    </None>
     <None Include="splitXmlDefinitionTemplate.xsc">
       <DependentUpon>splitXmlDefinitionTemplate.xsd</DependentUpon>
     </None>
