@@ -113,6 +113,12 @@ namespace DocumentSplitEngine
     public class DocumentSplit
     {
 		IList<OpenXMDocumentPart> DocumentElements;
+		string DocumentName { get; set; }
+
+		public DocumentSplit(string docxFilePath)
+		{
+			DocumentName = Path.GetFileNameWithoutExtension(docxFilePath);
+		}
 
 		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
 		{
@@ -131,15 +137,33 @@ namespace DocumentSplitEngine
 
 			// Assign a reference to the existing document body.
 			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-			MarkerMapper mapping = new MarkerMapper(Path.GetFileNameWithoutExtension(docxFilePath), splitXml, body);
+			MarkerMapper mapping = new MarkerMapper(DocumentName, splitXml, body);
 			DocumentElements = mapping.Run();
 
 			// Close the handle explicitly.
 			wordprocessingDocument.Close();
 		}
 
-		private void CreateMergeXml()
+		private void CreateMergeXml(string path)
 		{
+			Merge mergeXml = new Merge();
+			mergeXml.Items = new MergeDocument[1];
+			mergeXml.Items[0] = new MergeDocument();
+			mergeXml.Items[0].Name = DocumentName;
+			mergeXml.Items[0].Part = new MergeDocumentPart[DocumentElements.Count];
+			for (int index = 0; index < DocumentElements.Count; index++)
+			{
+				mergeXml.Items[0].Part[index] = new MergeDocumentPart();
+				mergeXml.Items[0].Part[index].Name = DocumentElements[index].PartOwner;
+				mergeXml.Items[0].Part[index].Id = DocumentElements[index].Guid.ToString();
+			}
+
+			using (FileStream fileStream = new FileStream(path + "mergeXmlDefinition" + ".xml",
+							System.IO.FileMode.CreateNew))
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
+				serializer.Serialize(fileStream, mergeXml);
+			}			
 		}
 
 		public void SaveSplitDocument(string docxFilePath)
@@ -181,34 +205,10 @@ namespace DocumentSplitEngine
 				}
 				// At this point, the memory stream contains the modified document.
 				// We could write it back to a SharePoint document library or serve
-				// it from a web server.
-
-				// In this example, we serialize back to the file system to verify
-				// that the code worked properly.			
+				// it from a web server.			
 			}
-		}
 
-		public static void CreateDocumentPart(OpenXMDocumentPart documentPart)
-		{
-			// Create a Wordprocessing document. 
-			using (WordprocessingDocument myDoc = WordprocessingDocument.Create(AppDomain.CurrentDomain.BaseDirectory + Guid.NewGuid().ToString(), WordprocessingDocumentType.Document))
-			{
-				// Add a new main document part. 
-				MainDocumentPart mainPart = myDoc.AddMainDocumentPart();
-				//Create DOM tree for simple document. 
-				mainPart.Document = new Wordproc.Document();
-				Wordproc.Body body = new Wordproc.Body();
-				Wordproc.Paragraph p = new Wordproc.Paragraph();
-				Wordproc.Run r = new Wordproc.Run();
-				Wordproc.Text t = new Wordproc.Text("Hello World!");
-				//Append elements appropriately. 
-				r.Append(t);
-				p.Append(r);
-				body.Append(p);
-				mainPart.Document.Append(body);
-				// Save changes to the main document part. 
-				mainPart.Document.Save();
-			}
+			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
     }
 }

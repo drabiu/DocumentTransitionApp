@@ -72,9 +72,29 @@ namespace DocumentTransitionApp
 
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
-			DocumentSplit run = new DocumentSplit();
+			DocumentSplit run = new DocumentSplit(docxTextBox.Text);
 			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
 			run.SaveSplitDocument(docxTextBox.Text);
+		}
+
+		private void Button_Click_3(object sender, RoutedEventArgs e)
+		{
+			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+			// Set filter for file extension and default file extension 
+			dlg.DefaultExt = ".docx";
+			dlg.Filter = "Word Files (*.docx)|*.docx|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+
+
+			// Display OpenFileDialog by calling ShowDialog method 
+			Nullable<bool> result = dlg.ShowDialog();
+
+			// Get the selected file name and display in a TextBox 
+			if (result == true)
+			{
+				// Open document 
+				string filename = dlg.FileName;
+			}
 		}
 	}
 }

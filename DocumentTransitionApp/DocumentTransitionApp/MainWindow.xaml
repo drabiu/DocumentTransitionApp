@@ -19,6 +19,7 @@
 				</TransformGroup>
 			</Label.RenderTransform>
 		</Label>
+		<Button Content="Merge" HorizontalAlignment="Left" Margin="353,251,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
 
 	</Grid>
 </Window>
