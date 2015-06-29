@@ -112,8 +112,8 @@ namespace DocumentSplitEngine
 
 	interface ISplit
 	{
-		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);
-		public void SaveSplitDocument(string filePath);
+		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);
+		void SaveSplitDocument(string filePath);
 	}
 
 	public class MergeXml
