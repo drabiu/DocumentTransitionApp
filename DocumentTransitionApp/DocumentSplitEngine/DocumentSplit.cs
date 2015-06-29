@@ -110,14 +110,46 @@ namespace DocumentSplitEngine
 		}
 	}
 
-    public class DocumentSplit
-    {
-		IList<OpenXMDocumentPart> DocumentElements;
-		string DocumentName { get; set; }
+	interface ISplit
+	{
+		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);
+		public void SaveSplitDocument(string filePath);
+	}
 
+	public class MergeXml
+	{
+		protected IList<OpenXMDocumentPart> DocumentElements;
+		protected string DocumentName { get; set; }
+
+		protected void CreateMergeXml(string path)
+		{
+			Merge mergeXml = new Merge();
+			mergeXml.Items = new MergeDocument[1];
+			mergeXml.Items[0] = new MergeDocument();
+			mergeXml.Items[0].Name = DocumentName;
+			mergeXml.Items[0].Part = new MergeDocumentPart[DocumentElements.Count];
+			for (int index = 0; index < DocumentElements.Count; index++)
+			{
+				mergeXml.Items[0].Part[index] = new MergeDocumentPart();
+				mergeXml.Items[0].Part[index].Name = DocumentElements[index].PartOwner;
+				mergeXml.Items[0].Part[index].Id = DocumentElements[index].Guid.ToString();
+			}
+
+			using (FileStream fileStream = new FileStream(path + "mergeXmlDefinition" + ".xml",
+							System.IO.FileMode.CreateNew))
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
+				serializer.Serialize(fileStream, mergeXml);
+			}
+		}
+	}
+
+    public class DocumentSplit : MergeXml, ISplit
+    {
 		public DocumentSplit(string docxFilePath)
 		{
 			DocumentName = Path.GetFileNameWithoutExtension(docxFilePath);
+
 		}
 
 		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
@@ -142,28 +174,6 @@ namespace DocumentSplitEngine
 
 			// Close the handle explicitly.
 			wordprocessingDocument.Close();
-		}
-
-		private void CreateMergeXml(string path)
-		{
-			Merge mergeXml = new Merge();
-			mergeXml.Items = new MergeDocument[1];
-			mergeXml.Items[0] = new MergeDocument();
-			mergeXml.Items[0].Name = DocumentName;
-			mergeXml.Items[0].Part = new MergeDocumentPart[DocumentElements.Count];
-			for (int index = 0; index < DocumentElements.Count; index++)
-			{
-				mergeXml.Items[0].Part[index] = new MergeDocumentPart();
-				mergeXml.Items[0].Part[index].Name = DocumentElements[index].PartOwner;
-				mergeXml.Items[0].Part[index].Id = DocumentElements[index].Guid.ToString();
-			}
-
-			using (FileStream fileStream = new FileStream(path + "mergeXmlDefinition" + ".xml",
-							System.IO.FileMode.CreateNew))
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
-				serializer.Serialize(fileStream, mergeXml);
-			}			
 		}
 
 		public void SaveSplitDocument(string docxFilePath)
@@ -208,7 +218,54 @@ namespace DocumentSplitEngine
 				// it from a web server.			
 			}
 
+			using (MemoryStream mem = new MemoryStream())
+			{
+				mem.Write(byteArray, 0, (int)byteArray.Length);
+				using (WordprocessingDocument wordDoc =
+					WordprocessingDocument.Open(mem, true))
+				{
+					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+					wordDoc.MainDocumentPart.Document.Save();
+
+					using (FileStream fileStream = new FileStream(appPath + @"\Files" + @"\template" + ".docx",
+						System.IO.FileMode.CreateNew))
+					{
+						mem.WriteTo(fileStream);
+					}
+				}
+				// At this point, the memory stream contains the modified document.
+				// We could write it back to a SharePoint document library or serve
+				// it from a web server.			
+			}
+
 			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
-    }
+	}
+
+	public class ExcelSplit : MergeXml, ISplit
+	{
+
+		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SaveSplitDocument(string filePath)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class PresentationSplit : MergeXml, ISplit
+	{
+		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SaveSplitDocument(string filePath)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

@@ -93,6 +93,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DocumentMergeEngine\DocumentMergeEngine.csproj">
+      <Project>{9fa41ede-2545-4f48-901b-e29e4605967b}</Project>
+      <Name>DocumentMergeEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DocumentSplitEngine\DocumentSplitEngine.csproj">
       <Project>{13bc6bc9-e590-491c-8eb3-37559c25994c}</Project>
       <Name>DocumentSplitEngine</Name>

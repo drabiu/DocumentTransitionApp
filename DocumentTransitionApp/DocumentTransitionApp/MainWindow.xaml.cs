@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using DocumentSplitEngine;
+using DocumentMergeEngine;
 
 namespace DocumentTransitionApp
 {
@@ -94,6 +95,8 @@ namespace DocumentTransitionApp
 			{
 				// Open document 
 				string filename = dlg.FileName;
+				DocumentMerge merge = new DocumentMerge(filename);
+				merge.Run();
 			}
 		}
 	}
