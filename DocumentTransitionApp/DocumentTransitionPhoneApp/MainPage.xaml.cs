@@ -66,7 +66,8 @@ namespace DocumentTransitionPhoneApp
 
 		public async void GetFolders(LiveConnectClient client)
 		{
-			var result = await client.GetAsync(string.Format("{0}/files?limit=10", ""));
+			LiveOperationResult operationResult = await client.GetAsync("me/skydrive/files");
+			dynamic result = operationResult.Result;
 		}
 
 		private async void Upload_Click(object sender, RoutedEventArgs e)
@@ -105,6 +106,7 @@ namespace DocumentTransitionPhoneApp
 		private async void LogOn_Click(object sender, RoutedEventArgs e)
 		{
 			Client = await Login();
+			GetFolders(Client);
 		} 
 	}
 }
