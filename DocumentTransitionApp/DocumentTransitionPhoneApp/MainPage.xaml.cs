@@ -107,6 +107,11 @@ namespace DocumentTransitionPhoneApp
 		{
 			Client = await Login();
 			GetFolders(Client);
+		}
+
+		private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+		{
+
 		} 
 	}
 }
