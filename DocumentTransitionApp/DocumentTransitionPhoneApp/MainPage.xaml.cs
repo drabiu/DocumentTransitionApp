@@ -23,11 +23,13 @@ namespace DocumentTransitionPhoneApp
 	{
 		private LiveConnectClient Client;
 		private LiveAuthClient AuthClient;
+		private IList<OneDriveFilesTreeElement> FilesTreeElements;
 
 		// Constructor
 		public MainPage()
 		{
 			InitializeComponent();
+			FilesTreeElements = new List<OneDriveFilesTreeElement>();
 
 			// Sample code to localize the ApplicationBar
 			//BuildLocalizedApplicationBar();
