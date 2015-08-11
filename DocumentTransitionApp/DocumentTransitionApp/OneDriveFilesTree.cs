@@ -15,5 +15,12 @@ namespace DocumentTransitionApp
 		}
 
 		ElementType Type { public get; set; }
+		OneDriveFilesTreeElement Child { public get; set; }
+		string Name { public get; set; }
+		int Indent { public get; set; }
+
+		public OneDriveFilesTreeElement()
+		{
+		}
 	}
 }
