@@ -19,7 +19,6 @@ using System.Threading.Tasks;
 
 namespace DocumentTransitionPhoneApp
 {
-
 	public partial class MainPage : PhoneApplicationPage
 	{
 		private LiveConnectClient Client;
@@ -71,37 +70,37 @@ namespace DocumentTransitionPhoneApp
 		}
 
 		private async void Upload_Click(object sender, RoutedEventArgs e)
-        {
-			if (Client != null)
-            {
-                try
-                {
-                    string fileName = "sample.txt";
-                    IsolatedStorageFile myIsolatedStorage = 
-                    IsolatedStorageFile.GetUserStoreForApplication();//deletes the file if it already exists
-                    if (myIsolatedStorage.FileExists(fileName))
-                    {
-                        myIsolatedStorage.DeleteFile(fileName);
-                    }//now we use a StreamWriter to write inputBox.Text to the file and save it to IsolatedStorage
-                    using (StreamWriter writeFile = new StreamWriter
-                    (new IsolatedStorageFileStream(fileName, FileMode.Create, FileAccess.Write, myIsolatedStorage)))
-                    {
-                        writeFile.WriteLine("Hello world");
-                        writeFile.Close();
-                    }
-                    IsolatedStorageFileStream isfs = myIsolatedStorage.OpenFile(fileName, FileMode.Open, FileAccess.Read);
-                    var res = await Client.UploadAsync("me/skydrive", fileName, isfs, OverwriteOption.Overwrite);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please sign in with your Microsoft Account.");
-            }
-        }
+		{
+		//	if (Client != null)
+		//	{
+		//		try
+		//		{
+		//			string fileName = "sample.txt";
+		//			IsolatedStorageFile myIsolatedStorage = 
+		//			IsolatedStorageFile.GetUserStoreForApplication();//deletes the file if it already exists
+		//			if (myIsolatedStorage.FileExists(fileName))
+		//			{
+		//				myIsolatedStorage.DeleteFile(fileName);
+		//			}//now we use a StreamWriter to write inputBox.Text to the file and save it to IsolatedStorage
+		//			using (StreamWriter writeFile = new StreamWriter
+		//			(new IsolatedStorageFileStream(fileName, FileMode.Create, FileAccess.Write, myIsolatedStorage)))
+		//			{
+		//				writeFile.WriteLine("Hello world");
+		//				writeFile.Close();
+		//			}
+		//			IsolatedStorageFileStream isfs = myIsolatedStorage.OpenFile(fileName, FileMode.Open, FileAccess.Read);
+		//			var res = await Client.UploadAsync("me/skydrive", fileName, isfs, OverwriteOption.Overwrite);
+		//		}
+		//		catch (Exception ex)
+		//		{
+		//			MessageBox.Show("Error: " + ex.Message);
+		//		}
+		//	}
+		//	else
+		//	{
+		//		MessageBox.Show("Please sign in with your Microsoft Account.");
+		//	}
+		}
 
 		private async void LogOn_Click(object sender, RoutedEventArgs e)
 		{
@@ -111,7 +110,7 @@ namespace DocumentTransitionPhoneApp
 
 		private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
-
+			//MessageBox.Show("Please sign in with your Microsoft Account.");
 		} 
 	}
 }
