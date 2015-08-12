@@ -8,6 +8,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Dynamic;
 
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -68,7 +69,9 @@ namespace DocumentTransitionPhoneApp
 		public async void GetFolders(LiveConnectClient client)
 		{
 			LiveOperationResult operationResult = await client.GetAsync("me/skydrive/files");
-			dynamic result = operationResult.Result;
+			dynamic result = (operationResult.Result as dynamic).data;
+			OneDriveExplorerPanel.Children.Clear();
+			CreateDynamicFilesTree(result, 0);
 		}
 
 		private async void Upload_Click(object sender, RoutedEventArgs e)
@@ -110,9 +113,52 @@ namespace DocumentTransitionPhoneApp
 			GetFolders(Client);
 		}
 
-		private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+		private void CreateDynamicFilesTree(IList<object> listedItems, int indent)
 		{
-			//MessageBox.Show("Please sign in with your Microsoft Account.");
+			foreach (var listItem in listedItems)
+			{
+				string name = (listItem as dynamic).name;
+
+				if ((listItem as dynamic).type == "folder" || (listItem as dynamic).type == "album")
+				{
+					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement(OneDriveFilesTreeElement.ElementType.Folder, name, indent);
+					CreateTextBlock(newElement);
+				}
+				else
+				{
+					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement(OneDriveFilesTreeElement.ElementType.File, name, indent);
+					CreateTextBlock(newElement);
+				}
+			}
+			//foreach (object listItem in items["data"] as IList<object>)
+			//{
+			//	((Microsoft.Live.DynamicDictionary)(listItem)).Values
+			//	//foreach(object item in (listItem as DynamicObject).
+			//	//IDictionary<string, object> dataItems = item.Value as IDictionary<string, object>;
+			//}
+		}
+
+		private void CreateTextBlock(OneDriveFilesTreeElement element)
+		{
+			TextBlock textBlock = new TextBlock();
+			textBlock.TextWrapping = TextWrapping.Wrap;
+			textBlock.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
+			textBlock.Text = element.Name;
+			if (element.Type == OneDriveFilesTreeElement.ElementType.Folder)
+			{
+				textBlock.FontWeight = FontWeights.Bold;
+			}
+			else if (element.Type == OneDriveFilesTreeElement.ElementType.File)
+			{
+				textBlock.Tap += textBlock_Tap;
+			}
+
+			OneDriveExplorerPanel.Children.Add(textBlock);
+		}
+
+		private void textBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+		{
+			MessageBox.Show("This is a wrong File.");
 		} 
 	}
 }

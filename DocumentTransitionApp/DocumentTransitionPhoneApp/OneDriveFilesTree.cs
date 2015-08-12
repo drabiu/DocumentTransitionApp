@@ -19,8 +19,17 @@ namespace DocumentTransitionPhoneApp
 		public string Name { get; private set; }
 		public int Indent { get; private set; }
 
-		public OneDriveFilesTreeElement()
+		public OneDriveFilesTreeElement(ElementType type, string name, int indent)
 		{
+			this.Type = type;
+			this.Name = name;
+			this.Indent = indent;
+		}
+
+		public OneDriveFilesTreeElement(ElementType type, OneDriveFilesTreeElement child, string name, int indent)
+			: this(type, name, indent)
+		{
+			this.Child = child;
 		}
 	}
 }

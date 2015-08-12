@@ -31,29 +31,7 @@
 			</phone:PanoramaItem>
 			<phone:PanoramaItem Header="Explore OneDrive">				
 				<ScrollViewer>
-					<StackPanel HorizontalAlignment="Left" Height="451" VerticalAlignment="Top" Width="420">
-						<TextBlock TextWrapping="Wrap"  Margin="0, 5, 0, 5" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap"  Margin="0, 5, 0, 5" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap"  Margin="0, 5, 0, 5" Text="TextBlock"/>
-						<TextBlock FontWeight="Bold" Margin="20, 5, 0, 5"  Tap="TextBlock_Tap" TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Margin="0, 5, 0, 5" Text="TextBlock TextBlockTextBlockTextBlockTextBlockTextBlock TextBlock"/>
-						<TextBlock TextWrapping="Wrap"  Margin="0, 5, 0, 5" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap"  Margin="0, 5, 0, 5" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
-						<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
+					<StackPanel Name="OneDriveExplorerPanel" HorizontalAlignment="Left" Height="451" VerticalAlignment="Top" Width="420">
 					</StackPanel>
 				</ScrollViewer>
 			</phone:PanoramaItem>
