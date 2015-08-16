@@ -24,13 +24,13 @@ namespace DocumentTransitionPhoneApp
 	{
 		private LiveConnectClient Client;
 		private LiveAuthClient AuthClient;
-		private IList<OneDriveFilesTreeElement> FilesTreeElements;
+		private IDictionary<string, OneDriveFilesTreeElement> FilesTreeElements;
 
 		// Constructor
 		public MainPage()
 		{
 			InitializeComponent();
-			FilesTreeElements = new List<OneDriveFilesTreeElement>();
+			FilesTreeElements = new Dictionary<string, OneDriveFilesTreeElement>();
 
 			// Sample code to localize the ApplicationBar
 			//BuildLocalizedApplicationBar();
@@ -68,52 +68,28 @@ namespace DocumentTransitionPhoneApp
 
 		public async void GetFolders(LiveConnectClient client)
 		{
-			LiveOperationResult operationResult = await client.GetAsync("me/skydrive/files");
-			dynamic result = (operationResult.Result as dynamic).data;
-			OneDriveExplorerPanel.Children.Clear();
-			CreateDynamicFilesTree(result, 0);
-		}
-
-		private async void Upload_Click(object sender, RoutedEventArgs e)
-		{
-		//	if (Client != null)
-		//	{
-		//		try
-		//		{
-		//			string fileName = "sample.txt";
-		//			IsolatedStorageFile myIsolatedStorage = 
-		//			IsolatedStorageFile.GetUserStoreForApplication();//deletes the file if it already exists
-		//			if (myIsolatedStorage.FileExists(fileName))
-		//			{
-		//				myIsolatedStorage.DeleteFile(fileName);
-		//			}//now we use a StreamWriter to write inputBox.Text to the file and save it to IsolatedStorage
-		//			using (StreamWriter writeFile = new StreamWriter
-		//			(new IsolatedStorageFileStream(fileName, FileMode.Create, FileAccess.Write, myIsolatedStorage)))
-		//			{
-		//				writeFile.WriteLine("Hello world");
-		//				writeFile.Close();
-		//			}
-		//			IsolatedStorageFileStream isfs = myIsolatedStorage.OpenFile(fileName, FileMode.Open, FileAccess.Read);
-		//			var res = await Client.UploadAsync("me/skydrive", fileName, isfs, OverwriteOption.Overwrite);
-		//		}
-		//		catch (Exception ex)
-		//		{
-		//			MessageBox.Show("Error: " + ex.Message);
-		//		}
-		//	}
-		//	else
-		//	{
-		//		MessageBox.Show("Please sign in with your Microsoft Account.");
-		//	}
+			try
+			{
+				LiveOperationResult operationResult = await client.GetAsync("me/skydrive/files");
+				dynamic result = (operationResult.Result as dynamic).data;
+				//OneDriveExplorerPanel.Children.Clear();
+				await CreateDynamicFilesTree(client, result, 0);
+				//CreateFileExploreUI();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}			
 		}
 
 		private async void LogOn_Click(object sender, RoutedEventArgs e)
 		{
 			Client = await Login();
+			FilesTreeElements.Clear();
 			GetFolders(Client);
 		}
 
-		private void CreateDynamicFilesTree(IList<object> listedItems, int indent)
+		private async Task CreateDynamicFilesTree(LiveConnectClient client, IList<object> listedItems, int indent)
 		{
 			foreach (var listItem in listedItems)
 			{
@@ -122,20 +98,63 @@ namespace DocumentTransitionPhoneApp
 				if ((listItem as dynamic).type == "folder" || (listItem as dynamic).type == "album")
 				{
 					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement(OneDriveFilesTreeElement.ElementType.Folder, name, indent);
-					CreateTextBlock(newElement);
+					AddElementToList((listItem as dynamic).id, (listItem as dynamic).parent_id, newElement);
+					string uri = (listItem as dynamic).id + "/files";
+					try
+					{
+						LiveOperationResult operationResult = await client.GetAsync(uri);
+						dynamic result = (operationResult.Result as dynamic).data;
+						CreateDynamicFilesTree(client, result, indent + 1);
+						CreateFileExploreUI();
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+					}
 				}
 				else
 				{
 					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement(OneDriveFilesTreeElement.ElementType.File, name, indent);
-					CreateTextBlock(newElement);
+					AddElementToList((listItem as dynamic).id, (listItem as dynamic).parent_id, newElement);
 				}
 			}
-			//foreach (object listItem in items["data"] as IList<object>)
-			//{
-			//	((Microsoft.Live.DynamicDictionary)(listItem)).Values
-			//	//foreach(object item in (listItem as DynamicObject).
-			//	//IDictionary<string, object> dataItems = item.Value as IDictionary<string, object>;
-			//}
+		}
+
+		private void AddElementToList(string id, string parentId, OneDriveFilesTreeElement element)
+		{
+			OneDriveFilesTreeElement parent;
+			if (FilesTreeElements.TryGetValue(parentId, out parent))
+			{
+				parent.SetChild(element);
+
+			}
+
+			FilesTreeElements.Add(id, element);
+		}
+
+		private void CreateFileExploreUI(Func<OneDriveFilesTreeElement, bool> filter)
+		{
+			OneDriveExplorerPanel.Children.Clear();
+			foreach (KeyValuePair<string, OneDriveFilesTreeElement> element in FilesTreeElements)
+			{
+				if (element.Value.Indent == 0)
+				{
+					foreach (OneDriveFilesTreeElement child in element.Value.GetFilesTreeList().Where(filter))
+					{
+						CreateTextBlock(child);
+					}
+				}
+			}
+		}
+
+		private void CreateFileExploreUI(string filterName)
+		{
+			CreateFileExploreUI(el => el.Name.Contains(filterName));
+		}
+
+		private void CreateFileExploreUI()
+		{
+			CreateFileExploreUI(el => true);
 		}
 
 		private void CreateTextBlock(OneDriveFilesTreeElement element)
@@ -158,7 +177,20 @@ namespace DocumentTransitionPhoneApp
 
 		private void textBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
-			MessageBox.Show("This is a wrong File.");
-		} 
+			TextBlock block = (sender as TextBlock);
+			if (block.Text.Contains(".docx") || block.Text.Contains(".xlsx") || block.Text.Contains(".pptx"))
+			{
+				//do this
+			}
+			else
+			{
+				MessageBox.Show("This is a wrong File.");
+			}
+		}
+
+		private void SearchButton_Click(object sender, RoutedEventArgs e)
+		{
+			CreateFileExploreUI(FilterTextBox.Text);
+		}
 	}
 }

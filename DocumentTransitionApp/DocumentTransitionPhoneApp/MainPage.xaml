@@ -23,17 +23,17 @@
 					<Controls:SignInButton Content="SignInButton" HorizontalAlignment="Left" Margin="110,105,0,0" VerticalAlignment="Top"
 									   ClientId="000000004015B444" Scopes="wl.signin wl.offline_access wl.skydrive_update"
 									   SessionChanged="loginButton_SessionChanged" Width="211"/>
-					<Button Content="Upload" HorizontalAlignment="Left" 
-				Margin="110,256,0,0" VerticalAlignment="Top" 
-				Width="211" Click="Upload_Click"/>
 					<Button Name="LogOn" Content="Log On" HorizontalAlignment="Left" Margin="110,179,0,0" VerticalAlignment="Top" Width="211" Height="77" Click="LogOn_Click"/>
 				</Grid>
 			</phone:PanoramaItem>
-			<phone:PanoramaItem Header="Explore OneDrive">				
-				<ScrollViewer>
-					<StackPanel Name="OneDriveExplorerPanel" HorizontalAlignment="Left" Height="451" VerticalAlignment="Top" Width="420">
-					</StackPanel>
-				</ScrollViewer>
+			<phone:PanoramaItem Header="Explore OneDrive">
+				<Grid Margin="0,-50,0,0">
+					<TextBox Name="FilterTextBox" HorizontalAlignment="Left" Height="72" Margin="-10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="332"/>
+					<Button Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="300,0,-11,0" VerticalAlignment="Top" Width="131" Click="SearchButton_Click"/>
+					<ScrollViewer x:Name="OneDriveExplorerScroll" Margin="0,72,0,0">
+						<StackPanel x:Name="OneDriveExplorerPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420"/>
+					</ScrollViewer>					
+				</Grid>
 			</phone:PanoramaItem>
 			<phone:PanoramaItem  Header="Details">
 				<Grid x:Name="ContentDetailsPanel" Grid.Row="1" Margin="12,0,12,0">
