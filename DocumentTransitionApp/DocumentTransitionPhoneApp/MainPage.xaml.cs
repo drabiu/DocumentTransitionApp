@@ -17,6 +17,7 @@ using Microsoft.Live.Controls;
 
 using DocumentTransitionPhoneApp.Resources;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace DocumentTransitionPhoneApp
 {
@@ -97,8 +98,8 @@ namespace DocumentTransitionPhoneApp
 
 				if ((listItem as dynamic).type == "folder" || (listItem as dynamic).type == "album")
 				{
-					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement(OneDriveFilesTreeElement.ElementType.Folder, name, indent);
-					AddElementToList((listItem as dynamic).id, (listItem as dynamic).parent_id, newElement);
+					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement((listItem as dynamic).id, OneDriveFilesTreeElement.ElementType.Folder, name, indent);
+					AddElementToList((listItem as dynamic).parent_id, newElement);
 					string uri = (listItem as dynamic).id + "/files";
 					try
 					{
@@ -114,22 +115,21 @@ namespace DocumentTransitionPhoneApp
 				}
 				else
 				{
-					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement(OneDriveFilesTreeElement.ElementType.File, name, indent);
-					AddElementToList((listItem as dynamic).id, (listItem as dynamic).parent_id, newElement);
+					OneDriveFilesTreeElement newElement = new OneDriveFilesTreeElement((listItem as dynamic).id, OneDriveFilesTreeElement.ElementType.File, name, indent);
+					AddElementToList((listItem as dynamic).parent_id, newElement);
 				}
 			}
 		}
 
-		private void AddElementToList(string id, string parentId, OneDriveFilesTreeElement element)
+		private void AddElementToList(string parentId, OneDriveFilesTreeElement element)
 		{
 			OneDriveFilesTreeElement parent;
 			if (FilesTreeElements.TryGetValue(parentId, out parent))
 			{
 				parent.SetChild(element);
-
 			}
 
-			FilesTreeElements.Add(id, element);
+			FilesTreeElements.Add(element.Id, element);
 		}
 
 		private void CreateFileExploreUI(Func<OneDriveFilesTreeElement, bool> filter)
@@ -160,6 +160,7 @@ namespace DocumentTransitionPhoneApp
 		private void CreateTextBlock(OneDriveFilesTreeElement element)
 		{
 			TextBlock textBlock = new TextBlock();
+			textBlock.Name = element.Id;
 			textBlock.TextWrapping = TextWrapping.Wrap;
 			textBlock.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
 			textBlock.Text = element.Name;
@@ -180,12 +181,18 @@ namespace DocumentTransitionPhoneApp
 			TextBlock block = (sender as TextBlock);
 			if (block.Text.Contains(".docx") || block.Text.Contains(".xlsx") || block.Text.Contains(".pptx"))
 			{
-				//do this
 			}
 			else
 			{
 				MessageBox.Show("This is a wrong File.");
 			}
+		}
+
+		private async void GetFile(string fileName, string fileId)
+		{
+			StorageFile localFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+			Uri uri = new Uri("ms-appdata:///local/" + fileName);
+			await Client.BackgroundDownloadAsync(fileId + "/content", uri);
 		}
 
 		private void SearchButton_Click(object sender, RoutedEventArgs e)

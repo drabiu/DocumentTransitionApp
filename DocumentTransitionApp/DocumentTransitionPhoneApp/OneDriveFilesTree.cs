@@ -14,21 +14,23 @@ namespace DocumentTransitionPhoneApp
 			File
 		}
 
+		public string Id { get; private set; }
 		public ElementType Type { get; private set; }
 		public IList<OneDriveFilesTreeElement> Childs { get; private set; }
 		public string Name { get; private set; }
 		public int Indent { get; private set; }
 
-		public OneDriveFilesTreeElement(ElementType type, string name, int indent)
+		public OneDriveFilesTreeElement(string id, ElementType type, string name, int indent)
 		{
+			this.Id = id;
 			this.Type = type;
 			this.Name = name;
 			this.Indent = indent;
 			this.Childs = new List<OneDriveFilesTreeElement>();
 		}
 
-		public OneDriveFilesTreeElement(ElementType type, OneDriveFilesTreeElement child, string name, int indent)
-			: this(type, name, indent)
+		public OneDriveFilesTreeElement(string id, ElementType type, OneDriveFilesTreeElement child, string name, int indent)
+			: this(id, type, name, indent)
 		{
 			this.Childs.Add(child);
 		}
