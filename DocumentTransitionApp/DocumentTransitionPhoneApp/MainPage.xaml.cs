@@ -26,6 +26,8 @@ namespace DocumentTransitionPhoneApp
 		private LiveConnectClient Client;
 		private LiveAuthClient AuthClient;
 		private IDictionary<string, OneDriveFilesTreeElement> FilesTreeElements;
+		private Stream DocumentFile;
+		private Stream SplitFile;
 
 		// Constructor
 		public MainPage()
@@ -176,11 +178,20 @@ namespace DocumentTransitionPhoneApp
 			OneDriveExplorerPanel.Children.Add(textBlock);
 		}
 
-		private void textBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+		private async void textBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
 		{
 			TextBlock block = (sender as TextBlock);
 			if (block.Text.Contains(".docx") || block.Text.Contains(".xlsx") || block.Text.Contains(".pptx"))
 			{
+				DocumentFile = await GetFile(block.Text, block.Name);
+				DocumentLabelTextBlock.Text = block.Text;
+				RunSplitButton.IsEnabled = true;
+			}
+			else if (block.Text.Contains(".xml"))
+			{
+				SplitFile = await GetFile(block.Text, block.Name);
+				SplitLabelTextBlock.Text = block.Text;
+				RunMergeButton.IsEnabled = true;
 			}
 			else
 			{
@@ -188,11 +199,13 @@ namespace DocumentTransitionPhoneApp
 			}
 		}
 
-		private async void GetFile(string fileName, string fileId)
+		private async Task<Stream> GetFile(string fileName, string fileId)
 		{
-			StorageFile localFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-			Uri uri = new Uri("ms-appdata:///local/" + fileName);
+			StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
+			StorageFile localFile = await local.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+			Uri uri = new Uri("ms-appdata://local/" + fileName);
 			await Client.BackgroundDownloadAsync(fileId + "/content", uri);
+			return await localFile.OpenStreamForReadAsync(); 
 		}
 
 		private void SearchButton_Click(object sender, RoutedEventArgs e)

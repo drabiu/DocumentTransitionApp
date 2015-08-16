@@ -36,11 +36,13 @@
 				</Grid>
 			</phone:PanoramaItem>
 			<phone:PanoramaItem  Header="Details">
-				<Grid x:Name="ContentDetailsPanel" Grid.Row="1" Margin="12,0,12,0">
-					<TextBlock HorizontalAlignment="Left" Margin="11,94,0,0" TextWrapping="Wrap" Text="Document: TextBlock" VerticalAlignment="Top"/>
-					<TextBlock HorizontalAlignment="Left" Margin="11,126,0,0" TextWrapping="Wrap" Text="Split XML:   TextBlock" VerticalAlignment="Top"/>
-					<Button Content="Button" HorizontalAlignment="Left" Margin="75,171,0,0" VerticalAlignment="Top"/>
-					<Button Content="Button" HorizontalAlignment="Left" Margin="75,243,0,0" VerticalAlignment="Top"/>
+				<Grid x:Name="ContentDetailsPanel" Grid.Row="2" Margin="12,0,12,0">
+					<TextBlock HorizontalAlignment="Left" Margin="11,94,0,0" TextWrapping="Wrap" Text="Document:" VerticalAlignment="Top"/>
+					<TextBlock HorizontalAlignment="Left" Margin="11,126,0,0" TextWrapping="Wrap" Text="Split XML:" VerticalAlignment="Top"/>
+					<Button Name="RunSplitButton" Content="Run Split" IsEnabled="False" HorizontalAlignment="Left" Margin="75,171,0,0" VerticalAlignment="Top" Width="249"/>
+					<Button Name="RunMergeButton" Content="Run Merge" IsEnabled="False" HorizontalAlignment="Left" Margin="75,243,0,0" VerticalAlignment="Top" Width="249"/>
+					<TextBlock Name="DocumentLabelTextBlock" HorizontalAlignment="Left" Margin="122,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264"/>
+					<TextBlock Name="SplitLabelTextBlock" HorizontalAlignment="Left" Margin="122,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264"/>
 				</Grid>
 			</phone:PanoramaItem>
 		</phone:Panorama>
