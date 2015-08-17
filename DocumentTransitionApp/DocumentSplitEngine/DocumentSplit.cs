@@ -151,11 +151,19 @@ namespace DocumentSplitEngine
 		public DocumentSplit(string docxFilePath)
 		{
 			DocumentName = Path.GetFileNameWithoutExtension(docxFilePath);
-
 		}
 
 		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
 		{
+			XmlSerializer serializer = new XmlSerializer(typeof(Split));
+			Split splitXml = (Split)serializer.Deserialize(xmlFile);
+			using (WordprocessingDocument wordDoc =
+				WordprocessingDocument.Open(docxFile, true))
+			{
+				Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+				MarkerMapper mapping = new MarkerMapper(DocumentName, splitXml, body);
+				DocumentElements = mapping.Run();
+			}
 		}
 
 		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)

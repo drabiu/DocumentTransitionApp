@@ -222,5 +222,15 @@ namespace DocumentTransitionPhoneApp
 		{
 			CreateFileExploreUI(FilterTextBox.Text);
 		}
+
+		private void RunSplitButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void RunMergeButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
