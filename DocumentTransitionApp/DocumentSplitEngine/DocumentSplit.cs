@@ -113,7 +113,9 @@ namespace DocumentSplitEngine
 	interface ISplit
 	{
 		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);
+		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
 		void SaveSplitDocument(string filePath);
+		Stream SaveSplitDocument();
 	}
 
 	public class MergeXml
@@ -150,6 +152,10 @@ namespace DocumentSplitEngine
 		{
 			DocumentName = Path.GetFileNameWithoutExtension(docxFilePath);
 
+		}
+
+		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+		{
 		}
 
 		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
@@ -240,6 +246,12 @@ namespace DocumentSplitEngine
 
 			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
+
+
+		public Stream SaveSplitDocument()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	public class ExcelSplit : MergeXml, ISplit
@@ -254,6 +266,17 @@ namespace DocumentSplitEngine
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Stream SaveSplitDocument()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	public class PresentationSplit : MergeXml, ISplit
@@ -264,6 +287,17 @@ namespace DocumentSplitEngine
 		}
 
 		public void SaveSplitDocument(string filePath)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Stream SaveSplitDocument()
 		{
 			throw new NotImplementedException();
 		}

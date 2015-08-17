@@ -201,11 +201,21 @@ namespace DocumentTransitionPhoneApp
 
 		private async Task<Stream> GetFile(string fileName, string fileId)
 		{
-			StorageFolder local = Windows.Storage.ApplicationData.Current.LocalFolder;
-			StorageFile localFile = await local.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-			Uri uri = new Uri("ms-appdata://local/" + fileName);
-			await Client.BackgroundDownloadAsync(fileId + "/content", uri);
-			return await localFile.OpenStreamForReadAsync(); 
+			string filePath = "shared/transfers/" + fileName;
+			filePath = Uri.EscapeUriString(filePath);
+			Uri fileUri = new Uri(filePath, UriKind.Relative);
+			await Client.BackgroundDownloadAsync(fileId + "/Content", fileUri);
+
+			Stream readStream = new MemoryStream();
+			string root = ApplicationData.Current.LocalFolder.Path;
+			var storageFolder = await StorageFolder.GetFolderFromPathAsync(root + @"\shared\transfers");
+            StorageFile storageFile = await storageFolder.GetFileAsync(fileName);
+            if ( storageFile != null )
+            {
+				readStream = await storageFile.OpenStreamForReadAsync();
+			}
+
+			return readStream;
 		}
 
 		private void SearchButton_Click(object sender, RoutedEventArgs e)
