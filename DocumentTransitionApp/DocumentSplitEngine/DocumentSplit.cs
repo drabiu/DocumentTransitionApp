@@ -110,13 +110,13 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	interface ILocalSplit
+	public interface ILocalSplit
 	{
 		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);		
 		void SaveSplitDocument(string filePath);		
 	}
 
-	interface ISplit
+	public interface ISplit
 	{
 		Stream SaveSplitDocument();
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
