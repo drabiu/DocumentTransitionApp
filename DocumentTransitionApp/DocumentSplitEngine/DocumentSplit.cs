@@ -110,12 +110,16 @@ namespace DocumentSplitEngine
 		}
 	}
 
+	interface ILocalSplit
+	{
+		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);		
+		void SaveSplitDocument(string filePath);		
+	}
+
 	interface ISplit
 	{
-		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);
-		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
-		void SaveSplitDocument(string filePath);
 		Stream SaveSplitDocument();
+		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
 	}
 
 	public class MergeXml
@@ -146,7 +150,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-    public class DocumentSplit : MergeXml, ISplit
+    public class DocumentSplit : MergeXml, ISplit, ILocalSplit
     {
 		public DocumentSplit(string docxFilePath)
 		{
@@ -262,7 +266,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class ExcelSplit : MergeXml, ISplit
+	public class ExcelSplit : MergeXml, ISplit, ILocalSplit
 	{
 
 		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
@@ -287,7 +291,8 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class PresentationSplit : MergeXml, ISplit
+	public class PresentationSplit : MergeXml, ISplit, ILocalSplit
+
 	{
 		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
