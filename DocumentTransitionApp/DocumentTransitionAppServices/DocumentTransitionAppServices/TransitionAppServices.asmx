@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="TransitionAppServices.asmx.cs" Class="DocumentTransitionAppServices.Service1" %>
