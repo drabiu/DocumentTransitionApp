@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 using DocumentSplitEngine;
 using DocumentMergeEngine;
@@ -73,7 +74,8 @@ namespace DocumentTransitionApp
 
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
-			DocumentSplit run = new DocumentSplit(docxTextBox.Text);
+			string docName = System.IO.Path.GetFileNameWithoutExtension(docxTextBox.Text);
+			ILocalSplit run = new DocumentSplit(docName);
 			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
 			run.SaveSplitDocument(docxTextBox.Text);
 		}

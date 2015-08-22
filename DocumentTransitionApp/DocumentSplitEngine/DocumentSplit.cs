@@ -34,7 +34,6 @@ namespace DocumentSplitEngine
 		SplitDocument SplitDocumentObj { get; set; }
 		Wordproc.Body DocumentBody { get; set; }
 		string[] SubdividedParagraphs { get; set; }
-
 		public MarkerMapper(string documentName, Split xml, Wordproc.Body body)
 		{
 			Xml = xml;
