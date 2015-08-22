@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionAppServices", "DocumentTransitionAppServices\DocumentTransitionAppServices.csproj", "{364AF44B-B5C5-4A2F-8231-092B72F1878B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentSplitEngine", "..\DocumentTransitionApp\DocumentSplitEngine\DocumentSplitEngine.csproj", "{13BC6BC9-E590-491C-8EB3-37559C25994C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentSplitEngine", "..\DocumentTransitionApp(1)\DocumentSplitEngine\DocumentSplitEngine.csproj", "{13BC6BC9-E590-491C-8EB3-37559C25994C}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
