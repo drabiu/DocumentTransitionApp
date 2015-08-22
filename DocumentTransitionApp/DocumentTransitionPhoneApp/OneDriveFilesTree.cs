@@ -43,16 +43,6 @@ namespace DocumentTransitionPhoneApp
 		public IList<OneDriveFilesTreeElement> GetFilesTreeList()
 		{
 			List<OneDriveFilesTreeElement> result = new List<OneDriveFilesTreeElement>();
-			//foreach (OneDriveFilesTreeElement child in Childs)
-			//{
-			//	result.Add(child);
-			//}
-
-			//foreach (OneDriveFilesTreeElement child in Childs)
-			//{
-			//	result.AddRange(GetChilds(child));
-			//}
-
 			result.Add(this);
 
 			foreach (OneDriveFilesTreeElement child in Childs)
@@ -66,15 +56,6 @@ namespace DocumentTransitionPhoneApp
 		public IList<OneDriveFilesTreeElement> GetChilds(OneDriveFilesTreeElement element)
 		{
 			List<OneDriveFilesTreeElement> result = new List<OneDriveFilesTreeElement>();
-			//foreach (OneDriveFilesTreeElement child in element.Childs)
-			//{
-			//	result.Add(child);
-			//}
-
-			//foreach (OneDriveFilesTreeElement child in element.Childs)
-			//{
-			//	result.AddRange(GetChilds(child));
-			//}
 
 			result.Add(element);
 
