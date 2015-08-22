@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+
+using DocumentSplitEngine;
 
 namespace DocumentTransitionAppServices
 {
@@ -17,9 +20,11 @@ namespace DocumentTransitionAppServices
 	public class Service1 : System.Web.Services.WebService
 	{
 		[WebMethod]
-		public string HelloWorld()
+		public Stream SplitDocument(string docName, Stream docxFile, Stream xmlFile)
 		{
-			return "Hello World";
+			ISplit run = new DocumentSplit(docName);
+			run.OpenAndSearchWordDocument(docxFile, xmlFile);
+			return run.SaveSplitDocument();
 		}
 	}
 }
