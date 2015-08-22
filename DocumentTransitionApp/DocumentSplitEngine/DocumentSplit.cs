@@ -262,7 +262,7 @@ namespace DocumentSplitEngine
 
 		public Stream SaveSplitDocument()
 		{
-			throw new NotImplementedException();
+			return new MemoryStream();
 		}
 	}
 
