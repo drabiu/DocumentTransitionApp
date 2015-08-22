@@ -152,9 +152,9 @@ namespace DocumentSplitEngine
 
     public class DocumentSplit : MergeXml, ISplit, ILocalSplit
     {
-		public DocumentSplit(string docxFilePath)
+		public DocumentSplit(string docName)
 		{
-			DocumentName = Path.GetFileNameWithoutExtension(docxFilePath);
+			DocumentName = docName;
 		}
 
 		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
