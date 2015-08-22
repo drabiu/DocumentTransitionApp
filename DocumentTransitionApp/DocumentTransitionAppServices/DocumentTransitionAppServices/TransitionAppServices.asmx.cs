@@ -20,7 +20,7 @@ namespace DocumentTransitionAppServices
 	public class Service1 : System.Web.Services.WebService
 	{
 		[WebMethod]
-		public Stream SplitDocument(string docName, Stream docxFile, Stream xmlFile)
+		public List<KeyValuePair<string, List<Stream>>> SplitDocument(string docName, Stream docxFile, Stream xmlFile)
 		{
 			ISplit run = new DocumentSplit(docName);
 			run.OpenAndSearchWordDocument(docxFile, xmlFile);
