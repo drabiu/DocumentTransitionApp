@@ -223,7 +223,7 @@ namespace DocumentTransitionPhoneApp
 			CreateFileExploreUI(FilterTextBox.Text);
 		}
 
-		private void RunSplitButton_Click(object sender, RoutedEventArgs e)
+		private async void RunSplitButton_Click(object sender, RoutedEventArgs e)
 		{
 
 		}

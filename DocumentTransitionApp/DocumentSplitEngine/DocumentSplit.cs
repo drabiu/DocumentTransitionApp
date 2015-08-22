@@ -117,7 +117,7 @@ namespace DocumentSplitEngine
 
 	public interface ISplit
 	{
-		Stream SaveSplitDocument();
+		List<KeyValuePair<string, List<Stream>>> SaveSplitDocument();
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
 	}
 
@@ -258,11 +258,9 @@ namespace DocumentSplitEngine
 			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
 
-
-		public Stream SaveSplitDocument()
+		List<KeyValuePair<string, List<Stream>>> ISplit.SaveSplitDocument()
 		{
-			int dupa;
-			return new MemoryStream();
+			throw new NotImplementedException();
 		}
 	}
 
@@ -285,7 +283,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		public Stream SaveSplitDocument()
+		List<KeyValuePair<string, List<Stream>>> ISplit.SaveSplitDocument()
 		{
 			throw new NotImplementedException();
 		}
@@ -310,7 +308,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		public Stream SaveSplitDocument()
+		List<KeyValuePair<string, List<Stream>>> ISplit.SaveSplitDocument()
 		{
 			throw new NotImplementedException();
 		}
