@@ -262,6 +262,7 @@ namespace DocumentSplitEngine
 
 		public Stream SaveSplitDocument()
 		{
+			int dupa;
 			return new MemoryStream();
 		}
 	}
