@@ -15,6 +15,12 @@ using SplitDescriptionObjects;
 
 namespace DocumentSplitEngine
 {
+	public class PersonFiles
+	{
+		public string Person { get; set; }
+		public List<byte[]> Files { get; set; }
+	}
+
 	public class OpenXMDocumentPart
 	{
 		public IList<OpenXmlElement> CompositeElements { get; set; }
@@ -117,7 +123,7 @@ namespace DocumentSplitEngine
 
 	public interface ISplit
 	{
-		List<KeyValuePair<string, List<byte[]>>> SaveSplitDocument();
+		List<PersonFiles> SaveSplitDocument();
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
 	}
 
