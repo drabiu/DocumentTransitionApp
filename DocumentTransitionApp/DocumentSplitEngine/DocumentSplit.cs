@@ -264,7 +264,7 @@ namespace DocumentSplitEngine
 			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
 
-		List<KeyValuePair<string, List<byte[]>>> ISplit.SaveSplitDocument()
+		List<PersonFiles> ISplit.SaveSplitDocument()
 		{
 			throw new NotImplementedException();
 		}
@@ -289,7 +289,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		List<KeyValuePair<string, List<byte[]>>> ISplit.SaveSplitDocument()
+		List<PersonFiles> ISplit.SaveSplitDocument()
 		{
 			throw new NotImplementedException();
 		}
@@ -314,7 +314,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		List<KeyValuePair<string, List<byte[]>>> ISplit.SaveSplitDocument()
+		List<PersonFiles> ISplit.SaveSplitDocument()
 		{
 			throw new NotImplementedException();
 		}
