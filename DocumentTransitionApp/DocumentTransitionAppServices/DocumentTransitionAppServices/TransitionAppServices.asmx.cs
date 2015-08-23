@@ -20,11 +20,11 @@ namespace DocumentTransitionAppServices
 	public class Service1 : System.Web.Services.WebService
 	{
 		[WebMethod]
-		public List<KeyValuePair<string, List<byte[]>>> SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
+		public List<PersonFiles> SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
 		{
 			ISplit run = new DocumentSplit(docName);
 			run.OpenAndSearchWordDocument(new MemoryStream(docxFile), new MemoryStream(xmlFile));
 			return run.SaveSplitDocument();
 		}
-	}
+	}	
 }
