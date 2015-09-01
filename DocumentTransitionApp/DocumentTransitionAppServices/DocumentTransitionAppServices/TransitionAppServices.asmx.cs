@@ -26,5 +26,11 @@ namespace DocumentTransitionAppServices
 			run.OpenAndSearchWordDocument(new MemoryStream(docxFile), new MemoryStream(xmlFile));
 			return run.SaveSplitDocument();
 		}
+
+		[WebMethod]
+		public byte[] MergeDocument(string docName, List<PersonFiles> files, byte[] xmlFile)
+		{
+			return new byte[1];
+		}
 	}	
 }
