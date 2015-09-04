@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionAppServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentSplitEngine", "..\DocumentTransitionApp(1)\DocumentSplitEngine\DocumentSplitEngine.csproj", "{13BC6BC9-E590-491C-8EB3-37559C25994C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitDescriptionObjects", "..\DocumentTransitionApp(1)\SplitDescriptionObjects\SplitDescriptionObjects.csproj", "{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnmarshallingSplitXml", "..\DocumentTransitionApp(1)\UnmarshallingSplitXml\UnmarshallingSplitXml.csproj", "{84CBCBE8-CEAE-43F0-A73A-856494DB5E4F}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -23,6 +27,14 @@ Global
 		{13BC6BC9-E590-491C-8EB3-37559C25994C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13BC6BC9-E590-491C-8EB3-37559C25994C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13BC6BC9-E590-491C-8EB3-37559C25994C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84CBCBE8-CEAE-43F0-A73A-856494DB5E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84CBCBE8-CEAE-43F0-A73A-856494DB5E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84CBCBE8-CEAE-43F0-A73A-856494DB5E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84CBCBE8-CEAE-43F0-A73A-856494DB5E4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
