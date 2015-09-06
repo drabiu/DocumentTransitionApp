@@ -17,8 +17,19 @@ namespace DocumentSplitEngine
 {
 	public class PersonFiles
 	{
+		public class FileData
+		{
+			public string Name { get; set; }
+			public byte[] Data { get; set; }
+		}
+
 		public string Person { get; set; }
-		public List<byte[]> Files { get; set; }
+		public List<FileData> Files { get; set; }
+
+		public PersonFiles()
+		{
+			Files = new List<FileData>();
+		}
 	}
 
 	public class OpenXMDocumentPart
@@ -123,7 +134,7 @@ namespace DocumentSplitEngine
 
 	public interface ISplit
 	{
-		List<PersonFiles> SaveSplitDocument();
+		List<PersonFiles> SaveSplitDocument(Stream document);
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
 	}
 
@@ -151,6 +162,29 @@ namespace DocumentSplitEngine
 			{
 				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
 				serializer.Serialize(fileStream, mergeXml);
+			}
+		}
+
+		protected byte[] CreateMergeXml()
+		{
+			Merge mergeXml = new Merge();
+			mergeXml.Items = new MergeDocument[1];
+			mergeXml.Items[0] = new MergeDocument();
+			mergeXml.Items[0].Name = DocumentName;
+			mergeXml.Items[0].Part = new MergeDocumentPart[DocumentElements.Count];
+			for (int index = 0; index < DocumentElements.Count; index++)
+			{
+				mergeXml.Items[0].Part[index] = new MergeDocumentPart();
+				mergeXml.Items[0].Part[index].Name = DocumentElements[index].PartOwner;
+				mergeXml.Items[0].Part[index].Id = DocumentElements[index].Guid.ToString();
+			}
+
+			using (MemoryStream mergeStream = new MemoryStream())
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
+				serializer.Serialize(mergeStream, mergeXml);
+
+				return mergeStream.ToArray();
 			}
 		}
 	}
@@ -264,9 +298,65 @@ namespace DocumentSplitEngine
 			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
 
-		List<PersonFiles> ISplit.SaveSplitDocument()
+		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
 		{
-			throw new NotImplementedException();
+			List<PersonFiles> resultList = new List<PersonFiles>();
+
+			using (WordprocessingDocument wordDoc =
+				WordprocessingDocument.Open(document, true))
+			{
+				foreach (OpenXMDocumentPart element in DocumentElements)
+				{
+					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+					Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+					foreach (OpenXmlElement compo in element.CompositeElements)
+						body.Append(compo.CloneNode(true));
+
+					wordDoc.MainDocumentPart.Document.Save();
+
+					var person = resultList.FirstOrDefault(p => p.Person == element.PartOwner);
+					if (person == null)
+					{
+						person = new PersonFiles();
+						person.Person = element.PartOwner;
+						resultList.Add(person);
+					}
+
+					using (MemoryStream personFiles = new MemoryStream())
+					{
+						document.CopyTo(personFiles);
+						person.Files.Add(new PersonFiles.FileData() { Name = element.Guid.ToString() + ".docx", Data = personFiles.ToArray() });
+					}
+				}
+			}
+			// At this point, the memory stream contains the modified document.
+			// We could write it back to a SharePoint document library or serve
+			// it from a web server.			
+			using (WordprocessingDocument wordDoc =
+				WordprocessingDocument.Open(document, true))
+			{
+				wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+				wordDoc.MainDocumentPart.Document.Save();
+
+				using (MemoryStream personFiles = new MemoryStream())
+				{
+					var person = new PersonFiles();
+					person.Person = "/";
+					resultList.Add(person);
+					document.CopyTo(personFiles);
+					person.Files.Add(new PersonFiles.FileData() { Name = "template.docx", Data = personFiles.ToArray() });
+				}
+			}
+			// At this point, the memory stream contains the modified document.
+			// We could write it back to a SharePoint document library or serve
+			// it from a web server.			
+
+			var xmlPerson = new PersonFiles();
+			xmlPerson.Person = "/";
+			resultList.Add(xmlPerson);
+			xmlPerson.Files.Add(new PersonFiles.FileData() { Name = "mergeXmlDefinition.xml", Data = CreateMergeXml() });
+
+			return resultList;
 		}
 	}
 
@@ -289,7 +379,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		List<PersonFiles> ISplit.SaveSplitDocument()
+		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
 		{
 			throw new NotImplementedException();
 		}
@@ -314,7 +404,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		List<PersonFiles> ISplit.SaveSplitDocument()
+		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
 		{
 			throw new NotImplementedException();
 		}

@@ -15,6 +15,7 @@ using System.IO;
 
 using DocumentSplitEngine;
 using DocumentMergeEngine;
+using Service = DocumentTransitionApp.TransitionAppService;
 
 namespace DocumentTransitionApp
 {
@@ -75,9 +76,20 @@ namespace DocumentTransitionApp
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
 			string docName = System.IO.Path.GetFileNameWithoutExtension(docxTextBox.Text);
-			ILocalSplit run = new DocumentSplit(docName);
-			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
-			run.SaveSplitDocument(docxTextBox.Text);
+			//ILocalSplit run = new DocumentSplit(docName);
+			//run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
+			RunSplitWebService(docName, docxTextBox.Text, xmlTextBox.Text);
+			//run.SaveSplitDocument(docxTextBox.Text);
+		}
+
+		private void RunSplitWebService(string docName, string filePath, string xmlPath)
+		{
+			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+			byte[] fileStream = File.ReadAllBytes(filePath);
+			byte[] xmlStream = File.ReadAllBytes(xmlPath);
+
+			var result = serviceClient.SplitDocument(docName, fileStream, xmlStream);
+			int dupa = 1;
 		}
 
 		private void Button_Click_3(object sender, RoutedEventArgs e)
