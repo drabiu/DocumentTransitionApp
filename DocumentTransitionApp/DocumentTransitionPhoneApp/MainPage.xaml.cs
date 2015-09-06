@@ -9,15 +9,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Dynamic;
+using System.Threading.Tasks;
 
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Live;
 using Microsoft.Live.Controls;
 
-using DocumentTransitionPhoneApp.Resources;
-using System.Threading.Tasks;
 using Windows.Storage;
+
+using DocumentTransitionPhoneApp.Resources;
+using Service = DocumentTransitionPhoneApp.TransitionAppServices;
 
 namespace DocumentTransitionPhoneApp
 {
@@ -26,8 +28,8 @@ namespace DocumentTransitionPhoneApp
 		private LiveConnectClient Client;
 		private LiveAuthClient AuthClient;
 		private IDictionary<string, OneDriveFilesTreeElement> FilesTreeElements;
-		private Stream DocumentFile;
-		private Stream SplitFile;
+		private SelectedFile DocumentFile;
+		private SelectedFile SplitFile;
 
 		// Constructor
 		public MainPage()
@@ -199,23 +201,23 @@ namespace DocumentTransitionPhoneApp
 			}
 		}
 
-		private async Task<Stream> GetFile(string fileName, string fileId)
+		private async Task<SelectedFile> GetFile(string fileName, string fileId)
 		{
 			string filePath = "shared/transfers/" + fileName;
 			filePath = Uri.EscapeUriString(filePath);
 			Uri fileUri = new Uri(filePath, UriKind.Relative);
 			await Client.BackgroundDownloadAsync(fileId + "/Content", fileUri);
 
-			Stream readStream = new MemoryStream();
+			System.IO.Stream readStream = new MemoryStream();
 			string root = ApplicationData.Current.LocalFolder.Path;
 			var storageFolder = await StorageFolder.GetFolderFromPathAsync(root + @"\shared\transfers");
-            StorageFile storageFile = await storageFolder.GetFileAsync(fileName);
+            StorageFile storageFile = await storageFolder.GetFileAsync(Uri.EscapeUriString(fileName));
             if ( storageFile != null )
             {
 				readStream = await storageFile.OpenStreamForReadAsync();
 			}
 
-			return readStream;
+			return new SelectedFile(readStream, fileName);
 		}
 
 		private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -223,9 +225,23 @@ namespace DocumentTransitionPhoneApp
 			CreateFileExploreUI(FilterTextBox.Text);
 		}
 
-		private async void RunSplitButton_Click(object sender, RoutedEventArgs e)
+		private void RunSplitButton_Click(object sender, RoutedEventArgs e)
 		{
+			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+			serviceClient.SplitDocumentCompleted += serviceClient_SplitDocumentCompleted;
 
+			byte[] fileBinary = new byte[DocumentFile.File.Length];
+			DocumentFile.File.Read(fileBinary, 0, (int)DocumentFile.File.Length);
+
+			byte[] splitBinary = new byte[SplitFile.File.Length];
+			SplitFile.File.Read(splitBinary, 0, (int)SplitFile.File.Length);
+
+			serviceClient.SplitDocumentAsync(DocumentFile.FileName, fileBinary, splitBinary);
+		}
+
+		void serviceClient_SplitDocumentCompleted(object sender, Service.SplitDocumentCompletedEventArgs e)
+		{
+			IEnumerable<Service.PersonFiles> eee = e.Result.AsEnumerable();
 		}
 
 		private void RunMergeButton_Click(object sender, RoutedEventArgs e)

@@ -104,7 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service References\TransitionAppService\Reference.cs">
+    <Compile Include="Service References\TransitionAppServices\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -125,11 +125,16 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\TransitionAppService\DocumentTransitionPhoneApp.TransitionAppService.SplitDocumentResponse.datasource">
+    <None Include="Service References\TransitionAppServices\DocumentTransitionPhoneApp.TransitionAppServices.MergeDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\TransitionAppService\TransitionAppServices.wsdl" />
-    <Content Include="ServiceReferences.ClientConfig" />
+    <None Include="Service References\TransitionAppServices\DocumentTransitionPhoneApp.TransitionAppServices.SplitDocumentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
+    <Content Include="ServiceReferences.ClientConfig">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
@@ -151,12 +156,12 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\TransitionAppService\Reference.svcmap">
+    <None Include="Service References\TransitionAppServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\TransitionAppService\configuration.svcinfo" />
-    <None Include="Service References\TransitionAppService\configuration91.svcinfo" />
+    <None Include="Service References\TransitionAppServices\configuration.svcinfo" />
+    <None Include="Service References\TransitionAppServices\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
@@ -172,7 +177,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\TransitionAppService\" />
+    <WCFMetadataStorage Include="Service References\TransitionAppServices\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

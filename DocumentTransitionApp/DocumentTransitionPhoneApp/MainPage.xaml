@@ -37,11 +37,11 @@
 			</phone:PanoramaItem>
 			<phone:PanoramaItem  Header="Details">
 				<Grid x:Name="ContentDetailsPanel" Grid.Row="2" Margin="12,0,12,0">
-					<TextBlock HorizontalAlignment="Left" Margin="11,94,0,0" TextWrapping="Wrap" Text="Document:" VerticalAlignment="Top"/>
-					<TextBlock HorizontalAlignment="Left" Margin="11,126,0,0" TextWrapping="Wrap" Text="Split XML:" VerticalAlignment="Top"/>
-					<Button Name="RunSplitButton" Content="Run Split" IsEnabled="False" HorizontalAlignment="Left" Margin="75,171,0,0" VerticalAlignment="Top" Width="249" Click="RunSplitButton_Click"/>
-					<Button Name="RunMergeButton" Content="Run Merge" IsEnabled="False" HorizontalAlignment="Left" Margin="75,243,0,0" VerticalAlignment="Top" Width="249" Click="RunMergeButton_Click"/>
-					<TextBlock Name="DocumentLabelTextBlock" HorizontalAlignment="Left" Margin="122,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264"/>
+					<TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Document:" VerticalAlignment="Top"/>
+					<TextBlock HorizontalAlignment="Left" Margin="10,126,0,0" TextWrapping="Wrap" Text="Split XML:" VerticalAlignment="Top"/>
+					<Button Name="RunSplitButton" Content="Run Split" IsEnabled="False" HorizontalAlignment="Left" Margin="75,228,0,0" VerticalAlignment="Top" Width="249" Click="RunSplitButton_Click"/>
+					<Button Name="RunMergeButton" Content="Run Merge" IsEnabled="False" HorizontalAlignment="Left" Margin="75,300,0,0" VerticalAlignment="Top" Width="249" Click="RunMergeButton_Click"/>
+					<TextBlock Name="DocumentLabelTextBlock" HorizontalAlignment="Left" Margin="122,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264"/>
 					<TextBlock Name="SplitLabelTextBlock" HorizontalAlignment="Left" Margin="122,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="264"/>
 				</Grid>
 			</phone:PanoramaItem>

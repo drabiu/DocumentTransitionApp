@@ -8,9 +8,9 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:6943/TransitionAppServices.asmx"
+            <endpoint address="http://192.168.1.106:6943/TransitionApp/TransitionAppServices.asmx"
                 binding="basicHttpBinding" bindingConfiguration="Service1Soap"
-                contract="TransitionAppService.Service1Soap" name="Service1Soap" />
+                contract="TransitionAppServices.Service1Soap" name="Service1Soap" />
         </client>
     </system.serviceModel>
 </configuration>

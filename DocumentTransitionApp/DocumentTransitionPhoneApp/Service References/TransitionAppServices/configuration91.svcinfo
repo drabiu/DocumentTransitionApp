@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Jz/oi0ITKOK6rOMorbVgXt+8BuY=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="TzXSfAsdzvLovfaZnkrDcXiWn5c=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="Service1Soap">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="Service1Soap" contract="TransitionAppService.Service1Soap" bindingType="basicHttpBinding" address="http://localhost:6943/TransitionAppServices.asmx" bindingConfiguration="Service1Soap">
+    <endpoint name="Service1Soap" contract="TransitionAppServices.Service1Soap" bindingType="basicHttpBinding" address="http://192.168.1.106:6943/TransitionApp/TransitionAppServices.asmx" bindingConfiguration="Service1Soap">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:6943/TransitionAppServices.asmx</serializedValue>
+          <serializedValue>http://192.168.1.106:6943/TransitionApp/TransitionAppServices.asmx</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -127,7 +127,7 @@
           <serializedValue>Service1Soap</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>TransitionAppService.Service1Soap</serializedValue>
+          <serializedValue>TransitionAppServices.Service1Soap</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
