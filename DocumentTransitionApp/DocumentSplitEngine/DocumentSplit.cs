@@ -191,6 +191,15 @@ namespace DocumentSplitEngine
 
     public class DocumentSplit : MergeXml, ISplit, ILocalSplit
     {
+		public static byte[] ReadFully(Stream input)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				input.CopyTo(ms);
+				return ms.ToArray();
+			}
+		}
+
 		public DocumentSplit(string docName)
 		{
 			DocumentName = docName;
@@ -302,59 +311,59 @@ namespace DocumentSplitEngine
 		{
 			List<PersonFiles> resultList = new List<PersonFiles>();
 
-			using (WordprocessingDocument wordDoc =
-				WordprocessingDocument.Open(document, true))
+			byte[] byteArray = ReadFully(document);
+			using (MemoryStream mem = new MemoryStream())
 			{
-				foreach (OpenXMDocumentPart element in DocumentElements)
+				mem.Write(byteArray, 0, (int)byteArray.Length);
+				using (WordprocessingDocument wordDoc =
+					WordprocessingDocument.Open(mem, true))
 				{
-					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
-					Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
-					foreach (OpenXmlElement compo in element.CompositeElements)
-						body.Append(compo.CloneNode(true));
-
-					wordDoc.MainDocumentPart.Document.Save();
-
-					var person = resultList.FirstOrDefault(p => p.Person == element.PartOwner);
-					if (person == null)
+					foreach (OpenXMDocumentPart element in DocumentElements)
 					{
-						person = new PersonFiles();
-						person.Person = element.PartOwner;
-						resultList.Add(person);
-					}
+						wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+						foreach (OpenXmlElement compo in element.CompositeElements)
+							body.Append(compo.CloneNode(true));
 
-					using (MemoryStream personFiles = new MemoryStream())
-					{
-						document.CopyTo(personFiles);
-						person.Files.Add(new PersonFiles.FileData() { Name = element.Guid.ToString() + ".docx", Data = personFiles.ToArray() });
+						wordDoc.MainDocumentPart.Document.Save();
+
+						var person = resultList.FirstOrDefault(p => p.Person == element.PartOwner);
+						if (person == null)
+						{
+							person = new PersonFiles();
+							person.Person = element.PartOwner;
+							resultList.Add(person);
+						}
+
+						person.Files.Add(new PersonFiles.FileData() { Name = element.Guid.ToString() + ".docx", Data = mem.ToArray() });
 					}
 				}
 			}
 			// At this point, the memory stream contains the modified document.
 			// We could write it back to a SharePoint document library or serve
 			// it from a web server.			
-			using (WordprocessingDocument wordDoc =
-				WordprocessingDocument.Open(document, true))
+			using (MemoryStream mem = new MemoryStream())
 			{
-				wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
-				wordDoc.MainDocumentPart.Document.Save();
-
-				using (MemoryStream personFiles = new MemoryStream())
+				mem.Write(byteArray, 0, (int)byteArray.Length);
+				using (WordprocessingDocument wordDoc =
+					WordprocessingDocument.Open(mem, true))
 				{
+					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+					wordDoc.MainDocumentPart.Document.Save();
+
 					var person = new PersonFiles();
 					person.Person = "/";
 					resultList.Add(person);
-					document.CopyTo(personFiles);
-					person.Files.Add(new PersonFiles.FileData() { Name = "template.docx", Data = personFiles.ToArray() });
+					person.Files.Add(new PersonFiles.FileData() { Name = "template.docx", Data = mem.ToArray() });
 				}
 			}
 			// At this point, the memory stream contains the modified document.
 			// We could write it back to a SharePoint document library or serve
 			// it from a web server.			
 
-			var xmlPerson = new PersonFiles();
-			xmlPerson.Person = "/";
-			resultList.Add(xmlPerson);
-			xmlPerson.Files.Add(new PersonFiles.FileData() { Name = "mergeXmlDefinition.xml", Data = CreateMergeXml() });
+			var xmlPerson = resultList.FirstOrDefault(p => p.Person == "/");
+			if (xmlPerson != null)
+				xmlPerson.Files.Add(new PersonFiles.FileData() { Name = "mergeXmlDefinition.xml", Data = CreateMergeXml() });
 
 			return resultList;
 		}

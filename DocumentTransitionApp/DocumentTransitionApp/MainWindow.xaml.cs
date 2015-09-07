@@ -85,6 +85,7 @@ namespace DocumentTransitionApp
 		private void RunSplitWebService(string docName, string filePath, string xmlPath)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+
 			byte[] fileStream = File.ReadAllBytes(filePath);
 			byte[] xmlStream = File.ReadAllBytes(xmlPath);
 

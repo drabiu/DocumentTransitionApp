@@ -26,12 +26,18 @@
       <s:complexType name="PersonFiles">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="Person" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Files" type="tns:ArrayOfBase64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="Files" type="tns:ArrayOfFileData" />
         </s:sequence>
       </s:complexType>
-      <s:complexType name="ArrayOfBase64Binary">
+      <s:complexType name="ArrayOfFileData">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="base64Binary" nillable="true" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FileData" nillable="true" type="tns:FileData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FileData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:base64Binary" />
         </s:sequence>
       </s:complexType>
       <s:element name="MergeDocument">
