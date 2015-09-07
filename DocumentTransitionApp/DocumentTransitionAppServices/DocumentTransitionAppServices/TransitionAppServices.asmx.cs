@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Services;
 
 using DocumentSplitEngine;
+using SplitDescriptionObjects;
+using DocumentMergeEngine;
 
 namespace DocumentTransitionAppServices
 {
@@ -28,9 +30,10 @@ namespace DocumentTransitionAppServices
 		}
 
 		[WebMethod]
-		public byte[] MergeDocument(string docName, List<PersonFiles> files, byte[] xmlFile)
+		public byte[] MergeDocument(List<PersonFiles> files)
 		{
-			return new byte[1];
+			IMerge merge = new DocumentMerge();
+			return merge.Run(files);
 		}
 	}	
 }
