@@ -22,7 +22,7 @@ namespace DocumentMergeEngine
 		byte[] Run(List<PersonFiles> files);
 	}
 
-    public class DocumentMerge
+    public class DocumentMerge : ILocalMerge, IMerge
     {
 		string DocumentPath { get; set; }
 
@@ -79,27 +79,51 @@ namespace DocumentMergeEngine
 			}
 		}
 
-		public void CreateDocumentPart()
+		public byte[] Run(List<PersonFiles> files)
 		{
-			// Create a Wordprocessing document. 
-			using (WordprocessingDocument myDoc = WordprocessingDocument.Create(DocumentPath, WordprocessingDocumentType.Document))
+			var xml = files.FirstOrDefault(p => p.Person == "/").Files.FirstOrDefault(f => f.Name == "mergeXmlDefinition.xml").Data;
+			Merge mergeXml;
+			using (MemoryStream stream = new MemoryStream(xml))
 			{
-				// Add a new main document part. 
-				MainDocumentPart mainPart = myDoc.AddMainDocumentPart();
-				//Create DOM tree for simple document. 
-				mainPart.Document = new Document();
-				Body body = new Body();
-				Paragraph p = new Paragraph();
-				Run r = new Run();
-				Text t = new Text("Hello World!");
-				//Append elements appropriately. 
-				r.Append(t);
-				p.Append(r);
-				body.Append(p);
-				mainPart.Document.Append(body);
-				// Save changes to the main document part. 
-				mainPart.Document.Save();
+				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
+				mergeXml = (Merge)serializer.Deserialize(stream);
+			}
+
+			Body body = new Body();
+			MergeDocument documentXml = mergeXml.Items.First();
+			foreach (MergeDocumentPart part in documentXml.Part)
+			{
+				byte[] byteArray = files.FirstOrDefault(p => p.Person == part.Name).Files.FirstOrDefault(f => f.Name == part.Id + ".docx").Data;
+				using (MemoryStream mem = new MemoryStream())
+				{
+					mem.Write(byteArray, 0, (int)byteArray.Length);
+					WordprocessingDocument wordprocessingDocument =
+						WordprocessingDocument.Open(mem, true);
+
+					// Assign a reference to the existing document body.
+					foreach (OpenXmlElement element in wordprocessingDocument.MainDocumentPart.Document.Body.ChildElements)
+					{
+						body.Append(element.CloneNode(true));
+					}
+
+					// Close the handle explicitly.
+					wordprocessingDocument.Close();
+				}
+			}
+
+			byte[] template = files.FirstOrDefault(p => p.Person == "/").Files.FirstOrDefault(f => f.Name == "template.docx").Data;
+			using (MemoryStream mem = new MemoryStream())
+			{
+				mem.Write(template, 0, (int)template.Length);
+				using (WordprocessingDocument wordDoc =
+					WordprocessingDocument.Open(mem, true))
+				{
+					wordDoc.MainDocumentPart.Document.Body = body;
+					wordDoc.MainDocumentPart.Document.Save();
+
+					return mem.ToArray();
+				}
 			}
 		}
-    }
+	}
 }
