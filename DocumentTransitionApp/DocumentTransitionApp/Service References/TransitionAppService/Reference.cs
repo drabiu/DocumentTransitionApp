@@ -146,7 +146,7 @@ namespace DocumentTransitionApp.TransitionAppService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SplitDocument", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.SplitDocumentResponse> SplitDocumentAsync(DocumentTransitionApp.TransitionAppService.SplitDocumentRequest request);
         
-        // CODEGEN: Generating message contract since element name docName from namespace http://tempuri.org/ is not marked nillable
+        // CODEGEN: Generating message contract since element name files from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergeDocument", ReplyAction="*")]
         DocumentTransitionApp.TransitionAppService.MergeDocumentResponse MergeDocument(DocumentTransitionApp.TransitionAppService.MergeDocumentRequest request);
         
@@ -254,21 +254,13 @@ namespace DocumentTransitionApp.TransitionAppService {
     public partial class MergeDocumentRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string docName;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public DocumentTransitionApp.TransitionAppService.PersonFiles[] files;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public byte[] xmlFile;
         
         public MergeDocumentRequestBody() {
         }
         
-        public MergeDocumentRequestBody(string docName, DocumentTransitionApp.TransitionAppService.PersonFiles[] files, byte[] xmlFile) {
-            this.docName = docName;
+        public MergeDocumentRequestBody(DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
             this.files = files;
-            this.xmlFile = xmlFile;
         }
     }
     
@@ -367,12 +359,10 @@ namespace DocumentTransitionApp.TransitionAppService {
             return base.Channel.MergeDocument(request);
         }
         
-        public byte[] MergeDocument(string docName, DocumentTransitionApp.TransitionAppService.PersonFiles[] files, byte[] xmlFile) {
+        public byte[] MergeDocument(DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
             DocumentTransitionApp.TransitionAppService.MergeDocumentRequest inValue = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequest();
             inValue.Body = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequestBody();
-            inValue.Body.docName = docName;
             inValue.Body.files = files;
-            inValue.Body.xmlFile = xmlFile;
             DocumentTransitionApp.TransitionAppService.MergeDocumentResponse retVal = ((DocumentTransitionApp.TransitionAppService.Service1Soap)(this)).MergeDocument(inValue);
             return retVal.Body.MergeDocumentResult;
         }
@@ -382,12 +372,10 @@ namespace DocumentTransitionApp.TransitionAppService {
             return base.Channel.MergeDocumentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.MergeDocumentResponse> MergeDocumentAsync(string docName, DocumentTransitionApp.TransitionAppService.PersonFiles[] files, byte[] xmlFile) {
+        public System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.MergeDocumentResponse> MergeDocumentAsync(DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
             DocumentTransitionApp.TransitionAppService.MergeDocumentRequest inValue = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequest();
             inValue.Body = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequestBody();
-            inValue.Body.docName = docName;
             inValue.Body.files = files;
-            inValue.Body.xmlFile = xmlFile;
             return ((DocumentTransitionApp.TransitionAppService.Service1Soap)(this)).MergeDocumentAsync(inValue);
         }
     }
