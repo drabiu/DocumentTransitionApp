@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
+      <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>
+      <Name>SplitDescriptionObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnmarshallingSplitXml\UnmarshallingSplitXml.csproj">
       <Project>{84cbcbe8-ceae-43f0-a73a-856494db5e4f}</Project>
       <Name>UnmarshallingSplitXml</Name>

@@ -15,23 +15,6 @@ using SplitDescriptionObjects;
 
 namespace DocumentSplitEngine
 {
-	public class PersonFiles
-	{
-		public class FileData
-		{
-			public string Name { get; set; }
-			public byte[] Data { get; set; }
-		}
-
-		public string Person { get; set; }
-		public List<FileData> Files { get; set; }
-
-		public PersonFiles()
-		{
-			Files = new List<FileData>();
-		}
-	}
-
 	public class OpenXMDocumentPart
 	{
 		public IList<OpenXmlElement> CompositeElements { get; set; }

@@ -8,9 +8,20 @@ using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
+using SplitDescriptionObjects;
 
 namespace DocumentMergeEngine
 {
+	public interface ILocalMerge
+	{
+		void Run();
+	}
+
+	public interface IMerge
+	{
+		byte[] Run(List<PersonFiles> files);
+	}
+
     public class DocumentMerge
     {
 		string DocumentPath { get; set; }
