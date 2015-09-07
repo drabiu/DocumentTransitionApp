@@ -14,7 +14,7 @@ namespace DocumentMergeEngine
 {
 	public interface ILocalMerge
 	{
-		void Run();
+		void Run(string path);
 	}
 
 	public interface IMerge
@@ -24,14 +24,7 @@ namespace DocumentMergeEngine
 
     public class DocumentMerge : ILocalMerge, IMerge
     {
-		string DocumentPath { get; set; }
-
-		public DocumentMerge(string path)
-		{
-			DocumentPath = path;
-		}
-
-		public void Run()
+		public void Run(string path)
 		{
 			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentMerge)).Location);
 			string xmlFilePath = appPath + @"\Files\" + "mergeXmlDefinition.xml";
@@ -70,7 +63,7 @@ namespace DocumentMergeEngine
 					wordDoc.MainDocumentPart.Document.Body = body;
 					wordDoc.MainDocumentPart.Document.Save();
 
-					using (FileStream fileStream = new FileStream(DocumentPath,
+					using (FileStream fileStream = new FileStream(path,
 						System.IO.FileMode.CreateNew))
 					{
 						mem.WriteTo(fileStream);
