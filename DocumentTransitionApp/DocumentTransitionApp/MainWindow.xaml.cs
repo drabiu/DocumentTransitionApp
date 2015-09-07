@@ -110,8 +110,8 @@ namespace DocumentTransitionApp
 			{
 				// Open document 
 				string filename = dlg.FileName;
-				DocumentMerge merge = new DocumentMerge(filename);
-				merge.Run();
+				ILocalMerge merge = new DocumentMerge();
+				merge.Run(filename);
 			}
 		}
 	}
