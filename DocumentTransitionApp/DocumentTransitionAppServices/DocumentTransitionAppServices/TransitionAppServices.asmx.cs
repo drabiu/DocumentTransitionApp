@@ -24,7 +24,7 @@ namespace DocumentTransitionAppServices
 		{
 			ISplit run = new DocumentSplit(docName);
 			run.OpenAndSearchWordDocument(new MemoryStream(docxFile), new MemoryStream(xmlFile));
-			return run.SaveSplitDocument();
+			return run.SaveSplitDocument(new MemoryStream(docxFile));
 		}
 
 		[WebMethod]
