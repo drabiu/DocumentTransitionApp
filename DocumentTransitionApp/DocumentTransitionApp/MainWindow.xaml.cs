@@ -24,6 +24,8 @@ namespace DocumentTransitionApp
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		Service.PersonFiles[] result;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -89,8 +91,7 @@ namespace DocumentTransitionApp
 			byte[] fileStream = File.ReadAllBytes(filePath);
 			byte[] xmlStream = File.ReadAllBytes(xmlPath);
 
-			var result = serviceClient.SplitDocument(docName, fileStream, xmlStream);
-			int dupa = 1;
+			result = serviceClient.SplitDocument(docName, fileStream, xmlStream);
 		}
 
 		private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -98,21 +99,24 @@ namespace DocumentTransitionApp
 			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 
 			// Set filter for file extension and default file extension 
-			dlg.DefaultExt = ".docx";
-			dlg.Filter = "Word Files (*.docx)|*.docx|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+			//dlg.DefaultExt = ".docx";
+			//dlg.Filter = "Word Files (*.docx)|*.docx|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
 
 
 			// Display OpenFileDialog by calling ShowDialog method 
-			Nullable<bool> result = dlg.ShowDialog();
+			//Nullable<bool> result = dlg.ShowDialog();
 
 			// Get the selected file name and display in a TextBox 
-			if (result == true)
-			{
-				// Open document 
-				string filename = dlg.FileName;
-				ILocalMerge merge = new DocumentMerge();
-				merge.Run(filename);
-			}
+			//if (result == true)
+			//{
+			//	// Open document 
+			//	string filename = dlg.FileName;
+			//	ILocalMerge merge = new DocumentMerge();
+			//	merge.Run(filename);
+			//}
+			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+			var resultFile = serviceClient.MergeDocument(result);
+			int dupa = 1;
 		}
 	}
 }
