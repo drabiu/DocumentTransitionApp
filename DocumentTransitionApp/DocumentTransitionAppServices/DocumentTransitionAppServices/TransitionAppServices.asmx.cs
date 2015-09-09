@@ -22,18 +22,18 @@ namespace DocumentTransitionAppServices
 	public class Service1 : System.Web.Services.WebService
 	{
 		[WebMethod]
-		public List<PersonFiles> SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
+		public PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
 		{
 			ISplit run = new DocumentSplit(docName);
 			run.OpenAndSearchWordDocument(new MemoryStream(docxFile), new MemoryStream(xmlFile));
-			return run.SaveSplitDocument(new MemoryStream(docxFile));
+			return run.SaveSplitDocument(new MemoryStream(docxFile)).ToArray();
 		}
 
 		[WebMethod]
-		public byte[] MergeDocument(List<PersonFiles> files)
+		public byte[] MergeDocument(PersonFiles[] files)
 		{
 			IMerge merge = new DocumentMerge();
-			return merge.Run(files);
+			return merge.Run(new List<PersonFiles>(files));
 		}
 	}	
 }
