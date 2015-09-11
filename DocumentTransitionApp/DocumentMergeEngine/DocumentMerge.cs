@@ -74,7 +74,7 @@ namespace DocumentMergeEngine
 
 		public byte[] Run(List<PersonFiles> files)
 		{
-			var xml = files.FirstOrDefault(p => p.Person == "/").Files.FirstOrDefault(f => f.Name == "mergeXmlDefinition.xml").Data;
+			var xml = files.Where(p => p.Person == "/" && p.Name == "mergeXmlDefinition.xml").Select(d => d.Data).FirstOrDefault();
 			Merge mergeXml;
 			using (MemoryStream stream = new MemoryStream(xml))
 			{
@@ -86,7 +86,7 @@ namespace DocumentMergeEngine
 			MergeDocument documentXml = mergeXml.Items.First();
 			foreach (MergeDocumentPart part in documentXml.Part)
 			{
-				byte[] byteArray = files.FirstOrDefault(p => p.Person == part.Name).Files.FirstOrDefault(f => f.Name == part.Id + ".docx").Data;
+				byte[] byteArray = files.Where(p => p.Person == part.Name && p.Name == part.Id + ".docx").Select(d => d.Data).FirstOrDefault();
 				using (MemoryStream mem = new MemoryStream())
 				{
 					mem.Write(byteArray, 0, (int)byteArray.Length);
@@ -104,7 +104,7 @@ namespace DocumentMergeEngine
 				}
 			}
 
-			byte[] template = files.FirstOrDefault(p => p.Person == "/").Files.FirstOrDefault(f => f.Name == "template.docx").Data;
+			byte[] template = files.Where(p => p.Person == "/" && p.Name == "template.docx").Select(d => d.Data).FirstOrDefault();
 			using (MemoryStream mem = new MemoryStream())
 			{
 				mem.Write(template, 0, (int)template.Length);

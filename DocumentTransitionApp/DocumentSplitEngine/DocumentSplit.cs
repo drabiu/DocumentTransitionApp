@@ -318,7 +318,8 @@ namespace DocumentSplitEngine
 							resultList.Add(person);
 						}
 
-						person.Files.Add(new PersonFiles.FileData() { Name = element.Guid.ToString() + ".docx", Data = mem.ToArray() });
+						person.Name = element.Guid.ToString();
+						person.Data = mem.ToArray();
 					}
 				}
 			}
@@ -337,7 +338,8 @@ namespace DocumentSplitEngine
 					var person = new PersonFiles();
 					person.Person = "/";
 					resultList.Add(person);
-					person.Files.Add(new PersonFiles.FileData() { Name = "template.docx", Data = mem.ToArray() });
+					person.Name = "template.docx";
+					person.Data = mem.ToArray();
 				}
 			}
 			// At this point, the memory stream contains the modified document.
@@ -346,7 +348,10 @@ namespace DocumentSplitEngine
 
 			var xmlPerson = resultList.FirstOrDefault(p => p.Person == "/");
 			if (xmlPerson != null)
-				xmlPerson.Files.Add(new PersonFiles.FileData() { Name = "mergeXmlDefinition.xml", Data = CreateMergeXml() });
+			{
+				xmlPerson.Name = "mergeXmlDefinition.xml";
+				xmlPerson.Data = CreateMergeXml();
+			}
 
 			return resultList;
 		}
