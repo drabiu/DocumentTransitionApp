@@ -294,12 +294,12 @@ namespace DocumentSplitEngine
 		{
 			List<PersonFiles> resultList = new List<PersonFiles>();
 
-			byte[] byteArray = ReadFully(document);
-			using (MemoryStream mem = new MemoryStream())
-			{
-				mem.Write(byteArray, 0, (int)byteArray.Length);
+			//byte[] byteArray = ReadFully(document);
+			//using (MemoryStream mem = new MemoryStream())
+			//{
+			//	mem.Write(byteArray, 0, (int)byteArray.Length);
 				using (WordprocessingDocument wordDoc =
-					WordprocessingDocument.Open(mem, true))
+					WordprocessingDocument.Open(document, true))
 				{
 					foreach (OpenXMDocumentPart element in DocumentElements)
 					{
@@ -319,18 +319,18 @@ namespace DocumentSplitEngine
 						}
 
 						person.Name = element.Guid.ToString();
-						person.Data = mem.ToArray();
+						person.Data = ReadFully(document);
 					}
-				}
+				//}
 			}
 			// At this point, the memory stream contains the modified document.
 			// We could write it back to a SharePoint document library or serve
 			// it from a web server.			
-			using (MemoryStream mem = new MemoryStream())
-			{
-				mem.Write(byteArray, 0, (int)byteArray.Length);
+			//using (MemoryStream mem = new MemoryStream())
+			//{
+			//	mem.Write(byteArray, 0, (int)byteArray.Length);
 				using (WordprocessingDocument wordDoc =
-					WordprocessingDocument.Open(mem, true))
+					WordprocessingDocument.Open(document, true))
 				{
 					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
 					wordDoc.MainDocumentPart.Document.Save();
@@ -339,9 +339,9 @@ namespace DocumentSplitEngine
 					person.Person = "/";
 					resultList.Add(person);
 					person.Name = "template.docx";
-					person.Data = mem.ToArray();
+					person.Data = ReadFully(document);
 				}
-			}
+			//}
 			// At this point, the memory stream contains the modified document.
 			// We could write it back to a SharePoint document library or serve
 			// it from a web server.			
