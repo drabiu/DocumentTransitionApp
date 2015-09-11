@@ -25,8 +25,10 @@ namespace DocumentTransitionAppServices
 		public PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
 		{
 			ISplit run = new DocumentSplit(docName);
-			run.OpenAndSearchWordDocument(new MemoryStream(docxFile), new MemoryStream(xmlFile));
-			return run.SaveSplitDocument(new MemoryStream(docxFile)).ToArray();
+			MemoryStream doc = new MemoryStream(docxFile);
+			MemoryStream xml = new MemoryStream(xmlFile);
+			run.OpenAndSearchWordDocument(doc, xml);
+			return run.SaveSplitDocument(doc).ToArray();
 		}
 
 		[WebMethod]
