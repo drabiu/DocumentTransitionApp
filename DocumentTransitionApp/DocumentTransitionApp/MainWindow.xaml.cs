@@ -84,14 +84,15 @@ namespace DocumentTransitionApp
 			//run.SaveSplitDocument(docxTextBox.Text);
 		}
 
-		private void RunSplitWebService(string docName, string filePath, string xmlPath)
+		private async void RunSplitWebService(string docName, string filePath, string xmlPath)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 
 			byte[] fileStream = File.ReadAllBytes(filePath);
 			byte[] xmlStream = File.ReadAllBytes(xmlPath);
 
-			result = serviceClient.SplitDocument(docName, fileStream, xmlStream);
+			//result = serviceClient.SplitDocument(docName, fileStream, xmlStream);
+			Service.SplitDocumentResponse response = await serviceClient.SplitDocumentAsync(docName, fileStream, xmlStream);
 		}
 
 		private void Button_Click_3(object sender, RoutedEventArgs e)

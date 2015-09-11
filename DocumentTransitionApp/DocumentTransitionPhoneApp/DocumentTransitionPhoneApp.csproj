@@ -109,6 +109,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="TransitionAppWebServiceData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -125,16 +126,22 @@
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\TransitionAppServices\configuration91.svcinfo" />
+    <None Include="Service References\TransitionAppServices\configuration.svcinfo" />
     <None Include="Service References\TransitionAppServices\DocumentTransitionPhoneApp.TransitionAppServices.MergeDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\TransitionAppServices\DocumentTransitionPhoneApp.TransitionAppServices.SplitDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
+    <None Include="Service References\TransitionAppServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
@@ -156,12 +163,6 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\TransitionAppServices\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\TransitionAppServices\configuration.svcinfo" />
-    <None Include="Service References\TransitionAppServices\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">

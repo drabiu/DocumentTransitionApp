@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="59b74f0f-c102-4c75-a5b3-85eab3daee0c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4f6f43a2-ee45-4b58-a32d-d82de45e904b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -23,7 +23,7 @@
     <MetadataSource Address="http://192.168.1.106:6943/TransitionApp/TransitionAppServices.asmx?WSDL" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="TransitionAppServices.wsdl" MetadataType="Wsdl" ID="d79b242b-10e0-41c6-a0f8-8edb284a8a86" SourceId="1" SourceUrl="http://192.168.1.106:6943/TransitionApp/TransitionAppServices.asmx?WSDL" />
+    <MetadataFile FileName="TransitionAppServices.wsdl" MetadataType="Wsdl" ID="de4d13fa-c82e-4c1e-bb59-cde00b7b00b9" SourceId="1" SourceUrl="http://192.168.1.106:6943/TransitionApp/TransitionAppServices.asmx?WSDL" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

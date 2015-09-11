@@ -22,7 +22,7 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
         
         private string PersonField;
         
-        private DocumentTransitionPhoneApp.TransitionAppServices.ArrayOfBase64Binary FilesField;
+        private System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.FileData> FilesField;
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public string Person {
@@ -38,7 +38,7 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public DocumentTransitionPhoneApp.TransitionAppServices.ArrayOfBase64Binary Files {
+        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.FileData> Files {
             get {
                 return this.FilesField;
             }
@@ -62,8 +62,47 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfBase64Binary", Namespace="http://tempuri.org/", ItemName="base64Binary")]
-    public class ArrayOfBase64Binary : System.Collections.ObjectModel.ObservableCollection<byte[]> {
+    [System.Runtime.Serialization.DataContractAttribute(Name="FileData", Namespace="http://tempuri.org/")]
+    public partial class FileData : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string NameField;
+        
+        private byte[] DataField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public byte[] Data {
+            get {
+                return this.DataField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DataField, value) != true)) {
+                    this.DataField = value;
+                    this.RaisePropertyChanged("Data");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -147,12 +186,12 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
     public partial class SplitDocumentResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> SplitDocumentResult;
+        public byte[] SplitDocumentResult;
         
         public SplitDocumentResponseBody() {
         }
         
-        public SplitDocumentResponseBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> SplitDocumentResult) {
+        public SplitDocumentResponseBody(byte[] SplitDocumentResult) {
             this.SplitDocumentResult = SplitDocumentResult;
         }
     }
@@ -181,21 +220,13 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
     public partial class MergeDocumentRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string docName;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public byte[] xmlFile;
         
         public MergeDocumentRequestBody() {
         }
         
-        public MergeDocumentRequestBody(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files, byte[] xmlFile) {
-            this.docName = docName;
+        public MergeDocumentRequestBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files) {
             this.files = files;
-            this.xmlFile = xmlFile;
         }
     }
     
@@ -248,10 +279,10 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> Result {
+        public byte[] Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles>)(this.results[0]));
+                return ((byte[])(this.results[0]));
             }
         }
     }
@@ -373,7 +404,7 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> EndSplitDocument(System.IAsyncResult result) {
+        private byte[] EndSplitDocument(System.IAsyncResult result) {
             DocumentTransitionPhoneApp.TransitionAppServices.SplitDocumentResponse retVal = ((DocumentTransitionPhoneApp.TransitionAppServices.Service1Soap)(this)).EndSplitDocument(result);
             return retVal.Body.SplitDocumentResult;
         }
@@ -386,7 +417,7 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
         }
         
         private object[] OnEndSplitDocument(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> retVal = this.EndSplitDocument(result);
+            byte[] retVal = this.EndSplitDocument(result);
             return new object[] {
                     retVal};
         }
@@ -424,12 +455,10 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        private System.IAsyncResult BeginMergeDocument(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files, byte[] xmlFile, System.AsyncCallback callback, object asyncState) {
+        private System.IAsyncResult BeginMergeDocument(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files, System.AsyncCallback callback, object asyncState) {
             DocumentTransitionPhoneApp.TransitionAppServices.MergeDocumentRequest inValue = new DocumentTransitionPhoneApp.TransitionAppServices.MergeDocumentRequest();
             inValue.Body = new DocumentTransitionPhoneApp.TransitionAppServices.MergeDocumentRequestBody();
-            inValue.Body.docName = docName;
             inValue.Body.files = files;
-            inValue.Body.xmlFile = xmlFile;
             return ((DocumentTransitionPhoneApp.TransitionAppServices.Service1Soap)(this)).BeginMergeDocument(inValue, callback, asyncState);
         }
         
@@ -445,10 +474,8 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
         }
         
         private System.IAsyncResult OnBeginMergeDocument(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string docName = ((string)(inValues[0]));
-            System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files = ((System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles>)(inValues[1]));
-            byte[] xmlFile = ((byte[])(inValues[2]));
-            return this.BeginMergeDocument(docName, files, xmlFile, callback, asyncState);
+            System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files = ((System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles>)(inValues[0]));
+            return this.BeginMergeDocument(files, callback, asyncState);
         }
         
         private object[] OnEndMergeDocument(System.IAsyncResult result) {
@@ -464,11 +491,11 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
             }
         }
         
-        public void MergeDocumentAsync(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files, byte[] xmlFile) {
-            this.MergeDocumentAsync(docName, files, xmlFile, null);
+        public void MergeDocumentAsync(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files) {
+            this.MergeDocumentAsync(files, null);
         }
         
-        public void MergeDocumentAsync(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files, byte[] xmlFile, object userState) {
+        public void MergeDocumentAsync(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionPhoneApp.TransitionAppServices.PersonFiles> files, object userState) {
             if ((this.onBeginMergeDocumentDelegate == null)) {
                 this.onBeginMergeDocumentDelegate = new BeginOperationDelegate(this.OnBeginMergeDocument);
             }
@@ -479,9 +506,7 @@ namespace DocumentTransitionPhoneApp.TransitionAppServices {
                 this.onMergeDocumentCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnMergeDocumentCompleted);
             }
             base.InvokeAsync(this.onBeginMergeDocumentDelegate, new object[] {
-                        docName,
-                        files,
-                        xmlFile}, this.onEndMergeDocumentDelegate, this.onMergeDocumentCompletedDelegate, userState);
+                        files}, this.onEndMergeDocumentDelegate, this.onMergeDocumentCompletedDelegate, userState);
         }
         
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {

@@ -241,7 +241,8 @@ namespace DocumentTransitionPhoneApp
 
 		void serviceClient_SplitDocumentCompleted(object sender, Service.SplitDocumentCompletedEventArgs e)
 		{
-			IEnumerable<Service.PersonFiles> eee = e.Result.AsEnumerable();
+			//IEnumerable<Service.PersonFiles> eee = e.Result.AsEnumerable();
+			var eee = e.Result;
 		}
 
 		private void RunMergeButton_Click(object sender, RoutedEventArgs e)

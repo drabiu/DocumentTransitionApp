@@ -34,6 +34,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <PublishDatabases>true</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -84,15 +86,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DocumentTransitionApp%281%29\DocumentMergeEngine\DocumentMergeEngine.csproj">
+    <ProjectReference Include="..\..\DocumentMergeEngine\DocumentMergeEngine.csproj">
       <Project>{9fa41ede-2545-4f48-901b-e29e4605967b}</Project>
       <Name>DocumentMergeEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DocumentTransitionApp%281%29\DocumentSplitEngine\DocumentSplitEngine.csproj">
+    <ProjectReference Include="..\..\DocumentSplitEngine\DocumentSplitEngine.csproj">
       <Project>{13bc6bc9-e590-491c-8eb3-37559c25994c}</Project>
       <Name>DocumentSplitEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DocumentTransitionApp%281%29\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
+    <ProjectReference Include="..\..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
       <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>
       <Name>SplitDescriptionObjects</Name>
     </ProjectReference>

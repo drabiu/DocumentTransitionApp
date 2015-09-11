@@ -2,8 +2,9 @@
     <system.serviceModel>
         <bindings>
             <basicHttpBinding>
-                <binding name="Service1Soap" maxBufferSize="2147483647" maxReceivedMessageSize="2147483647">
-                    <security mode="None" />
+                <binding name="Service1Soap" maxBufferSize="2147483647" maxReceivedMessageSize="2147483647"
+												 transferMode="Buffered">
+									<security mode="None" />
                 </binding>
             </basicHttpBinding>
         </bindings>
