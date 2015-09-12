@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="DocumentTransitionUniversalApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DocumentTransitionUniversalApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button x:Name="buttonDocx" Content="Docx" HorizontalAlignment="Left" Margin="10,184,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonDocx_Click"/>
+        <Button x:Name="buttonXml" Content="Xml" HorizontalAlignment="Left" Margin="10,244,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonXml_Click"/>
+        <Button x:Name="buttonSplit" Content="Split" IsEnabled="False" HorizontalAlignment="Left" Margin="10,454,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonSplit_Click"/>
+        <Button x:Name="buttonMerge" Content="Merge" IsEnabled="False" HorizontalAlignment="Left" Margin="10,514,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonMerge_Click"/>
+
+    </Grid>
+</Page>
