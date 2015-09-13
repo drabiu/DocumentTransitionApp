@@ -321,7 +321,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration) {
             if ((endpointConfiguration == EndpointConfiguration.Service1Soap)) {
-                return new System.ServiceModel.EndpointAddress("http://192.168.1.100:6943/TransitionAppServices.asmx");
+                return new System.ServiceModel.EndpointAddress("http://192.168.1.100:6943/DocumentTransitionAppServices/TransitionAppServices.asm" +
+                        "x");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

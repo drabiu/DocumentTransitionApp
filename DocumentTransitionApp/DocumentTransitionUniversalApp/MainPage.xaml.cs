@@ -22,69 +22,75 @@ using Service = DocumentTransitionUniversalApp.TransitionAppServices;
 
 namespace DocumentTransitionUniversalApp
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
-    {
+	/// <summary>
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// </summary>
+	public sealed partial class MainPage : Page
+	{
 		StorageFile DocxFile;
 		StorageFile XmlFile;
 
-        public MainPage()
-        {
-            this.InitializeComponent();
-        }
+		public MainPage()
+		{
+			this.InitializeComponent();
+		}
 
-        private async void buttonDocx_Click(object sender, RoutedEventArgs e)
-        {
-            var picker = new FileOpenPicker();
-            picker.ViewMode = PickerViewMode.List;
-            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            picker.FileTypeFilter.Add(".docx");
+		private async void buttonDocx_Click(object sender, RoutedEventArgs e)
+		{
+			var picker = new FileOpenPicker();
+			picker.ViewMode = PickerViewMode.List;
+			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+			picker.FileTypeFilter.Add(".docx");
 
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
+			StorageFile file = await picker.PickSingleFileAsync();
+			if (file != null)
+			{
 				DocxFile = file;
 			}
 
-            EnableSplitButton();
-        }
+			EnableSplitButton();
+		}
 
-        private async void buttonXml_Click(object sender, RoutedEventArgs e)
-        {
-            var picker = new FileOpenPicker();
-            picker.ViewMode = PickerViewMode.List;
-            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            picker.FileTypeFilter.Add(".xml");
+		private async void buttonXml_Click(object sender, RoutedEventArgs e)
+		{
+			var picker = new FileOpenPicker();
+			picker.ViewMode = PickerViewMode.List;
+			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+			picker.FileTypeFilter.Add(".xml");
 
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
+			StorageFile file = await picker.PickSingleFileAsync();
+			if (file != null)
+			{
 				XmlFile = file;
-            }
+			}
 
-            EnableSplitButton();
-        }
+			EnableSplitButton();
+		}
 
-        private async void buttonSplit_Click(object sender, RoutedEventArgs e)
-        {
+		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
+		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			byte[] docxBinary = await StorageFileToByteArray(DocxFile);
 			byte[] xmlBinary = await StorageFileToByteArray(XmlFile);
-			var result = await serviceClient.SplitDocumentAsync(DocxFile.Name, docxBinary, xmlBinary);
+			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(DocxFile.Name), docxBinary, xmlBinary);
+			EnableMergeButton();
 		}
 
-        private void buttonMerge_Click(object sender, RoutedEventArgs e)
-        {
+		private void buttonMerge_Click(object sender, RoutedEventArgs e)
+		{
 
-        }
+		}
 
-        private void EnableSplitButton()
-        {
-            if (DocxFile != null && XmlFile != null)
-                buttonSplit.IsEnabled = true;
-        }
+		private void EnableSplitButton()
+		{
+			if (DocxFile != null && XmlFile != null)
+				buttonSplit.IsEnabled = true;
+		}
+
+		private void EnableMergeButton()
+		{
+			buttonMerge.IsEnabled = true;
+		}
 
 		private async Task<byte[]> StorageFileToByteArray(StorageFile file)
 		{
@@ -92,13 +98,18 @@ namespace DocumentTransitionUniversalApp
 			return ReadFully(fileStream.AsStream());
 		}
 
-        private static byte[] ReadFully(Stream input)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                input.CopyTo(ms);
-                return ms.ToArray();
-            }
-        }
-    }
+		public static byte[] ReadFully(Stream input)
+		{
+			byte[] buffer = new byte[16 * 1024];
+			using (MemoryStream ms = new MemoryStream())
+			{
+				int read;
+				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+				{
+					ms.Write(buffer, 0, read);
+				}
+				return ms.ToArray();
+			}
+		}
+	}
 }
