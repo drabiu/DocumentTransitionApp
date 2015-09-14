@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -73,12 +74,71 @@ namespace DocumentTransitionUniversalApp
 			byte[] docxBinary = await StorageFileToByteArray(DocxFile);
 			byte[] xmlBinary = await StorageFileToByteArray(XmlFile);
 			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(DocxFile.Name), docxBinary, xmlBinary);
+			SaveFiles(result);
 			EnableMergeButton();
 		}
 
-		private void buttonMerge_Click(object sender, RoutedEventArgs e)
+		private async void buttonMerge_Click(object sender, RoutedEventArgs e)
 		{
+			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+			var result = await serviceClient.MergeDocumentAsync(await GetFiles());
+			SaveFile(result);
+        }
 
+		private async void SaveFiles(Service.SplitDocumentResponse response)
+		{
+			FolderPicker folderPicker = new FolderPicker();
+			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+			StorageFolder filesSaveFolder;
+			try
+			{
+				filesSaveFolder = await folder.GetFolderAsync("Split Files");
+			}
+			catch (FileNotFoundException ex)
+			{
+				filesSaveFolder = await folder.CreateFolderAsync("Split Files");
+			}
+
+			foreach (Service.PersonFiles file in response.Body.SplitDocumentResult)
+			{
+				if (file.Person == "/")
+				{
+					StorageFile newFile = await filesSaveFolder.CreateFileAsync(file.Name);
+					using (var s = await newFile.OpenStreamForWriteAsync())
+					{
+						s.Write(file.Data, 0, file.Data.Length);
+					}
+				}
+				else
+				{
+					StorageFolder currentSaveFolder;
+					try
+					{
+						currentSaveFolder = await filesSaveFolder.GetFolderAsync(file.Person);
+					}
+					catch (FileNotFoundException ex)
+					{
+						currentSaveFolder = await filesSaveFolder.CreateFolderAsync(file.Person);
+					}
+
+					StorageFile newFile = await currentSaveFolder.CreateFileAsync(file.Name + ".docx");
+					using (var s = await newFile.OpenStreamForWriteAsync())
+					{
+						s.Write(file.Data, 0, file.Data.Length);
+					}
+				}
+			}
+		}
+
+		private void SaveFile(Service.MergeDocumentResponse response)
+		{
+		}
+
+		private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
+		{
+			ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
+			return files;
 		}
 
 		private void EnableSplitButton()
