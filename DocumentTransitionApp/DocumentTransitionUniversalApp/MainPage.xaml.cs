@@ -31,6 +31,7 @@ namespace DocumentTransitionUniversalApp
 	{
 		StorageFile DocxFile;
 		StorageFile XmlFile;
+		string FileName;
 
 		public MainPage()
 		{
@@ -74,7 +75,8 @@ namespace DocumentTransitionUniversalApp
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			byte[] docxBinary = await StorageFileToByteArray(DocxFile);
 			byte[] xmlBinary = await StorageFileToByteArray(XmlFile);
-			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(DocxFile.Name), docxBinary, xmlBinary);
+			FileName = DocxFile.Name;
+            var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), docxBinary, xmlBinary);
 			SaveFiles(result);
 			EnableMergeButton();
 		}
@@ -152,7 +154,25 @@ namespace DocumentTransitionUniversalApp
 		}
 
 		private async void SaveFile(Service.MergeDocumentResponse response)
-		{			
+		{
+			byte[] fileBinary = response.Body.MergeDocumentResult;
+			FolderPicker folderPicker = new FolderPicker();
+			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+			StorageFile newFile;
+			try
+			{
+				newFile = await folder.GetFileAsync(FileName);
+			}
+			catch (FileNotFoundException ex)
+			{
+				newFile = await folder.CreateFileAsync(FileName);
+			}
+
+			using (var s = await newFile.OpenStreamForWriteAsync())
+			{
+				s.Write(fileBinary, 0, fileBinary.Length);
+			}
 		}
 
 		private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()

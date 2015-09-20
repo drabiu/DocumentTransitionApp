@@ -78,10 +78,10 @@ namespace DocumentTransitionApp
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
 			string docName = System.IO.Path.GetFileNameWithoutExtension(docxTextBox.Text);
-			//ILocalSplit run = new DocumentSplit(docName);
-			//run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
-			RunSplitWebService(docName, docxTextBox.Text, xmlTextBox.Text);
-			//run.SaveSplitDocument(docxTextBox.Text);
+			ILocalSplit run = new DocumentSplit(docName);
+			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
+			//RunSplitWebService(docName, docxTextBox.Text, xmlTextBox.Text);
+			run.SaveSplitDocument(docxTextBox.Text);
 		}
 
 		private async void RunSplitWebService(string docName, string filePath, string xmlPath)
@@ -100,24 +100,24 @@ namespace DocumentTransitionApp
 			Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
 
 			// Set filter for file extension and default file extension 
-			//dlg.DefaultExt = ".docx";
-			//dlg.Filter = "Word Files (*.docx)|*.docx|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+			dlg.DefaultExt = ".docx";
+			dlg.Filter = "Word Files (*.docx)|*.docx|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
 
 
-			// Display OpenFileDialog by calling ShowDialog method 
-			//Nullable<bool> result = dlg.ShowDialog();
+			//Display OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = dlg.ShowDialog();
 
-			// Get the selected file name and display in a TextBox 
-			//if (result == true)
-			//{
-			//	// Open document 
-			//	string filename = dlg.FileName;
-			//	ILocalMerge merge = new DocumentMerge();
-			//	merge.Run(filename);
-			//}
-			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			var resultFile = serviceClient.MergeDocument(result);
-			int dupa = 1;
+			//Get the selected file name and display in a TextBox
+            if (result == true)
+			{
+				// Open document 
+				string filename = dlg.FileName;
+				ILocalMerge merge = new DocumentMerge();
+				merge.Run(filename);
+			}
+			//Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+			//var resultFile = serviceClient.MergeDocument(result);
+			//int dupa = 1;
 		}
 	}
 }
