@@ -353,14 +353,9 @@ namespace DocumentSplitEngine
 
 						wordDoc.MainDocumentPart.Document.Save();
 
-						var person = resultList.FirstOrDefault(p => p.Person == element.PartOwner);
-						if (person == null)
-						{
-							person = new PersonFiles();
-							person.Person = element.PartOwner;
-							resultList.Add(person);
-						}
-
+						var person = new PersonFiles();
+						person.Person = element.PartOwner;
+						resultList.Add(person);
 						person.Name = element.Guid.ToString();
 						person.Data = mem.ToArray();
 					}
