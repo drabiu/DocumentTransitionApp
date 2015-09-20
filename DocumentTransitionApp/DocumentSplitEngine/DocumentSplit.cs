@@ -389,12 +389,11 @@ namespace DocumentSplitEngine
 			// We could write it back to a SharePoint document library or serve
 			// it from a web server.			
 
-			var xmlPerson = resultList.FirstOrDefault(p => p.Person == "/");
-			if (xmlPerson != null)
-			{
-				xmlPerson.Name = "mergeXmlDefinition.xml";
-				xmlPerson.Data = CreateMergeXml();
-			}
+			var xmlPerson = new PersonFiles();
+			xmlPerson.Person = "/";
+			resultList.Add(xmlPerson);
+			xmlPerson.Name = "mergeXmlDefinition.xml";
+			xmlPerson.Data = CreateMergeXml();
 
 			return resultList;
 		}
