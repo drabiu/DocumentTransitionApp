@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using Service = DocumentTransitionUniversalApp.TransitionAppServices;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -81,7 +82,8 @@ namespace DocumentTransitionUniversalApp
 		private async void buttonMerge_Click(object sender, RoutedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			var result = await serviceClient.MergeDocumentAsync(await GetFiles());
+			var files = await GetFiles();
+            var result = await serviceClient.MergeDocumentAsync(files);
 			SaveFile(result);
         }
 
@@ -104,7 +106,16 @@ namespace DocumentTransitionUniversalApp
 			{
 				if (file.Person == "/")
 				{
-					StorageFile newFile = await filesSaveFolder.CreateFileAsync(file.Name);
+					StorageFile newFile;
+                    try
+					{
+						newFile = await folder.GetFileAsync(file.Name);
+					}
+					catch (FileNotFoundException ex)
+					{
+						newFile = await filesSaveFolder.CreateFileAsync(file.Name);
+					}
+						
 					using (var s = await newFile.OpenStreamForWriteAsync())
 					{
 						s.Write(file.Data, 0, file.Data.Length);
@@ -122,7 +133,16 @@ namespace DocumentTransitionUniversalApp
 						currentSaveFolder = await filesSaveFolder.CreateFolderAsync(file.Person);
 					}
 
-					StorageFile newFile = await currentSaveFolder.CreateFileAsync(file.Name + ".docx");
+					StorageFile newFile;
+                    try
+					{
+						newFile = await currentSaveFolder.GetFileAsync(file.Name + ".docx");
+					}
+					catch (FileNotFoundException ex)
+					{
+						newFile = await currentSaveFolder.CreateFileAsync(file.Name + ".docx");
+					}
+
 					using (var s = await newFile.OpenStreamForWriteAsync())
 					{
 						s.Write(file.Data, 0, file.Data.Length);
@@ -131,13 +151,66 @@ namespace DocumentTransitionUniversalApp
 			}
 		}
 
-		private void SaveFile(Service.MergeDocumentResponse response)
-		{
+		private async void SaveFile(Service.MergeDocumentResponse response)
+		{			
 		}
 
 		private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
 		{
 			ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
+			FolderPicker folderPicker = new FolderPicker();
+			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+			StorageFile xmlFile;
+			try
+			{
+				xmlFile = await folder.GetFileAsync("mergeXmlDefinition.xml");
+			}
+			catch (FileNotFoundException ex)
+			{
+				var dialog = new MessageDialog("mergeXmlDefinition.xml does not exist");
+				await dialog.ShowAsync();
+				return files;
+			}
+
+			StorageFile templateFile;
+			try
+			{
+				templateFile = await folder.GetFileAsync("template.docx");
+			}
+			catch (FileNotFoundException ex)
+			{
+				var dialog = new MessageDialog("template.docx does not exist");
+				await dialog.ShowAsync();
+				return files;
+			}
+
+			foreach (StorageFolder subFolder in await folder.GetFoldersAsync())
+			{
+				foreach (StorageFile fileToLoad in await subFolder.GetFilesAsync())
+				{
+					var personFile = new Service.PersonFiles();
+					personFile.Name = Path.GetFileNameWithoutExtension(fileToLoad.Name);
+					personFile.Data = await StorageFileToByteArray(fileToLoad);
+					personFile.Person = subFolder.Name;
+					files.Add(personFile);
+                }
+			}
+
+			var personXmlFile = new Service.PersonFiles();
+			personXmlFile.Name = xmlFile.Name;
+			personXmlFile.Data = await StorageFileToByteArray(xmlFile);
+			personXmlFile.Person = "/";
+
+			files.Add(personXmlFile);
+
+			var personTemplateFile = new Service.PersonFiles();
+			personTemplateFile.Name = templateFile.Name;
+			personTemplateFile.Data = await StorageFileToByteArray(templateFile);
+			personTemplateFile.Person = "/";
+
+			files.Add(personTemplateFile);
+
 			return files;
 		}
 
