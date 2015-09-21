@@ -100,8 +100,8 @@ namespace DocumentSplitEngine
 						
 						documentElements.Add(part);
 					}
-
-					part.CompositeElements.Add(DocumentBody.ChildElements[index]);
+					else
+						part.CompositeElements.Add(DocumentBody.ChildElements[index]);
 				}
 			}
 
