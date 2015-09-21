@@ -22,4 +22,21 @@
 		<Person Email="">
 		</Person>
 	</Document>
+	<Excel>
+		<Name></Name>
+		<Person Email="">
+			<SheetMarker>
+				<ElementId></ElementId>
+			</SheetMarker>
+		</Person>
+		<Person Email="">
+		</Person>
+	</Excel>
+	<Presentation>
+		<Name></Name>
+		<Person Email="">
+		</Person>
+		<Person Email="">
+		</Person>
+	</Presentation>
 </Split>

@@ -1,51 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="Split" targetNamespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/" xmlns:mstns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/" xmlns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="Person">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UniversalMarker" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ElementId" type="xs:string" minOccurs="0" />
+              <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TextMarker" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ElementId" type="xs:string" minOccurs="0" />
+              <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TableMarker" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ElementId" type="xs:string" minOccurs="0" />
+              <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PictureMarker" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ElementId" type="xs:string" minOccurs="0" />
+              <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SheetMarker" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ElementId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Email" form="unqualified" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Split" msdata:IsDataSet="true" msdata:Locale="en-US">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Person" />
         <xs:element name="Document">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Name" type="xs:string" minOccurs="0" />
-              <xs:element name="Person" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="UniversalMarker" minOccurs="0" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="ElementId" type="xs:string" minOccurs="0" />
-                          <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="TextMarker" minOccurs="0" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="ElementId" type="xs:string" minOccurs="0" />
-                          <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="TableMarker" minOccurs="0" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="ElementId" type="xs:string" minOccurs="0" />
-                          <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="PictureMarker" minOccurs="0" maxOccurs="unbounded">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="ElementId" type="xs:string" minOccurs="0" />
-                          <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                  </xs:sequence>
-                  <xs:attribute name="Email" form="unqualified" type="xs:string" />
-                </xs:complexType>
-              </xs:element>
+              <xs:element ref="Person" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Excel">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element ref="Person" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Presentation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" type="xs:string" minOccurs="0" />
+              <xs:element ref="Person" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
