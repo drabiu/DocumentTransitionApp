@@ -8,6 +8,7 @@ using System.Reflection;
 
 using DocumentFormat.OpenXml.Packaging;
 using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
+using Excelproc = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 
 using UnmarshallingSplitXml;
@@ -28,13 +29,18 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class MarkerMapper
+	public abstract class MarkerMapper
 	{
-		Split Xml { get; set; }
+		protected Split Xml { get; set; }
+		protected string[] SubdividedParagraphs { get; set; }
+	}
+
+	public class MarkerDocumentMapper : MarkerMapper
+	{	
 		SplitDocument SplitDocumentObj { get; set; }
 		Wordproc.Body DocumentBody { get; set; }
-		string[] SubdividedParagraphs { get; set; }
-		public MarkerMapper(string documentName, Split xml, Wordproc.Body body)
+		
+		public MarkerDocumentMapper(string documentName, Split xml, Wordproc.Body body)
 		{
 			Xml = xml;
 			SplitDocumentObj = Xml.Items.Where(it => string.Equals(it.Name, documentName)).SingleOrDefault();
@@ -109,6 +115,16 @@ namespace DocumentSplitEngine
 		}
 	}
 
+	public class MarkerExcelMapper : MarkerMapper
+	{
+
+	}
+
+	public class MarkerPresentationMapper : MarkerMapper
+	{
+
+	}
+
 	public interface ILocalSplit
 	{
 		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);		
@@ -121,12 +137,18 @@ namespace DocumentSplitEngine
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
 	}
 
-	public class MergeXml
+	public interface IMergeXml
+	{
+		void CreateMergeXml(string path);
+		byte[] CreateMergeXml();
+    }
+
+	public class MergeDocumentXml : IMergeXml
 	{
 		protected IList<OpenXMDocumentPart> DocumentElements;
 		protected string DocumentName { get; set; }
 
-		protected void CreateMergeXml(string path)
+		public void CreateMergeXml(string path)
 		{
 			Merge mergeXml = new Merge();
 			mergeXml.Items = new MergeDocument[1];
@@ -148,7 +170,7 @@ namespace DocumentSplitEngine
 			}
 		}
 
-		protected byte[] CreateMergeXml()
+		public byte[] CreateMergeXml()
 		{
 			Merge mergeXml = new Merge();
 			mergeXml.Items = new MergeDocument[1];
@@ -172,7 +194,33 @@ namespace DocumentSplitEngine
 		}
 	}
 
-    public class DocumentSplit : MergeXml, ISplit, ILocalSplit
+	public class MergeExcelXml : IMergeXml
+	{
+		public byte[] CreateMergeXml()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void CreateMergeXml(string path)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class MergePresentationXml : IMergeXml
+	{
+		public byte[] CreateMergeXml()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void CreateMergeXml(string path)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class DocumentSplit : MergeDocumentXml, ISplit, ILocalSplit
     {
         public static byte[] ReadFully(Stream stream)
         {
@@ -394,12 +442,31 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class ExcelSplit : MergeXml, ISplit, ILocalSplit
+	public class ExcelSplit : MergeExcelXml, ISplit, ILocalSplit
 	{
 
 		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
-			throw new NotImplementedException();
+			//split XML Read
+			var xml = System.IO.File.ReadAllText(xmlSplitDefinitionFilePath);
+			Split splitXml;
+			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+			{
+				XmlSerializer serializer = new XmlSerializer(typeof(Split));
+				splitXml = (Split)serializer.Deserialize(stream);
+			}
+
+			// Open a WordprocessingDocument for editing using the filepath.
+			SpreadsheetDocument wordprocessingDocument =
+				SpreadsheetDocument.Open(filePath, true);
+
+			// Assign a reference to the existing document body.
+			Excelproc.Workbook body = wordprocessingDocument.WorkbookPart.Workbook;
+			MarkerMapper mapping = new MarkerMapper(DocumentName, splitXml, body);
+			DocumentElements = mapping.Run();
+
+			// Close the handle explicitly.
+			wordprocessingDocument.Close();
 		}
 
 		public void SaveSplitDocument(string filePath)
@@ -419,7 +486,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class PresentationSplit : MergeXml, ISplit, ILocalSplit
+	public class PresentationSplit : MergePresentationXml, ISplit, ILocalSplit
 
 	{
 		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
