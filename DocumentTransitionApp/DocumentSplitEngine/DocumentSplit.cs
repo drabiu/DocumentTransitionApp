@@ -8,7 +8,6 @@ using System.Reflection;
 
 using DocumentFormat.OpenXml.Packaging;
 using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
-using Excelproc = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 
 using UnmarshallingSplitXml;
@@ -35,7 +34,12 @@ namespace DocumentSplitEngine
 		protected string[] SubdividedParagraphs { get; set; }
 	}
 
-	public class MarkerDocumentMapper : MarkerMapper
+	public interface IMarkerMapper
+	{
+		IList<OpenXMDocumentPart> Run();
+    }
+
+	public class MarkerDocumentMapper : MarkerMapper, IMarkerMapper
 	{	
 		SplitDocument SplitDocumentObj { get; set; }
 		Wordproc.Body DocumentBody { get; set; }
@@ -43,12 +47,12 @@ namespace DocumentSplitEngine
 		public MarkerDocumentMapper(string documentName, Split xml, Wordproc.Body body)
 		{
 			Xml = xml;
-			SplitDocumentObj = Xml.Items.Where(it => string.Equals(it.Name, documentName)).SingleOrDefault();
+			SplitDocumentObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
 			DocumentBody = body;
 			SubdividedParagraphs = new string[body.ChildElements.Count];
 		}
 
-		public UniversalDocumentMarker GetEquivalentMarker(SplitDocumentPersonUniversalMarker marker)
+		public IUniversalDocumentMarker GetUniversalDocumentMarker()
 		{
 			return new UniversalDocumentMarker(DocumentBody);
 		}
@@ -58,13 +62,13 @@ namespace DocumentSplitEngine
 			IList<OpenXMDocumentPart> documentElements = new List<OpenXMDocumentPart>();
 			if (SplitDocumentObj != null)
 			{
-				foreach (SplitDocumentPerson person in SplitDocumentObj.Person)
+				foreach (Person person in SplitDocumentObj.Person)
 				{
 					if (person.UniversalMarker != null)
 					{
-						foreach (SplitDocumentPersonUniversalMarker marker in person.UniversalMarker)
+						foreach (PersonUniversalMarker marker in person.UniversalMarker)
 						{
-							IList<int> result = GetEquivalentMarker(marker).GetCrossedElements(marker.ElementId, marker.SelectionLastelementId);
+							IList<int> result = GetUniversalDocumentMarker().GetCrossedElements(marker.ElementId, marker.SelectionLastelementId);
 							foreach (int index in result)
 							{
 								if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
@@ -115,16 +119,6 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class MarkerExcelMapper : MarkerMapper
-	{
-
-	}
-
-	public class MarkerPresentationMapper : MarkerMapper
-	{
-
-	}
-
 	public interface ILocalSplit
 	{
 		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);		
@@ -143,7 +137,7 @@ namespace DocumentSplitEngine
 		byte[] CreateMergeXml();
     }
 
-	public class MergeDocumentXml : IMergeXml
+	public class MergeXml : IMergeXml
 	{
 		protected IList<OpenXMDocumentPart> DocumentElements;
 		protected string DocumentName { get; set; }
@@ -192,88 +186,62 @@ namespace DocumentSplitEngine
 				return mergeStream.ToArray();
 			}
 		}
+
+		public static byte[] ReadFully(Stream stream)
+		{
+			long originalPosition = 0;
+
+			if (stream.CanSeek)
+			{
+				originalPosition = stream.Position;
+				stream.Position = 0;
+			}
+
+			try
+			{
+				byte[] readBuffer = new byte[4096];
+
+				int totalBytesRead = 0;
+				int bytesRead;
+
+				while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+				{
+					totalBytesRead += bytesRead;
+
+					if (totalBytesRead == readBuffer.Length)
+					{
+						int nextByte = stream.ReadByte();
+						if (nextByte != -1)
+						{
+							byte[] temp = new byte[readBuffer.Length * 2];
+							Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+							Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+							readBuffer = temp;
+							totalBytesRead++;
+						}
+					}
+				}
+
+				byte[] buffer = readBuffer;
+				if (readBuffer.Length != totalBytesRead)
+				{
+					buffer = new byte[totalBytesRead];
+					Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+				}
+				return buffer;
+			}
+			finally
+			{
+				if (stream.CanSeek)
+				{
+					stream.Position = originalPosition;
+				}
+			}
+		}
 	}
 
-	public class MergeExcelXml : IMergeXml
-	{
-		public byte[] CreateMergeXml()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void CreateMergeXml(string path)
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	public class MergePresentationXml : IMergeXml
-	{
-		public byte[] CreateMergeXml()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void CreateMergeXml(string path)
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	public class DocumentSplit : MergeDocumentXml, ISplit, ILocalSplit
+	public class DocumentSplit : MergeXml, ISplit, ILocalSplit
     {
-        public static byte[] ReadFully(Stream stream)
-        {
-            long originalPosition = 0;
-
-            if (stream.CanSeek)
-            {
-                originalPosition = stream.Position;
-                stream.Position = 0;
-            }
-
-            try
-            {
-                byte[] readBuffer = new byte[4096];
-
-                int totalBytesRead = 0;
-                int bytesRead;
-
-                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
-                {
-                    totalBytesRead += bytesRead;
-
-                    if (totalBytesRead == readBuffer.Length)
-                    {
-                        int nextByte = stream.ReadByte();
-                        if (nextByte != -1)
-                        {
-                            byte[] temp = new byte[readBuffer.Length * 2];
-                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
-                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
-                            readBuffer = temp;
-                            totalBytesRead++;
-                        }
-                    }
-                }
-
-                byte[] buffer = readBuffer;
-                if (readBuffer.Length != totalBytesRead)
-                {
-                    buffer = new byte[totalBytesRead];
-                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
-                }
-                return buffer;
-            }
-            finally
-            {
-                if (stream.CanSeek)
-                {
-                    stream.Position = originalPosition;
-                }
-            }
-        }
-
 		public DocumentSplit(string docName)
 		{
 			DocumentName = docName;
@@ -287,7 +255,7 @@ namespace DocumentSplitEngine
 				WordprocessingDocument.Open(docxFile, true))
 			{
 				Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
-				MarkerMapper mapping = new MarkerMapper(DocumentName, splitXml, body);
+				IMarkerMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
 				DocumentElements = mapping.Run();
 			}
 		}
@@ -309,7 +277,7 @@ namespace DocumentSplitEngine
 
 			// Assign a reference to the existing document body.
 			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-			MarkerMapper mapping = new MarkerMapper(DocumentName, splitXml, body);
+			MarkerDocumentMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
 			DocumentElements = mapping.Run();
 
 			// Close the handle explicitly.
@@ -439,75 +407,6 @@ namespace DocumentSplitEngine
 			xmlPerson.Data = CreateMergeXml();
 
 			return resultList;
-		}
-	}
-
-	public class ExcelSplit : MergeExcelXml, ISplit, ILocalSplit
-	{
-
-		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
-		{
-			//split XML Read
-			var xml = System.IO.File.ReadAllText(xmlSplitDefinitionFilePath);
-			Split splitXml;
-			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof(Split));
-				splitXml = (Split)serializer.Deserialize(stream);
-			}
-
-			// Open a WordprocessingDocument for editing using the filepath.
-			SpreadsheetDocument wordprocessingDocument =
-				SpreadsheetDocument.Open(filePath, true);
-
-			// Assign a reference to the existing document body.
-			Excelproc.Workbook body = wordprocessingDocument.WorkbookPart.Workbook;
-			MarkerMapper mapping = new MarkerMapper(DocumentName, splitXml, body);
-			DocumentElements = mapping.Run();
-
-			// Close the handle explicitly.
-			wordprocessingDocument.Close();
-		}
-
-		public void SaveSplitDocument(string filePath)
-		{
-			throw new NotImplementedException();
-		}
-
-
-		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
-		{
-			throw new NotImplementedException();
-		}
-
-		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	public class PresentationSplit : MergePresentationXml, ISplit, ILocalSplit
-
-	{
-		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void SaveSplitDocument(string filePath)
-		{
-			throw new NotImplementedException();
-		}
-
-
-		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
-		{
-			throw new NotImplementedException();
-		}
-
-		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

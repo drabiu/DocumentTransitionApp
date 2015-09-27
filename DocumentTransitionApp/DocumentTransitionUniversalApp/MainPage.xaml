@@ -5,13 +5,16 @@
     xmlns:local="using:DocumentTransitionUniversalApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	TabNavigation="Cycle"
     mc:Ignorable="d">
-
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" >
-        <Button x:Name="buttonDocx" Content="Docx" HorizontalAlignment="Stretch" Margin="10,67,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonDocx_Click"/>
-        <Button x:Name="buttonXml" Content="Xml" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonXml_Click"/>
-        <Button x:Name="buttonSplit" Content="Split" IsEnabled="False" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonSplit_Click"/>
-        <Button x:Name="buttonMerge" Content="Merge" IsEnabled="False" HorizontalAlignment="Left" Margin="10,279,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonMerge_Click"/>
-
+        <Frame Name="frame">
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" >
+                <Button x:Name="buttonFile" Content="Open File" HorizontalAlignment="Stretch" Margin="10,67,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonDocx_Click"/>
+                <Button x:Name="buttonXml" Content="Edit Parts" IsEnabled="False" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonXml_Click"/>
+                <Button x:Name="buttonSplit" Content="Split" IsEnabled="False" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonSplit_Click"/>
+                <Button x:Name="buttonMerge" Content="Merge" IsEnabled="False" HorizontalAlignment="Left" Margin="10,279,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonMerge_Click"/>
+            </Grid>
+        </Frame>
     </Grid>
 </Page>

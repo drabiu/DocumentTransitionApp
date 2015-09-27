@@ -18,7 +18,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using Service = DocumentTransitionUniversalApp.TransitionAppServices;
+using DocumentTransitionUniversalApp.Views;
 using Windows.UI.Popups;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -29,13 +31,48 @@ namespace DocumentTransitionUniversalApp
 	/// </summary>
 	public sealed partial class MainPage : Page
 	{
-		StorageFile DocxFile;
+		StorageFile DocumentFile;
 		StorageFile XmlFile;
 		string FileName;
+		DocumentType FileType;
+		bool WasSplit;
+		public Frame AppFrame { get { return this.frame; } }
+
+		public enum DocumentType
+		{
+			Word,
+			Excel,
+			Presentation
+		}
 
 		public MainPage()
 		{
 			this.InitializeComponent();
+
+			SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
+		}
+
+		private void SystemNavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
+		{
+			bool handled = e.Handled;
+			this.BackRequested(ref handled);
+			e.Handled = handled;
+		}
+
+		private void BackRequested(ref bool handled)
+		{
+			// Get a hold of the current frame so that we can inspect the app back stack.
+
+			if (this.AppFrame == null)
+				return;
+
+			// Check to see if this is the top-most page on the app back stack.
+			if (this.AppFrame.CanGoBack && !handled)
+			{
+				// If not, set the event to handled and go back to the previous page in the app.
+				handled = true;
+				this.AppFrame.GoBack();
+			}
 		}
 
 		private async void buttonDocx_Click(object sender, RoutedEventArgs e)
@@ -44,40 +81,67 @@ namespace DocumentTransitionUniversalApp
 			picker.ViewMode = PickerViewMode.List;
 			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
 			picker.FileTypeFilter.Add(".docx");
+			picker.FileTypeFilter.Add(".xlsx");
+			picker.FileTypeFilter.Add(".pptx");
 
 			StorageFile file = await picker.PickSingleFileAsync();
 			if (file != null)
 			{
-				DocxFile = file;
+				DocumentFile = file;
+				switch (Path.GetExtension(file.Name))
+				{
+					case (".docx"):
+						FileType = DocumentType.Word;
+						break;
+					case (".xlsx"):
+						FileType = DocumentType.Excel;
+						break;
+					case (".pptx"):
+						FileType = DocumentType.Presentation;
+						break;
+				}
 			}
 
-			EnableSplitButton();
-		}
+			EnablePartsButton();
+        }
 
 		private async void buttonXml_Click(object sender, RoutedEventArgs e)
 		{
-			var picker = new FileOpenPicker();
-			picker.ViewMode = PickerViewMode.List;
-			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-			picker.FileTypeFilter.Add(".xml");
+			//var picker = new FileOpenPicker();
+			//picker.ViewMode = PickerViewMode.List;
+			//picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+			//picker.FileTypeFilter.Add(".xml");
 
-			StorageFile file = await picker.PickSingleFileAsync();
-			if (file != null)
+			//StorageFile file = await picker.PickSingleFileAsync();
+			//if (file != null)
+			//{
+			//	XmlFile = file;
+			//}
+
+			//EnableSplitButton();
+			switch (FileType)
 			{
-				XmlFile = file;
+				case (DocumentType.Word):
+					this.AppFrame.Navigate(typeof(WordSelectPartsPage), this);
+					break;
+				case (DocumentType.Excel):
+					this.AppFrame.Navigate(typeof(ExcelSelectPartsPage), this);
+					break;
+				case (DocumentType.Presentation):
+					this.AppFrame.Navigate(typeof(PresentationSelectPartsPage), this);
+					break;
 			}
-
-			EnableSplitButton();
-		}
+        }
 
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			byte[] docxBinary = await StorageFileToByteArray(DocxFile);
+			byte[] docxBinary = await StorageFileToByteArray(DocumentFile);
 			byte[] xmlBinary = await StorageFileToByteArray(XmlFile);
-			FileName = DocxFile.Name;
+			FileName = DocumentFile.Name;
             var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), docxBinary, xmlBinary);
 			SaveFiles(result);
+			WasSplit = true;
 			EnableMergeButton();
 		}
 
@@ -98,8 +162,12 @@ namespace DocumentTransitionUniversalApp
 			try
 			{
 				filesSaveFolder = await folder.GetFolderAsync("Split Files");
+				await filesSaveFolder.DeleteAsync();
 			}
 			catch (FileNotFoundException ex)
+			{			
+			}
+			finally
 			{
 				filesSaveFolder = await folder.CreateFolderAsync("Split Files");
 			}
@@ -234,16 +302,30 @@ namespace DocumentTransitionUniversalApp
 			return files;
 		}
 
+		private void EnablePartsButton()
+		{
+			if (DocumentFile != null)
+				buttonXml.IsEnabled = true;
+        }
+
 		private void EnableSplitButton()
 		{
-			if (DocxFile != null && XmlFile != null)
+			if (DocumentFile != null && XmlFile != null)
 				buttonSplit.IsEnabled = true;
 		}
 
 		private void EnableMergeButton()
 		{
-			buttonMerge.IsEnabled = true;
-		}
+			if (WasSplit)
+				buttonMerge.IsEnabled = true;
+		}	
+		
+		private void InitButtons()
+		{
+			EnablePartsButton();
+			EnableSplitButton();
+			EnableMergeButton();
+        }
 
 		private async Task<byte[]> StorageFileToByteArray(StorageFile file)
 		{
@@ -262,6 +344,21 @@ namespace DocumentTransitionUniversalApp
 					ms.Write(buffer, 0, read);
 				}
 				return ms.ToArray();
+			}
+		}
+
+		protected override void OnNavigatedTo(NavigationEventArgs e)
+		{
+			if (e.Parameter is MainPage)
+			{
+				var main = e.Parameter as MainPage;
+				this.DocumentFile = main.DocumentFile;
+				this.XmlFile = main.XmlFile;
+				this.FileName = main.FileName;
+				this.FileType = main.FileType;
+				this.WasSplit = main.WasSplit;
+
+				InitButtons();
 			}
 		}
 	}

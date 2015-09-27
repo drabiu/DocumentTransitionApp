@@ -5,13 +5,12 @@ using System.Text;
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace SplitDescriptionObjects
 {
-	interface IDocumentMarker
+	public interface IDocumentMarker
 	{
-		//OpenXmlCompositeElement FindElement(string id);
-		//IList<OpenXmlCompositeElement> GetCrossedElements(string id, string id2);
 		int FindElement(string id);
 		IList<int> GetCrossedElements(string id, string id2);
 	}
@@ -25,20 +24,10 @@ namespace SplitDescriptionObjects
 			DocumentBody = body;
 		}
 
-		//public OpenXmlCompositeElement FindElement(string id)
-		//{
-		//	throw new NotImplementedException();
-		//}
-
 		public int FindElement(string id)
 		{
 			throw new NotImplementedException();
 		}
-
-		//public IList<OpenXmlCompositeElement> GetCrossedElements(string id, string id2)
-		//{
-		//	throw new NotImplementedException();
-		//}
 
 		public IList<int> GetCrossedElements(string id, string id2)
 		{
@@ -64,7 +53,27 @@ namespace SplitDescriptionObjects
 		}
 	}
 
-	interface IUniversalDocumentMarker
+	public abstract class ExcelMarker : IDocumentMarker
+	{
+		Workbook DocumentBody;
+
+		public ExcelMarker(Workbook body)
+		{
+			DocumentBody = body;
+		}
+
+		public int FindElement(string id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IList<int> GetCrossedElements(string id, string id2)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public interface IUniversalDocumentMarker : IDocumentMarker
 	{
 	}
 
@@ -73,6 +82,19 @@ namespace SplitDescriptionObjects
 		public UniversalDocumentMarker(Body body) :
 			base(body)
 		{
+		}
+	}
+
+	public interface ISheetExcelMarker : IDocumentMarker
+	{
+	}
+
+	public class SheetExcelMarker : ExcelMarker, ISheetExcelMarker
+	{
+		public SheetExcelMarker(Workbook body) :
+			base(body)
+		{
+
 		}
 	}
 }
