@@ -42,6 +42,7 @@ namespace DocumentTransitionAppServices
 		public List<PartsSelectionTreeElement> GetParts(string docName, byte[] documentFile)
 		{
 			IDocumentParts parts = DocumentPartsBuilder.Build(Path.GetExtension(docName));
+
 			return parts.Get(new MemoryStream(documentFile));
 		}
 	}	
