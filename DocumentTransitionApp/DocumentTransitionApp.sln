@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionAppServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionUniversalApp", "DocumentTransitionUniversalApp\DocumentTransitionUniversalApp.csproj", "{0AED4B07-0FFA-4215-92FE-BB01B4F09929}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentEditPartsEngine", "DocumentEditPartsEngine\DocumentEditPartsEngine.csproj", "{55FC58A3-200E-4FE1-84F5-337427620426}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -151,6 +153,22 @@ Global
 		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x86.ActiveCfg = Release|x86
 		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x86.Build.0 = Release|x86
 		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x86.Deploy.0 = Release|x86
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|ARM.Build.0 = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|x64.Build.0 = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|x86.Build.0 = Debug|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|ARM.ActiveCfg = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|ARM.Build.0 = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x64.ActiveCfg = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x64.Build.0 = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x86.ActiveCfg = Release|Any CPU
+		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

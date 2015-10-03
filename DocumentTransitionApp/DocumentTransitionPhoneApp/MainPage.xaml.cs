@@ -43,15 +43,6 @@ namespace DocumentTransitionPhoneApp
 
 		private void loginButton_SessionChanged(object sender, LiveConnectSessionChangedEventArgs e)
 		{
-			//if (e != null && e.Status == LiveConnectSessionStatus.Connected)
-			//{
-			//	//the session status is connected so we need to set this session status to client
-			//	this.Client = new LiveConnectClient(e.Session);
-			//}
-			//else
-			//{
-			//	this.Client = null;
-			//}
 		}
 
 		public async Task<LiveConnectClient> Login()
@@ -77,9 +68,7 @@ namespace DocumentTransitionPhoneApp
 			{
 				LiveOperationResult operationResult = await client.GetAsync("me/skydrive/files");
 				dynamic result = (operationResult.Result as dynamic).data;
-				//OneDriveExplorerPanel.Children.Clear();
 				await CreateDynamicFilesTree(client, result, 0);
-				//CreateFileExploreUI();
 			}
 			catch (Exception ex)
 			{

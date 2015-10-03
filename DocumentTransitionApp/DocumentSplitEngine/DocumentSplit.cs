@@ -10,7 +10,6 @@ using DocumentFormat.OpenXml.Packaging;
 using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
 
-using UnmarshallingSplitXml;
 using SplitDescriptionObjects;
 
 namespace DocumentSplitEngine

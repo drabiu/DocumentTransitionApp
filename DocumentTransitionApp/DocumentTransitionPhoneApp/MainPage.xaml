@@ -31,7 +31,7 @@
 					<TextBox Name="FilterTextBox" HorizontalAlignment="Left" Height="72" Margin="-10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="332"/>
 					<Button Name="SearchButton" Content="Search" HorizontalAlignment="Left" Margin="300,0,-11,0" VerticalAlignment="Top" Width="131" Click="SearchButton_Click"/>
 					<ScrollViewer x:Name="OneDriveExplorerScroll" Margin="0,72,0,0">
-						<StackPanel x:Name="OneDriveExplorerPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420"/>
+                        <StackPanel x:Name="OneDriveExplorerPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420"/>
 					</ScrollViewer>					
 				</Grid>
 			</phone:PanoramaItem>

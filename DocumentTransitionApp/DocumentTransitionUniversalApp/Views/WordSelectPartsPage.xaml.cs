@@ -43,5 +43,10 @@ namespace DocumentTransitionUniversalApp.Views
 		{
 			this.Frame.Navigate(typeof(MainPage), Source);
 		}
+
+		private void CreateSelectPartsUI(IList<PartsSelectionTreeElement<ElementTypes.WordElementType>> elements)
+		{
+			PartsStackPanel.Children.Clear();
+        }
 	}
 }

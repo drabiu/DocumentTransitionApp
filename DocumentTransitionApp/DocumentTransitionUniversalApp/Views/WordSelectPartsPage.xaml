@@ -9,7 +9,11 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="340" Click="BackButton_Click"/>
-        <TextBox x:Name="PersonTextBox" HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="-0.352,0.531" Width="340"/>
-        <ScrollViewer HorizontalAlignment="Left" Height="546" Margin="10,84,0,0" VerticalAlignment="Top" Width="340"/>
+        <TextBox x:Name="PersonTextBox" HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="-0.352,0.531" Width="287"/>
+        <ScrollViewer HorizontalAlignment="Left" Height="509" Margin="10,121,0,0" VerticalAlignment="Top" Width="340">
+            <StackPanel Name="PartsStackPanel" HorizontalAlignment="Left" Height="509" VerticalAlignment="Top" Width="340"/>
+        </ScrollViewer>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="340"/>
+        <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="302,47,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>
