@@ -87,6 +87,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DocumentEditPartsEngine\DocumentEditPartsEngine.csproj">
+      <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
+      <Name>DocumentEditPartsEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DocumentMergeEngine\DocumentMergeEngine.csproj">
       <Project>{9fa41ede-2545-4f48-901b-e29e4605967b}</Project>
       <Name>DocumentMergeEngine</Name>

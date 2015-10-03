@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Services;
 
 using DocumentSplitEngine;
 using SplitDescriptionObjects;
 using DocumentMergeEngine;
+using DocumentEditPartsEngine;
 
 namespace DocumentTransitionAppServices
 {
@@ -28,14 +26,23 @@ namespace DocumentTransitionAppServices
 			MemoryStream doc = new MemoryStream(docxFile);
 			MemoryStream xml = new MemoryStream(xmlFile);
 			run.OpenAndSearchWordDocument(doc, xml);
+
 			return run.SaveSplitDocument(doc).ToArray();
 		}
 
 		[WebMethod]
-		public byte[] MergeDocument(PersonFiles[] files)
+		public byte[] MergeDocument(string docName, PersonFiles[] files)
 		{
 			IMerge merge = new DocumentMerge();
+
 			return merge.Run(new List<PersonFiles>(files));
+		}
+
+		[WebMethod]
+		public List<PartsSelectionTreeElement> GetParts(string docName, byte[] documentFile)
+		{
+			IDocumentParts parts = DocumentPartsBuilder.Build(Path.GetExtension(docName));
+			return parts.Get(new MemoryStream(documentFile));
 		}
 	}	
 }
