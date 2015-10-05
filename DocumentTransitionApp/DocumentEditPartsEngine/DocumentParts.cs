@@ -124,6 +124,13 @@ namespace DocumentEditPartsEngine
 
 			return result;
 		}
+
+		private PartsSelectionTreeElement GetParagraphPart(OpenXmlElement element)
+		{
+			PartsSelectionTreeElement result = null;
+
+			return result;
+		}
 	}
 
 	public class ExcelDocumentParts : IDocumentParts
