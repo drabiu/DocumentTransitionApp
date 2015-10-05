@@ -5,6 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
+
 namespace DocumentEditPartsEngine
 {
 	public enum ElementType
@@ -23,6 +27,10 @@ namespace DocumentEditPartsEngine
 		public List<PartsSelectionTreeElement> Childs { get; private set; }
 		public string Name { get; private set; }
 		public int Indent { get; private set; }
+
+		public PartsSelectionTreeElement()
+		{
+		}
 
 		public PartsSelectionTreeElement(string id, ElementType type, string name, int indent)
 		{
@@ -68,7 +76,53 @@ namespace DocumentEditPartsEngine
 	{
 		List<PartsSelectionTreeElement> IDocumentParts.Get(Stream file)
 		{
-			throw new NotImplementedException();
+			List<PartsSelectionTreeElement> documentElements = new List<PartsSelectionTreeElement>();
+			using (WordprocessingDocument wordDoc =
+				WordprocessingDocument.Open(file, true))
+			{
+				Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;			
+				for (int index = 0; index < body.ChildElements.Count; index++)
+				{
+					PartsSelectionTreeElement part;
+					var element = body.ChildElements[index];
+					part = GetPicturePart(element);
+					part = GetTablePart(element);
+					if (part != null)
+						documentElements.Add(part);
+				}
+			}
+
+			return documentElements;
+		}
+
+		private PartsSelectionTreeElement GetPicturePart(OpenXmlElement element)
+		{
+			PartsSelectionTreeElement result = null;
+			if (element is Wordproc.Paragraph)
+			{
+				Wordproc.Paragraph paragraph = element as Wordproc.Paragraph;
+                if (paragraph.ChildElements.Any(ch => ch is Wordproc.Run))
+				{
+					Wordproc.Run run = paragraph.ChildElements.OfType<Wordproc.Run>().SingleOrDefault();
+					if (run.ChildElements.Any(ch => ch is Wordproc.Picture))
+					{
+						result = new PartsSelectionTreeElement(paragraph.ParagraphId, ElementType.Picture, string.Empty, 0);
+					}
+				}
+			}
+
+			return result;
+		}
+
+		private PartsSelectionTreeElement GetTablePart(OpenXmlElement element)
+		{
+			PartsSelectionTreeElement result = null;
+			if (element is Wordproc.Table)
+			{
+
+			}
+
+			return result;
 		}
 	}
 
