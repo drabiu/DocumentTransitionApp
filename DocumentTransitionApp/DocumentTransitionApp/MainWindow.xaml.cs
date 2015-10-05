@@ -78,10 +78,10 @@ namespace DocumentTransitionApp
 		private void Button_Click_2(object sender, RoutedEventArgs e)
 		{
 			string docName = System.IO.Path.GetFileNameWithoutExtension(docxTextBox.Text);
-			ILocalSplit run = new DocumentSplit(docName);
-			run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
-			//RunSplitWebService(docName, docxTextBox.Text, xmlTextBox.Text);
-			run.SaveSplitDocument(docxTextBox.Text);
+			//ILocalSplit run = new DocumentSplit(docName);
+			//run.OpenAndSearchWordDocument(docxTextBox.Text, xmlTextBox.Text);
+			RunSplitWebService(docName, docxTextBox.Text, xmlTextBox.Text);
+			//run.SaveSplitDocument(docxTextBox.Text);
 		}
 
 		private async void RunSplitWebService(string docName, string filePath, string xmlPath)
@@ -92,7 +92,8 @@ namespace DocumentTransitionApp
 			byte[] xmlStream = File.ReadAllBytes(xmlPath);
 
 			//result = serviceClient.SplitDocument(docName, fileStream, xmlStream);
-			Service.SplitDocumentResponse response = await serviceClient.SplitDocumentAsync(docName, fileStream, xmlStream);
+			//Service.SplitDocumentResponse response = await serviceClient.SplitDocumentAsync(docName, fileStream, xmlStream);
+			var result = serviceClient.GetParts(docName, fileStream);
 		}
 
 		private void Button_Click_3(object sender, RoutedEventArgs e)

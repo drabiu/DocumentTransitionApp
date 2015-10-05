@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionApp", "DocumentTransitionApp\DocumentTransitionApp.csproj", "{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{364AF44B-B5C5-4A2F-8231-092B72F1878B} = {364AF44B-B5C5-4A2F-8231-092B72F1878B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitDescriptionObjects", "SplitDescriptionObjects\SplitDescriptionObjects.csproj", "{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}"
 EndProject

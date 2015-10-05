@@ -98,7 +98,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\TransitionAppService\DocumentTransitionApp.TransitionAppService.GetPartsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppService\DocumentTransitionApp.TransitionAppService.MergeDocumentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppService\DocumentTransitionApp.TransitionAppService.PartsSelectionTreeElement.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\TransitionAppService\DocumentTransitionApp.TransitionAppService.PersonFiles.datasource">
@@ -107,7 +113,7 @@
     <None Include="Service References\TransitionAppService\DocumentTransitionApp.TransitionAppService.SplitDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\TransitionAppService\TransitionAppServices.wsdl" />
+    <None Include="Service References\TransitionAppService\TransitionAppServices1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DocumentMergeEngine\DocumentMergeEngine.csproj">
@@ -140,6 +146,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TransitionAppService\TransitionAppServices.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -90,6 +90,133 @@ namespace DocumentTransitionApp.TransitionAppService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PartsSelectionTreeElement", Namespace="http://tempuri.org/")]
+    [System.SerializableAttribute()]
+    public partial class PartsSelectionTreeElement : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IdField;
+        
+        private DocumentTransitionApp.TransitionAppService.ElementType TypeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private DocumentTransitionApp.TransitionAppService.PartsSelectionTreeElement[] ChildsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        private int IndentField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdField, value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public DocumentTransitionApp.TransitionAppService.ElementType Type {
+            get {
+                return this.TypeField;
+            }
+            set {
+                if ((this.TypeField.Equals(value) != true)) {
+                    this.TypeField = value;
+                    this.RaisePropertyChanged("Type");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public DocumentTransitionApp.TransitionAppService.PartsSelectionTreeElement[] Childs {
+            get {
+                return this.ChildsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ChildsField, value) != true)) {
+                    this.ChildsField = value;
+                    this.RaisePropertyChanged("Childs");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=4)]
+        public int Indent {
+            get {
+                return this.IndentField;
+            }
+            set {
+                if ((this.IndentField.Equals(value) != true)) {
+                    this.IndentField = value;
+                    this.RaisePropertyChanged("Indent");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ElementType", Namespace="http://tempuri.org/")]
+    public enum ElementType : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Paragraph = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Table = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Picture = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Sheet = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Slide = 4,
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TransitionAppService.Service1Soap")]
     public interface Service1Soap {
@@ -101,12 +228,19 @@ namespace DocumentTransitionApp.TransitionAppService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SplitDocument", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.SplitDocumentResponse> SplitDocumentAsync(DocumentTransitionApp.TransitionAppService.SplitDocumentRequest request);
         
-        // CODEGEN: Generating message contract since element name files from namespace http://tempuri.org/ is not marked nillable
+        // CODEGEN: Generating message contract since element name docName from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergeDocument", ReplyAction="*")]
         DocumentTransitionApp.TransitionAppService.MergeDocumentResponse MergeDocument(DocumentTransitionApp.TransitionAppService.MergeDocumentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergeDocument", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.MergeDocumentResponse> MergeDocumentAsync(DocumentTransitionApp.TransitionAppService.MergeDocumentRequest request);
+        
+        // CODEGEN: Generating message contract since element name docName from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetParts", ReplyAction="*")]
+        DocumentTransitionApp.TransitionAppService.GetPartsResponse GetParts(DocumentTransitionApp.TransitionAppService.GetPartsRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetParts", ReplyAction="*")]
+        System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.GetPartsResponse> GetPartsAsync(DocumentTransitionApp.TransitionAppService.GetPartsRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -209,12 +343,16 @@ namespace DocumentTransitionApp.TransitionAppService {
     public partial class MergeDocumentRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string docName;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public DocumentTransitionApp.TransitionAppService.PersonFiles[] files;
         
         public MergeDocumentRequestBody() {
         }
         
-        public MergeDocumentRequestBody(DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
+        public MergeDocumentRequestBody(string docName, DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
+            this.docName = docName;
             this.files = files;
         }
     }
@@ -250,6 +388,78 @@ namespace DocumentTransitionApp.TransitionAppService {
         
         public MergeDocumentResponseBody(byte[] MergeDocumentResult) {
             this.MergeDocumentResult = MergeDocumentResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetPartsRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetParts", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionApp.TransitionAppService.GetPartsRequestBody Body;
+        
+        public GetPartsRequest() {
+        }
+        
+        public GetPartsRequest(DocumentTransitionApp.TransitionAppService.GetPartsRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetPartsRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string docName;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public byte[] documentFile;
+        
+        public GetPartsRequestBody() {
+        }
+        
+        public GetPartsRequestBody(string docName, byte[] documentFile) {
+            this.docName = docName;
+            this.documentFile = documentFile;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetPartsResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPartsResponse", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionApp.TransitionAppService.GetPartsResponseBody Body;
+        
+        public GetPartsResponse() {
+        }
+        
+        public GetPartsResponse(DocumentTransitionApp.TransitionAppService.GetPartsResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetPartsResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public DocumentTransitionApp.TransitionAppService.PartsSelectionTreeElement[] GetPartsResult;
+        
+        public GetPartsResponseBody() {
+        }
+        
+        public GetPartsResponseBody(DocumentTransitionApp.TransitionAppService.PartsSelectionTreeElement[] GetPartsResult) {
+            this.GetPartsResult = GetPartsResult;
         }
     }
     
@@ -314,9 +524,10 @@ namespace DocumentTransitionApp.TransitionAppService {
             return base.Channel.MergeDocument(request);
         }
         
-        public byte[] MergeDocument(DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
+        public byte[] MergeDocument(string docName, DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
             DocumentTransitionApp.TransitionAppService.MergeDocumentRequest inValue = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequest();
             inValue.Body = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequestBody();
+            inValue.Body.docName = docName;
             inValue.Body.files = files;
             DocumentTransitionApp.TransitionAppService.MergeDocumentResponse retVal = ((DocumentTransitionApp.TransitionAppService.Service1Soap)(this)).MergeDocument(inValue);
             return retVal.Body.MergeDocumentResult;
@@ -327,11 +538,39 @@ namespace DocumentTransitionApp.TransitionAppService {
             return base.Channel.MergeDocumentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.MergeDocumentResponse> MergeDocumentAsync(DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
+        public System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.MergeDocumentResponse> MergeDocumentAsync(string docName, DocumentTransitionApp.TransitionAppService.PersonFiles[] files) {
             DocumentTransitionApp.TransitionAppService.MergeDocumentRequest inValue = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequest();
             inValue.Body = new DocumentTransitionApp.TransitionAppService.MergeDocumentRequestBody();
+            inValue.Body.docName = docName;
             inValue.Body.files = files;
             return ((DocumentTransitionApp.TransitionAppService.Service1Soap)(this)).MergeDocumentAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        DocumentTransitionApp.TransitionAppService.GetPartsResponse DocumentTransitionApp.TransitionAppService.Service1Soap.GetParts(DocumentTransitionApp.TransitionAppService.GetPartsRequest request) {
+            return base.Channel.GetParts(request);
+        }
+        
+        public DocumentTransitionApp.TransitionAppService.PartsSelectionTreeElement[] GetParts(string docName, byte[] documentFile) {
+            DocumentTransitionApp.TransitionAppService.GetPartsRequest inValue = new DocumentTransitionApp.TransitionAppService.GetPartsRequest();
+            inValue.Body = new DocumentTransitionApp.TransitionAppService.GetPartsRequestBody();
+            inValue.Body.docName = docName;
+            inValue.Body.documentFile = documentFile;
+            DocumentTransitionApp.TransitionAppService.GetPartsResponse retVal = ((DocumentTransitionApp.TransitionAppService.Service1Soap)(this)).GetParts(inValue);
+            return retVal.Body.GetPartsResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.GetPartsResponse> DocumentTransitionApp.TransitionAppService.Service1Soap.GetPartsAsync(DocumentTransitionApp.TransitionAppService.GetPartsRequest request) {
+            return base.Channel.GetPartsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<DocumentTransitionApp.TransitionAppService.GetPartsResponse> GetPartsAsync(string docName, byte[] documentFile) {
+            DocumentTransitionApp.TransitionAppService.GetPartsRequest inValue = new DocumentTransitionApp.TransitionAppService.GetPartsRequest();
+            inValue.Body = new DocumentTransitionApp.TransitionAppService.GetPartsRequestBody();
+            inValue.Body.docName = docName;
+            inValue.Body.documentFile = documentFile;
+            return ((DocumentTransitionApp.TransitionAppService.Service1Soap)(this)).GetPartsAsync(inValue);
         }
     }
 }
