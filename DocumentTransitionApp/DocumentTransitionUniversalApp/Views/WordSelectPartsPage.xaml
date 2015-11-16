@@ -13,7 +13,7 @@
         <ScrollViewer HorizontalAlignment="Left" Height="509" Margin="10,121,0,0" VerticalAlignment="Top" Width="340">
             <StackPanel Name="PartsStackPanel" HorizontalAlignment="Left" Height="509" VerticalAlignment="Top" Width="340"/>
         </ScrollViewer>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="340"/>
+        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="340" SelectionChanged="comboBox_SelectionChanged"/>
         <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="302,47,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>

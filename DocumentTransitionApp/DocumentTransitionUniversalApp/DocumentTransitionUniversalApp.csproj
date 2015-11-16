@@ -93,7 +93,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\TransitionAppServices\TransitionAppServices.disco" />
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPartsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\TransitionAppServices1.disco" />
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -108,7 +111,7 @@
     <None Include="Service References\TransitionAppServices\configuration91.svcinfo" />
     <None Include="project.json" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
-    <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
+    <None Include="Service References\TransitionAppServices\TransitionAppServices1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">

@@ -29,6 +29,8 @@ namespace DocumentTransitionUniversalApp
 		public IList<PartsSelectionTreeElement<ElementType>> Childs { get; private set; }
 		public string Name { get; private set; }
 		public int Indent { get; private set; }
+		public bool CanSelect { get; private set; }
+		public bool Selected { get; private set; }
 
 		public PartsSelectionTreeElement(string id, ElementType type, string name, int indent)
 		{
@@ -37,6 +39,8 @@ namespace DocumentTransitionUniversalApp
 			this.Name = name;
 			this.Indent = indent;
 			this.Childs = new List<PartsSelectionTreeElement<ElementType>>();
+			this.CanSelect = true;
+			this.Selected = false;
 		}
 
 		public PartsSelectionTreeElement(string id, ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)

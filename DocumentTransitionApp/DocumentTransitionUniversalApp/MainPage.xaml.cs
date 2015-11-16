@@ -23,12 +23,14 @@ namespace DocumentTransitionUniversalApp
 	/// </summary>
 	public sealed partial class MainPage : Page
 	{
-		StorageFile DocumentFile;
+		public StorageFile DocumentFile;
 		StorageFile XmlFile;
-		string FileName;
+		public string FileName;
 		DocumentType FileType;
 		bool WasSplit;
 		public Frame AppFrame { get { return this.frame; } }
+		public byte[] docxBinary;
+		public byte[] xmlBinary;
 
 		public enum DocumentType
 		{
@@ -80,6 +82,7 @@ namespace DocumentTransitionUniversalApp
 			if (file != null)
 			{
 				DocumentFile = file;
+				FileName = DocumentFile.Name;
 				switch (Path.GetExtension(file.Name))
 				{
 					case (".docx"):
@@ -99,18 +102,6 @@ namespace DocumentTransitionUniversalApp
 
 		private async void buttonXml_Click(object sender, RoutedEventArgs e)
 		{
-			//var picker = new FileOpenPicker();
-			//picker.ViewMode = PickerViewMode.List;
-			//picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-			//picker.FileTypeFilter.Add(".xml");
-
-			//StorageFile file = await picker.PickSingleFileAsync();
-			//if (file != null)
-			//{
-			//	XmlFile = file;
-			//}
-
-			//EnableSplitButton();
 			switch (FileType)
 			{
 				case (DocumentType.Word):
@@ -128,9 +119,8 @@ namespace DocumentTransitionUniversalApp
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			byte[] docxBinary = await StorageFileToByteArray(DocumentFile);
-			byte[] xmlBinary = await StorageFileToByteArray(XmlFile);
-			FileName = DocumentFile.Name;
+			docxBinary = await StorageFileToByteArray(DocumentFile);
+			xmlBinary = await StorageFileToByteArray(XmlFile);
             var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), docxBinary, xmlBinary);
 			SaveFiles(result);
 			WasSplit = true;
@@ -141,7 +131,7 @@ namespace DocumentTransitionUniversalApp
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			var files = await GetFiles();
-            var result = await serviceClient.MergeDocumentAsync(files);
+            var result = await serviceClient.MergeDocumentAsync(FileName, files);
 			SaveFile(result);
         }
 
@@ -319,7 +309,7 @@ namespace DocumentTransitionUniversalApp
 			EnableMergeButton();
         }
 
-		private async Task<byte[]> StorageFileToByteArray(StorageFile file)
+		public async Task<byte[]> StorageFileToByteArray(StorageFile file)
 		{
 			var fileStream = await file.OpenAsync(FileAccessMode.Read);
 			return ReadFully(fileStream.AsStream());

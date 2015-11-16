@@ -33,6 +33,7 @@
       <s:element name="MergeDocument">
         <s:complexType>
           <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="files" type="tns:ArrayOfPersonFiles" />
           </s:sequence>
         </s:complexType>
@@ -44,6 +45,44 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetParts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentFile" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPartsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPartsResult" type="tns:ArrayOfPartsSelectionTreeElement" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPartsSelectionTreeElement">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PartsSelectionTreeElement" nillable="true" type="tns:PartsSelectionTreeElement" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PartsSelectionTreeElement">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:ElementType" />
+          <s:element minOccurs="0" maxOccurs="1" name="Childs" type="tns:ArrayOfPartsSelectionTreeElement" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Indent" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ElementType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Paragraph" />
+          <s:enumeration value="Table" />
+          <s:enumeration value="Picture" />
+          <s:enumeration value="Sheet" />
+          <s:enumeration value="Slide" />
+        </s:restriction>
+      </s:simpleType>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="SplitDocumentSoapIn">
@@ -58,6 +97,12 @@
   <wsdl:message name="MergeDocumentSoapOut">
     <wsdl:part name="parameters" element="tns:MergeDocumentResponse" />
   </wsdl:message>
+  <wsdl:message name="GetPartsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParts" />
+  </wsdl:message>
+  <wsdl:message name="GetPartsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPartsResponse" />
+  </wsdl:message>
   <wsdl:portType name="Service1Soap">
     <wsdl:operation name="SplitDocument">
       <wsdl:input message="tns:SplitDocumentSoapIn" />
@@ -66,6 +111,10 @@
     <wsdl:operation name="MergeDocument">
       <wsdl:input message="tns:MergeDocumentSoapIn" />
       <wsdl:output message="tns:MergeDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParts">
+      <wsdl:input message="tns:GetPartsSoapIn" />
+      <wsdl:output message="tns:GetPartsSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
@@ -81,6 +130,15 @@
     </wsdl:operation>
     <wsdl:operation name="MergeDocument">
       <soap:operation soapAction="http://tempuri.org/MergeDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParts">
+      <soap:operation soapAction="http://tempuri.org/GetParts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -109,13 +167,22 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetParts">
+      <soap12:operation soapAction="http://tempuri.org/GetParts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="Service1">
     <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
-      <soap:address location="http://10.7.90.214:6943/TransitionAppServices.asmx" />
+      <soap:address location="http://localhost:6943/TransitionAppServices.asmx" />
     </wsdl:port>
     <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
-      <soap12:address location="http://10.7.90.214:6943/TransitionAppServices.asmx" />
+      <soap12:address location="http://localhost:6943/TransitionAppServices.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
