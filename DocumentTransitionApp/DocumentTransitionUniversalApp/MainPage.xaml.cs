@@ -29,7 +29,7 @@ namespace DocumentTransitionUniversalApp
 		DocumentType FileType;
 		bool WasSplit;
 		public Frame AppFrame { get { return this.frame; } }
-		public byte[] docxBinary;
+		public byte[] documentBinary;
 		public byte[] xmlBinary;
 
 		public enum DocumentType
@@ -95,6 +95,8 @@ namespace DocumentTransitionUniversalApp
 						FileType = DocumentType.Presentation;
 						break;
 				}
+
+				documentBinary = await StorageFileToByteArray(DocumentFile);
 			}
 
 			EnablePartsButton();
@@ -119,9 +121,8 @@ namespace DocumentTransitionUniversalApp
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			docxBinary = await StorageFileToByteArray(DocumentFile);
-			xmlBinary = await StorageFileToByteArray(XmlFile);
-            var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), docxBinary, xmlBinary);
+			//xmlBinary = await StorageFileToByteArray(XmlFile);
+			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
 			SaveFiles(result);
 			WasSplit = true;
 			EnableMergeButton();

@@ -82,8 +82,6 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         private string IdField;
         
-        private DocumentTransitionUniversalApp.TransitionAppServices.ElementType TypeField;
-        
         private System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> ChildsField;
         
         private string NameField;
@@ -103,20 +101,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public DocumentTransitionUniversalApp.TransitionAppServices.ElementType Type {
-            get {
-                return this.TypeField;
-            }
-            set {
-                if ((this.TypeField.Equals(value) != true)) {
-                    this.TypeField = value;
-                    this.RaisePropertyChanged("Type");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> Childs {
             get {
                 return this.ChildsField;
@@ -129,7 +114,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         public string Name {
             get {
                 return this.NameField;
@@ -142,7 +127,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=4)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
         public int Indent {
             get {
                 return this.IndentField;
@@ -163,26 +148,6 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ElementType", Namespace="http://tempuri.org/")]
-    public enum ElementType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Paragraph = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Table = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Picture = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Sheet = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Slide = 4,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

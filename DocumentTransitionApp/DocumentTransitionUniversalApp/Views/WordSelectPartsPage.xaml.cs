@@ -57,7 +57,7 @@ namespace DocumentTransitionUniversalApp.Views
 		private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			var result = await serviceClient.GetPartsAsync(Source.FileName, Source.docxBinary);
+			var result = await serviceClient.GetPartsAsync(Source.FileName, Source.documentBinary);
 		}
 	}
 
