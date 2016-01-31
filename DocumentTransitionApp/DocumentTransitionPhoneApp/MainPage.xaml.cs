@@ -4,17 +4,13 @@ using System.IO.IsolatedStorage;
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using System.Dynamic;
 using System.Threading.Tasks;
 
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Microsoft.Live;
-using Microsoft.Live.Controls;
+//using Microsoft.Live;
+//using Microsoft.Live.Controls;
 
 using Windows.Storage;
 
@@ -25,8 +21,8 @@ namespace DocumentTransitionPhoneApp
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
-		private LiveConnectClient Client;
-		private LiveAuthClient AuthClient;
+		//private LiveConnectClient Client;
+		//private LiveAuthClient AuthClient;
 		private IDictionary<string, OneDriveFilesTreeElement> FilesTreeElements;
 		private SelectedFile DocumentFile;
 		private SelectedFile SplitFile;

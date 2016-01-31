@@ -49,16 +49,31 @@ namespace DocumentTransitionUniversalApp.Views
 			this.Frame.Navigate(typeof(MainPage), Source);
 		}
 
-		private void CreateSelectPartsUI(IList<PartsSelectionTreeElement<ElementTypes.WordElementType>> elements)
+		private void CreateSelectPartsUI(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> elements)
 		{
-			PartsStackPanel.Children.Clear();
+            WordSelectPartsItems.Items.Clear();
+            foreach (var element in elements)
+            {
+                CreateButtonBlock(new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent));
+            }
         }
 
-		private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes.WordElementType> element)
+        {
+            Button button = new Button();
+            button.Name = element.Id;
+            button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
+            button.Content = element.Name;
+
+            WordSelectPartsItems.Items.Add(button);
+        }
+
+        private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			var result = await serviceClient.GetPartsAsync(Source.FileName, Source.documentBinary);
-		}
+            CreateSelectPartsUI(result.Body.GetPartsResult);
+        }
 	}
 
 	public class ComboBoxItem
