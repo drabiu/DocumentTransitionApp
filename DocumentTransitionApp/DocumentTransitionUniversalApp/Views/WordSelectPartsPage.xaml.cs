@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,6 +27,7 @@ namespace DocumentTransitionUniversalApp.Views
 	{
 		MainPage Source;
 		List<ComboBoxItem> ComboItems;
+        Dictionary<int, PartsSelectionTreeElement<ElementTypes.WordElementType>> SelectionParts;
 
 		public WordSelectPartsPage()
 		{
@@ -59,13 +61,22 @@ namespace DocumentTransitionUniversalApp.Views
         }
 
         private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes.WordElementType> element)
-        {
+		{
             Button button = new Button();
+            button.Background = new SolidColorBrush(Colors.Transparent);
             button.Name = element.Id;
             button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
             button.Content = element.Name;
+            if (element.CanSelect)
+                button.Tapped += Button_Tapped;
 
             WordSelectPartsItems.Items.Add(button);
+        }
+
+        private void Button_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var button = sender as Button;
+            button.Background = new SolidColorBrush(Colors.Aqua);
         }
 
         private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -73,10 +84,10 @@ namespace DocumentTransitionUniversalApp.Views
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			var result = await serviceClient.GetPartsAsync(Source.FileName, Source.documentBinary);
             CreateSelectPartsUI(result.Body.GetPartsResult);
-        }
-	}
+		}
+    }
 
-	public class ComboBoxItem
+    public class ComboBoxItem
 	{
 		public string Name { get; set; }
 		public int Id { get; set; }
