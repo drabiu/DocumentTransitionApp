@@ -22,14 +22,16 @@ namespace DocumentTransitionUniversalApp.Views
 		MainPage _source;
 		List<ComboBoxItem> _comboItems;
         int _lastId;
-        Dictionary<int, PartsSelectionTreeElement<ElementTypes.WordElementType>> _selectionParts;
+        int _allItemsId = 0;
+        List<Tuple<int, PartsSelectionTreeElement<ElementTypes.WordElementType>>> _selectionParts;
 
 		public WordSelectPartsPage()
 		{
 			this.InitializeComponent();
 			_comboItems = new List<ComboBoxItem>();
-            _comboItems.Add(new ComboBoxItem() { Id = _lastId = 0, Name = "All" });
+            _comboItems.Add(new ComboBoxItem() { Id = _lastId = _allItemsId, Name = "All" });
 			comboBox.ItemsSource = _comboItems.Select(cmb => cmb.Name);
+            _selectionParts = new List<Tuple<int, PartsSelectionTreeElement<ElementTypes.WordElementType>>>();
             AddButton.IsEnabled = false;
 		}
 
@@ -46,6 +48,16 @@ namespace DocumentTransitionUniversalApp.Views
 		{
 			this.Frame.Navigate(typeof(MainPage), _source);
 		}
+
+        private void PrepareListOfItems(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> elements)
+        {
+            foreach (var element in elements)
+            {
+                var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>()
+                var pair = new Tuple<int, PartsSelectionTreeElement<ElementTypes.WordElementType>>(_allItemsId, item);
+                _selectionParts.Add(pair);
+            }
+        }
 
 		private void CreateSelectPartsUI(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> elements)
 		{
