@@ -23,17 +23,13 @@ namespace DocumentTransitionUniversalApp.Views
 		List<ComboBoxItem> _comboItems;
         int _lastId;
         int _allItemsId = 0;
-        List<Tuple<int, PartsSelectionTreeElement<ElementTypes.WordElementType>>> _selectionParts;
+        List<PartsSelectionTreeElement<ElementTypes.WordElementType>> _selectionParts;
 
 		public WordSelectPartsPage()
 		{
 			this.InitializeComponent();
-			_comboItems = new List<ComboBoxItem>();
-            _comboItems.Add(new ComboBoxItem() { Id = _lastId = _allItemsId, Name = "All" });
-			comboBox.ItemsSource = _comboItems.Select(cmb => cmb.Name);
-            _selectionParts = new List<Tuple<int, PartsSelectionTreeElement<ElementTypes.WordElementType>>>();
-            AddButton.IsEnabled = false;
-		}
+            InitializeVariables();
+        }
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
@@ -41,7 +37,9 @@ namespace DocumentTransitionUniversalApp.Views
 			{
 				this._source = e.Parameter as MainPage;
 			}
-			base.OnNavigatedTo(e);
+
+            InitializeItems();
+            base.OnNavigatedTo(e);
 		}
 
 		private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -53,45 +51,53 @@ namespace DocumentTransitionUniversalApp.Views
         {
             foreach (var element in elements)
             {
-                var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>()
-                var pair = new Tuple<int, PartsSelectionTreeElement<ElementTypes.WordElementType>>(_allItemsId, item);
-                _selectionParts.Add(pair);
+                var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent);
+                _selectionParts.Add(item);
             }
         }
 
-		private void CreateSelectPartsUI(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> elements)
+		private void CreateSelectPartsUI(IEnumerable<PartsSelectionTreeElement<ElementTypes.WordElementType>> elements)
 		{
             WordSelectPartsItems.Items.Clear();
             foreach (var element in elements)
             {
-                CreateButtonBlock(new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent));
+                CreateButtonBlock(element);
             }
         }
 
         private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes.WordElementType> element)
 		{
             Button button = new Button();
-            button.Background = new SolidColorBrush(Colors.Transparent);
+
+            if (element.Selected)
+                button.Background = new SolidColorBrush(Colors.Honeydew);
+            else
+                button.Background = new SolidColorBrush(Colors.Transparent);
+
             button.Name = element.Id;
             button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
             button.Content = element.Name;
-            if (element.CanSelect)
+
+            if ((string)comboBox.SelectedItem != null && element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_comboItems, (string)comboBox.SelectedItem).Id))
                 button.Tapped += Button_Tapped;
+            else
+                button.Background = new SolidColorBrush(Colors.DimGray);
 
             WordSelectPartsItems.Items.Add(button);
         }
 
         private void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            var ownerId = ComboBoxItem.GetComboBoxItemByName(_comboItems, (string)comboBox.SelectedItem).Id;
             var button = sender as Button;
-            button.Background = new SolidColorBrush(Colors.Aqua);
+            button.Background = new SolidColorBrush(Colors.Honeydew);
+            var selectedElement = _selectionParts.Single(el => el.Id == button.Name);
+            selectedElement.SelectItem(ownerId);
         }
 
         private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			var result = await serviceClient.GetPartsAsync(_source.FileName, _source.documentBinary);
-            CreateSelectPartsUI(result.Body.GetPartsResult);
+            CreateSelectPartsUI(_selectionParts);
 		}
 
         private void PersonTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -116,7 +122,23 @@ namespace DocumentTransitionUniversalApp.Views
                 _comboItems.Add(new ComboBoxItem() { Id = ++_lastId, Name = name });
             }
 
-            comboBox.ItemsSource = _comboItems.Select(cmb => cmb.Name);
+            comboBox.ItemsSource = _comboItems.Select(cb => cb.Name);
+        }
+
+        private void InitializeVariables()
+        {
+            _comboItems = new List<ComboBoxItem>();
+            _comboItems.Add(new ComboBoxItem() { Id = _lastId = _allItemsId, Name = "All" });
+            comboBox.ItemsSource = _comboItems.Select(cb => cb.Name);
+            _selectionParts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
+            AddButton.IsEnabled = false;
+        }
+
+        private async void InitializeItems()
+        {
+            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var result = await serviceClient.GetPartsAsync(_source.FileName, _source.documentBinary);
+            PrepareListOfItems(result.Body.GetPartsResult);
         }
     }
 
@@ -124,5 +146,10 @@ namespace DocumentTransitionUniversalApp.Views
 	{
 		public string Name { get; set; }
 		public int Id { get; set; }
-	}
+
+        public static ComboBoxItem GetComboBoxItemByName(IEnumerable<ComboBoxItem> items, string name)
+        {
+            return items.Single(it => it.Name == name);
+        }
+    }
 }

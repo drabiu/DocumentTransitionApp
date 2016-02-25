@@ -29,18 +29,19 @@ namespace DocumentTransitionUniversalApp
 		public IList<PartsSelectionTreeElement<ElementType>> Childs { get; private set; }
 		public string Name { get; private set; }
 		public int Indent { get; private set; }
-		public bool CanSelect { get; private set; }
-		public bool Selected { get; private set; }
+		public bool Selected { get; set; }
+        private int _ownerId { get; set; }
+        int _allItemsId = 0;
 
-		public PartsSelectionTreeElement(string id, ElementType type, string name, int indent)
+        public PartsSelectionTreeElement(string id, ElementType type, string name, int indent)
 		{
 			this.Id = id;
 			this.Type = type;
 			this.Name = name;
 			this.Indent = indent;
 			this.Childs = new List<PartsSelectionTreeElement<ElementType>>();
-			this.CanSelect = true;
 			this.Selected = false;
+            this._ownerId = _allItemsId;
 		}
 
 		public PartsSelectionTreeElement(string id, ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)
@@ -80,5 +81,19 @@ namespace DocumentTransitionUniversalApp
 
 			return result;
 		}
+
+        public bool CheckIfCanBeSelected(int ownerId)
+        {
+            if ((this._ownerId != _allItemsId && this._ownerId == ownerId) || (this._ownerId == _allItemsId && ownerId != _allItemsId))
+                return true;
+            else
+                return false;
+        }
+
+        public void SelectItem(int ownerId)
+        {
+            Selected = !Selected;
+            this._ownerId = ownerId;
+        }
 	}
 }
