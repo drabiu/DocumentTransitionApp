@@ -23,11 +23,13 @@ namespace DocumentTransitionUniversalApp
 	/// </summary>
 	public sealed partial class MainPage : Page
 	{
+        public WordSelectPartsPage WordPartPage;
 		public StorageFile DocumentFile;
 		StorageFile XmlFile;
 		public string FileName;
 		DocumentType FileType;
-		bool WasSplit;
+		bool _wasSplit;
+        bool _wasEditParts;
 		public Frame AppFrame { get { return this.frame; } }
 		public byte[] documentBinary;
 		public byte[] xmlBinary;
@@ -100,10 +102,12 @@ namespace DocumentTransitionUniversalApp
 			}
 
 			EnablePartsButton();
+            EnableLoadButton();
         }
 
 		private async void buttonXml_Click(object sender, RoutedEventArgs e)
 		{
+            _wasEditParts = true;
 			switch (FileType)
 			{
 				case (DocumentType.Word):
@@ -124,7 +128,7 @@ namespace DocumentTransitionUniversalApp
 			//xmlBinary = await StorageFileToByteArray(XmlFile);
 			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
 			SaveFiles(result);
-			WasSplit = true;
+			_wasSplit = true;
 			EnableMergeButton();
 		}
 
@@ -299,15 +303,29 @@ namespace DocumentTransitionUniversalApp
 
 		private void EnableMergeButton()
 		{
-			if (WasSplit)
+			if (_wasSplit)
 				buttonMerge.IsEnabled = true;
-		}	
+		}
+
+        private void EnableGenerateButton()
+        {
+            if (_wasEditParts)
+                buttonGenerateSplit.IsEnabled = true;
+        }
+
+        private void EnableLoadButton()
+        {
+            if (DocumentFile != null)
+                buttonLoadSplit.IsEnabled = true;
+        }
 		
 		private void InitButtons()
 		{
 			EnablePartsButton();
 			EnableSplitButton();
 			EnableMergeButton();
+            EnableGenerateButton();
+            EnableLoadButton();
         }
 
 		public async Task<byte[]> StorageFileToByteArray(StorageFile file)
@@ -336,13 +354,37 @@ namespace DocumentTransitionUniversalApp
 			{
 				var main = e.Parameter as MainPage;
 				this.DocumentFile = main.DocumentFile;
+                this.documentBinary = main.documentBinary;
 				this.XmlFile = main.XmlFile;
 				this.FileName = main.FileName;
 				this.FileType = main.FileType;
-				this.WasSplit = main.WasSplit;
+				this._wasSplit = main._wasSplit;
+                this._wasEditParts = main._wasEditParts;
+                this.WordPartPage = main.WordPartPage;
 
 				InitButtons();
 			}
 		}
-	}
+
+        private void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.List;
+            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            picker.FileTypeFilter.Add(".xml");
+
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                XmlFile = file;
+                xmlBinary = await StorageFileToByteArray(XmlFile);
+                EnableSplitButton();
+            }           
+        }
+    }
 }
