@@ -30,6 +30,14 @@ namespace DocumentTransitionAppServices
 			return run.SaveSplitDocument(doc).ToArray();
 		}
 
+        [WebMethod]
+        public byte[] GenerateSplitDocument(string docName, List<PartsSelectionTreeElement> parts)
+        {
+            IDocumentSplitXml split = new WordSplitXml();
+
+            return split.CreateSplitXml(docName, parts);
+        }
+
 		[WebMethod]
 		public byte[] MergeDocument(string docName, PersonFiles[] files)
 		{
