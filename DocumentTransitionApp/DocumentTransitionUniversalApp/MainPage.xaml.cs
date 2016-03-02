@@ -144,7 +144,10 @@ namespace DocumentTransitionUniversalApp
 		{
 			FolderPicker folderPicker = new FolderPicker();
 			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            folderPicker.FileTypeFilter.Add(".docx");
+            folderPicker.FileTypeFilter.Add(".xlsx");
+            folderPicker.FileTypeFilter.Add(".pptx");
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
 			StorageFolder filesSaveFolder;
 			try
 			{
@@ -212,7 +215,10 @@ namespace DocumentTransitionUniversalApp
 		{
 			byte[] fileBinary = response.Body.MergeDocumentResult;
 			FolderPicker folderPicker = new FolderPicker();
-			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+            folderPicker.FileTypeFilter.Add(".docx");
+            folderPicker.FileTypeFilter.Add(".xlsx");
+            folderPicker.FileTypeFilter.Add(".pptx");
+            folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
 			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
 			StorageFile newFile;
 			try
@@ -234,9 +240,10 @@ namespace DocumentTransitionUniversalApp
 		{
 			ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
 			FolderPicker folderPicker = new FolderPicker();
-			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-			StorageFile xmlFile;
+            folderPicker.FileTypeFilter.Add(".docx");
+            folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+			StorageFolder folder = await folderPicker.PickSingleFolderAsync();      
+            StorageFile xmlFile;
 			try
 			{
 				xmlFile = await folder.GetFileAsync("mergeXmlDefinition.xml");
