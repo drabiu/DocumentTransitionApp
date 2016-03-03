@@ -31,8 +31,7 @@ namespace DocumentTransitionUniversalApp
 		public string Name { get; private set; }
 		public int Indent { get; private set; }
 		public bool Selected { get; set; }
-        private int _ownerId { get; set; }
-        int _allItemsId = 0;
+        private string _ownerName { get; set; }
 
         public PartsSelectionTreeElement(string id, ElementType type, string name, int indent)
 		{
@@ -42,7 +41,7 @@ namespace DocumentTransitionUniversalApp
 			this.Indent = indent;
 			this.Childs = new List<PartsSelectionTreeElement<ElementType>>();
 			this.Selected = false;
-            this._ownerId = _allItemsId;
+            this._ownerName = string.Empty;
 		}
 
         public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent) : this (id, type, name, indent)
@@ -88,18 +87,18 @@ namespace DocumentTransitionUniversalApp
 			return result;
 		}
 
-        public bool CheckIfCanBeSelected(int ownerId)
+        public bool CheckIfCanBeSelected(string ownerName)
         {
-            if ((this._ownerId != _allItemsId && this._ownerId == ownerId) || (this._ownerId == _allItemsId && ownerId != _allItemsId))
+            if ((!string.IsNullOrEmpty(this._ownerName) && this._ownerName == ownerName) || (string.IsNullOrEmpty(this._ownerName) && !string.IsNullOrEmpty(ownerName)))
                 return true;
             else
                 return false;
         }
 
-        public void SelectItem(int ownerId)
+        public void SelectItem(string ownerName)
         {
             Selected = !Selected;
-            this._ownerId = ownerId;
+            this._ownerName = ownerName;
         }
 
         public DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement ConvertToPartsSelectionTreeElement()
@@ -109,6 +108,7 @@ namespace DocumentTransitionUniversalApp
             part.ElementId = this.ElementId;
             part.Indent = this.Indent;
             part.Name = this.Name;
+            part.OwnerName = this._ownerName;
             return part;
         }
     }

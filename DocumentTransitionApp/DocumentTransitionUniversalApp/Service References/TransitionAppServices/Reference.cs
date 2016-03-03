@@ -90,6 +90,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         private int IndentField;
         
+        private string OwnerNameField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public string Id {
             get {
@@ -151,6 +153,19 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
                 if ((this.IndentField.Equals(value) != true)) {
                     this.IndentField = value;
                     this.RaisePropertyChanged("Indent");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        public string OwnerName {
+            get {
+                return this.OwnerNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OwnerNameField, value) != true)) {
+                    this.OwnerNameField = value;
+                    this.RaisePropertyChanged("OwnerName");
                 }
             }
         }

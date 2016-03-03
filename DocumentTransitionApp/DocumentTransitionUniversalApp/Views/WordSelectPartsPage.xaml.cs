@@ -86,7 +86,7 @@ namespace DocumentTransitionUniversalApp.Views
             button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
             button.Content = element.Name;
 
-            if ((string)comboBox.SelectedItem != null && element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Id))
+            if ((string)comboBox.SelectedItem != null && element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name))
                 button.Tapped += Button_Tapped;
             else
                 button.Background = new SolidColorBrush(Colors.DimGray);
@@ -96,11 +96,11 @@ namespace DocumentTransitionUniversalApp.Views
 
         private void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var ownerId = ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Id;
+            var ownerName = ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name;
             var button = sender as Button;
             button.Background = new SolidColorBrush(Colors.Honeydew);
             var selectedElement = _pageData.SelectionParts.Single(el => el.Id == button.Name);
-            selectedElement.SelectItem(ownerId);
+            selectedElement.SelectItem(ownerName);
         }
 
         private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -171,7 +171,7 @@ namespace DocumentTransitionUniversalApp.Views
         public WordPartsPageData()
         {
             ComboItems = new List<ComboBoxItem>();
-            ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = "All" });
+            ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = string.Empty });
             SelectionParts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
         }
 

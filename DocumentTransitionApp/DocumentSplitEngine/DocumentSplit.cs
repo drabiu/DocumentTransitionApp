@@ -130,6 +130,7 @@ namespace DocumentSplitEngine
 		List<PersonFiles> SaveSplitDocument(Stream document);
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
         byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
+        List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile);
     }
 
 	public interface IMergeXml
@@ -267,7 +268,7 @@ namespace DocumentSplitEngine
 
         public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
         {
-            var nameList = parts.Select(p => p.Name).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+            var nameList = parts.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
             var indexer = new NameIndexer(nameList);
 
             Split splitXml = new Split();
@@ -280,16 +281,17 @@ namespace DocumentSplitEngine
             {
                 var person = new Person();
                 person.Email = name;
-                person.UniversalMarker = new PersonUniversalMarker[parts.Where(p => p.Name == name).Count()];
+                person.UniversalMarker = new PersonUniversalMarker[parts.Where(p => p.OwnerName == name).Count()];
                 splitDocument.Person[nameList.IndexOf(name)] = person;
                 
             }
-            foreach(var part in parts.Where(p => !string.IsNullOrEmpty(p.Name)))
+            foreach(var part in parts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
             {
-                var person = splitDocument.Person[nameList.IndexOf(part.Name)];
-                var universalMarker = person.UniversalMarker[indexer.GetNextIndex(part.Name)];
+                var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];
+                var universalMarker = new PersonUniversalMarker();   
                 universalMarker.ElementId = part.ElementId;
                 universalMarker.SelectionLastelementId = part.ElementId;
+                person.UniversalMarker[indexer.GetNextIndex(part.OwnerName)] = universalMarker;
             }
 
             using (MemoryStream splitStream = new MemoryStream())
@@ -462,5 +464,10 @@ namespace DocumentSplitEngine
 
 			return resultList;
 		}
-	}
+
+        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

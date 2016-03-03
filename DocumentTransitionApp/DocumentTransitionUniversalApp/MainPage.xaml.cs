@@ -14,6 +14,7 @@ using DocumentTransitionUniversalApp.Views;
 using Windows.UI.Popups;
 using Windows.UI.Core;
 using System.Collections.Generic;
+using System.Globalization;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -380,7 +381,7 @@ namespace DocumentTransitionUniversalApp
                 selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
             
             var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-            string splitFileName = string.Format("split{0}.xml", DateTime.Today.ToUniversalTime().ToString());
+            string splitFileName = string.Format("split{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture));
             SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
         }
 

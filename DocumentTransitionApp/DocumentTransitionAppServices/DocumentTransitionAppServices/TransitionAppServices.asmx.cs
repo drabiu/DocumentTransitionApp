@@ -53,5 +53,13 @@ namespace DocumentTransitionAppServices
 
 			return parts.Get(new MemoryStream(documentFile));
 		}
-	}	
+
+        [WebMethod]
+        public List<PartsSelectionTreeElement> GetParts(byte[] splitFile)
+        {
+            ISplit split = new DocumentSplit(string.Empty);
+
+            return split.PartsFromSplitXml(new MemoryStream(splitFile));
+        }
+    }	
 }

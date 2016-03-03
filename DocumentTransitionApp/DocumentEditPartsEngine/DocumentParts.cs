@@ -21,14 +21,15 @@ namespace DocumentEditPartsEngine
 
 	public class PartsSelectionTreeElement
 	{
-		public string Id { get; private set; }
-        public string ElementId { get; private set; }
+		public string Id { get; set; }
+        public string ElementId { get; set; }
 		//public ElementType Type { get; private set; }
-		public List<PartsSelectionTreeElement> Childs { get; private set; }
-		public string Name { get; private set; }
-		public int Indent { get; private set; }
+		public List<PartsSelectionTreeElement> Childs { get; set; }
+		public string Name { get; set; }
+		public int Indent { get; set; }
+        public string OwnerName { get; set; }
 
-		public PartsSelectionTreeElement()
+        public PartsSelectionTreeElement()
 		{
 		}
 
@@ -102,7 +103,7 @@ namespace DocumentEditPartsEngine
 			return documentElements;
 		}
 
-		private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id)
+        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id)
 		{
 			List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
 			if (IsSupportedType(element))
@@ -171,7 +172,7 @@ namespace DocumentEditPartsEngine
 
 			return isSupported;
 		}
-	}
+    }
 
 	public class ExcelDocumentParts : IDocumentParts
 	{
@@ -179,7 +180,7 @@ namespace DocumentEditPartsEngine
 		{
 			throw new NotImplementedException();
 		}
-	}
+    }
 
 	public class PresentationDocumentParts : IDocumentParts
 	{
@@ -187,5 +188,5 @@ namespace DocumentEditPartsEngine
 		{
 			throw new NotImplementedException();
 		}
-	}
+    }
 }

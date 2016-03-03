@@ -50,6 +50,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="Childs" type="tns:ArrayOfPartsSelectionTreeElement" />
           <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Indent" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OwnerName" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:element name="GenerateSplitDocumentResponse">
