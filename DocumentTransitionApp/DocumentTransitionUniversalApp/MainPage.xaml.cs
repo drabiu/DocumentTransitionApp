@@ -137,7 +137,7 @@ namespace DocumentTransitionUniversalApp
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			var files = await GetFiles();
             var result = await serviceClient.MergeDocumentAsync(FileName, files);
-			SaveFile(result);
+			SaveFile(result.Body.MergeDocumentResult, FileName, ".docx", ".xlsx", ".pptx");
         }
 
 		private async void SaveFiles(Service.SplitDocumentResponse response)
@@ -211,30 +211,29 @@ namespace DocumentTransitionUniversalApp
 			}
 		}
 
-		private async void SaveFile(Service.MergeDocumentResponse response)
-		{
-			byte[] fileBinary = response.Body.MergeDocumentResult;
-			FolderPicker folderPicker = new FolderPicker();
-            folderPicker.FileTypeFilter.Add(".docx");
-            folderPicker.FileTypeFilter.Add(".xlsx");
-            folderPicker.FileTypeFilter.Add(".pptx");
-            folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-			StorageFile newFile;
-			try
-			{
-				newFile = await folder.GetFileAsync(FileName);
-			}
-			catch (FileNotFoundException ex)
-			{
-				newFile = await folder.CreateFileAsync(FileName);
-			}
+        private async void SaveFile(byte[] fileBinary, string fileName, params string[] filters)
+        {
+            FolderPicker folderPicker = new FolderPicker();
+            foreach (var filter in filters)
+                folderPicker.FileTypeFilter.Add(filter);
 
-			using (var s = await newFile.OpenStreamForWriteAsync())
-			{
-				s.Write(fileBinary, 0, fileBinary.Length);
-			}
-		}
+            folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            StorageFile newFile;
+            try
+            {
+                newFile = await folder.GetFileAsync(fileName);
+            }
+            catch (FileNotFoundException ex)
+            {
+                newFile = await folder.CreateFileAsync(fileName);
+            }
+
+            using (var s = await newFile.OpenStreamForWriteAsync())
+            {
+                s.Write(fileBinary, 0, fileBinary.Length);
+            }
+        }
 
 		private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
 		{
@@ -376,12 +375,13 @@ namespace DocumentTransitionUniversalApp
         private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
         {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-            var selectionParts = new List<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
+            var selectionParts = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
             foreach (var part in WordPartPage._pageData.SelectionParts)
                 selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
             
-            var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts.ToArray());
-            SaveFile(result);
+            var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+            string splitFileName = string.Format("split{0}.xml", DateTime.Today.ToUniversalTime().ToString());
+            SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
         }
 
         private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)
