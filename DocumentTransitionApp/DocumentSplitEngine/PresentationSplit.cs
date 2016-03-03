@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml.Packaging;
 using Presentproc = DocumentFormat.OpenXml.Presentation;
 
 using SplitDescriptionObjects;
+using DocumentEditPartsEngine;
 
 namespace DocumentSplitEngine
 {
@@ -72,5 +73,10 @@ namespace DocumentSplitEngine
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

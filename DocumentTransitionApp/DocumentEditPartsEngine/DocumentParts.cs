@@ -22,6 +22,7 @@ namespace DocumentEditPartsEngine
 	public class PartsSelectionTreeElement
 	{
 		public string Id { get; private set; }
+        public string ElementId { get; private set; }
 		//public ElementType Type { get; private set; }
 		public List<PartsSelectionTreeElement> Childs { get; private set; }
 		public string Name { get; private set; }
@@ -39,7 +40,13 @@ namespace DocumentEditPartsEngine
 			this.Indent = indent;
 			this.Childs = new List<PartsSelectionTreeElement>();
 		}
-	}
+
+        public PartsSelectionTreeElement(string id, string elementId, string name, int indent) : this(id, name, indent)
+        {
+            this.ElementId = elementId;
+        }
+
+    }
 
 	public interface IDocumentParts
 	{
@@ -100,7 +107,13 @@ namespace DocumentEditPartsEngine
 			List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
 			if (IsSupportedType(element))
 			{
-				result.Add(new PartsSelectionTreeElement(id.ToString(), GetElementName(element), 0));
+                PartsSelectionTreeElement elementToAdd;
+                if (element is Wordproc.Paragraph)
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Wordproc.Paragraph).ParagraphId, GetElementName(element), 0);
+                else
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), GetElementName(element), 0);
+
+                result.Add(elementToAdd);
 				if(element.HasChildren)
 				{
 					CreateChildrenPartsSelectionTreeElements(element);

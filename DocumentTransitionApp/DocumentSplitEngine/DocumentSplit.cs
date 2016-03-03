@@ -11,6 +11,7 @@ using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
 
 using SplitDescriptionObjects;
+using DocumentEditPartsEngine;
 
 namespace DocumentSplitEngine
 {
@@ -128,7 +129,8 @@ namespace DocumentSplitEngine
 	{
 		List<PersonFiles> SaveSplitDocument(Stream document);
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
-	}
+        byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
+    }
 
 	public interface IMergeXml
 	{
@@ -241,12 +243,65 @@ namespace DocumentSplitEngine
 
 	public class DocumentSplit : MergeXml, ISplit, ILocalSplit
     {
+        private class NameIndexer
+        {
+            private Dictionary<string, int> Indexes;
+
+            public NameIndexer(IList<string> nameList)
+            {
+                Indexes = new Dictionary<string, int>();
+                foreach (var name in nameList)
+                    Indexes.Add(name, 0);
+            }
+
+            public int GetNextIndex(string name)
+            {
+                return Indexes[name]++;
+            }
+        }
+
 		public DocumentSplit(string docName)
 		{
 			DocumentName = docName;
 		}
 
-		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+        public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
+        {
+            var nameList = parts.Select(p => p.Name).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+            var indexer = new NameIndexer(nameList);
+
+            Split splitXml = new Split();
+            splitXml.Items = new SplitDocument[1];
+            splitXml.Items[0] = new SplitDocument();
+            (splitXml.Items[0] as SplitDocument).Name = DocumentName;
+            var splitDocument = (splitXml.Items[0] as SplitDocument);
+            splitDocument.Person = new Person[nameList.Count];
+            foreach(var name in nameList)
+            {
+                var person = new Person();
+                person.Email = name;
+                person.UniversalMarker = new PersonUniversalMarker[parts.Where(p => p.Name == name).Count()];
+                splitDocument.Person[nameList.IndexOf(name)] = person;
+                
+            }
+            foreach(var part in parts.Where(p => !string.IsNullOrEmpty(p.Name)))
+            {
+                var person = splitDocument.Person[nameList.IndexOf(part.Name)];
+                var universalMarker = person.UniversalMarker[indexer.GetNextIndex(part.Name)];
+                universalMarker.ElementId = part.ElementId;
+                universalMarker.SelectionLastelementId = part.ElementId;
+            }
+
+            using (MemoryStream splitStream = new MemoryStream())
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Split));
+                serializer.Serialize(splitStream, splitXml);
+
+                return splitStream.ToArray();
+            }
+        }
+
+        public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(Split));
 			Split splitXml = (Split)serializer.Deserialize(xmlFile);

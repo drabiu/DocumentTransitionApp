@@ -30,6 +30,35 @@
           <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:base64Binary" />
         </s:sequence>
       </s:complexType>
+      <s:element name="GenerateSplitDocument">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="parts" type="tns:ArrayOfPartsSelectionTreeElement" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPartsSelectionTreeElement">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PartsSelectionTreeElement" nillable="true" type="tns:PartsSelectionTreeElement" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PartsSelectionTreeElement">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ElementId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Childs" type="tns:ArrayOfPartsSelectionTreeElement" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Indent" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GenerateSplitDocumentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateSplitDocumentResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="MergeDocument">
         <s:complexType>
           <s:sequence>
@@ -60,19 +89,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="ArrayOfPartsSelectionTreeElement">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="PartsSelectionTreeElement" nillable="true" type="tns:PartsSelectionTreeElement" />
-        </s:sequence>
-      </s:complexType>
-      <s:complexType name="PartsSelectionTreeElement">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Childs" type="tns:ArrayOfPartsSelectionTreeElement" />
-          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Indent" type="s:int" />
-        </s:sequence>
-      </s:complexType>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="SplitDocumentSoapIn">
@@ -80,6 +96,12 @@
   </wsdl:message>
   <wsdl:message name="SplitDocumentSoapOut">
     <wsdl:part name="parameters" element="tns:SplitDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateSplitDocumentSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateSplitDocument" />
+  </wsdl:message>
+  <wsdl:message name="GenerateSplitDocumentSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateSplitDocumentResponse" />
   </wsdl:message>
   <wsdl:message name="MergeDocumentSoapIn">
     <wsdl:part name="parameters" element="tns:MergeDocument" />
@@ -98,6 +120,10 @@
       <wsdl:input message="tns:SplitDocumentSoapIn" />
       <wsdl:output message="tns:SplitDocumentSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="GenerateSplitDocument">
+      <wsdl:input message="tns:GenerateSplitDocumentSoapIn" />
+      <wsdl:output message="tns:GenerateSplitDocumentSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="MergeDocument">
       <wsdl:input message="tns:MergeDocumentSoapIn" />
       <wsdl:output message="tns:MergeDocumentSoapOut" />
@@ -111,6 +137,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SplitDocument">
       <soap:operation soapAction="http://tempuri.org/SplitDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitDocument">
+      <soap:operation soapAction="http://tempuri.org/GenerateSplitDocument" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -141,6 +176,15 @@
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SplitDocument">
       <soap12:operation soapAction="http://tempuri.org/SplitDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitDocument">
+      <soap12:operation soapAction="http://tempuri.org/GenerateSplitDocument" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

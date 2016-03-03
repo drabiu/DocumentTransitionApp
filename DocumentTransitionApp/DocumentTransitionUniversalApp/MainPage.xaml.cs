@@ -13,6 +13,7 @@ using Service = DocumentTransitionUniversalApp.TransitionAppServices;
 using DocumentTransitionUniversalApp.Views;
 using Windows.UI.Popups;
 using Windows.UI.Core;
+using System.Collections.Generic;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -125,7 +126,6 @@ namespace DocumentTransitionUniversalApp
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			//xmlBinary = await StorageFileToByteArray(XmlFile);
 			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
 			SaveFiles(result);
 			_wasSplit = true;
@@ -373,9 +373,15 @@ namespace DocumentTransitionUniversalApp
 			}
 		}
 
-        private void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
+        private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
         {
-
+            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var selectionParts = new List<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
+            foreach (var part in WordPartPage._pageData.SelectionParts)
+                selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
+            
+            var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts.ToArray());
+            SaveFile(result);
         }
 
         private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)

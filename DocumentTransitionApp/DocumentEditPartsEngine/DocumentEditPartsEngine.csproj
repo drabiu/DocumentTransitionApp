@@ -48,17 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentParts.cs" />
-    <Compile Include="DocumentSplitXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UnmarshallingSplitXml\UnmarshallingSplitXml.csproj">
-      <Project>{84cbcbe8-ceae-43f0-a73a-856494db5e4f}</Project>
-      <Name>UnmarshallingSplitXml</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

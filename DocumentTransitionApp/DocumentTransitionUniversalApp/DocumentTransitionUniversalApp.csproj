@@ -97,6 +97,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitDocumentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPartsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

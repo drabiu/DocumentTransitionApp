@@ -25,6 +25,7 @@ namespace DocumentTransitionUniversalApp
 	public class PartsSelectionTreeElement<ElementType>
 	{
 		public string Id { get; private set; }
+        public string ElementId { get; private set; }
 		public ElementType Type { get; private set; }
 		public IList<PartsSelectionTreeElement<ElementType>> Childs { get; private set; }
 		public string Name { get; private set; }
@@ -44,7 +45,12 @@ namespace DocumentTransitionUniversalApp
             this._ownerId = _allItemsId;
 		}
 
-		public PartsSelectionTreeElement(string id, ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)
+        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent) : this (id, type, name, indent)
+        {
+            this.ElementId = elementId;
+        }
+
+        public PartsSelectionTreeElement(string id, ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)
 			: this(id, type, name, indent)
 		{
 			this.Childs.Add(child);
@@ -95,5 +101,15 @@ namespace DocumentTransitionUniversalApp
             Selected = !Selected;
             this._ownerId = ownerId;
         }
-	}
+
+        public DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement ConvertToPartsSelectionTreeElement()
+        {
+            var part = new DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement();
+            part.Id = this.Id;
+            part.ElementId = this.ElementId;
+            part.Indent = this.Indent;
+            part.Name = this.Name;
+            return part;
+        }
+    }
 }

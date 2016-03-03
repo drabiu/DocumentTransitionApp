@@ -59,7 +59,7 @@ namespace DocumentTransitionUniversalApp.Views
         {
             foreach (var element in elements)
             {
-                var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent);
+                var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent);
                 _pageData.SelectionParts.Add(item);
             }
         }

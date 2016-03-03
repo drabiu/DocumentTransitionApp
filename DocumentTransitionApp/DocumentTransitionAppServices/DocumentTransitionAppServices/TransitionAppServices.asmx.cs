@@ -31,11 +31,11 @@ namespace DocumentTransitionAppServices
 		}
 
         [WebMethod]
-        public byte[] GenerateSplitDocument(string docName, List<PartsSelectionTreeElement> parts)
+        public byte[] GenerateSplitDocument(string docName, PartsSelectionTreeElement[] parts)
         {
-            IDocumentSplitXml split = new WordSplitXml();
+            ISplit split = new DocumentSplit(docName);
 
-            return split.CreateSplitXml(docName, parts);
+            return split.CreateSplitXml(parts);
         }
 
 		[WebMethod]
