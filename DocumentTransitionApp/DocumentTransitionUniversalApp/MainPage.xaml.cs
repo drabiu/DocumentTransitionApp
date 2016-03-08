@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
@@ -398,6 +399,28 @@ namespace DocumentTransitionUniversalApp
                 XmlFile = file;
                 xmlBinary = await StorageFileToByteArray(XmlFile);
                 EnableSplitButton();
+                Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+                var result = await serviceClient.GetPartsFromXmlAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
+                List<PartsSelectionTreeElement<ElementTypes.WordElementType>> parts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
+                foreach (var element in result.Body.GetPartsFromXmlResult)
+                {
+                    var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected);
+                    parts.Add(item);
+                }
+
+                
+                var names = result.Body.GetPartsFromXmlResult.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+                List<Views.ComboBoxItem> comboItems = new List<Views.ComboBoxItem>();
+                int indexer = 1;
+                foreach (var name in names)
+                    comboItems.Add(new Views.ComboBoxItem() { Id = indexer++, Name = name });
+
+                WordPartPage = new WordSelectPartsPage();
+                WordPartsPageData pageData = new WordPartsPageData();
+                pageData.SelectionParts = parts;
+                pageData.LastId = names.Count();
+                pageData.ComboItems.AddRange(comboItems);
+                WordPartPage.CopyDataToControl(pageData);
             }           
         }
     }

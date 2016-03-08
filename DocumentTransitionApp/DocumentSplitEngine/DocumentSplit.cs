@@ -130,7 +130,7 @@ namespace DocumentSplitEngine
 		List<PersonFiles> SaveSplitDocument(Stream document);
 		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
         byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
-        List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile);
+        List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts);
     }
 
 	public interface IMergeXml
@@ -465,9 +465,27 @@ namespace DocumentSplitEngine
 			return resultList;
 		}
 
-        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile)
+        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
-            throw new NotImplementedException();
+            Split splitXml;
+            XmlSerializer serializer = new XmlSerializer(typeof(Split));
+            splitXml = (Split)serializer.Deserialize(xmlFile);
+            var splitDocument = (SplitDocument)splitXml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, DocumentName)).SingleOrDefault();
+            foreach (var person in splitDocument.Person)
+            {
+                foreach(var universalMarker in person.UniversalMarker)
+                {
+                    var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
+                    foreach (var index in selectedPartsIndexes)
+                    {
+                        parts[index].OwnerName = person.Email;
+                        parts[index].Selected = true;
+                    }
+                }
+
+            }
+
+            return parts;
         }
     }
 }

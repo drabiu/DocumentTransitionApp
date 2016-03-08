@@ -55,11 +55,12 @@ namespace DocumentTransitionAppServices
 		}
 
         [WebMethod]
-        public List<PartsSelectionTreeElement> GetParts(byte[] splitFile)
+        public List<PartsSelectionTreeElement> GetPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
-            ISplit split = new DocumentSplit(string.Empty);
+            ISplit split = new DocumentSplit(docName);
+            var cleanParts = GetParts(docName, documentFile);
 
-            return split.PartsFromSplitXml(new MemoryStream(splitFile));
+            return split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts);
         }
     }	
 }

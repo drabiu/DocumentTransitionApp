@@ -55,6 +55,12 @@ namespace DocumentTransitionUniversalApp
 			this.Childs.Add(child);
 		}
 
+        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent, bool selected) 
+            : this (id, elementId, type, name, indent)
+        {
+            this.Selected = selected;
+        }
+
 		public void SetChild(PartsSelectionTreeElement<ElementType> child)
 		{
 			this.Childs.Add(child);
@@ -109,6 +115,8 @@ namespace DocumentTransitionUniversalApp
             part.Indent = this.Indent;
             part.Name = this.Name;
             part.OwnerName = this._ownerName;
+            part.Selected = this.Selected;
+
             return part;
         }
     }

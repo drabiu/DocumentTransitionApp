@@ -43,9 +43,12 @@ namespace DocumentTransitionUniversalApp.Views
                     _pageData = new WordPartsPageData(this._source.WordPartPage);
                     InitializeVariables();
                 }
+                else
+                {
+                    InitializeItems();
+                }
 			}
 
-            InitializeItems();
             base.OnNavigatedTo(e);
 		}
 
