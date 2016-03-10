@@ -148,8 +148,8 @@ namespace DocumentTransitionUniversalApp.Views
         private async void InitializeItems()
         {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-            var result = await serviceClient.GetPartsAsync(_source.FileName, _source.documentBinary);
-            PrepareListOfItems(result.Body.GetPartsResult);
+            var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
+            PrepareListOfItems(result.Body.GetDocumentPartsResult);
         }
     }
 

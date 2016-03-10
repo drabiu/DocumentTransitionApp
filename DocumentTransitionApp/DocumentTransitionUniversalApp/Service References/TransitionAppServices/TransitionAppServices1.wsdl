@@ -76,7 +76,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetParts">
+      <s:element name="GetDocumentParts">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
@@ -84,14 +84,14 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetPartsResponse">
+      <s:element name="GetDocumentPartsResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetPartsResult" type="tns:ArrayOfPartsSelectionTreeElement" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetDocumentPartsResult" type="tns:ArrayOfPartsSelectionTreeElement" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetPartsFromXml">
+      <s:element name="GetDocumentPartsFromXml">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
@@ -100,10 +100,10 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetPartsFromXmlResponse">
+      <s:element name="GetDocumentPartsFromXmlResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetPartsFromXmlResult" type="tns:ArrayOfPartsSelectionTreeElement" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetDocumentPartsFromXmlResult" type="tns:ArrayOfPartsSelectionTreeElement" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -127,17 +127,17 @@
   <wsdl:message name="MergeDocumentSoapOut">
     <wsdl:part name="parameters" element="tns:MergeDocumentResponse" />
   </wsdl:message>
-  <wsdl:message name="GetPartsSoapIn">
-    <wsdl:part name="parameters" element="tns:GetParts" />
+  <wsdl:message name="GetDocumentPartsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDocumentParts" />
   </wsdl:message>
-  <wsdl:message name="GetPartsSoapOut">
-    <wsdl:part name="parameters" element="tns:GetPartsResponse" />
+  <wsdl:message name="GetDocumentPartsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDocumentPartsResponse" />
   </wsdl:message>
-  <wsdl:message name="GetPartsFromXmlSoapIn">
-    <wsdl:part name="parameters" element="tns:GetPartsFromXml" />
+  <wsdl:message name="GetDocumentPartsFromXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDocumentPartsFromXml" />
   </wsdl:message>
-  <wsdl:message name="GetPartsFromXmlSoapOut">
-    <wsdl:part name="parameters" element="tns:GetPartsFromXmlResponse" />
+  <wsdl:message name="GetDocumentPartsFromXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDocumentPartsFromXmlResponse" />
   </wsdl:message>
   <wsdl:portType name="Service1Soap">
     <wsdl:operation name="SplitDocument">
@@ -152,13 +152,13 @@
       <wsdl:input message="tns:MergeDocumentSoapIn" />
       <wsdl:output message="tns:MergeDocumentSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetParts">
-      <wsdl:input message="tns:GetPartsSoapIn" />
-      <wsdl:output message="tns:GetPartsSoapOut" />
+    <wsdl:operation name="GetDocumentParts">
+      <wsdl:input message="tns:GetDocumentPartsSoapIn" />
+      <wsdl:output message="tns:GetDocumentPartsSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetPartsFromXml">
-      <wsdl:input message="tns:GetPartsFromXmlSoapIn" />
-      <wsdl:output message="tns:GetPartsFromXmlSoapOut" />
+    <wsdl:operation name="GetDocumentPartsFromXml">
+      <wsdl:input message="tns:GetDocumentPartsFromXmlSoapIn" />
+      <wsdl:output message="tns:GetDocumentPartsFromXmlSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
@@ -190,8 +190,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetParts">
-      <soap:operation soapAction="http://tempuri.org/GetParts" style="document" />
+    <wsdl:operation name="GetDocumentParts">
+      <soap:operation soapAction="http://tempuri.org/GetDocumentParts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -199,8 +199,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPartsFromXml">
-      <soap:operation soapAction="http://tempuri.org/GetPartsFromXml" style="document" />
+    <wsdl:operation name="GetDocumentPartsFromXml">
+      <soap:operation soapAction="http://tempuri.org/GetDocumentPartsFromXml" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -238,8 +238,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetParts">
-      <soap12:operation soapAction="http://tempuri.org/GetParts" style="document" />
+    <wsdl:operation name="GetDocumentParts">
+      <soap12:operation soapAction="http://tempuri.org/GetDocumentParts" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -247,8 +247,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPartsFromXml">
-      <soap12:operation soapAction="http://tempuri.org/GetPartsFromXml" style="document" />
+    <wsdl:operation name="GetDocumentPartsFromXml">
+      <soap12:operation soapAction="http://tempuri.org/GetDocumentPartsFromXml" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

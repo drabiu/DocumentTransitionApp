@@ -400,16 +400,16 @@ namespace DocumentTransitionUniversalApp
                 xmlBinary = await StorageFileToByteArray(XmlFile);
                 EnableSplitButton();
                 Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-                var result = await serviceClient.GetPartsFromXmlAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
+                var result = await serviceClient.GetDocumentPartsFromXmlAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
                 List<PartsSelectionTreeElement<ElementTypes.WordElementType>> parts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
-                foreach (var element in result.Body.GetPartsFromXmlResult)
+                foreach (var element in result.Body.GetDocumentPartsFromXmlResult)
                 {
                     var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected);
                     parts.Add(item);
                 }
 
                 
-                var names = result.Body.GetPartsFromXmlResult.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+                var names = result.Body.GetDocumentPartsFromXmlResult.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
                 List<Views.ComboBoxItem> comboItems = new List<Views.ComboBoxItem>();
                 int indexer = 1;
                 foreach (var name in names)

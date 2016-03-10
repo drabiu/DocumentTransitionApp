@@ -47,7 +47,7 @@ namespace DocumentTransitionAppServices
 		}
 
 		[WebMethod]
-		public List<PartsSelectionTreeElement> GetParts(string docName, byte[] documentFile)
+		public List<PartsSelectionTreeElement> GetDocumentParts(string docName, byte[] documentFile)
 		{
 			IDocumentParts parts = DocumentPartsBuilder.Build(Path.GetExtension(docName));
 
@@ -55,10 +55,18 @@ namespace DocumentTransitionAppServices
 		}
 
         [WebMethod]
-        public List<PartsSelectionTreeElement> GetPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public List<PartsSelectionTreeElement> GetPresentationParts(string preName, byte[] presentationFile)
+        {
+            IDocumentParts parts = DocumentPartsBuilder.Build(Path.GetExtension(preName));
+
+            return parts.Get(new MemoryStream(presentationFile));
+        }
+
+        [WebMethod]
+        public List<PartsSelectionTreeElement> GetDocumentPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
             ISplit split = new DocumentSplit(docName);
-            var cleanParts = GetParts(docName, documentFile);
+            var cleanParts = GetDocumentParts(docName, documentFile);
 
             return split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts);
         }
