@@ -106,6 +106,12 @@
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppServices\TransitionAppServices1.disco" />
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -137,12 +143,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Views\ExcelSelectPartsPage.xaml.cs">
-      <DependentUpon>ExcelSelectPartsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PresentationSelectPartsPage.xaml.cs">
-      <DependentUpon>PresentationSelectPartsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\WordSelectPartsPage.xaml.cs">
       <DependentUpon>WordSelectPartsPage.xaml</DependentUpon>
     </Compile>
@@ -171,14 +171,6 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ExcelSelectPartsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PresentationSelectPartsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WordSelectPartsPage.xaml">
       <SubType>Designer</SubType>

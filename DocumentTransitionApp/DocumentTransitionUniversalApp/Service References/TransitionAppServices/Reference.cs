@@ -211,8 +211,14 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetDocumentParts", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsResponse> GetDocumentPartsAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsRequest request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetPresentationParts", ReplyAction="*")]
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse> GetPresentationPartsAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequest request);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetDocumentPartsFromXml", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsFromXmlResponse> GetDocumentPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsFromXmlRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetPresentationPartsFromXml", ReplyAction="*")]
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponse> GetPresentationPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -511,6 +517,78 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetPresentationPartsRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationParts", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequestBody Body;
+        
+        public GetPresentationPartsRequest() {
+        }
+        
+        public GetPresentationPartsRequest(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetPresentationPartsRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string preName;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public byte[] presentationFile;
+        
+        public GetPresentationPartsRequestBody() {
+        }
+        
+        public GetPresentationPartsRequestBody(string preName, byte[] presentationFile) {
+            this.preName = preName;
+            this.presentationFile = presentationFile;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetPresentationPartsResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsResponse", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponseBody Body;
+        
+        public GetPresentationPartsResponse() {
+        }
+        
+        public GetPresentationPartsResponse(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetPresentationPartsResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetPresentationPartsResult;
+        
+        public GetPresentationPartsResponseBody() {
+        }
+        
+        public GetPresentationPartsResponseBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetPresentationPartsResult) {
+            this.GetPresentationPartsResult = GetPresentationPartsResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDocumentPartsFromXmlRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDocumentPartsFromXml", Namespace="http://tempuri.org/", Order=0)]
@@ -580,6 +658,82 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         public GetDocumentPartsFromXmlResponseBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetDocumentPartsFromXmlResult) {
             this.GetDocumentPartsFromXmlResult = GetDocumentPartsFromXmlResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetPresentationPartsFromXmlRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsFromXml", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequestBody Body;
+        
+        public GetPresentationPartsFromXmlRequest() {
+        }
+        
+        public GetPresentationPartsFromXmlRequest(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetPresentationPartsFromXmlRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string docName;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public byte[] documentFile;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public byte[] splitFile;
+        
+        public GetPresentationPartsFromXmlRequestBody() {
+        }
+        
+        public GetPresentationPartsFromXmlRequestBody(string docName, byte[] documentFile, byte[] splitFile) {
+            this.docName = docName;
+            this.documentFile = documentFile;
+            this.splitFile = splitFile;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetPresentationPartsFromXmlResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsFromXmlResponse", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponseBody Body;
+        
+        public GetPresentationPartsFromXmlResponse() {
+        }
+        
+        public GetPresentationPartsFromXmlResponse(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GetPresentationPartsFromXmlResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetPresentationPartsFromXmlResult;
+        
+        public GetPresentationPartsFromXmlResponseBody() {
+        }
+        
+        public GetPresentationPartsFromXmlResponseBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetPresentationPartsFromXmlResult) {
+            this.GetPresentationPartsFromXmlResult = GetPresentationPartsFromXmlResult;
         }
     }
     
@@ -680,6 +834,19 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse> DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap.GetPresentationPartsAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequest request) {
+            return base.Channel.GetPresentationPartsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse> GetPresentationPartsAsync(string preName, byte[] presentationFile) {
+            DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequest inValue = new DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequest();
+            inValue.Body = new DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequestBody();
+            inValue.Body.preName = preName;
+            inValue.Body.presentationFile = presentationFile;
+            return ((DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap)(this)).GetPresentationPartsAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsFromXmlResponse> DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap.GetDocumentPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsFromXmlRequest request) {
             return base.Channel.GetDocumentPartsFromXmlAsync(request);
         }
@@ -691,6 +858,20 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             inValue.Body.documentFile = documentFile;
             inValue.Body.splitFile = splitFile;
             return ((DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap)(this)).GetDocumentPartsFromXmlAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponse> DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap.GetPresentationPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequest request) {
+            return base.Channel.GetPresentationPartsFromXmlAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponse> GetPresentationPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
+            DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequest inValue = new DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequest();
+            inValue.Body = new DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequestBody();
+            inValue.Body.docName = docName;
+            inValue.Body.documentFile = documentFile;
+            inValue.Body.splitFile = splitFile;
+            return ((DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap)(this)).GetPresentationPartsFromXmlAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync() {

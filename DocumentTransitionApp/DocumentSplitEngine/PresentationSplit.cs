@@ -35,7 +35,12 @@ namespace DocumentSplitEngine
 
 	public class PresentationSplit : MergeXml, ISplit, ILocalSplit
 	{
-		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
+        public PresentationSplit(string docName)
+        {
+            DocumentName = docName;
+        }
+
+        public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
 			//split XML Read
 			var xml = System.IO.File.ReadAllText(xmlSplitDefinitionFilePath);
@@ -64,7 +69,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+		public void OpenAndSearchDocument(Stream docxFile, Stream xmlFile)
 		{
 			throw new NotImplementedException();
 		}
@@ -76,12 +81,16 @@ namespace DocumentSplitEngine
 
         public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
         {
-            throw new NotImplementedException();
+            var docSplit = new DocumentSplit(DocumentName);
+
+            return docSplit.CreateSplitXml(parts);
         }
 
         public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
-            throw new NotImplementedException();
+            var docSplit = new DocumentSplit(DocumentName);
+
+            return docSplit.PartsFromSplitXml(xmlFile, parts);
         }
     }
 }

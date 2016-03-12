@@ -25,7 +25,7 @@ namespace DocumentTransitionAppServices
 			ISplit run = new DocumentSplit(docName);
 			MemoryStream doc = new MemoryStream(docxFile);
 			MemoryStream xml = new MemoryStream(xmlFile);
-			run.OpenAndSearchWordDocument(doc, xml);
+			run.OpenAndSearchDocument(doc, xml);
 
 			return run.SaveSplitDocument(doc).ToArray();
 		}
@@ -65,8 +65,17 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public List<PartsSelectionTreeElement> GetDocumentPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
-            ISplit split = new DocumentSplit(docName);
+            ISplit split = new DocumentSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetDocumentParts(docName, documentFile);
+
+            return split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts);
+        }
+
+        [WebMethod]
+        public List<PartsSelectionTreeElement> GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        {
+            ISplit split = new PresentationSplit(Path.GetFileNameWithoutExtension(docName));
+            var cleanParts = GetPresentationParts(docName, documentFile);
 
             return split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts);
         }

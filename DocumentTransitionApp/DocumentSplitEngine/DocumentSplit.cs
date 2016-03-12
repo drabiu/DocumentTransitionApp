@@ -121,14 +121,14 @@ namespace DocumentSplitEngine
 
 	public interface ILocalSplit
 	{
-		void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath);		
+		void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath);		
 		void SaveSplitDocument(string filePath);		
 	}
 
 	public interface ISplit
 	{
 		List<PersonFiles> SaveSplitDocument(Stream document);
-		void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile);
+		void OpenAndSearchDocument(Stream docFile, Stream xmlFile);
         byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
         List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts);
     }
@@ -303,7 +303,7 @@ namespace DocumentSplitEngine
             }
         }
 
-        public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+        public void OpenAndSearchDocument(Stream docxFile, Stream xmlFile)
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(Split));
 			Split splitXml = (Split)serializer.Deserialize(xmlFile);
@@ -316,7 +316,7 @@ namespace DocumentSplitEngine
 			}
 		}
 
-		public void OpenAndSearchWordDocument(string docxFilePath, string xmlFilePath)
+		public void OpenAndSearchDocument(string docxFilePath, string xmlFilePath)
 		{
 			//split XML Read
 			var xml = System.IO.File.ReadAllText(xmlFilePath);
@@ -482,7 +482,6 @@ namespace DocumentSplitEngine
                         parts[index].Selected = true;
                     }
                 }
-
             }
 
             return parts;

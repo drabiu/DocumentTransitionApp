@@ -82,7 +82,7 @@ namespace DocumentSplitEngine
 
 	public class ExcelSplit : MergeXml, ISplit, ILocalSplit
 	{
-		public void OpenAndSearchWordDocument(string filePath, string xmlSplitDefinitionFilePath)
+		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
 			//split XML Read
 			var xml = System.IO.File.ReadAllText(xmlSplitDefinitionFilePath);
@@ -111,7 +111,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		public void OpenAndSearchWordDocument(Stream docxFile, Stream xmlFile)
+		public void OpenAndSearchDocument(Stream docxFile, Stream xmlFile)
 		{
 			throw new NotImplementedException();
 		}

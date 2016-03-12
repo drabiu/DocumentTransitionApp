@@ -147,9 +147,38 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitializeItems()
         {
+            switch (_source.FileType)
+            {
+                case (MainPage.DocumentType.Word):
+                    InitWord();
+                    break;
+                case (MainPage.DocumentType.Excel):
+                    InitExcel();
+                    break;
+                case (MainPage.DocumentType.Presentation):
+                    InitPresentation();
+                    break;
+            }     
+        }
+
+        private async void InitWord()
+        {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
             var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
             PrepareListOfItems(result.Body.GetDocumentPartsResult);
+
+        }
+
+        private async void InitPresentation()
+        {
+            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
+            PrepareListOfItems(result.Body.GetPresentationPartsResult);
+        }
+
+        private async void InitExcel()
+        {
+            throw new NotImplementedException();
         }
     }
 

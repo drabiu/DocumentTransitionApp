@@ -30,7 +30,7 @@ namespace DocumentTransitionUniversalApp
 		public StorageFile DocumentFile;
 		StorageFile XmlFile;
 		public string FileName;
-		DocumentType FileType;
+		public DocumentType FileType;
 		bool _wasSplit;
         bool _wasEditParts;
 		public Frame AppFrame { get { return this.frame; } }
@@ -111,18 +111,7 @@ namespace DocumentTransitionUniversalApp
 		private async void buttonXml_Click(object sender, RoutedEventArgs e)
 		{
             _wasEditParts = true;
-			switch (FileType)
-			{
-				case (DocumentType.Word):
-					this.AppFrame.Navigate(typeof(WordSelectPartsPage), this);
-					break;
-				case (DocumentType.Excel):
-					this.AppFrame.Navigate(typeof(ExcelSelectPartsPage), this);
-					break;
-				case (DocumentType.Presentation):
-					this.AppFrame.Navigate(typeof(PresentationSelectPartsPage), this);
-					break;
-			}
+			this.AppFrame.Navigate(typeof(WordSelectPartsPage), this);
         }
 
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
@@ -399,17 +388,15 @@ namespace DocumentTransitionUniversalApp
                 XmlFile = file;
                 xmlBinary = await StorageFileToByteArray(XmlFile);
                 EnableSplitButton();
-                Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-                var result = await serviceClient.GetDocumentPartsFromXmlAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
                 List<PartsSelectionTreeElement<ElementTypes.WordElementType>> parts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
-                foreach (var element in result.Body.GetDocumentPartsFromXmlResult)
+                var partsFromXml = await GetPartsFromXml();
+                foreach (var element in partsFromXml)
                 {
                     var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected);
                     parts.Add(item);
                 }
-
                 
-                var names = result.Body.GetDocumentPartsFromXmlResult.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+                var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
                 List<Views.ComboBoxItem> comboItems = new List<Views.ComboBoxItem>();
                 int indexer = 1;
                 foreach (var name in names)
@@ -422,6 +409,28 @@ namespace DocumentTransitionUniversalApp
                 pageData.ComboItems.AddRange(comboItems);
                 WordPartPage.CopyDataToControl(pageData);
             }           
+        }
+
+        private async Task<ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>> GetPartsFromXml()
+        {
+            var result = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
+            switch (FileType)
+            {             
+                case (MainPage.DocumentType.Word):
+                    Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+                    var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                    result = response.Body.GetDocumentPartsFromXmlResult;
+                    break;
+                case (MainPage.DocumentType.Excel):
+                    break;
+                case (MainPage.DocumentType.Presentation):
+                    Service.Service1SoapClient serviceClient2 = new Service.Service1SoapClient();
+                    var response2 = await serviceClient2.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                    result = response2.Body.GetPresentationPartsFromXmlResult;
+                    break;
+            }
+
+            return result;
         }
     }
 }
