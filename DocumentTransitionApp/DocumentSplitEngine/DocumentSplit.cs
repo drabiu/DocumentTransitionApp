@@ -15,16 +15,16 @@ using DocumentEditPartsEngine;
 
 namespace DocumentSplitEngine
 {
-	public class OpenXMDocumentPart
+	public class OpenXMDocumentPart<Element>
 	{
-		public IList<OpenXmlElement> CompositeElements { get; set; }
+		public IList<Element> CompositeElements { get; set; }
 		public string PartOwner { get; set; }
 		public Guid Guid { get; private set; }
 
 		public OpenXMDocumentPart()
 		{
 			this.Guid = Guid.NewGuid();
-			CompositeElements = new List<OpenXmlElement>();
+			CompositeElements = new List<Element>();
 		}
 	}
 
@@ -36,7 +36,7 @@ namespace DocumentSplitEngine
 
 	public interface IMarkerMapper
 	{
-		IList<OpenXMDocumentPart> Run();
+		IList<OpenXMDocumentPart<OpenXmlElement>> Run();
     }
 
 	public class MarkerDocumentMapper : MarkerMapper, IMarkerMapper
@@ -57,9 +57,9 @@ namespace DocumentSplitEngine
 			return new UniversalDocumentMarker(DocumentBody);
 		}
 
-		public IList<OpenXMDocumentPart> Run()
+		public IList<OpenXMDocumentPart<OpenXmlElement>> Run()
 		{
-			IList<OpenXMDocumentPart> documentElements = new List<OpenXMDocumentPart>();
+			IList<OpenXMDocumentPart<OpenXmlElement>> documentElements = new List<OpenXMDocumentPart<OpenXmlElement>>();
 			if (SplitDocumentObj != null)
 			{
 				foreach (Person person in SplitDocumentObj.Person)
@@ -95,12 +95,12 @@ namespace DocumentSplitEngine
 				}
 
 				string email = string.Empty;
-				OpenXMDocumentPart part = new OpenXMDocumentPart();				
+                OpenXMDocumentPart<OpenXmlElement> part = new OpenXMDocumentPart<OpenXmlElement>();				
 				for (int index = 0; index < DocumentBody.ChildElements.Count; index++)
 				{
 					if (SubdividedParagraphs[index] != email)
 					{
-						part = new OpenXMDocumentPart();
+						part = new OpenXMDocumentPart<OpenXmlElement>();
 						part.CompositeElements.Add(DocumentBody.ChildElements[index]);
 						email = SubdividedParagraphs[index];
 						if (string.IsNullOrEmpty(email))
@@ -139,9 +139,9 @@ namespace DocumentSplitEngine
 		byte[] CreateMergeXml();
     }
 
-	public class MergeXml : IMergeXml
+	public class MergeXml<Element> : IMergeXml
 	{
-		protected IList<OpenXMDocumentPart> DocumentElements;
+		protected IList<OpenXMDocumentPart<Element>> DocumentElements;
 		protected string DocumentName { get; set; }
 
 		public void CreateMergeXml(string path)
@@ -242,7 +242,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class DocumentSplit : MergeXml, ISplit, ILocalSplit
+	public class DocumentSplit : MergeXml<OpenXmlElement>, ISplit, ILocalSplit
     {
         private class NameIndexer
         {
@@ -354,7 +354,7 @@ namespace DocumentSplitEngine
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
-					foreach (OpenXMDocumentPart element in DocumentElements)
+					foreach (OpenXMDocumentPart<OpenXmlElement> element in DocumentElements)
 					{						
 						wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
 						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
@@ -416,7 +416,7 @@ namespace DocumentSplitEngine
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
-					foreach (OpenXMDocumentPart element in DocumentElements)
+					foreach (OpenXMDocumentPart<OpenXmlElement> element in DocumentElements)
 					{
 						wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
 						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
