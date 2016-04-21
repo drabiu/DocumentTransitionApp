@@ -116,9 +116,27 @@ namespace DocumentTransitionUniversalApp
 
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
-			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			var result = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
-			SaveFiles(result);
+            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            string extension = string.Empty;
+            var result = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles>();
+            switch (FileType)
+            {
+                case (DocumentType.Word):
+                    extension = ".docx";
+                    var response = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
+                    result = response.Body.SplitDocumentResult;
+                    break;
+                case (DocumentType.Excel):
+                    extension = ".xlsx";
+                    break;
+                case (DocumentType.Presentation):
+                    extension = ".pptx";
+                    var response2 = await serviceClient.SplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
+                    result = response2.Body.SplitPresentationResult;
+                    break;
+            }
+          
+			SaveFiles(result, extension);
 			_wasSplit = true;
 			EnableMergeButton();
 		}
@@ -131,7 +149,7 @@ namespace DocumentTransitionUniversalApp
 			SaveFile(result.Body.MergeDocumentResult, FileName, ".docx", ".xlsx", ".pptx");
         }
 
-		private async void SaveFiles(Service.SplitDocumentResponse response)
+		private async void SaveFiles(ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> personFiles, string fileExtension)
 		{
 			FolderPicker folderPicker = new FolderPicker();
 			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
@@ -153,7 +171,7 @@ namespace DocumentTransitionUniversalApp
 				filesSaveFolder = await folder.CreateFolderAsync("Split Files");
 			}
 
-			foreach (Service.PersonFiles file in response.Body.SplitDocumentResult)
+			foreach (Service.PersonFiles file in personFiles)
 			{
 				if (file.Person == "/")
 				{
@@ -187,11 +205,11 @@ namespace DocumentTransitionUniversalApp
 					StorageFile newFile;
                     try
 					{
-						newFile = await currentSaveFolder.GetFileAsync(file.Name + ".docx");
+						newFile = await currentSaveFolder.GetFileAsync(file.Name + fileExtension);
 					}
 					catch (FileNotFoundException ex)
 					{
-						newFile = await currentSaveFolder.CreateFileAsync(file.Name + ".docx");
+						newFile = await currentSaveFolder.CreateFileAsync(file.Name + fileExtension);
 					}
 
 					using (var s = await newFile.OpenStreamForWriteAsync())
@@ -358,6 +376,7 @@ namespace DocumentTransitionUniversalApp
 				this._wasSplit = main._wasSplit;
                 this._wasEditParts = main._wasEditParts;
                 this.WordPartPage = main.WordPartPage;
+                this.xmlBinary = main.xmlBinary;
 
 				InitButtons();
 			}
@@ -414,18 +433,17 @@ namespace DocumentTransitionUniversalApp
         private async Task<ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>> GetPartsFromXml()
         {
             var result = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
+            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
             switch (FileType)
             {             
                 case (MainPage.DocumentType.Word):
-                    Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
                     var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                     result = response.Body.GetDocumentPartsFromXmlResult;
                     break;
                 case (MainPage.DocumentType.Excel):
                     break;
                 case (MainPage.DocumentType.Presentation):
-                    Service.Service1SoapClient serviceClient2 = new Service.Service1SoapClient();
-                    var response2 = await serviceClient2.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                    var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                     result = response2.Body.GetPresentationPartsFromXmlResult;
                     break;
             }

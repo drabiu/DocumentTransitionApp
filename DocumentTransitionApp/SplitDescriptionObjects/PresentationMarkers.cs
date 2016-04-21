@@ -23,7 +23,8 @@ namespace SplitDescriptionObjects
 
         public IList<int> GetCrossedElements(string id, string id2)
         {
-            var indexes = MarkerHelper<Present.SlideId>.GetCrossedElements(id, id2, DocumentBody.Presentation.SlideIdList.Elements<Present.SlideId>().ToList(), element => element.RelationshipId);
+            var elements = DocumentBody.Presentation.SlideIdList.Elements<Present.SlideId>();
+            var indexes = MarkerHelper<Present.SlideId>.GetCrossedElements(id, id2, elements.ToList(), element => element.RelationshipId);
 
             return indexes;
         }

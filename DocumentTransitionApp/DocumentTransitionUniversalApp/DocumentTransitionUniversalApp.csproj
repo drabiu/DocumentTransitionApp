@@ -112,6 +112,9 @@
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.SplitPresentationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppServices\TransitionAppServices1.disco" />
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>

@@ -30,6 +30,22 @@
           <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:base64Binary" />
         </s:sequence>
       </s:complexType>
+      <s:element name="SplitPresentation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="docFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlFile" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SplitPresentationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SplitPresentationResult" type="tns:ArrayOfPersonFiles" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GenerateSplitDocument">
         <s:complexType>
           <s:sequence>
@@ -146,6 +162,12 @@
   <wsdl:message name="SplitDocumentSoapOut">
     <wsdl:part name="parameters" element="tns:SplitDocumentResponse" />
   </wsdl:message>
+  <wsdl:message name="SplitPresentationSoapIn">
+    <wsdl:part name="parameters" element="tns:SplitPresentation" />
+  </wsdl:message>
+  <wsdl:message name="SplitPresentationSoapOut">
+    <wsdl:part name="parameters" element="tns:SplitPresentationResponse" />
+  </wsdl:message>
   <wsdl:message name="GenerateSplitDocumentSoapIn">
     <wsdl:part name="parameters" element="tns:GenerateSplitDocument" />
   </wsdl:message>
@@ -187,6 +209,10 @@
       <wsdl:input message="tns:SplitDocumentSoapIn" />
       <wsdl:output message="tns:SplitDocumentSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="SplitPresentation">
+      <wsdl:input message="tns:SplitPresentationSoapIn" />
+      <wsdl:output message="tns:SplitPresentationSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GenerateSplitDocument">
       <wsdl:input message="tns:GenerateSplitDocumentSoapIn" />
       <wsdl:output message="tns:GenerateSplitDocumentSoapOut" />
@@ -216,6 +242,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SplitDocument">
       <soap:operation soapAction="http://tempuri.org/SplitDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitPresentation">
+      <soap:operation soapAction="http://tempuri.org/SplitPresentation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -282,6 +317,15 @@
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SplitDocument">
       <soap12:operation soapAction="http://tempuri.org/SplitDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitPresentation">
+      <soap12:operation soapAction="http://tempuri.org/SplitPresentation" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

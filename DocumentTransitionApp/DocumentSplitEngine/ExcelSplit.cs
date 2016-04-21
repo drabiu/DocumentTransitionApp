@@ -15,8 +15,13 @@ using DocumentEditPartsEngine;
 
 namespace DocumentSplitEngine
 {
-	public class MarkerExcelMapper : MarkerMapper, IMarkerMapper
-	{
+    public interface IExcelMarkerMapper
+    {
+        IList<OpenXMDocumentPart<WorkbookPart>> Run();
+    }
+
+	public class MarkerExcelMapper : MarkerMapper, IExcelMarkerMapper
+    {
 		SplitExcel SplitExcelObj { get; set; }
 		Excelproc.Workbook WorkBook;
 
@@ -28,14 +33,9 @@ namespace DocumentSplitEngine
 			SubdividedParagraphs = new string[workBook.ChildElements.Count];
 		}
 
-		public ISheetExcelMarker GetSheetMarker()
+		public IList<OpenXMDocumentPart<WorkbookPart>> Run()
 		{
-			return new SheetExcelMarker(WorkBook);
-		}
-
-		public IList<OpenXMDocumentPart> Run()
-		{
-			IList<OpenXMDocumentPart> documentElements = new List<OpenXMDocumentPart>();
+			IList<OpenXMDocumentPart<WorkbookPart>> documentElements = new List<OpenXMDocumentPart<WorkbookPart>>();
 			if (SplitExcelObj != null)
 			{
 				foreach (Person person in SplitExcelObj.Person)
@@ -44,25 +44,25 @@ namespace DocumentSplitEngine
 					{
 						foreach (PersonSheetMarker marker in person.SheetMarker)
 						{
-							int result = GetSheetMarker().FindElement(marker.ElementId);
-							if (string.IsNullOrEmpty(SubdividedParagraphs[result]))
-							{
-								SubdividedParagraphs[result] = person.Email;
-							}
-							else
-								throw new ElementToPersonPairException();
+							//int result = GetSheetMarker().FindElement(marker.ElementId);
+							//if (string.IsNullOrEmpty(SubdividedParagraphs[result]))
+							//{
+							//	SubdividedParagraphs[result] = person.Email;
+							//}
+							//else
+							//	throw new ElementToPersonPairException();
 						}
 					}
 				}
 
 				string email = string.Empty;
-				OpenXMDocumentPart part = new OpenXMDocumentPart();
+                OpenXMDocumentPart<WorkbookPart> part = new OpenXMDocumentPart<WorkbookPart>();
 				for (int index = 0; index < WorkBook.ChildElements.Count; index++)
 				{
 					if (SubdividedParagraphs[index] != email)
 					{
-						part = new OpenXMDocumentPart();
-						part.CompositeElements.Add(WorkBook.ChildElements[index]);
+						part = new OpenXMDocumentPart<WorkbookPart>();
+						//part.CompositeElements.Add(WorkBook.ChildElements[index]);
 						email = SubdividedParagraphs[index];
 						if (string.IsNullOrEmpty(email))
 							part.PartOwner = "undefined";
@@ -72,7 +72,8 @@ namespace DocumentSplitEngine
 						documentElements.Add(part);
 					}
 					else
-						part.CompositeElements.Add(WorkBook.ChildElements[index]);
+                    { }
+						//part.CompositeElements.Add(WorkBook.ChildElements[index]);
 				}
 			}
 
@@ -80,7 +81,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class ExcelSplit : MergeXml, ISplit, ILocalSplit
+	public class ExcelSplit : MergeXml<OpenXMDocumentPart<WorkbookPart>>, ISplit, ILocalSplit
 	{
 		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
@@ -99,8 +100,8 @@ namespace DocumentSplitEngine
 
 			// Assign a reference to the existing document body.
 			Excelproc.Workbook body = wordprocessingDocument.WorkbookPart.Workbook;
-			IMarkerMapper mapping = new MarkerExcelMapper(DocumentName, splitXml, body);
-			DocumentElements = mapping.Run();
+			IExcelMarkerMapper mapping = new MarkerExcelMapper(DocumentName, splitXml, body);
+			//DocumentElements = mapping.Run();
 
 			// Close the handle explicitly.
 			wordprocessingDocument.Close();

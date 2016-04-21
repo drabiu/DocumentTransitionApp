@@ -29,7 +29,8 @@ namespace SplitDescriptionObjects
 
         public IList<int> GetCrossedElements(string id, string id2)
         {
-            var indexes = MarkerHelper<OpenXmlElement>.GetCrossedElements(id, id2, DocumentBody.ChildElements.ToList(), element => (element as Paragraph).ParagraphId.Value);
+            var elements = DocumentBody.ChildElements.Where(element => element is Paragraph);
+            var indexes = MarkerHelper<OpenXmlElement>.GetCrossedElements(id, id2, elements.ToList(), element => (element as Paragraph).ParagraphId.Value);
 
             return indexes;
         }

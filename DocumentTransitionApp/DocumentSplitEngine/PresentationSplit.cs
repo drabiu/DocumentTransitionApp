@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using System.IO;
 
@@ -20,14 +19,15 @@ namespace DocumentSplitEngine
 
     public class MarkerPresentationMapper : MarkerMapper, IPresentationMarkerMapper
 	{
-		SplitPresentation SplitPresentationObj { get; set; }
+        SplitDocument SplitPresentationObj { get; set; }
         PresentationPart Presentation;
 
 		public MarkerPresentationMapper(string documentName, Split xml, PresentationPart presentation)
 		{
 			Xml = xml;
-			SplitPresentationObj = (SplitPresentation)Xml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, documentName)).SingleOrDefault();
-			Presentation = presentation;
+            SplitPresentationObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
+            //SplitPresentationObj = (SplitPresentation)Xml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, documentName)).SingleOrDefault();
+            Presentation = presentation;
 			SubdividedParagraphs = new string[presentation.SlideParts.Count()];
 		}
 
@@ -125,23 +125,38 @@ namespace DocumentSplitEngine
             using (MemoryStream mem = new MemoryStream())
             {
                 mem.Write(byteArray, 0, (int)byteArray.Length);
+                PresentationDocument templateDocument = PresentationDocument.Open(mem, false);
                 using (PresentationDocument preDoc =
                     PresentationDocument.Open(mem, true))
                 {
-                    preDoc.DeletePart(preDoc.PresentationPart);
+                    //preDoc.DeletePart(preDoc.PresentationPart);
+                    //PresentationPart presentationPart = preDoc.AddPresentationPart();
+                    //presentationPart.Presentation = new Presentproc.Presentation();
+                    PresentationPart presentationPart = preDoc.PresentationPart;
                     foreach (OpenXMDocumentPart<SlidePart> element in DocumentElements)
-                    {                       
-                        PresentationPart presentationPart = preDoc.AddPresentationPart();
+                    {
+                        RemoveAllSlides(presentationPart);
+                        //foreach (var slideId in presentation.SlideIdList.Elements<Present.SlideId>())
+                        //{
+                        //    SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
+                        //    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, index++, slideId.RelationshipId));
+                        //}
                         foreach (SlidePart compo in element.CompositeElements)
-                            presentationPart.AddPart(compo);
+                        {
+                            //presentationPart.AddPart<SlidePart>(compo);
+                        }
 
                         var person = new PersonFiles();
                         person.Person = element.PartOwner;
                         resultList.Add(person);
                         person.Name = element.Guid.ToString();
                         person.Data = mem.ToArray();
+
+                        presentationPart.Presentation.Save();
                     }
                 }
+
+                templateDocument.Close();
             }
             // At this point, the memory stream contains the modified document.
             // We could write it back to a SharePoint document library or serve
@@ -188,5 +203,45 @@ namespace DocumentSplitEngine
 
             return docSplit.PartsFromSplitXml(xmlFile, parts);
         }
+
+        private void RemoveAllSlides(PresentationPart presentationPart)
+        {
+            Presentproc.Presentation presentation = presentationPart.Presentation;
+            Presentproc. SlideIdList slideIdList = presentation.SlideIdList;
+
+            foreach (Presentproc.SlideId slideId in slideIdList.ChildElements.ToList())
+            {
+                slideIdList.RemoveChild(slideId);
+                string slideRelId = slideId.RelationshipId;
+
+                if (presentation.CustomShowList != null)
+                {
+                    // Iterate through the list of custom shows.
+                    foreach (var customShow in presentation.CustomShowList.Elements<Presentproc.CustomShow>())
+                    {
+                        if (customShow.SlideList != null)
+                        {
+                            // Declare a link list of slide list entries.
+                            LinkedList<Presentproc.SlideListEntry> slideListEntries = new LinkedList<Presentproc.SlideListEntry>();
+                            foreach (Presentproc.SlideListEntry slideListEntry in customShow.SlideList.Elements())
+                            {
+                                // Find the slide reference to remove from the custom show.
+                                if (slideListEntry.Id != null && slideListEntry.Id == slideRelId)
+                                {
+                                    slideListEntries.AddLast(slideListEntry);
+                                }
+                            }
+
+                            // Remove all references to the slide from the custom show.
+                            foreach (Presentproc.SlideListEntry slideListEntry in slideListEntries)
+                            {
+                                customShow.SlideList.RemoveChild(slideListEntry);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+            
     }
 }

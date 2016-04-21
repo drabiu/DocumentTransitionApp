@@ -31,6 +31,17 @@ namespace DocumentTransitionAppServices
 		}
 
         [WebMethod]
+        public PersonFiles[] SplitPresentation(string docName, byte[] docFile, byte[] xmlFile)
+        {
+            ISplit run = new PresentationSplit(docName);
+            MemoryStream doc = new MemoryStream(docFile);
+            MemoryStream xml = new MemoryStream(xmlFile);
+            run.OpenAndSearchDocument(doc, xml);
+
+            return run.SaveSplitDocument(doc).ToArray();
+        }
+
+        [WebMethod]
         public byte[] GenerateSplitDocument(string docName, PartsSelectionTreeElement[] parts)
         {
             ISplit split = new DocumentSplit(docName);
