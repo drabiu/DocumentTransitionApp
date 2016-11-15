@@ -89,6 +89,10 @@ namespace DocumentTransitionUniversalApp.Views
             button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
             button.Content = element.Name;
 
+            ToolTip toolTip = new ToolTip();
+            toolTip.Content = element.Name;
+            ToolTipService.SetToolTip(button, toolTip);
+
             if ((string)comboBox.SelectedItem != null && element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name))
                 button.Tapped += Button_Tapped;
             else
@@ -101,9 +105,17 @@ namespace DocumentTransitionUniversalApp.Views
         {
             var ownerName = ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name;
             var button = sender as Button;
-            button.Background = new SolidColorBrush(Colors.Honeydew);
             var selectedElement = _pageData.SelectionParts.Single(el => el.Id == button.Name);
-            selectedElement.SelectItem(ownerName);
+            if (selectedElement.Selected)
+            {
+                selectedElement.SelectItem(string.Empty);
+                button.Background = new SolidColorBrush(Colors.White);
+            }
+            else
+            {
+                selectedElement.SelectItem(ownerName);
+                button.Background = new SolidColorBrush(Colors.Honeydew);
+            }
         }
 
         private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

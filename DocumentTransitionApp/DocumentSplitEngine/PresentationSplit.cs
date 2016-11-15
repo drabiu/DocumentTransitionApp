@@ -136,23 +136,23 @@ namespace DocumentSplitEngine
                     foreach (OpenXMDocumentPart<SlidePart> element in DocumentElements)
                     {
                         RemoveAllSlides(presentationPart);
-                        //foreach (var slideId in presentation.SlideIdList.Elements<Present.SlideId>())
+                        //foreach (var slideId in presentationPart.Presentation.SlideIdList.Elements<Presentproc.SlideId>())
                         //{
-                        //    SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
-                        //    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, index++, slideId.RelationshipId));
+                        //    SlidePart slidePart = templateDocument.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
                         //}
                         foreach (SlidePart compo in element.CompositeElements)
                         {
+                            //SlidePart slidePart = templateDocument.PresentationPart.GetPartById(compo.Slide.)
                             //presentationPart.AddPart<SlidePart>(compo);
                         }
+
+                        presentationPart.Presentation.Save();
 
                         var person = new PersonFiles();
                         person.Person = element.PartOwner;
                         resultList.Add(person);
                         person.Name = element.Guid.ToString();
                         person.Data = mem.ToArray();
-
-                        presentationPart.Presentation.Save();
                     }
                 }
 
@@ -161,22 +161,22 @@ namespace DocumentSplitEngine
             // At this point, the memory stream contains the modified document.
             // We could write it back to a SharePoint document library or serve
             // it from a web server.			
-            //using (MemoryStream mem = new MemoryStream())
-            //{
-            //    mem.Write(byteArray, 0, (int)byteArray.Length);
-            //    using (PresentationDocument preDoc =
-            //        PresentationDocument.Open(mem, true))
-            //    {
-            //        wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
-            //        wordDoc.MainDocumentPart.Document.Save();
+            using (MemoryStream mem = new MemoryStream())
+            {
+                mem.Write(byteArray, 0, (int)byteArray.Length);
+                using (PresentationDocument preDoc =
+                    PresentationDocument.Open(mem, true))
+                {
+                    RemoveAllSlides(preDoc.PresentationPart);
+                    preDoc.PresentationPart.Presentation.Save();
 
-            //        var person = new PersonFiles();
-            //        person.Person = "/";
-            //        resultList.Add(person);
-            //        person.Name = "template.docx";
-            //        person.Data = mem.ToArray();
-            //    }
-            //}
+                    var person = new PersonFiles();
+                    person.Person = "/";
+                    resultList.Add(person);
+                    person.Name = "template.pptx";
+                    person.Data = mem.ToArray();
+                }
+            }
             // At this point, the memory stream contains the modified document.
             // We could write it back to a SharePoint document library or serve
             // it from a web server.			

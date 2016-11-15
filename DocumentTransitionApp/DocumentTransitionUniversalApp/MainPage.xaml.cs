@@ -434,18 +434,26 @@ namespace DocumentTransitionUniversalApp
         {
             var result = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-            switch (FileType)
-            {             
-                case (MainPage.DocumentType.Word):
-                    var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                    result = response.Body.GetDocumentPartsFromXmlResult;
-                    break;
-                case (MainPage.DocumentType.Excel):
-                    break;
-                case (MainPage.DocumentType.Presentation):
-                    var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                    result = response2.Body.GetPresentationPartsFromXmlResult;
-                    break;
+            try
+            {
+                switch (FileType)
+                {
+                    case (MainPage.DocumentType.Word):
+                        var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                        result = response.Body.GetDocumentPartsFromXmlResult;
+                        break;
+                    case (MainPage.DocumentType.Excel):
+                        break;
+                    case (MainPage.DocumentType.Presentation):
+                        var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                        result = response2.Body.GetPresentationPartsFromXmlResult;
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageDialog dialog = new MessageDialog(ex.Message);
+                await dialog.ShowAsync();
             }
 
             return result;
