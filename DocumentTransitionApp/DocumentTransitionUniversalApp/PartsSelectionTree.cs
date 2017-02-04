@@ -109,7 +109,7 @@ namespace DocumentTransitionUniversalApp
 
         public DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement ConvertToPartsSelectionTreeElement()
         {
-            var part = new DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement();
+            var part = new TransitionAppServices.PartsSelectionTreeElement();
             part.Id = this.Id;
             part.ElementId = this.ElementId;
             part.Indent = this.Indent;

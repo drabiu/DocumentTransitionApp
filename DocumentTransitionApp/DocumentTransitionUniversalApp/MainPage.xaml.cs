@@ -106,8 +106,7 @@ namespace DocumentTransitionUniversalApp
 				documentBinary = await StorageFileToByteArray(DocumentFile);
 			}
 
-			EnablePartsButton();
-            EnableLoadButton();
+            InitButtons();
         }
 
 		private async void buttonXml_Click(object sender, RoutedEventArgs e)
@@ -120,7 +119,7 @@ namespace DocumentTransitionUniversalApp
 		{
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
             string extension = string.Empty;
-            var result = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles>();
+            var result = new ObservableCollection<Service.PersonFiles>();
             switch (FileType)
             {
                 case (DocumentType.Word):
@@ -151,7 +150,7 @@ namespace DocumentTransitionUniversalApp
 			SaveFile(result.Body.MergeDocumentResult, FileName, ".docx", ".xlsx", ".pptx");
         }
 
-		private async void SaveFiles(ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> personFiles, string fileExtension)
+		private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
 		{
 			FolderPicker folderPicker = new FolderPicker();
 			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
@@ -309,36 +308,35 @@ namespace DocumentTransitionUniversalApp
         private void ResetControls()
         {
             WordPartPage = null;
+            _wasSplit = false;
+            _wasEditParts = false;
+            DocumentFile = null;
+            XmlFile = null;
         }
 
 		private void EnablePartsButton()
 		{
-			if (DocumentFile != null)
-				buttonXml.IsEnabled = true;
+			buttonXml.IsEnabled = DocumentFile != null;
         }
 
 		private void EnableSplitButton()
 		{
-			if (DocumentFile != null && XmlFile != null)
-				buttonSplit.IsEnabled = true;
+			buttonSplit.IsEnabled = DocumentFile != null && XmlFile != null;
 		}
 
 		private void EnableMergeButton()
 		{
-			if (_wasSplit)
-				buttonMerge.IsEnabled = true;
+			buttonMerge.IsEnabled = _wasSplit;
 		}
 
         private void EnableGenerateButton()
         {
-            if (_wasEditParts)
-                buttonGenerateSplit.IsEnabled = true;
+            buttonGenerateSplit.IsEnabled = _wasEditParts;
         }
 
         private void EnableLoadButton()
         {
-            if (DocumentFile != null)
-                buttonLoadSplit.IsEnabled = true;
+            buttonLoadSplit.IsEnabled = DocumentFile != null;
         }
 		
 		private void InitButtons()
@@ -392,12 +390,12 @@ namespace DocumentTransitionUniversalApp
         private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
         {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-            var selectionParts = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
+            var selectionParts = new ObservableCollection<Service.PartsSelectionTreeElement>();
             foreach (var part in WordPartPage._pageData.SelectionParts)
                 selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
             
             var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-            string splitFileName = string.Format("split{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture));
+            string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
             SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
         }
 
@@ -437,9 +435,9 @@ namespace DocumentTransitionUniversalApp
             }           
         }
 
-        private async Task<ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>> GetPartsFromXml()
+        private async Task<ObservableCollection<Service.PartsSelectionTreeElement>> GetPartsFromXml()
         {
-            var result = new ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>();
+            var result = new ObservableCollection<Service.PartsSelectionTreeElement>();
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
             try
             {

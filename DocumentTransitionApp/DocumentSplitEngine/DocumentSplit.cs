@@ -285,6 +285,7 @@ namespace DocumentSplitEngine
                 splitDocument.Person[nameList.IndexOf(name)] = person;
                 
             }
+
             foreach(var part in parts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
             {
                 var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];

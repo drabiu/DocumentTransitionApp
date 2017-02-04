@@ -152,8 +152,10 @@ namespace DocumentTransitionUniversalApp.Views
             {
                 _pageData.ComboItems.Add(new ComboBoxItem() { Id = ++_pageData.LastId, Name = name });
             }
-
+            
             comboBox.ItemsSource = _pageData.ComboItems.Select(cb => cb.Name);
+            comboBox.SelectedValue = name;
+            PersonTextBox.Text = string.Empty;
         }
 
         private void InitializeVariables()
