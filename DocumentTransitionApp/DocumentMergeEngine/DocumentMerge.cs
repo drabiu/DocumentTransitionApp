@@ -9,19 +9,10 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
 using SplitDescriptionObjects;
+using DocumentMergeEngine.Interfaces;
 
 namespace DocumentMergeEngine
 {
-	public interface ILocalMerge
-	{
-		void Run(string path);
-	}
-
-	public interface IMerge
-	{
-		byte[] Run(List<PersonFiles> files);
-	}
-
     public class DocumentMerge : ILocalMerge, IMerge
     {
 		public void Run(string path)

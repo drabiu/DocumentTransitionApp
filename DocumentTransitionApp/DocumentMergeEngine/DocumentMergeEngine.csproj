@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentMerge.cs" />
+    <Compile Include="Interfaces\ILocalMerge.cs" />
+    <Compile Include="Interfaces\IMerge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
