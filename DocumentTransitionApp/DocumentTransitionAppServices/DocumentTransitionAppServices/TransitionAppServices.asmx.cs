@@ -6,6 +6,7 @@ using DocumentSplitEngine;
 using SplitDescriptionObjects;
 using DocumentMergeEngine;
 using DocumentEditPartsEngine;
+using DocumentEditPartsEngine.Interfaces;
 
 namespace DocumentTransitionAppServices
 {
