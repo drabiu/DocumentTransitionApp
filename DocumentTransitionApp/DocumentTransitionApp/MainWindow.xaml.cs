@@ -16,6 +16,7 @@ using System.IO;
 using DocumentSplitEngine;
 using DocumentMergeEngine;
 using Service = DocumentTransitionApp.TransitionAppService;
+using DocumentMergeEngine.Interfaces;
 
 namespace DocumentTransitionApp
 {

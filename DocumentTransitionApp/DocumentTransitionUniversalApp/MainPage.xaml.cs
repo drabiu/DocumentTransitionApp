@@ -76,7 +76,9 @@ namespace DocumentTransitionUniversalApp
 
 		private async void buttonDocx_Click(object sender, RoutedEventArgs e)
 		{
-			var picker = new FileOpenPicker();
+            ResetControls();
+
+            var picker = new FileOpenPicker();
 			picker.ViewMode = PickerViewMode.List;
 			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
 			picker.FileTypeFilter.Add(".docx");
@@ -303,6 +305,11 @@ namespace DocumentTransitionUniversalApp
 
 			return files;
 		}
+
+        private void ResetControls()
+        {
+            WordPartPage = null;
+        }
 
 		private void EnablePartsButton()
 		{

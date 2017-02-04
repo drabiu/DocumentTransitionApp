@@ -93,8 +93,16 @@ namespace DocumentTransitionUniversalApp.Views
             toolTip.Content = element.Name;
             ToolTipService.SetToolTip(button, toolTip);
 
-            if ((string)comboBox.SelectedItem != null && element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name))
-                button.Tapped += Button_Tapped;
+            if ((string)comboBox.SelectedItem != null)
+            {
+                var comboItem = ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem);
+                if (element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboItem.Name).Name) && comboItem.Id != WordPartsPageData.AllItemsId)
+                {
+                    button.Tapped += Button_Tapped;
+                }
+                else
+                    button.Background = new SolidColorBrush(Colors.DimGray);
+            }                               
             else
                 button.Background = new SolidColorBrush(Colors.DimGray);
 
@@ -203,19 +211,24 @@ namespace DocumentTransitionUniversalApp.Views
         {
             return items.Single(it => it.Name == name);
         }
+
+        public static ComboBoxItem GetComboBoxItemById(IEnumerable<ComboBoxItem> items, int id)
+        {
+            return items.Single(it => it.Id == id);
+        }
     }
 
     public class WordPartsPageData
     {
         public List<ComboBoxItem> ComboItems { get; set; }
         public int LastId { get; set; }
-        public int AllItemsId = 0;
+        public static int AllItemsId = 0;
         public List<PartsSelectionTreeElement<ElementTypes.WordElementType>> SelectionParts { get; set; }
 
         public WordPartsPageData()
         {
             ComboItems = new List<ComboBoxItem>();
-            ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = string.Empty });
+            ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = "All" });
             SelectionParts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
         }
 
