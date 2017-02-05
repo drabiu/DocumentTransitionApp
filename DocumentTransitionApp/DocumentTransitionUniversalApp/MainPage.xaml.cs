@@ -417,10 +417,10 @@ namespace DocumentTransitionUniversalApp
                     var response = await GetPartsFromXml();
                     if (!response.IsError)
                     {
-                        var partsFromXml = response.Data as List<Service.PartsSelectionTreeElement>;
+                        var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
-                            var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected);
+                            var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected, element.OwnerName);
                             parts.Add(item);
                         }
 
@@ -452,7 +452,7 @@ namespace DocumentTransitionUniversalApp
             }           
         }
 
-        private async Task<TransitionAppServices.ServiceResponse> GetPartsFromXml()
+        private async Task<Service.ServiceResponse> GetPartsFromXml()
         {
             var result = new TransitionAppServices.ServiceResponse();
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();

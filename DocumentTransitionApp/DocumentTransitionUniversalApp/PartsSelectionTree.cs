@@ -61,7 +61,13 @@ namespace DocumentTransitionUniversalApp
             this.Selected = selected;
         }
 
-		public void SetChild(PartsSelectionTreeElement<ElementType> child)
+        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent, bool selected, string ownerName)
+            : this(id, elementId, type, name, indent, selected)
+        {
+            this._ownerName = ownerName;
+        }
+
+        public void SetChild(PartsSelectionTreeElement<ElementType> child)
 		{
 			this.Childs.Add(child);
 		}
