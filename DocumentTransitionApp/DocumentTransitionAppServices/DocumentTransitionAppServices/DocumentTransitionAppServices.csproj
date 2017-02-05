@@ -68,6 +68,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServiceResponse.cs" />
     <Compile Include="TransitionAppServices.asmx.cs">
       <DependentUpon>TransitionAppServices.asmx</DependentUpon>
       <SubType>Component</SubType>

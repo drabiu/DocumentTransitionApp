@@ -8,6 +8,8 @@ using DocumentMergeEngine;
 using DocumentEditPartsEngine;
 using DocumentEditPartsEngine.Interfaces;
 using DocumentMergeEngine.Interfaces;
+using System;
+using System.Web.Services.Protocols;
 
 namespace DocumentTransitionAppServices
 {
@@ -19,8 +21,8 @@ namespace DocumentTransitionAppServices
 	[System.ComponentModel.ToolboxItem(false)]
 	// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
 	// [System.Web.Script.Services.ScriptService]
-	public class Service1 : System.Web.Services.WebService
-	{
+	public class Service1 : WebService
+    {
 		[WebMethod]
 		public PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
 		{
@@ -76,21 +78,35 @@ namespace DocumentTransitionAppServices
         }
 
         [WebMethod]
-        public List<PartsSelectionTreeElement> GetDocumentPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public ServiceResponse GetDocumentPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
             ISplit split = new DocumentSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetDocumentParts(docName, documentFile);
-
-            return split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts);
+            
+            try
+            {
+                return new ServiceResponse(split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+            }
+            catch (SplitNameDifferenceExcception ex)
+            {
+                return new ServiceResponse(ex.Message);
+            }
         }
 
         [WebMethod]
-        public List<PartsSelectionTreeElement> GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public ServiceResponse GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
             ISplit split = new PresentationSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetPresentationParts(docName, documentFile);
 
-            return split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts);
+            try
+            {
+                return new ServiceResponse(split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+            }
+            catch (SplitNameDifferenceExcception ex)
+            {
+                return new ServiceResponse(ex.Message);
+            }
         }
     }	
 }

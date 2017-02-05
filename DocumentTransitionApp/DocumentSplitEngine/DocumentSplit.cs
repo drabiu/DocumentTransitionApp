@@ -472,6 +472,9 @@ namespace DocumentSplitEngine
             XmlSerializer serializer = new XmlSerializer(typeof(Split));
             splitXml = (Split)serializer.Deserialize(xmlFile);
             var splitDocument = (SplitDocument)splitXml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, DocumentName)).SingleOrDefault();
+            if (splitDocument == null)
+                throw new SplitNameDifferenceExcception(string.Format("This split xml describes a different document."));
+
             foreach (var person in splitDocument.Person)
             {
                 foreach(var universalMarker in person.UniversalMarker)

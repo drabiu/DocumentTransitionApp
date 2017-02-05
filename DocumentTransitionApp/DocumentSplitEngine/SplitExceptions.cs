@@ -21,5 +21,24 @@ namespace DocumentSplitEngine
 			: base(message, inner)
 		{
 		}
-	}	
+	}
+    
+    public class SplitNameDifferenceExcception : Exception
+    {
+        private string _message;
+
+        public override string Message
+        {
+            get
+            {
+                return string.Format("Document split service error: {0}", _message);
+            }
+        }
+
+        public SplitNameDifferenceExcception(string message)
+			: base(message)
+		{
+            _message = message;
+        }
+    } 	
 }

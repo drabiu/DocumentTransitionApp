@@ -401,64 +401,74 @@ namespace DocumentTransitionUniversalApp
 
         private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)
         {
-            var picker = new FileOpenPicker();
-            picker.ViewMode = PickerViewMode.List;
-            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            picker.FileTypeFilter.Add(".xml");
-
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
-                XmlFile = file;
-                xmlBinary = await StorageFileToByteArray(XmlFile);
-                EnableSplitButton();
-                List<PartsSelectionTreeElement<ElementTypes.WordElementType>> parts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
-                var partsFromXml = await GetPartsFromXml();
-                foreach (var element in partsFromXml)
-                {
-                    var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected);
-                    parts.Add(item);
-                }
-                
-                var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
-                List<Views.ComboBoxItem> comboItems = new List<Views.ComboBoxItem>();
-                int indexer = 1;
-                foreach (var name in names)
-                    comboItems.Add(new Views.ComboBoxItem() { Id = indexer++, Name = name });
-
-                WordPartPage = new WordSelectPartsPage();
-                WordPartsPageData pageData = new WordPartsPageData();
-                pageData.SelectionParts = parts;
-                pageData.LastId = names.Count();
-                pageData.ComboItems.AddRange(comboItems);
-                WordPartPage.CopyDataToControl(pageData);
-            }           
-        }
-
-        private async Task<ObservableCollection<Service.PartsSelectionTreeElement>> GetPartsFromXml()
-        {
-            var result = new ObservableCollection<Service.PartsSelectionTreeElement>();
-            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
             try
-            {
-                switch (FileType)
+            { 
+                var picker = new FileOpenPicker();
+                picker.ViewMode = PickerViewMode.List;
+                picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                picker.FileTypeFilter.Add(".xml");
+
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
                 {
-                    case (MainPage.DocumentType.Word):
-                        var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                        result = response.Body.GetDocumentPartsFromXmlResult;
-                        break;
-                    case (MainPage.DocumentType.Excel):
-                        break;
-                    case (MainPage.DocumentType.Presentation):
-                        var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                        result = response2.Body.GetPresentationPartsFromXmlResult;
-                        break;
+                    XmlFile = file;
+                    xmlBinary = await StorageFileToByteArray(XmlFile);
+                    List<PartsSelectionTreeElement<ElementTypes.WordElementType>> parts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
+                    var response = await GetPartsFromXml();
+                    if (!response.IsError)
+                    {
+                        var partsFromXml = response.Data as List<Service.PartsSelectionTreeElement>;
+                        foreach (var element in partsFromXml)
+                        {
+                            var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected);
+                            parts.Add(item);
+                        }
+
+                        var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+                        List<Views.ComboBoxItem> comboItems = new List<Views.ComboBoxItem>();
+                        int indexer = 1;
+                        foreach (var name in names)
+                            comboItems.Add(new Views.ComboBoxItem() { Id = indexer++, Name = name });
+
+                        WordPartPage = new WordSelectPartsPage();
+                        WordPartsPageData pageData = new WordPartsPageData();
+                        pageData.SelectionParts = parts;
+                        pageData.LastId = names.Count();
+                        pageData.ComboItems.AddRange(comboItems);
+                        WordPartPage.CopyDataToControl(pageData);
+                        EnableSplitButton();
+                    }
+                    else
+                    {
+                        MessageDialog dialog = new MessageDialog(response.Message);
+                        await dialog.ShowAsync();
+                    }                  
                 }
             }
             catch(Exception ex)
             {
                 MessageDialog dialog = new MessageDialog(ex.Message);
                 await dialog.ShowAsync();
+            }           
+        }
+
+        private async Task<TransitionAppServices.ServiceResponse> GetPartsFromXml()
+        {
+            var result = new TransitionAppServices.ServiceResponse();
+            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+
+            switch (FileType)
+            {
+                case (MainPage.DocumentType.Word):
+                    var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                    result = response.Body.GetDocumentPartsFromXmlResult;
+                    break;
+                case (MainPage.DocumentType.Excel):
+                    break;
+                case (MainPage.DocumentType.Presentation):
+                    var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                    result = response2.Body.GetPresentationPartsFromXmlResult;
+                    break;
             }
 
             return result;

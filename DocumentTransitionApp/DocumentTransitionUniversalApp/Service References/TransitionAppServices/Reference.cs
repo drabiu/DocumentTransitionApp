@@ -195,6 +195,70 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceResponse", Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement))]
+    public partial class ServiceResponse : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool IsErrorField;
+        
+        private string MessageField;
+        
+        private object DataField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public bool IsError {
+            get {
+                return this.IsErrorField;
+            }
+            set {
+                if ((this.IsErrorField.Equals(value) != true)) {
+                    this.IsErrorField = value;
+                    this.RaisePropertyChanged("IsError");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public object Data {
+            get {
+                return this.DataField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DataField, value) != true)) {
+                    this.DataField = value;
+                    this.RaisePropertyChanged("Data");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TransitionAppServices.Service1Soap")]
     public interface Service1Soap {
@@ -730,12 +794,12 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     public partial class GetDocumentPartsFromXmlResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetDocumentPartsFromXmlResult;
+        public DocumentTransitionUniversalApp.TransitionAppServices.ServiceResponse GetDocumentPartsFromXmlResult;
         
         public GetDocumentPartsFromXmlResponseBody() {
         }
         
-        public GetDocumentPartsFromXmlResponseBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetDocumentPartsFromXmlResult) {
+        public GetDocumentPartsFromXmlResponseBody(DocumentTransitionUniversalApp.TransitionAppServices.ServiceResponse GetDocumentPartsFromXmlResult) {
             this.GetDocumentPartsFromXmlResult = GetDocumentPartsFromXmlResult;
         }
     }
@@ -806,12 +870,12 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     public partial class GetPresentationPartsFromXmlResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetPresentationPartsFromXmlResult;
+        public DocumentTransitionUniversalApp.TransitionAppServices.ServiceResponse GetPresentationPartsFromXmlResult;
         
         public GetPresentationPartsFromXmlResponseBody() {
         }
         
-        public GetPresentationPartsFromXmlResponseBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> GetPresentationPartsFromXmlResult) {
+        public GetPresentationPartsFromXmlResponseBody(DocumentTransitionUniversalApp.TransitionAppServices.ServiceResponse GetPresentationPartsFromXmlResult) {
             this.GetPresentationPartsFromXmlResult = GetPresentationPartsFromXmlResult;
         }
     }
