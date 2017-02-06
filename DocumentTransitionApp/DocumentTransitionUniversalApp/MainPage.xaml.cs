@@ -336,11 +336,6 @@ namespace DocumentTransitionUniversalApp
 			buttonSplit.IsEnabled = DocumentFile != null && XmlFile != null;
 		}
 
-        private void EnableMergeButton()
-        {
-            buttonMerge.IsEnabled = _wasSplit;
-        }
-
         private void EnableGenerateButton()
         {
             buttonGenerateSplit.IsEnabled = _wasEditParts;
@@ -355,7 +350,6 @@ namespace DocumentTransitionUniversalApp
 		{
 			EnablePartsButton();
 			EnableSplitButton();
-			EnableMergeButton();
             EnableGenerateButton();
             EnableLoadButton();
         }
