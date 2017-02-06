@@ -98,6 +98,7 @@ namespace DocumentSplitEngine
                 OpenXMDocumentPart<OpenXmlElement> part = new OpenXMDocumentPart<OpenXmlElement>();				
 				for (int index = 0; index < DocumentBody.ChildElements.Count; index++)
 				{
+                    //check if parts are neighbours then join into one document
 					if (SubdividedParagraphs[index] != email)
 					{
 						part = new OpenXMDocumentPart<OpenXmlElement>();

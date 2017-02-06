@@ -536,16 +536,12 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     public partial class MergeDocumentRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string docName;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> files;
         
         public MergeDocumentRequestBody() {
         }
         
-        public MergeDocumentRequestBody(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> files) {
-            this.docName = docName;
+        public MergeDocumentRequestBody(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> files) {
             this.files = files;
         }
     }
@@ -969,10 +965,9 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             return base.Channel.MergeDocumentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse> MergeDocumentAsync(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> files) {
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse> MergeDocumentAsync(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles> files) {
             DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentRequest inValue = new DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentRequest();
             inValue.Body = new DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentRequestBody();
-            inValue.Body.docName = docName;
             inValue.Body.files = files;
             return ((DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap)(this)).MergeDocumentAsync(inValue);
         }

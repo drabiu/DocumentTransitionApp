@@ -54,7 +54,7 @@ namespace DocumentTransitionAppServices
         }
 
 		[WebMethod]
-		public byte[] MergeDocument(string docName, PersonFiles[] files)
+		public byte[] MergeDocument(PersonFiles[] files)
 		{
 			IMerge merge = new DocumentMerge();
 

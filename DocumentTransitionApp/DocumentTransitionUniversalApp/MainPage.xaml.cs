@@ -146,79 +146,85 @@ namespace DocumentTransitionUniversalApp
 		{
 			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
 			var files = await GetFiles();
-            var result = await serviceClient.MergeDocumentAsync(FileName, files);
-			SaveFile(result.Body.MergeDocumentResult, FileName, ".docx", ".xlsx", ".pptx");
+            if (files.Any())
+            {
+                var result = await serviceClient.MergeDocumentAsync(files);
+                SaveFile(result.Body.MergeDocumentResult, string.Empty, ".docx", ".xlsx", ".pptx");
+            }
         }
 
-		private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
-		{
-			FolderPicker folderPicker = new FolderPicker();
-			folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+        private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
+        {
+            FolderPicker folderPicker = new FolderPicker();
+            folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
             folderPicker.FileTypeFilter.Add(".docx");
             folderPicker.FileTypeFilter.Add(".xlsx");
             folderPicker.FileTypeFilter.Add(".pptx");
             StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-			StorageFolder filesSaveFolder;
-			try
-			{
-				filesSaveFolder = await folder.GetFolderAsync("Split Files");
-				await filesSaveFolder.DeleteAsync();
-			}
-			catch (FileNotFoundException ex)
-			{			
-			}
-			finally
-			{
-				filesSaveFolder = await folder.CreateFolderAsync("Split Files");
-			}
+            StorageFolder filesSaveFolder;
+            if (folder != null)
+            { 
+                try
+                {
+                    filesSaveFolder = await folder.GetFolderAsync("Split Files");
+                    await filesSaveFolder.DeleteAsync();
+                }
+                catch (FileNotFoundException ex)
+                {
+                }
+                finally
+                {
+                    filesSaveFolder = await folder.CreateFolderAsync("Split Files");
+                }
 
-			foreach (Service.PersonFiles file in personFiles)
-			{
-				if (file.Person == "/")
-				{
-					StorageFile newFile;
-                    try
-					{
-						newFile = await folder.GetFileAsync(file.Name);
-					}
-					catch (FileNotFoundException ex)
-					{
-						newFile = await filesSaveFolder.CreateFileAsync(file.Name);
-					}
-						
-					using (var s = await newFile.OpenStreamForWriteAsync())
-					{
-						s.Write(file.Data, 0, file.Data.Length);
-					}
-				}
-				else
-				{
-					StorageFolder currentSaveFolder;
-					try
-					{
-						currentSaveFolder = await filesSaveFolder.GetFolderAsync(file.Person);
-					}
-					catch (FileNotFoundException ex)
-					{
-						currentSaveFolder = await filesSaveFolder.CreateFolderAsync(file.Person);
-					}
+                foreach (Service.PersonFiles file in personFiles)
+                {
+                    if (file.Person == "/")
+                    {
+                        StorageFile newFile;
+                        try
+                        {
+                            newFile = await folder.GetFileAsync(file.Name);
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            newFile = await filesSaveFolder.CreateFileAsync(file.Name);
+                        }
 
-					StorageFile newFile;
-                    try
-					{
-						newFile = await currentSaveFolder.GetFileAsync(file.Name + fileExtension);
-					}
-					catch (FileNotFoundException ex)
-					{
-						newFile = await currentSaveFolder.CreateFileAsync(file.Name + fileExtension);
-					}
+                        using (var s = await newFile.OpenStreamForWriteAsync())
+                        {
+                            s.Write(file.Data, 0, file.Data.Length);
+                        }
+                    }
+                    else
+                    {
+                        StorageFolder currentSaveFolder;
+                        try
+                        {
+                            currentSaveFolder = await filesSaveFolder.GetFolderAsync(file.Person);
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            currentSaveFolder = await filesSaveFolder.CreateFolderAsync(file.Person);
+                        }
 
-					using (var s = await newFile.OpenStreamForWriteAsync())
-					{
-						s.Write(file.Data, 0, file.Data.Length);
-					}
-				}
-			}
+                        StorageFile newFile;
+                        try
+                        {
+                            newFile = await currentSaveFolder.GetFileAsync(file.Name + fileExtension);
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            newFile = await currentSaveFolder.CreateFileAsync(file.Name + fileExtension);
+                        }
+
+                        using (var s = await newFile.OpenStreamForWriteAsync())
+                        {
+                            s.Write(file.Data, 0, file.Data.Length);
+                        }
+                    }
+                }
+            }
 		}
 
         private async void SaveFile(byte[] fileBinary, string fileName, params string[] filters)
@@ -230,18 +236,21 @@ namespace DocumentTransitionUniversalApp
             folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
             StorageFolder folder = await folderPicker.PickSingleFolderAsync();
             StorageFile newFile;
-            try
+            if (folder != null)
             {
-                newFile = await folder.GetFileAsync(fileName);
-            }
-            catch (FileNotFoundException ex)
-            {
-                newFile = await folder.CreateFileAsync(fileName);
-            }
+                try
+                {
+                    newFile = await folder.GetFileAsync(fileName);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    newFile = await folder.CreateFileAsync(fileName);
+                }
 
-            using (var s = await newFile.OpenStreamForWriteAsync())
-            {
-                s.Write(fileBinary, 0, fileBinary.Length);
+                using (var s = await newFile.OpenStreamForWriteAsync())
+                {
+                    s.Write(fileBinary, 0, fileBinary.Length);
+                }
             }
         }
 
@@ -251,56 +260,59 @@ namespace DocumentTransitionUniversalApp
 			FolderPicker folderPicker = new FolderPicker();
             folderPicker.FileTypeFilter.Add(".docx");
             folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-			StorageFolder folder = await folderPicker.PickSingleFolderAsync();      
-            StorageFile xmlFile;
-			try
-			{
-				xmlFile = await folder.GetFileAsync("mergeXmlDefinition.xml");
-			}
-			catch (FileNotFoundException ex)
-			{
-				var dialog = new MessageDialog("mergeXmlDefinition.xml does not exist");
-				await dialog.ShowAsync();
-				return files;
-			}
-
-			StorageFile templateFile;
-			try
-			{
-				templateFile = await folder.GetFileAsync("template.docx");
-			}
-			catch (FileNotFoundException ex)
-			{
-				var dialog = new MessageDialog("template.docx does not exist");
-				await dialog.ShowAsync();
-				return files;
-			}
-
-			foreach (StorageFolder subFolder in await folder.GetFoldersAsync())
-			{
-				foreach (StorageFile fileToLoad in await subFolder.GetFilesAsync())
-				{
-					var personFile = new Service.PersonFiles();
-					personFile.Name = Path.GetFileNameWithoutExtension(fileToLoad.Name);
-					personFile.Data = await StorageFileToByteArray(fileToLoad);
-					personFile.Person = subFolder.Name;
-					files.Add(personFile);
+			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                StorageFile xmlFile;
+                try
+                {
+                    xmlFile = await folder.GetFileAsync("mergeXmlDefinition.xml");
                 }
-			}
+                catch (FileNotFoundException ex)
+                {
+                    var dialog = new MessageDialog("mergeXmlDefinition.xml does not exist");
+                    await dialog.ShowAsync();
+                    return files;
+                }
 
-			var personXmlFile = new Service.PersonFiles();
-			personXmlFile.Name = xmlFile.Name;
-			personXmlFile.Data = await StorageFileToByteArray(xmlFile);
-			personXmlFile.Person = "/";
+                StorageFile templateFile;
+                try
+                {
+                    templateFile = await folder.GetFileAsync("template.docx");
+                }
+                catch (FileNotFoundException ex)
+                {
+                    var dialog = new MessageDialog("template.docx does not exist");
+                    await dialog.ShowAsync();
+                    return files;
+                }
 
-			files.Add(personXmlFile);
+                foreach (StorageFolder subFolder in await folder.GetFoldersAsync())
+                {
+                    foreach (StorageFile fileToLoad in await subFolder.GetFilesAsync())
+                    {
+                        var personFile = new Service.PersonFiles();
+                        personFile.Name = Path.GetFileNameWithoutExtension(fileToLoad.Name);
+                        personFile.Data = await StorageFileToByteArray(fileToLoad);
+                        personFile.Person = subFolder.Name;
+                        files.Add(personFile);
+                    }
+                }
 
-			var personTemplateFile = new Service.PersonFiles();
-			personTemplateFile.Name = templateFile.Name;
-			personTemplateFile.Data = await StorageFileToByteArray(templateFile);
-			personTemplateFile.Person = "/";
+                var personXmlFile = new Service.PersonFiles();
+                personXmlFile.Name = xmlFile.Name;
+                personXmlFile.Data = await StorageFileToByteArray(xmlFile);
+                personXmlFile.Person = "/";
 
-			files.Add(personTemplateFile);
+                files.Add(personXmlFile);
+
+                var personTemplateFile = new Service.PersonFiles();
+                personTemplateFile.Name = templateFile.Name;
+                personTemplateFile.Data = await StorageFileToByteArray(templateFile);
+                personTemplateFile.Person = "/";
+
+                files.Add(personTemplateFile);
+            }
 
 			return files;
 		}
@@ -324,10 +336,10 @@ namespace DocumentTransitionUniversalApp
 			buttonSplit.IsEnabled = DocumentFile != null && XmlFile != null;
 		}
 
-		private void EnableMergeButton()
-		{
-			buttonMerge.IsEnabled = _wasSplit;
-		}
+        private void EnableMergeButton()
+        {
+            buttonMerge.IsEnabled = _wasSplit;
+        }
 
         private void EnableGenerateButton()
         {
