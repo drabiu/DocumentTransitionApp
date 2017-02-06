@@ -16,6 +16,7 @@ using Windows.UI.Popups;
 using Windows.UI.Core;
 using System.Collections.Generic;
 using System.Globalization;
+using DocumentTransitionUniversalApp.Helpers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -139,7 +140,6 @@ namespace DocumentTransitionUniversalApp
           
 			SaveFiles(result, extension);
 			_wasSplit = true;
-			EnableMergeButton();
 		}
 
 		private async void buttonMerge_Click(object sender, RoutedEventArgs e)
@@ -149,7 +149,7 @@ namespace DocumentTransitionUniversalApp
             if (files.Any())
             {
                 var result = await serviceClient.MergeDocumentAsync(files);
-                SaveFile(result.Body.MergeDocumentResult, string.Empty, ".docx", ".xlsx", ".pptx");
+                FileHelper.SaveFile(result.Body.MergeDocumentResult, ".docx", ".xlsx", ".pptx");
             }
         }
 
@@ -226,34 +226,7 @@ namespace DocumentTransitionUniversalApp
                 }
             }
 		}
-
-        private async void SaveFile(byte[] fileBinary, string fileName, params string[] filters)
-        {
-            FolderPicker folderPicker = new FolderPicker();
-            foreach (var filter in filters)
-                folderPicker.FileTypeFilter.Add(filter);
-
-            folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-            StorageFile newFile;
-            if (folder != null)
-            {
-                try
-                {
-                    newFile = await folder.GetFileAsync(fileName);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    newFile = await folder.CreateFileAsync(fileName);
-                }
-
-                using (var s = await newFile.OpenStreamForWriteAsync())
-                {
-                    s.Write(fileBinary, 0, fileBinary.Length);
-                }
-            }
-        }
-
+   
 		private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
 		{
 			ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
@@ -402,7 +375,7 @@ namespace DocumentTransitionUniversalApp
             
             var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
             string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
-            SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
+            FileHelper.SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
         }
 
         private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)
