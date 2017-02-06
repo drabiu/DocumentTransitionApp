@@ -49,11 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentMarkers.cs" />
-    <Compile Include="ExcelMarkers.cs" />
+    <Compile Include="DocumentMarkers\DocumentMarkers.cs" />
+    <Compile Include="ExcelMarkers\ExcelMarkers.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="PersonFiles.cs" />
-    <Compile Include="PresentationMarkers.cs" />
+    <Compile Include="PresentationMarkers\PresentationMarkers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
