@@ -136,11 +136,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data Structures\ComboBoxItem.cs" />
+    <Compile Include="Data Structures\WordPartsPageData.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PartsSelectionTree.cs" />
+    <Compile Include="Data Structures\PartsSelectionTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\TransitionAppServices\Reference.cs">
       <AutoGen>True</AutoGen>

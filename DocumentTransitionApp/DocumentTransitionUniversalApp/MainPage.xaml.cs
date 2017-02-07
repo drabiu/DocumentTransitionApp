@@ -428,13 +428,13 @@ namespace DocumentTransitionUniversalApp
                         }
 
                         var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
-                        List<Views.ComboBoxItem> comboItems = new List<Views.ComboBoxItem>();
+                        List<Data_Structures.ComboBoxItem> comboItems = new List<Data_Structures.ComboBoxItem>();
                         int indexer = 1;
                         foreach (var name in names)
-                            comboItems.Add(new Views.ComboBoxItem() { Id = indexer++, Name = name });
+                            comboItems.Add(new Data_Structures.ComboBoxItem() { Id = indexer++, Name = name });
 
                         WordPartPage = new WordSelectPartsPage();
-                        WordPartsPageData pageData = new WordPartsPageData();
+                        Data_Structures.WordPartsPageData pageData = new Data_Structures.WordPartsPageData();
                         pageData.SelectionParts = parts;
                         pageData.LastId = names.Count();
                         pageData.ComboItems.AddRange(comboItems);

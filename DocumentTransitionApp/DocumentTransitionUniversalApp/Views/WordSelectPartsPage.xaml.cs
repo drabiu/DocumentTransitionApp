@@ -8,7 +8,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
+using System.Collections.ObjectModel;
 using Service = DocumentTransitionUniversalApp.TransitionAppServices;
+using DocumentTransitionUniversalApp.Data_Structures;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -58,7 +60,7 @@ namespace DocumentTransitionUniversalApp.Views
             this.Frame.Navigate(typeof(MainPage), _source);
 		}
 
-        private void PrepareListOfItems(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> elements)
+        private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements)
         {
             foreach (var element in elements)
             {
@@ -95,8 +97,8 @@ namespace DocumentTransitionUniversalApp.Views
 
             if ((string)comboBox.SelectedItem != null)
             {
-                var comboItem = ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem);
-                if (element.CheckIfCanBeSelected(ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboItem.Name).Name) && comboItem.Id != WordPartsPageData.AllItemsId)
+                var comboItem = Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem);
+                if (element.CheckIfCanBeSelected(Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboItem.Name).Name) && comboItem.Id != WordPartsPageData.AllItemsId)
                 {
                     button.Tapped += Button_Tapped;
                 }
@@ -111,7 +113,7 @@ namespace DocumentTransitionUniversalApp.Views
 
         private void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var ownerName = ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name;
+            var ownerName = Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name;
             var button = sender as Button;
             var selectedElement = _pageData.SelectionParts.Single(el => el.Id == button.Name);
             if (selectedElement.Selected)
@@ -150,7 +152,7 @@ namespace DocumentTransitionUniversalApp.Views
             }
             else
             {
-                _pageData.ComboItems.Add(new ComboBoxItem() { Id = ++_pageData.LastId, Name = name });
+                _pageData.ComboItems.Add(new Data_Structures.ComboBoxItem() { Id = ++_pageData.LastId, Name = name });
             }
             
             comboBox.ItemsSource = _pageData.ComboItems.Select(cb => cb.Name);
@@ -209,45 +211,5 @@ namespace DocumentTransitionUniversalApp.Views
         {
             throw new NotImplementedException();
         }
-    }
-
-    public class ComboBoxItem
-	{
-		public string Name { get; set; }
-		public int Id { get; set; }
-
-        public static ComboBoxItem GetComboBoxItemByName(IEnumerable<ComboBoxItem> items, string name)
-        {
-            return items.Single(it => it.Name == name);
-        }
-
-        public static ComboBoxItem GetComboBoxItemById(IEnumerable<ComboBoxItem> items, int id)
-        {
-            return items.Single(it => it.Id == id);
-        }
-    }
-
-    public class WordPartsPageData
-    {
-        public List<ComboBoxItem> ComboItems { get; set; }
-        public int LastId { get; set; }
-        public static int AllItemsId = 0;
-        public List<PartsSelectionTreeElement<ElementTypes.WordElementType>> SelectionParts { get; set; }
-
-        public WordPartsPageData()
-        {
-            ComboItems = new List<ComboBoxItem>();
-            ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = "All" });
-            SelectionParts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
-        }
-
-        public WordPartsPageData(WordSelectPartsPage page) 
-        {
-            ComboItems = page._pageData.ComboItems;
-            LastId = page._pageData.LastId;
-            SelectionParts = page._pageData.SelectionParts;
-
-            page.CopyDataToControl(this);
-        }
-    }
+    }    
 }
