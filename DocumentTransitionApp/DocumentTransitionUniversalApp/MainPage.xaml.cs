@@ -182,7 +182,7 @@ namespace DocumentTransitionUniversalApp
             { 
                 try
                 {
-                    filesSaveFolder = await folder.GetFolderAsync("Split Files");
+                    filesSaveFolder = await folder.GetFolderAsync(string.Format("Split Files ({0})", FileName));
                     await filesSaveFolder.DeleteAsync();
                 }
                 catch (FileNotFoundException ex)
@@ -190,7 +190,7 @@ namespace DocumentTransitionUniversalApp
                 }
                 finally
                 {
-                    filesSaveFolder = await folder.CreateFolderAsync("Split Files");
+                    filesSaveFolder = await folder.CreateFolderAsync(string.Format("Split Files ({0})", FileName));
                 }
 
                 foreach (Service.PersonFiles file in personFiles)
