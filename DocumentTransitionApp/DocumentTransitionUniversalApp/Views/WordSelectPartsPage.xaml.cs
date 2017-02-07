@@ -186,9 +186,16 @@ namespace DocumentTransitionUniversalApp.Views
         private async void InitWord()
         {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-            var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
-            PrepareListOfItems(result.Body.GetDocumentPartsResult);
-
+            try
+            {
+                var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
+                PrepareListOfItems(result.Body.GetDocumentPartsResult);
+            }
+            catch(System.ServiceModel.CommunicationException ex)
+            {
+                MessageDialog dialog = new MessageDialog(ex.Message);
+                await dialog.ShowAsync();
+            }           
         }
 
         private async void InitPresentation()
