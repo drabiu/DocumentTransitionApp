@@ -9,12 +9,13 @@ using Presentproc = DocumentFormat.OpenXml.Presentation;
 
 using SplitDescriptionObjects;
 using DocumentEditPartsEngine;
+using DocumentSplitEngine.Data_Structures;
 
 namespace DocumentSplitEngine
 { 
     public interface IPresentationMarkerMapper
     {
-        IList<OpenXMDocumentPart<SlidePart>> Run();
+        IList<OpenXMLDocumentPart<SlidePart>> Run();
     }
 
     public class MarkerPresentationMapper : MarkerMapper, IPresentationMarkerMapper
@@ -36,9 +37,9 @@ namespace DocumentSplitEngine
             return new UniversalPresentationMarker(Presentation);
         }
 
-        public IList<OpenXMDocumentPart<SlidePart>> Run()
+        public IList<OpenXMLDocumentPart<SlidePart>> Run()
 		{
-            IList<OpenXMDocumentPart<SlidePart>> documentElements = new List<OpenXMDocumentPart<SlidePart>>();
+            IList<OpenXMLDocumentPart<SlidePart>> documentElements = new List<OpenXMLDocumentPart<SlidePart>>();
             if (SplitPresentationObj != null)
             {
                 foreach (Person person in SplitPresentationObj.Person)
@@ -62,13 +63,13 @@ namespace DocumentSplitEngine
                 }
 
                 string email = string.Empty;
-                OpenXMDocumentPart<SlidePart> part = new OpenXMDocumentPart<SlidePart>();
+                OpenXMLDocumentPart<SlidePart> part = new OpenXMLDocumentPart<SlidePart>();
                 var slidePartsList = Presentation.SlideParts.ToList();
                 for (int index = 0; index < slidePartsList.Count; index++)
                 {
                     if (SubdividedParagraphs[index] != email)
                     {
-                        part = new OpenXMDocumentPart<SlidePart>();
+                        part = new OpenXMLDocumentPart<SlidePart>();
                         part.CompositeElements.Add(slidePartsList[index]);
                         email = SubdividedParagraphs[index];
                         if (string.IsNullOrEmpty(email))
@@ -133,7 +134,7 @@ namespace DocumentSplitEngine
                     //PresentationPart presentationPart = preDoc.AddPresentationPart();
                     //presentationPart.Presentation = new Presentproc.Presentation();
                     PresentationPart presentationPart = preDoc.PresentationPart;
-                    foreach (OpenXMDocumentPart<SlidePart> element in DocumentElements)
+                    foreach (OpenXMLDocumentPart<SlidePart> element in DocumentElements)
                     {
                         RemoveAllSlides(presentationPart);
                         //foreach (var slideId in presentationPart.Presentation.SlideIdList.Elements<Presentproc.SlideId>())

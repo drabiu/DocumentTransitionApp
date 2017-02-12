@@ -12,13 +12,13 @@ namespace DocumentTransitionUniversalApp.Data_Structures
         public List<ComboBoxItem> ComboItems { get; set; }
         public int LastId { get; set; }
         public static int AllItemsId = 0;
-        public List<PartsSelectionTreeElement<ElementTypes.WordElementType>> SelectionParts { get; set; }
+        public List<PartsSelectionTreeElement<ElementTypes>> SelectionParts { get; set; }
 
         public WordPartsPageData()
         {
             ComboItems = new List<ComboBoxItem>();
             ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = "All" });
-            SelectionParts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
+            SelectionParts = new List<PartsSelectionTreeElement<ElementTypes>>();
         }
 
         public WordPartsPageData(WordSelectPartsPage page)

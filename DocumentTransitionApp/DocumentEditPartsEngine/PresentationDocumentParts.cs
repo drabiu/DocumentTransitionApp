@@ -27,11 +27,12 @@ namespace DocumentEditPartsEngine
                 PresentationDocument.Open(file, true))
             {
                 Present.Presentation presentation = preDoc.PresentationPart.Presentation;
-                var index = 1;
+                var idIndex = 1;
                 foreach (var slideId in presentation.SlideIdList.Elements<Present.SlideId>())
                 {
                     SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
-                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, index++, slideId.RelationshipId));
+                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, (idIndex-1).ToString()));
+                    idIndex++;
                 }
             }
 

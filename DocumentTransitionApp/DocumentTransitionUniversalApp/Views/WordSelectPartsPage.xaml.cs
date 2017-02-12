@@ -60,16 +60,16 @@ namespace DocumentTransitionUniversalApp.Views
             this.Frame.Navigate(typeof(MainPage), _source);
 		}
 
-        private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements)
+        private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements, ElementTypes elementType)
         {
             foreach (var element in elements)
             {
-                var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent);
+                var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, elementType, element.Name, element.Indent);
                 _pageData.SelectionParts.Add(item);
             }
         }
 
-		private void CreateSelectPartsUI(IEnumerable<PartsSelectionTreeElement<ElementTypes.WordElementType>> elements)
+		private void CreateSelectPartsUI(IEnumerable<PartsSelectionTreeElement<ElementTypes>> elements)
 		{
             WordSelectPartsItems.Items.Clear();
             foreach (var element in elements)
@@ -78,7 +78,7 @@ namespace DocumentTransitionUniversalApp.Views
             }
         }
 
-        private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes.WordElementType> element)
+        private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes> element)
 		{
             Button button = new Button();
 
@@ -191,7 +191,7 @@ namespace DocumentTransitionUniversalApp.Views
             try
             {
                 var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetDocumentPartsResult);
+                PrepareListOfItems(result.Body.GetDocumentPartsResult, _source.DocumentElementTypes);
             }
             catch(System.ServiceModel.CommunicationException ex)
             {
@@ -204,7 +204,7 @@ namespace DocumentTransitionUniversalApp.Views
         {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
             var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
-            PrepareListOfItems(result.Body.GetPresentationPartsResult);
+            PrepareListOfItems(result.Body.GetPresentationPartsResult, _source.DocumentElementTypes);
         }
 
         private async void InitExcel()

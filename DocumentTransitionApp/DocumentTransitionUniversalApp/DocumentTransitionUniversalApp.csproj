@@ -137,6 +137,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data Structures\ComboBoxItem.cs" />
+    <Compile Include="Data Structures\DocumentElementTypes.cs" />
     <Compile Include="Data Structures\WordPartsPageData.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="MainPage.xaml.cs">

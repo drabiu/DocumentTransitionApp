@@ -10,6 +10,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
+using DocumentTransitionUniversalApp.Data_Structures;
 using Service = DocumentTransitionUniversalApp.TransitionAppServices;
 using DocumentTransitionUniversalApp.Views;
 using Windows.UI.Popups;
@@ -29,21 +30,24 @@ namespace DocumentTransitionUniversalApp
 	{
         public WordSelectPartsPage WordPartPage;
 		public StorageFile DocumentFile;
-		StorageFile XmlFile;
 		public string FileName;
 		public DocumentType FileType;
-		bool _wasSplit;
-        bool _wasEditParts;
-		public Frame AppFrame { get { return this.frame; } }
+        public ElementTypes DocumentElementTypes;
+
+        public Frame AppFrame { get { return this.frame; } }
 		public byte[] documentBinary;
 		public byte[] xmlBinary;
 
-		public enum DocumentType
-		{
-			Word,
-			Excel,
-			Presentation
-		}
+        public enum DocumentType
+        {
+            Word,
+            Excel,
+            Presentation
+        }
+
+        private bool _wasSplit;
+        private bool _wasEditParts;
+        private StorageFile XmlFile;
 
 		public MainPage()
 		{
@@ -95,12 +99,15 @@ namespace DocumentTransitionUniversalApp
 				{
 					case (".docx"):
 						FileType = DocumentType.Word;
-						break;
+                        DocumentElementTypes = new WordElementType();
+                        break;
 					case (".xlsx"):
 						FileType = DocumentType.Excel;
-						break;
+                        DocumentElementTypes = new ExcelElementType();
+                        break;
 					case (".pptx"):
 						FileType = DocumentType.Presentation;
+                        DocumentElementTypes = new PresentationElementType();
 						break;
 				}
 
@@ -159,7 +166,7 @@ namespace DocumentTransitionUniversalApp
                 try
                 {
                     var result = await serviceClient.MergeDocumentAsync(files);
-                    FileHelper.SaveFile(result.Body.MergeDocumentResult, ".docx", ".xlsx", ".pptx");
+                    FileHelper.SaveFile(result.Body.MergeDocumentResult, "Merged Document Name", ".docx", ".xlsx", ".pptx");
                 }
                 catch (System.ServiceModel.CommunicationException ex)
                 {
@@ -416,14 +423,14 @@ namespace DocumentTransitionUniversalApp
                 {
                     XmlFile = file;
                     xmlBinary = await StorageFileToByteArray(XmlFile);
-                    List<PartsSelectionTreeElement<ElementTypes.WordElementType>> parts = new List<PartsSelectionTreeElement<ElementTypes.WordElementType>>();
+                    List<PartsSelectionTreeElement<ElementTypes>> parts = new List<PartsSelectionTreeElement<ElementTypes>>();
                     var response = await GetPartsFromXml();
                     if (!response.IsError)
                     {
                         var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
-                            var item = new PartsSelectionTreeElement<ElementTypes.WordElementType>(element.Id, element.ElementId, ElementTypes.WordElementType.Paragraph, element.Name, element.Indent, element.Selected, element.OwnerName);
+                            var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, DocumentElementTypes, element.Name, element.Indent, element.Selected, element.OwnerName);
                             parts.Add(item);
                         }
 

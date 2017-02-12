@@ -12,12 +12,13 @@ using Excelproc = DocumentFormat.OpenXml.Spreadsheet;
 
 using SplitDescriptionObjects;
 using DocumentEditPartsEngine;
+using DocumentSplitEngine.Data_Structures;
 
 namespace DocumentSplitEngine
 {
     public interface IExcelMarkerMapper
     {
-        IList<OpenXMDocumentPart<WorkbookPart>> Run();
+        IList<OpenXMLDocumentPart<WorkbookPart>> Run();
     }
 
 	public class MarkerExcelMapper : MarkerMapper, IExcelMarkerMapper
@@ -33,9 +34,9 @@ namespace DocumentSplitEngine
 			SubdividedParagraphs = new string[workBook.ChildElements.Count];
 		}
 
-		public IList<OpenXMDocumentPart<WorkbookPart>> Run()
+		public IList<OpenXMLDocumentPart<WorkbookPart>> Run()
 		{
-			IList<OpenXMDocumentPart<WorkbookPart>> documentElements = new List<OpenXMDocumentPart<WorkbookPart>>();
+			IList<OpenXMLDocumentPart<WorkbookPart>> documentElements = new List<OpenXMLDocumentPart<WorkbookPart>>();
 			if (SplitExcelObj != null)
 			{
 				foreach (Person person in SplitExcelObj.Person)
@@ -56,12 +57,12 @@ namespace DocumentSplitEngine
 				}
 
 				string email = string.Empty;
-                OpenXMDocumentPart<WorkbookPart> part = new OpenXMDocumentPart<WorkbookPart>();
+                OpenXMLDocumentPart<WorkbookPart> part = new OpenXMLDocumentPart<WorkbookPart>();
 				for (int index = 0; index < WorkBook.ChildElements.Count; index++)
 				{
 					if (SubdividedParagraphs[index] != email)
 					{
-						part = new OpenXMDocumentPart<WorkbookPart>();
+						part = new OpenXMLDocumentPart<WorkbookPart>();
 						//part.CompositeElements.Add(WorkBook.ChildElements[index]);
 						email = SubdividedParagraphs[index];
 						if (string.IsNullOrEmpty(email))
@@ -81,7 +82,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
-	public class ExcelSplit : MergeXml<OpenXMDocumentPart<WorkbookPart>>, ISplit, ILocalSplit
+	public class ExcelSplit : MergeXml<OpenXMLDocumentPart<WorkbookPart>>, ISplit, ILocalSplit
 	{
 		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{

@@ -2,27 +2,9 @@
 
 namespace DocumentTransitionUniversalApp
 {
-	public class ElementTypes
-	{
-		public enum WordElementType
-		{
-			Paragraph,
-			Table,
-			Picture
-		}
+	
 
-		public enum ExcelElementType
-		{
-			Sheet
-		}
-
-		public enum PresentationElementType
-		{
-			Slide
-		}
-	}
-
-	public class PartsSelectionTreeElement<ElementType>
+    public class PartsSelectionTreeElement<ElementType> 
 	{
 		public string Id { get; private set; }
         public string ElementId { get; private set; }

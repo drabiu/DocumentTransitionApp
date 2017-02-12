@@ -38,14 +38,14 @@ namespace DocumentTransitionUniversalApp.Helpers
             }
         }
 
-        public static async void SaveFile(byte[] fileBinary, params string[] filters)
+        public static async void SaveFile(byte[] fileBinary, string fileName, params string[] filters)
         {
             FileSavePicker fileSavePicker = new FileSavePicker();
             foreach (var filter in filters)
                 fileSavePicker.FileTypeChoices.Add(string.Format("Document ({0})", filter), filters);
 
             fileSavePicker.SuggestedStartLocation = PickerLocationId.Downloads;
-            fileSavePicker.SuggestedFileName = "Merged Document Name";
+            fileSavePicker.SuggestedFileName = fileName;
             StorageFile file = await fileSavePicker.PickSaveFileAsync();
             if (file != null)
             {
