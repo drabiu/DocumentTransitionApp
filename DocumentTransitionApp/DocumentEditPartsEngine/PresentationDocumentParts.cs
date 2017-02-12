@@ -67,6 +67,7 @@ namespace DocumentEditPartsEngine
                     foreach (var paragraph in shape.TextBody.Descendants<D.Paragraph>())
                     {
                         paragraphText.Append(paragraphSeparator);
+                        paragraphText.Append("[Sld]: ");
                         foreach (var text in paragraph.Descendants<D.Text>())
                         {
                             paragraphText.Append(text.Text);

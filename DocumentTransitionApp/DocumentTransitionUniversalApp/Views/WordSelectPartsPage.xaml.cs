@@ -85,7 +85,7 @@ namespace DocumentTransitionUniversalApp.Views
             if (element.Selected)
                 button.Background = new SolidColorBrush(Colors.Honeydew);
             else
-                button.Background = new SolidColorBrush(Colors.Transparent);
+                button.Background = new SolidColorBrush(Colors.WhiteSmoke);
 
             button.Name = element.Id;
             button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
@@ -119,7 +119,7 @@ namespace DocumentTransitionUniversalApp.Views
             if (selectedElement.Selected)
             {
                 selectedElement.SelectItem(string.Empty);
-                button.Background = new SolidColorBrush(Colors.White);
+                button.Background = new SolidColorBrush(Colors.WhiteSmoke);
             }
             else
             {
@@ -203,8 +203,16 @@ namespace DocumentTransitionUniversalApp.Views
         private async void InitPresentation()
         {
             Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-            var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
-            PrepareListOfItems(result.Body.GetPresentationPartsResult, _source.DocumentElementTypes);
+            try
+            {
+                var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
+                PrepareListOfItems(result.Body.GetPresentationPartsResult, _source.DocumentElementTypes);
+            }
+            catch (System.ServiceModel.CommunicationException ex)
+            {
+                MessageDialog dialog = new MessageDialog(ex.Message);
+                await dialog.ShowAsync();
+            }
         }
 
         private async void InitExcel()

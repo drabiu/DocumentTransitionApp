@@ -70,7 +70,7 @@ namespace DocumentEditPartsEngine
                 var paragraph = element as Wordproc.Paragraph;
                 if (paragraph.ChildElements.Any(ch => ch is Wordproc.Run))
                 {
-                    result.Append("Paragraph: ");
+                    result.Append("[Par]: ");
                     foreach (Wordproc.Run run in paragraph.ChildElements.OfType<Wordproc.Run>())
                     {
                         result.Append(run.InnerText);
