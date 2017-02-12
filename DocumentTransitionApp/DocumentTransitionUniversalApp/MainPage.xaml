@@ -16,6 +16,7 @@
                 <Button x:Name="buttonMerge" Content="Merge" IsEnabled="True" HorizontalAlignment="Left" Margin="10,426,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonMerge_Click"/>
                 <Button x:Name="buttonGenerateSplit" Content="Generate Split XML" IsEnabled="False" HorizontalAlignment="Stretch" Margin="10,220,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonGenerateSplit_Click"/>
                 <Button x:Name="buttonLoadSplit" Content="Load Split XML" IsEnabled="False" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonLoadSplit_Click"/>
+                <Button x:Name="buttonSettings" HorizontalAlignment="Left" Margin="10,598,0,0" VerticalAlignment="Top" Width="340" Height="30" Content="Settings" FontSize="12" Click="buttonSettings_Click"/>
             </Grid>
         </Frame>
     </Grid>

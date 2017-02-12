@@ -150,6 +150,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDecorator.cs" />
     <Compile Include="Views\WordSelectPartsPage.xaml.cs">
       <DependentUpon>WordSelectPartsPage.xaml</DependentUpon>
     </Compile>
@@ -190,7 +191,6 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\TransitionAppServices\" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

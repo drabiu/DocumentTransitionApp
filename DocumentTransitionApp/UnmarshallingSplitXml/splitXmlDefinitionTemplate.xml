@@ -35,8 +35,16 @@
 	<Presentation>
 		<Name></Name>
 		<Person Email="">
+      <UniversalMarker>
+        <ElementId></ElementId>
+        <SelectionLastelementId></SelectionLastelementId>
+      </UniversalMarker>
 		</Person>
 		<Person Email="">
+      <UniversalMarker>
+        <ElementId></ElementId>
+        <SelectionLastelementId></SelectionLastelementId>
+      </UniversalMarker>
 		</Person>
 	</Presentation>
 </Split>

@@ -187,7 +187,8 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitWord()
         {
-            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+
+            var serviceClient = MainPage.Service.GetInstance();
             try
             {
                 var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
@@ -202,7 +203,7 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitPresentation()
         {
-            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var serviceClient = MainPage.Service.GetInstance();
             try
             {
                 var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);

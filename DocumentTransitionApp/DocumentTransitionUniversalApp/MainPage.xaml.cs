@@ -37,6 +37,7 @@ namespace DocumentTransitionUniversalApp
         public Frame AppFrame { get { return this.frame; } }
 		public byte[] documentBinary;
 		public byte[] xmlBinary;
+        public static ServiceDecorator Service = new ServiceDecorator();
 
         public enum DocumentType
         {
@@ -125,7 +126,7 @@ namespace DocumentTransitionUniversalApp
 
 		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
-            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var serviceClient = MainPage.Service.GetInstance();
             string extension = string.Empty;
             var result = new ObservableCollection<Service.PersonFiles>();
             try
@@ -159,8 +160,8 @@ namespace DocumentTransitionUniversalApp
 
 		private async void buttonMerge_Click(object sender, RoutedEventArgs e)
 		{
-			Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
-			var files = await GetFiles();
+            var serviceClient = MainPage.Service.GetInstance();
+            var files = await GetFiles();
             if (files.Any())
             {
                 try
@@ -174,6 +175,13 @@ namespace DocumentTransitionUniversalApp
                     await dialog.ShowAsync();
                 }
             }
+        }
+
+        private async void buttonSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var endpointAdress = await InputTextDialogAsync("Set service adress", Service.DefaultEndpoint);
+            if (!string.IsNullOrEmpty(endpointAdress))
+                Service.DefaultEndpoint = endpointAdress;
         }
 
         private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
@@ -389,9 +397,27 @@ namespace DocumentTransitionUniversalApp
 			}
 		}
 
+        private async Task<string> InputTextDialogAsync(string title, string textBoxContent)
+        {
+            TextBox inputTextBox = new TextBox();
+            inputTextBox.AcceptsReturn = false;
+            inputTextBox.Height = 32;
+            inputTextBox.Text = textBoxContent;
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = inputTextBox;
+            dialog.Title = title;
+            dialog.IsSecondaryButtonEnabled = true;
+            dialog.PrimaryButtonText = "Ok";
+            dialog.SecondaryButtonText = "Cancel";
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                return inputTextBox.Text;
+            else
+                return string.Empty;
+        }
+
         private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
         {
-            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var serviceClient = MainPage.Service.GetInstance();
             var selectionParts = new ObservableCollection<Service.PartsSelectionTreeElement>();
             foreach (var part in WordPartPage._pageData.SelectionParts)
                 selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
@@ -401,6 +427,7 @@ namespace DocumentTransitionUniversalApp
                 var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
                 string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
                 FileHelper.SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
+                EnableSplitButton();
             }
             catch (System.ServiceModel.CommunicationException ex)
             {
@@ -465,7 +492,7 @@ namespace DocumentTransitionUniversalApp
         private async Task<Service.ServiceResponse> GetPartsFromXml()
         {
             var result = new TransitionAppServices.ServiceResponse();
-            Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();
+            var serviceClient = MainPage.Service.GetInstance();
 
             try
             {

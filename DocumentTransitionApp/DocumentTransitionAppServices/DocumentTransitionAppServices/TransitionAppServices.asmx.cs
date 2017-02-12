@@ -10,6 +10,7 @@ using DocumentEditPartsEngine.Interfaces;
 using DocumentMergeEngine.Interfaces;
 using System;
 using System.Web.Services.Protocols;
+using DocumentTransitionAppServices.Interfaces;
 
 namespace DocumentTransitionAppServices
 {
@@ -21,7 +22,7 @@ namespace DocumentTransitionAppServices
 	[System.ComponentModel.ToolboxItem(false)]
 	// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
 	// [System.Web.Script.Services.ScriptService]
-	public class Service1 : WebService
+	public class Service1 : WebService, ITransitionAppService
     {
 		[WebMethod]
 		public PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
