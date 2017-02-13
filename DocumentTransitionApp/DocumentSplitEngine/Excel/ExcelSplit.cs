@@ -84,6 +84,7 @@ namespace DocumentSplitEngine
 
 	public class ExcelSplit : MergeXml<OpenXMLDocumentPart<WorkbookPart>>, ISplit, ILocalSplit
 	{
+        [Obsolete]
 		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
 			//split XML Read
@@ -108,6 +109,7 @@ namespace DocumentSplitEngine
 			wordprocessingDocument.Close();
 		}
 
+        [Obsolete]
 		public void SaveSplitDocument(string filePath)
 		{
 			throw new NotImplementedException();

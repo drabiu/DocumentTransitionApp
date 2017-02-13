@@ -31,7 +31,8 @@ namespace DocumentEditPartsEngine
                 foreach (var slideId in presentation.SlideIdList.Elements<Present.SlideId>())
                 {
                     SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
-                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, (idIndex-1).ToString()));
+                    string elementId = slideId.RelationshipId;
+                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, elementId));
                     idIndex++;
                 }
             }

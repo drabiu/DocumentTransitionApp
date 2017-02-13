@@ -1,11 +1,26 @@
 ﻿using System.ServiceModel;
 using DocumentTransitionUniversalApp.TransitionAppServices;
+using Windows.Storage;
 
 namespace DocumentTransitionUniversalApp
 {
     public class ServiceDecorator
     {
-        public string DefaultEndpoint = "http://localhost:6943/TransitionAppServices.asmx";
+        public string DefaultEndpoint
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("DefaultEndpoint"))
+                    return (string)(ApplicationData.Current.LocalSettings.Values["DefaultEndpoint"]);
+                else
+                    return "http://localhost:6943/TransitionAppServices.asmx";
+
+            }
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["DefaultEndpoint"] = value;
+            }
+        }
 
         public Service1SoapClient GetInstance()
         {

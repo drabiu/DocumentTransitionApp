@@ -306,6 +306,7 @@ namespace DocumentSplitEngine
 			}
 		}
 
+        [Obsolete]
 		public void OpenAndSearchDocument(string docxFilePath, string xmlFilePath)
 		{
 			//split XML Read
@@ -330,6 +331,7 @@ namespace DocumentSplitEngine
 			wordprocessingDocument.Close();
 		}
 
+        [Obsolete]
 		public void SaveSplitDocument(string docxFilePath)
 		{
 			DirectoryInfo initDi;

@@ -83,7 +83,7 @@ namespace DocumentTransitionUniversalApp.Views
             Button button = new Button();
 
             if (element.Selected)
-                button.Background = new SolidColorBrush(Colors.Honeydew);
+                button.Background = new SolidColorBrush(Colors.DodgerBlue);
             else
                 button.Background = new SolidColorBrush(Colors.WhiteSmoke);
 
@@ -124,7 +124,7 @@ namespace DocumentTransitionUniversalApp.Views
             else
             {
                 selectedElement.SelectItem(ownerName);
-                button.Background = new SolidColorBrush(Colors.Honeydew);
+                button.Background = new SolidColorBrush(Colors.DodgerBlue);
             }
         }
 

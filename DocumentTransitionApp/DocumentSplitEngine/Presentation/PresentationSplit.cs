@@ -1,21 +1,19 @@
-﻿using System;
+﻿using DocumentEditPartsEngine;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentSplitEngine.Data_Structures;
+using SplitDescriptionObjects;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using System.IO;
-
-using DocumentFormat.OpenXml.Packaging;
 using Presentproc = DocumentFormat.OpenXml.Presentation;
 
-using SplitDescriptionObjects;
-using DocumentEditPartsEngine;
-using DocumentSplitEngine.Data_Structures;
-
 namespace DocumentSplitEngine
-{ 
+{
     public interface IPresentationMarkerMapper
     {
-        IList<OpenXMLDocumentPart<SlidePart>> Run();
+        IList<OpenXMLDocumentPart<Presentproc.SlideId>> Run();
     }
 
     public class MarkerPresentationMapper : MarkerMapper, IPresentationMarkerMapper
@@ -37,9 +35,13 @@ namespace DocumentSplitEngine
             return new UniversalPresentationMarker(Presentation);
         }
 
-        public IList<OpenXMLDocumentPart<SlidePart>> Run()
+        /// <summary>
+        /// Finds parts of documents selected by the marker and returns as a list of persons each containing list of document elements
+        /// </summary>
+        /// <returns></returns>
+        public IList<OpenXMLDocumentPart<Presentproc.SlideId>> Run()
 		{
-            IList<OpenXMLDocumentPart<SlidePart>> documentElements = new List<OpenXMLDocumentPart<SlidePart>>();
+            IList<OpenXMLDocumentPart<Presentproc.SlideId>> documentElements = new List<OpenXMLDocumentPart<Presentproc.SlideId>>();
             if (SplitPresentationObj != null)
             {
                 foreach (Person person in SplitPresentationObj.Person)
@@ -63,14 +65,14 @@ namespace DocumentSplitEngine
                 }
 
                 string email = string.Empty;
-                OpenXMLDocumentPart<SlidePart> part = new OpenXMLDocumentPart<SlidePart>();
-                var slidePartsList = Presentation.SlideParts.ToList();
+                OpenXMLDocumentPart<Presentproc.SlideId> part = new OpenXMLDocumentPart<Presentproc.SlideId>();
+                var slidePartsList = Presentation.Presentation.SlideIdList.ChildElements;
                 for (int index = 0; index < slidePartsList.Count; index++)
                 {
                     if (SubdividedParagraphs[index] != email)
                     {
-                        part = new OpenXMLDocumentPart<SlidePart>();
-                        part.CompositeElements.Add(slidePartsList[index]);
+                        part = new OpenXMLDocumentPart<Presentproc.SlideId>();
+                        part.CompositeElements.Add(slidePartsList[index] as Presentproc.SlideId);
                         email = SubdividedParagraphs[index];
                         if (string.IsNullOrEmpty(email))
                             part.PartOwner = "undefined";
@@ -80,7 +82,7 @@ namespace DocumentSplitEngine
                         documentElements.Add(part);
                     }
                     else
-                        part.CompositeElements.Add(slidePartsList[index]);
+                        part.CompositeElements.Add(slidePartsList[index] as Presentproc.SlideId);
                 }
             }
 
@@ -88,19 +90,21 @@ namespace DocumentSplitEngine
         }
 	}
 
-	public class PresentationSplit : MergeXml<SlidePart>, ISplit, ILocalSplit
+	public class PresentationSplit : MergeXml<Presentproc.SlideId>, ISplit, ILocalSplit
 	{
         public PresentationSplit(string docName)
         {
             DocumentName = docName;
         }
 
+        [Obsolete]
         public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
             throw new NotImplementedException();
         }
 
-		public void SaveSplitDocument(string filePath)
+        [Obsolete]
+        public void SaveSplitDocument(string filePath)
 		{
 			throw new NotImplementedException();
 		}
@@ -125,26 +129,50 @@ namespace DocumentSplitEngine
             byte[] byteArray = ReadFully(document);
             using (MemoryStream mem = new MemoryStream())
             {
-                mem.Write(byteArray, 0, (int)byteArray.Length);
-                PresentationDocument templateDocument = PresentationDocument.Open(mem, false);
+                mem.Write(byteArray, 0, (int)byteArray.Length);               
                 using (PresentationDocument preDoc =
                     PresentationDocument.Open(mem, true))
                 {
-                    //preDoc.DeletePart(preDoc.PresentationPart);
-                    //PresentationPart presentationPart = preDoc.AddPresentationPart();
-                    //presentationPart.Presentation = new Presentproc.Presentation();
                     PresentationPart presentationPart = preDoc.PresentationPart;
-                    foreach (OpenXMLDocumentPart<SlidePart> element in DocumentElements)
+                    RemoveAllSlides(presentationPart);
+                    foreach (OpenXMLDocumentPart<Presentproc.SlideId> element in DocumentElements)
                     {
-                        RemoveAllSlides(presentationPart);
-                        //foreach (var slideId in presentationPart.Presentation.SlideIdList.Elements<Presentproc.SlideId>())
-                        //{
-                        //    SlidePart slidePart = templateDocument.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
-                        //}
-                        foreach (SlidePart compo in element.CompositeElements)
+                        var slideIdList = presentationPart.Presentation.SlideIdList;
+                        //Find the highest slide ID in the current list.
+                        uint maxSlideId = 1;
+
+                        foreach (Presentproc.SlideId slideId in slideIdList.ChildElements)
                         {
-                            //SlidePart slidePart = templateDocument.PresentationPart.GetPartById(compo.Slide.)
-                            //presentationPart.AddPart<SlidePart>(compo);
+                            if (slideId.Id.Value > maxSlideId)
+                            {
+                                maxSlideId = slideId.Id;
+                            }
+                        }
+
+                        maxSlideId ++;
+
+                        foreach (Presentproc.SlideId compo in element.CompositeElements)
+                        {
+                            PresentationDocument templateDocument = PresentationDocument.Open(mem, false);
+                            SlidePart templateSlide = (SlidePart)templateDocument.PresentationPart.GetPartById(compo.RelationshipId);
+                            //Create the slide part and copy the data from the first part
+                            SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
+                            newSlidePart.FeedData(templateSlide.GetStream());
+                            //Use the same slide layout as that of the template slide.
+                            if (null != templateSlide.SlideLayoutPart)
+                            {
+                                newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                            }
+
+                            templateDocument.Close();
+
+                            //Insert the new slide into the slide list.
+                            Presentproc.SlideId newSlideId = slideIdList.AppendChild<Presentproc.SlideId>(new Presentproc.SlideId());
+                            //Presentproc.SlideId newSlideId = slideIdList.InsertAfter(new Presentproc.SlideId(), slideIdList.Last());
+
+                            //Set the slide id and relationship id
+                            newSlideId.Id = maxSlideId;
+                            newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);
                         }
 
                         presentationPart.Presentation.Save();
@@ -156,8 +184,6 @@ namespace DocumentSplitEngine
                         person.Data = mem.ToArray();
                     }
                 }
-
-                templateDocument.Close();
             }
             // At this point, the memory stream contains the modified document.
             // We could write it back to a SharePoint document library or serve
