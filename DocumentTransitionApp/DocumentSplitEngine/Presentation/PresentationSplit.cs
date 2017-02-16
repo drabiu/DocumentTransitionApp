@@ -129,45 +129,58 @@ namespace DocumentSplitEngine
             byte[] byteArray = ReadFully(document);
             using (MemoryStream mem = new MemoryStream())
             {
-                mem.Write(byteArray, 0, (int)byteArray.Length);               
+                mem.Write(byteArray, 0, (int)byteArray.Length);                
                 using (PresentationDocument preDoc =
                     PresentationDocument.Open(mem, true))
                 {
                     PresentationPart presentationPart = preDoc.PresentationPart;
-                    RemoveAllSlides(presentationPart);
+                    using (PresentationDocument templateDocument = PresentationDocument.Open(mem, false))
+                    {
+                        foreach (Presentproc.SlideId slideId in templateDocument.PresentationPart.Presentation.SlideIdList.ChildElements)
+                        {
+                            presentationPart.DeletePart(slideId.RelationshipId);
+                        }
+                    }
                     foreach (OpenXMLDocumentPart<Presentproc.SlideId> element in DocumentElements)
                     {
-                        var slideIdList = presentationPart.Presentation.SlideIdList;
-                        //Find the highest slide ID in the current list.
-                        uint maxSlideId = 1;
+                        uint maxSlideId = 0;
+                        //RemoveAllSlides(presentationPart);
 
-                        foreach (Presentproc.SlideId slideId in slideIdList.ChildElements)
-                        {
-                            if (slideId.Id.Value > maxSlideId)
-                            {
-                                maxSlideId = slideId.Id;
-                            }
-                        }
-
-                        maxSlideId ++;
+                        //alternative RemoveAllSlides
+                        presentationPart.Presentation = new Presentproc.Presentation();
+                        presentationPart.Presentation.SlideIdList = new Presentproc.SlideIdList();         
 
                         foreach (Presentproc.SlideId compo in element.CompositeElements)
                         {
-                            PresentationDocument templateDocument = PresentationDocument.Open(mem, false);
-                            SlidePart templateSlide = (SlidePart)templateDocument.PresentationPart.GetPartById(compo.RelationshipId);
-                            //Create the slide part and copy the data from the first part
-                            SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
-                            newSlidePart.FeedData(templateSlide.GetStream());
-                            //Use the same slide layout as that of the template slide.
-                            if (null != templateSlide.SlideLayoutPart)
+                            var slideIdList = presentationPart.Presentation.SlideIdList;
+                            //Find the highest slide ID in the current list.
+                            
+                            foreach (Presentproc.SlideId slideId in slideIdList.ChildElements)
                             {
-                                newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                                if (slideId.Id.Value > maxSlideId)
+                                {
+                                    maxSlideId = slideId.Id;
+                                }
                             }
 
-                            templateDocument.Close();
+                            maxSlideId++;
+                            //Create the slide part and copy the data from the first part
+                            SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
+                            using (PresentationDocument templateDocument = PresentationDocument.Open(mem, false))
+                            {
+                                var templateSlide = (SlidePart)templateDocument.PresentationPart.GetPartById(compo.RelationshipId);
+                                newSlidePart.FeedData(templateSlide.GetStream());
+                                //Use the same slide layout as that of the template slide.
+                                if (templateSlide.SlideLayoutPart != null)
+                                {
+                                    newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                                }
+                            }
+
+                            newSlidePart.Slide.Save();
 
                             //Insert the new slide into the slide list.
-                            Presentproc.SlideId newSlideId = slideIdList.AppendChild<Presentproc.SlideId>(new Presentproc.SlideId());
+                            Presentproc.SlideId newSlideId = slideIdList.AppendChild(new Presentproc.SlideId());
                             //Presentproc.SlideId newSlideId = slideIdList.InsertAfter(new Presentproc.SlideId(), slideIdList.Last());
 
                             //Set the slide id and relationship id
