@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DocumentMergeEngine.Interfaces
 {
+    [Obsolete]
     public interface ILocalMerge
     {
         void Run(string path);

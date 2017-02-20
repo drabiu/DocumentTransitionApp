@@ -108,6 +108,7 @@ namespace DocumentSplitEngine
 		}
 	}
 
+    [Obsolete]
 	public interface ILocalSplit
 	{
 		void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath);		

@@ -15,6 +15,7 @@ namespace DocumentMergeEngine
 {
     public class DocumentMerge : ILocalMerge, IMerge
     {
+        [Obsolete]
 		public void Run(string path)
 		{
 			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentMerge)).Location);

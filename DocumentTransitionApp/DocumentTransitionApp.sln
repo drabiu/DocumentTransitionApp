@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionUniversal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentEditPartsEngine", "DocumentEditPartsEngine\DocumentEditPartsEngine.csproj", "{55FC58A3-200E-4FE1-84F5-337427620426}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenXMLTools", "OpenXMLTools\OpenXMLTools.csproj", "{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -172,6 +174,22 @@ Global
 		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x64.Build.0 = Release|Any CPU
 		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x86.ActiveCfg = Release|Any CPU
 		{55FC58A3-200E-4FE1-84F5-337427620426}.Release|x86.Build.0 = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|ARM.Build.0 = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|x64.Build.0 = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{46987BE4-7719-42D4-A2E3-D0A60FA5F2C7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
