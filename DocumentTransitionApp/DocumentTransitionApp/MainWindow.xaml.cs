@@ -17,6 +17,11 @@ using DocumentSplitEngine;
 using DocumentMergeEngine;
 using Service = DocumentTransitionApp.TransitionAppService;
 using DocumentMergeEngine.Interfaces;
+using OpenXMLTools.Interfaces;
+using OpenXMLTools;
+using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentSplitEngine.Data_Structures;
 
 namespace DocumentTransitionApp
 {
@@ -26,9 +31,11 @@ namespace DocumentTransitionApp
 	public partial class MainWindow : Window
 	{
 		Service.PersonFiles[] result;
+        IPresentationTools PresentationTools;
 
 		public MainWindow()
 		{
+            PresentationTools = new PresentationTools();
 			InitializeComponent();
 		}
 
@@ -124,7 +131,83 @@ namespace DocumentTransitionApp
 
         private void button_Click_4(object sender, RoutedEventArgs e)
         {
+            MemoryStream inMemoryCopy = new MemoryStream();
+            using (FileStream fs = File.OpenRead(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja.pptx"))
+            {
+                fs.CopyTo(inMemoryCopy);
+            }
 
+            byte[] byteArray = ReadFully(inMemoryCopy);
+            using (MemoryStream mem = new MemoryStream())
+            {
+                mem.Write(byteArray, 0, (int)byteArray.Length);
+                using (PresentationDocument preDoc =
+                   PresentationDocument.Open(inMemoryCopy, true))
+                {
+                    PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
+
+                }
+            }
+        System.IO.File.WriteAllBytes(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx", inMemoryCopy.ToArray());
+
+            //using (FileStream file = new FileStream(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja.pptx", FileMode.Create, FileAccess.Write))
+            //{
+            //    inMemoryCopy.WriteTo(file);
+            //}
+
+            inMemoryCopy.Close();
+        }
+
+        public static byte[] ReadFully(Stream stream)
+        {
+            long originalPosition = 0;
+
+            if (stream.CanSeek)
+            {
+                originalPosition = stream.Position;
+                stream.Position = 0;
+            }
+
+            try
+            {
+                byte[] readBuffer = new byte[4096];
+
+                int totalBytesRead = 0;
+                int bytesRead;
+
+                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+                {
+                    totalBytesRead += bytesRead;
+
+                    if (totalBytesRead == readBuffer.Length)
+                    {
+                        int nextByte = stream.ReadByte();
+                        if (nextByte != -1)
+                        {
+                            byte[] temp = new byte[readBuffer.Length * 2];
+                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+                            readBuffer = temp;
+                            totalBytesRead++;
+                        }
+                    }
+                }
+
+                byte[] buffer = readBuffer;
+                if (readBuffer.Length != totalBytesRead)
+                {
+                    buffer = new byte[totalBytesRead];
+                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+                }
+                return buffer;
+            }
+            finally
+            {
+                if (stream.CanSeek)
+                {
+                    stream.Position = originalPosition;
+                }
+            }
         }
     }
 }
