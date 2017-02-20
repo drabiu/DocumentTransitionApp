@@ -13,7 +13,7 @@ namespace OpenXMLTools
     {
         public void InsertSlideFromTemplate(PresentationPart presentationPart, MemoryStream mem, string sourceRelationshipId)
         {
-            uint maxSlideId = 0;
+            uint maxSlideId = 256;
 
             var slideIdList = presentationPart.Presentation.SlideIdList;
             //Find the highest slide ID in the current list.
@@ -54,6 +54,8 @@ namespace OpenXMLTools
                 newSlideId.Id = maxSlideId;
                 newSlideId.RelationshipId = relationshipId;
                 presentationPart.AddPart(newSlidePart, relationshipId);
+
+                presentationPart.Presentation.Save();
             }
         }
 

@@ -148,7 +148,7 @@ namespace DocumentSplitEngine
                     //}
                     foreach (OpenXMLDocumentPart<SlideId> element in DocumentElements)
                     {
-                        PresentationTools.RemoveAllSlides(presentationPart);
+                        //PresentationTools.RemoveAllSlides(presentationPart);
 
                         //alternative RemoveAllSlides
                         //presentationPart.Presentation = new Presentation();
@@ -156,12 +156,10 @@ namespace DocumentSplitEngine
 
                         foreach (SlideId compo in element.CompositeElements)
                         {
-                            PresentationTools.InsertSlideFromTemplate(presentationPart, mem, compo.RelationshipId);
-                            //PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
+                            //PresentationTools.InsertSlideFromTemplate(presentationPart, mem, compo.RelationshipId);
+                            PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
                         }
-
-                        presentationPart.Presentation.Save();
-
+                        
                         var person = new PersonFiles();
                         person.Person = element.PartOwner;
                         resultList.Add(person);

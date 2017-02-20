@@ -121,5 +121,10 @@ namespace DocumentTransitionApp
 			//var resultFile = serviceClient.MergeDocument(result);
 			//int dupa = 1;
 		}
-	}
+
+        private void button_Click_4(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
 }
