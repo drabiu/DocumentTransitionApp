@@ -221,6 +221,8 @@ namespace OpenXMLTools
                     }
                 }
             }
+
+            presentation.Save();
         }
     }
 }

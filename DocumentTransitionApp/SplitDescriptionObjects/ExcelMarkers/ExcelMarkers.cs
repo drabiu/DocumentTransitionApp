@@ -5,7 +5,13 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace SplitDescriptionObjects
 {
-    public abstract class ExcelMarker : IDocumentMarker
+    public interface IExcelMarker
+    {
+        int FindElement(string id);
+        IList<int> GetCrossedElements(string id, string id2);
+    }
+
+    public abstract class ExcelMarker : IExcelMarker
     {
         Workbook DocumentBody;
 

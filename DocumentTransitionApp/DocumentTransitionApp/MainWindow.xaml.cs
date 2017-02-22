@@ -142,13 +142,16 @@ namespace DocumentTransitionApp
             {
                 mem.Write(byteArray, 0, (int)byteArray.Length);
                 using (PresentationDocument preDoc =
-                   PresentationDocument.Open(inMemoryCopy, true))
+                   PresentationDocument.Open(mem, true))
                 {
-                    PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
-
+                    PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");                 
                 }
+
+                byteArray = mem.ToArray();
+                //System.IO.File.WriteAllBytes(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx", mem.ToArray());
             }
-        System.IO.File.WriteAllBytes(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx", inMemoryCopy.ToArray());
+            System.IO.File.WriteAllBytes(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx", byteArray);
+        //System.IO.File.WriteAllBytes(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx", inMemoryCopy.ToArray());
 
             //using (FileStream file = new FileStream(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja.pptx", FileMode.Create, FileAccess.Write))
             //{

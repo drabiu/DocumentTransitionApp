@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DocumentEditPartsEngine\DocumentEditPartsEngine.csproj">
+      <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
+      <Name>DocumentEditPartsEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnmarshallingSplitXml\UnmarshallingSplitXml.csproj">
       <Project>{84cbcbe8-ceae-43f0-a73a-856494db5e4f}</Project>
       <Name>UnmarshallingSplitXml</Name>

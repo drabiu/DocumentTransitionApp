@@ -7,7 +7,13 @@ using DocumentFormat.OpenXml.Packaging;
 
 namespace SplitDescriptionObjects
 {
-    public abstract class PresentationMarker : IDocumentMarker
+    public interface IPresentationMarker
+    {
+        int FindElement(string id);
+        IList<int> GetCrossedSlideIdElements(string id, string id2);
+    }
+
+    public abstract class PresentationMarker : IPresentationMarker
     {
         PresentationPart DocumentBody;
 
@@ -21,7 +27,7 @@ namespace SplitDescriptionObjects
             throw new NotImplementedException();
         }
 
-        public IList<int> GetCrossedElements(string id, string id2)
+        public IList<int> GetCrossedSlideIdElements(string id, string id2)
         {
             var elements = DocumentBody.Presentation.SlideIdList.Elements<Present.SlideId>();
             var indexes = MarkerHelper<Present.SlideId>.GetCrossedElements(id, id2, elements.ToList(), element => element.RelationshipId);
@@ -30,7 +36,7 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public interface IUniversalPresentationMarker : IDocumentMarker
+    public interface IUniversalPresentationMarker : IPresentationMarker
     {
     }
 

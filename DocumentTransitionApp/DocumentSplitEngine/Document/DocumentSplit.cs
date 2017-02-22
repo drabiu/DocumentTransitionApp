@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml;
 using SplitDescriptionObjects;
 using DocumentEditPartsEngine;
 using DocumentSplitEngine.Data_Structures;
+using OpenXMLTools;
 
 namespace DocumentSplitEngine
 {
@@ -31,18 +32,15 @@ namespace DocumentSplitEngine
 	{	
 		SplitDocument SplitDocumentObj { get; set; }
 		Wordproc.Body DocumentBody { get; set; }
-		
-		public MarkerDocumentMapper(string documentName, Split xml, Wordproc.Body body)
-		{
+        IUniversalDocumentMarker UniversalDocMarker;
+
+        public MarkerDocumentMapper(string documentName, Split xml, Wordproc.Body body)
+		{        
 			Xml = xml;
 			SplitDocumentObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
 			DocumentBody = body;
-			SubdividedParagraphs = new string[body.ChildElements.Count];
-		}
-
-		public IUniversalDocumentMarker GetUniversalDocumentMarker()
-		{
-			return new UniversalDocumentMarker(DocumentBody);
+            UniversalDocMarker = new UniversalDocumentMarker(DocumentBody);
+            SubdividedParagraphs = new string[body.ChildElements.Count];
 		}
 
 		public IList<OpenXMLDocumentPart<OpenXmlElement>> Run()
@@ -56,7 +54,7 @@ namespace DocumentSplitEngine
 					{
 						foreach (PersonUniversalMarker marker in person.UniversalMarker)
 						{
-							IList<int> result = GetUniversalDocumentMarker().GetCrossedElements(marker.ElementId, marker.SelectionLastelementId);
+							IList<int> result = UniversalDocMarker.GetCrossedParagraphElements(marker.ElementId, marker.SelectionLastelementId);
 							foreach (int index in result)
 							{
 								if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
@@ -149,7 +147,7 @@ namespace DocumentSplitEngine
 			}
 
 			using (FileStream fileStream = new FileStream(path + "mergeXmlDefinition" + ".xml",
-							System.IO.FileMode.CreateNew))
+                            FileMode.CreateNew))
 			{
 				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
 				serializer.Serialize(fileStream, mergeXml);
@@ -177,59 +175,7 @@ namespace DocumentSplitEngine
 
 				return mergeStream.ToArray();
 			}
-		}
-
-		public static byte[] ReadFully(Stream stream)
-		{
-			long originalPosition = 0;
-
-			if (stream.CanSeek)
-			{
-				originalPosition = stream.Position;
-				stream.Position = 0;
-			}
-
-			try
-			{
-				byte[] readBuffer = new byte[4096];
-
-				int totalBytesRead = 0;
-				int bytesRead;
-
-				while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
-				{
-					totalBytesRead += bytesRead;
-
-					if (totalBytesRead == readBuffer.Length)
-					{
-						int nextByte = stream.ReadByte();
-						if (nextByte != -1)
-						{
-							byte[] temp = new byte[readBuffer.Length * 2];
-							Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
-							Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
-							readBuffer = temp;
-							totalBytesRead++;
-						}
-					}
-				}
-
-				byte[] buffer = readBuffer;
-				if (readBuffer.Length != totalBytesRead)
-				{
-					buffer = new byte[totalBytesRead];
-					Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
-				}
-				return buffer;
-			}
-			finally
-			{
-				if (stream.CanSeek)
-				{
-					stream.Position = originalPosition;
-				}
-			}
-		}
+		}	
 	}
 
 	public class DocumentSplit : MergeXml<OpenXmlElement>, ISplit, ILocalSplit
@@ -298,13 +244,19 @@ namespace DocumentSplitEngine
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(Split));
 			Split splitXml = (Split)serializer.Deserialize(xmlFile);
-			using (WordprocessingDocument wordDoc =
-				WordprocessingDocument.Open(docxFile, true))
-			{
-				Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
-				IMarkerMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
-				DocumentElements = mapping.Run();
-			}
+
+            byte[] byteArray = StreamTools.ReadFully(docxFile);
+            using (MemoryStream mem = new MemoryStream())
+            {
+                mem.Write(byteArray, 0, byteArray.Length);
+                using (WordprocessingDocument wordDoc =
+                WordprocessingDocument.Open(mem, true))
+                {
+                    Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+                    IMarkerMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
+                    DocumentElements = mapping.Run();
+                }
+            }
 		}
 
         [Obsolete]
@@ -343,7 +295,7 @@ namespace DocumentSplitEngine
 			byte[] byteArray = File.ReadAllBytes(docxFilePath);
 			using (MemoryStream mem = new MemoryStream())
 			{
-				mem.Write(byteArray, 0, (int)byteArray.Length);
+				mem.Write(byteArray, 0, byteArray.Length);
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
@@ -377,7 +329,7 @@ namespace DocumentSplitEngine
 
 			using (MemoryStream mem = new MemoryStream())
 			{
-				mem.Write(byteArray, 0, (int)byteArray.Length);
+				mem.Write(byteArray, 0, byteArray.Length);
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
@@ -385,7 +337,7 @@ namespace DocumentSplitEngine
 					wordDoc.MainDocumentPart.Document.Save();
 
 					using (FileStream fileStream = new FileStream(appPath + @"\Files" + @"\template" + ".docx",
-						System.IO.FileMode.CreateNew))
+                        FileMode.CreateNew))
 					{
 						mem.WriteTo(fileStream);
 					}
@@ -402,10 +354,10 @@ namespace DocumentSplitEngine
 		{
 			List<PersonFiles> resultList = new List<PersonFiles>();
 
-			byte[] byteArray = ReadFully(document);
+			byte[] byteArray = StreamTools.ReadFully(document);
 			using (MemoryStream mem = new MemoryStream())
 			{
-				mem.Write(byteArray, 0, (int)byteArray.Length);
+				mem.Write(byteArray, 0, byteArray.Length);
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
@@ -431,7 +383,7 @@ namespace DocumentSplitEngine
 			// it from a web server.			
 			using (MemoryStream mem = new MemoryStream())
 			{
-				mem.Write(byteArray, 0, (int)byteArray.Length);
+				mem.Write(byteArray, 0, byteArray.Length);
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{

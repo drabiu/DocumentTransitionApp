@@ -22,6 +22,7 @@ namespace DocumentSplitEngine
 	{
         SplitDocument SplitPresentationObj { get; set; }
         PresentationPart Presentation;
+        IUniversalPresentationMarker UniversalPreMarker;
 
 		public MarkerPresentationMapper(string documentName, Split xml, PresentationPart presentation)
 		{
@@ -29,13 +30,9 @@ namespace DocumentSplitEngine
             SplitPresentationObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
             //SplitPresentationObj = (SplitPresentation)Xml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, documentName)).SingleOrDefault();
             Presentation = presentation;
-			SubdividedParagraphs = new string[presentation.SlideParts.Count()];
+            UniversalPreMarker = new UniversalPresentationMarker(Presentation);
+            SubdividedParagraphs = new string[presentation.SlideParts.Count()];
 		}
-
-        public IUniversalPresentationMarker GetUniversalDocumentMarker()
-        {
-            return new UniversalPresentationMarker(Presentation);
-        }
 
         /// <summary>
         /// Finds parts of documents selected by the marker and returns as a list of persons each containing list of document elements
@@ -52,7 +49,7 @@ namespace DocumentSplitEngine
                     {
                         foreach (PersonUniversalMarker marker in person.UniversalMarker)
                         {
-                            IList<int> result = GetUniversalDocumentMarker().GetCrossedElements(marker.ElementId, marker.SelectionLastelementId);
+                            IList<int> result = UniversalPreMarker.GetCrossedSlideIdElements(marker.ElementId, marker.SelectionLastelementId);
                             foreach (int index in result)
                             {
                                 if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
@@ -131,10 +128,10 @@ namespace DocumentSplitEngine
 		{
             List<PersonFiles> resultList = new List<PersonFiles>();
 
-            byte[] byteArray = ReadFully(document);
+            byte[] byteArray = StreamTools.ReadFully(document);
             using (MemoryStream mem = new MemoryStream())
             {
-                mem.Write(byteArray, 0, (int)byteArray.Length);                
+                mem.Write(byteArray, 0, byteArray.Length);                
                 using (PresentationDocument preDoc =
                     PresentationDocument.Open(mem, true))
                 {
@@ -157,7 +154,7 @@ namespace DocumentSplitEngine
                         foreach (SlideId compo in element.CompositeElements)
                         {
                             //PresentationTools.InsertSlideFromTemplate(presentationPart, mem, compo.RelationshipId);
-                            PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
+                            //PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
                         }
                         
                         var person = new PersonFiles();
@@ -173,12 +170,12 @@ namespace DocumentSplitEngine
             // it from a web server.			
             using (MemoryStream mem = new MemoryStream())
             {
-                mem.Write(byteArray, 0, (int)byteArray.Length);
+                mem.Write(byteArray, 0, byteArray.Length);
                 using (PresentationDocument preDoc =
                     PresentationDocument.Open(mem, true))
                 {
-                    PresentationTools.RemoveAllSlides(preDoc.PresentationPart);
-                    preDoc.PresentationPart.Presentation.Save();
+                    //PresentationTools.RemoveAllSlides(preDoc.PresentationPart);
+                    PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
 
                     var person = new PersonFiles();
                     person.Person = "/";

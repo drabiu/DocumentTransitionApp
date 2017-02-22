@@ -1,34 +1,45 @@
-﻿using System;
+﻿using DocumentEditPartsEngine.Interfaces;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using OpenXMLTools;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using DocumentEditPartsEngine.Interfaces;
-using System.IO;
-using DocumentFormat.OpenXml;
 using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Packaging;
 
 namespace DocumentEditPartsEngine
 {
+    public static class WordDocumentPartAttributes
+    {
+        public const int MaxNameLength = 30;
+        public const string ParagraphHasNoId = "noid:";
+
+        public static string GetParagraphNoIdFormatter(int id)
+        {
+            return string.Format("{0}{1}", ParagraphHasNoId, id);
+        }
+    }
+
     public class WordDocumentParts : IDocumentParts
     {
-        private class WordDocumentPartAttributes
-        {
-            public const int MaxNameLength = 30;
-        }
-
+        int _paragraphCounter = 0;
         public List<PartsSelectionTreeElement> Get(Stream file)
         {
             List<PartsSelectionTreeElement> documentElements = new List<PartsSelectionTreeElement>();
-            using (WordprocessingDocument wordDoc =
-                WordprocessingDocument.Open(file, true))
+            byte[] byteArray = StreamTools.ReadFully(file);
+            using (MemoryStream mem = new MemoryStream())
             {
-                Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
-                for (int index = 0; index < body.ChildElements.Count; index++)
+                mem.Write(byteArray, 0, byteArray.Length);
+                using (WordprocessingDocument wordDoc =
+                WordprocessingDocument.Open(mem, true))
                 {
-                    var element = body.ChildElements[index];
-                    documentElements.AddRange(CreatePartsSelectionTreeElements(element, index));
+                    Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+                    for (int index = 0; index < body.ChildElements.Count; index++)
+                    {
+                        var element = body.ChildElements[index];
+                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, index));
+                    }
                 }
             }
 
@@ -42,7 +53,11 @@ namespace DocumentEditPartsEngine
             {
                 PartsSelectionTreeElement elementToAdd;
                 if (element is Wordproc.Paragraph)
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Wordproc.Paragraph).ParagraphId, GetElementName(element), 0);
+                {
+                    string elementId = (element as Wordproc.Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, GetElementName(element), 0);
+                    _paragraphCounter++;
+                }
                 else
                     elementToAdd = new PartsSelectionTreeElement(id.ToString(), GetElementName(element), 0);
 
