@@ -22,11 +22,11 @@ namespace OpenXMLToolsTests
         {
             PreTools = new PresentationTools();
 
-            MemoryStream preCGWDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/6.CGW15-prezentacja.pptx"));
-            MemoryStream preSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/przykladowa-prezentacja.pptx"));
+            PreCGWDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/6.CGW15-prezentacja.pptx"));
+            PreSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/przykladowa-prezentacja.pptx"));
 
-            PreCGWDoc = PresentationDocument.Open(preCGWDocInMemory, true);
-            PreSampleDoc = PresentationDocument.Open(preSampleDocInMemory, true);
+            PreCGWDoc = PresentationDocument.Open(PreCGWDocInMemory, true);
+            PreSampleDoc = PresentationDocument.Open(PreSampleDocInMemory, true);
         }
 
         [TestMethod]
