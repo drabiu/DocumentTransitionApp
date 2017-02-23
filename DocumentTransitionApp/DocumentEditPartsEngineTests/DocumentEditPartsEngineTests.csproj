@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DFDF3DD7-AD04-4950-BF93-0910A190BFD7}</ProjectGuid>
+    <ProjectGuid>{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SplitDescriptionObjectsTests</RootNamespace>
-    <AssemblyName>SplitDescriptionObjectsTests</AssemblyName>
+    <RootNamespace>DocumentEditPartsEngineTests</RootNamespace>
+    <AssemblyName>DocumentEditPartsEngineTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,12 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenXMLSDK-MOT.2.6.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -56,9 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DocumentMarkersTest.cs" />
-    <Compile Include="ExcelMarkersTest.cs" />
-    <Compile Include="PresentationMarkersTest.cs" />
+    <Compile Include="WordDocumentPartsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,13 +59,6 @@
       <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
       <Name>DocumentEditPartsEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
-      <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>
-      <Name>SplitDescriptionObjects</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

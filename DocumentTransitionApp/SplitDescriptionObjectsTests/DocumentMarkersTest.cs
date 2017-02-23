@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SplitDescriptionObjects;
 using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml.Packaging;
@@ -18,8 +17,8 @@ namespace SplitDescriptionObjectsTests
         [TestInitialize]
         public void Init()
         {
-            WordNoParagraphIdDoc = WordprocessingDocument.Open(@"../../../Files/lep-na-szczury-z-atr-karta-ch.docx", true);
-            WordDemoDoc = WordprocessingDocument.Open(@"../../../Files/demo.docx", true);
+            WordNoParagraphIdDoc = WordprocessingDocument.Open(@"../../../Files/lep-na-szczury-z-atr-karta-ch.docx", false);
+            WordDemoDoc = WordprocessingDocument.Open(@"../../../Files/demo.docx", false);
 
             //test scenarios when paragraphs have an Id and a paragraph hasn`t got an Id
             UniversalDocNoParagraphIdMarker = new UniversalDocumentMarker(WordNoParagraphIdDoc.MainDocumentPart.Document.Body);

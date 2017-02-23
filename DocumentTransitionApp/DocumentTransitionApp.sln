@@ -42,6 +42,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User Interface", "User Inte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{226D04B7-B3D6-47E1-9503-72788BC755C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation Files", "Presentation Files", "{87602763-C91F-4140-B49E-A74FE5590055}"
+	ProjectSection(SolutionItems) = preProject
+		Files\6.CGW15-prezentacja.pptx = Files\6.CGW15-prezentacja.pptx
+		Files\przykladowa-prezentacja.pptx = Files\przykladowa-prezentacja.pptx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Excel Files", "Excel Files", "{83F705DA-8EB4-416E-A4B6-3FE8C7823D71}"
+	ProjectSection(SolutionItems) = preProject
+		Files\ExcelTutorialR1 — edytowalny.xlsx = Files\ExcelTutorialR1 — edytowalny.xlsx
+		Files\test.xlsx = Files\test.xlsx
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentEditPartsEngineTests", "DocumentEditPartsEngineTests\DocumentEditPartsEngineTests.csproj", "{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -222,6 +236,22 @@ Global
 		{DFDF3DD7-AD04-4950-BF93-0910A190BFD7}.Release|x64.Build.0 = Release|Any CPU
 		{DFDF3DD7-AD04-4950-BF93-0910A190BFD7}.Release|x86.ActiveCfg = Release|Any CPU
 		{DFDF3DD7-AD04-4950-BF93-0910A190BFD7}.Release|x86.Build.0 = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|x64.Build.0 = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|ARM.Build.0 = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|x64.Build.0 = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,5 +264,8 @@ Global
 		{DFDF3DD7-AD04-4950-BF93-0910A190BFD7} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
 		{BEEB9A6C-7580-45C7-AC7D-10EF647E0FF3} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
 		{8E0D8A4B-68A3-41C6-A3C6-9F366F4D85A0} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
+		{87602763-C91F-4140-B49E-A74FE5590055} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
+		{83F705DA-8EB4-416E-A4B6-3FE8C7823D71} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
+		{C80F2B87-7EDD-49D2-A706-B3A276AA78C2} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
 	EndGlobalSection
 EndGlobal

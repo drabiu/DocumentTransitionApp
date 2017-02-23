@@ -30,4 +30,16 @@ namespace SplitDescriptionObjects
             throw new NotImplementedException();
         }
     }
+
+    public interface IUniversalExcelMarker : IExcelMarker
+    {
+    }
+
+    public class UniversalExcelMarker : ExcelMarker, IUniversalExcelMarker
+    {
+        public UniversalExcelMarker(Workbook body) :
+            base(body)
+        {
+        }
+    }
 }

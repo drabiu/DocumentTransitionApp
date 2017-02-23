@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using OpenXMLTools;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace DocumentEditPartsEngine
 {
     public static class WordDocumentPartAttributes
     {
-        public const int MaxNameLength = 30;
+        public const int MaxNameLength = 35;
         public const string ParagraphHasNoId = "noid:";
 
         public static string GetParagraphNoIdFormatter(int id)
@@ -86,12 +87,21 @@ namespace DocumentEditPartsEngine
                 if (paragraph.ChildElements.Any(ch => ch is Wordproc.Run))
                 {
                     result.Append("[Par]: ");
+                    StringBuilder text = new StringBuilder();
                     foreach (Wordproc.Run run in paragraph.ChildElements.OfType<Wordproc.Run>())
                     {
-                        result.Append(run.InnerText);
+                        text.Append(run.InnerText);                                                        
+                    }
+
+                    var listWords = text.ToString().Split(default(char[]), StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var word in listWords)
+                    {
+                        result.Append(string.Format("{0} ", word));
                         if (result.Length > WordDocumentPartAttributes.MaxNameLength)
                             break;
                     }
+
+                    result.Remove(result.Length - 1, 1);
                 }
             }
             else if (element is Wordproc.Table)
