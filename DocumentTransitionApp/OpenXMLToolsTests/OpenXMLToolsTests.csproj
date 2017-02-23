@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C80F2B87-7EDD-49D2-A706-B3A276AA78C2}</ProjectGuid>
+    <ProjectGuid>{71E77902-6C00-4533-8393-BDA4F5529623}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DocumentEditPartsEngineTests</RootNamespace>
-    <AssemblyName>DocumentEditPartsEngineTests</AssemblyName>
+    <RootNamespace>OpenXMLToolsTests</RootNamespace>
+    <AssemblyName>OpenXMLToolsTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -17,10 +17,6 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +41,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -59,15 +56,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ExcelDocumentPartsTest.cs" />
-    <Compile Include="PresentationDocumentPartsTest.cs" />
-    <Compile Include="WordDocumentPartsTest.cs" />
+    <Compile Include="PresentationToolsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DocumentEditPartsEngine\DocumentEditPartsEngine.csproj">
-      <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
-      <Name>DocumentEditPartsEngine</Name>
+    <ProjectReference Include="..\OpenXMLTools\OpenXMLTools.csproj">
+      <Project>{46987be4-7719-42d4-a2e3-d0a60fa5f2c7}</Project>
+      <Name>OpenXMLTools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

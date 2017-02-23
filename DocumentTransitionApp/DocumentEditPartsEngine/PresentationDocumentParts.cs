@@ -14,7 +14,7 @@ namespace DocumentEditPartsEngine
 {
     public static class PresentationDocumentPartAttributes
     {
-        public const int MaxNameLength = 30;
+        public const int MaxNameLength = 36;
 
         public static bool IsSupportedPart(OpenXmlPart part)
         {
@@ -93,7 +93,18 @@ namespace DocumentEditPartsEngine
                     }
                 }
 
-                return paragraphText.ToString();
+                StringBuilder result = new StringBuilder();
+                var listWords = paragraphText.ToString().Split(default(char[]), StringSplitOptions.RemoveEmptyEntries);
+                foreach (var word in listWords)
+                {
+                    result.Append(string.Format("{0} ", word));
+                    if (result.Length > PresentationDocumentPartAttributes.MaxNameLength)
+                        break;
+                }
+
+                result.Remove(result.Length - 1, 1);
+
+                return result.ToString();
             }
 
             return string.Empty;

@@ -59,7 +59,7 @@ namespace OpenXMLTools
             }
         }
 
-        public void InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle)
+        public PresentationDocument InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle)
         {
 
             if (presentationDocument == null)
@@ -182,6 +182,8 @@ namespace OpenXMLTools
 
             // Save the modified presentation.
             presentationPart.Presentation.Save();
+
+            return presentationDocument;
         }
 
         public void RemoveAllSlides(PresentationPart presentationPart)
