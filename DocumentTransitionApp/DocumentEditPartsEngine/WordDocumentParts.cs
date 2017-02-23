@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace DocumentEditPartsEngine
 {
@@ -20,12 +20,23 @@ namespace DocumentEditPartsEngine
         {
             return string.Format("{0}{1}", ParagraphHasNoId, id);
         }
+
+        public static bool IsSupportedType(OpenXmlElement element)
+        {
+            bool isSupported = false;
+            isSupported = element is Paragraph;
+            //|| element is Wordproc.Picture
+            //|| element is Wordproc.Drawing
+            //|| element is Wordproc.Table;
+
+            return isSupported;
+        }
     }
 
     public class WordDocumentParts : IDocumentParts
     {
         int _paragraphCounter = 0;
-        public List<PartsSelectionTreeElement> Get(Stream file)
+        public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedType)
         {
             List<PartsSelectionTreeElement> documentElements = new List<PartsSelectionTreeElement>();
             byte[] byteArray = StreamTools.ReadFully(file);
@@ -35,11 +46,11 @@ namespace DocumentEditPartsEngine
                 using (WordprocessingDocument wordDoc =
                 WordprocessingDocument.Open(mem, true))
                 {
-                    Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+                    Body body = wordDoc.MainDocumentPart.Document.Body;
                     for (int index = 0; index < body.ChildElements.Count; index++)
                     {
                         var element = body.ChildElements[index];
-                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, index));
+                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, index, supportedType));
                     }
                 }
             }
@@ -47,15 +58,20 @@ namespace DocumentEditPartsEngine
             return documentElements;
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id)
+        public List<PartsSelectionTreeElement> Get(Stream file)
+        {
+            return Get(file, el => WordDocumentPartAttributes.IsSupportedType(el));
+        }
+
+        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id, Predicate<OpenXmlElement> supportedType)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-            if (IsSupportedType(element))
+            if (supportedType(element))
             {
                 PartsSelectionTreeElement elementToAdd;
-                if (element is Wordproc.Paragraph)
+                if (element is Paragraph)
                 {
-                    string elementId = (element as Wordproc.Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
+                    string elementId = (element as Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
                     elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, GetElementName(element), 0);
                     _paragraphCounter++;
                 }
@@ -81,14 +97,14 @@ namespace DocumentEditPartsEngine
         private string GetElementName(OpenXmlElement element)
         {
             StringBuilder result = new StringBuilder();
-            if (element is Wordproc.Paragraph)
+            if (element is Paragraph)
             {
-                var paragraph = element as Wordproc.Paragraph;
-                if (paragraph.ChildElements.Any(ch => ch is Wordproc.Run))
+                var paragraph = element as Paragraph;
+                if (paragraph.ChildElements.Any(ch => ch is Run))
                 {
                     result.Append("[Par]: ");
                     StringBuilder text = new StringBuilder();
-                    foreach (Wordproc.Run run in paragraph.ChildElements.OfType<Wordproc.Run>())
+                    foreach (Run run in paragraph.ChildElements.OfType<Run>())
                     {
                         text.Append(run.InnerText);                                                        
                     }
@@ -104,30 +120,19 @@ namespace DocumentEditPartsEngine
                     result.Remove(result.Length - 1, 1);
                 }
             }
-            else if (element is Wordproc.Table)
+            else if (element is Table)
             {
 
 
             }
-            else if (element is Wordproc.Picture)
+            else if (element is Picture)
             {
 
             }
-            else if (element is Wordproc.Drawing)
+            else if (element is Drawing)
             { }
 
             return result.ToString();
-        }
-
-        private bool IsSupportedType(OpenXmlElement element)
-        {
-            bool isSupported = false;
-            isSupported = element is Wordproc.Paragraph;
-            //|| element is Wordproc.Picture
-            //|| element is Wordproc.Drawing
-            //|| element is Wordproc.Table;
-
-            return isSupported;
-        }
+        }       
     }
 }

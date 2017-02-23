@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using DocumentEditPartsEngine.Interfaces;
 using System.IO;
+using DocumentFormat.OpenXml;
 
 namespace DocumentEditPartsEngine
 {
-    public class ExcelDocumentParts : IDocumentParts
+    public class ExcelDocumentParts : IExcelParts
     {
         public List<PartsSelectionTreeElement> Get(Stream file)
         {

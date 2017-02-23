@@ -65,7 +65,7 @@ namespace DocumentTransitionAppServices
 		[WebMethod]
 		public List<PartsSelectionTreeElement> GetDocumentParts(string docName, byte[] documentFile)
 		{
-			IDocumentParts parts = DocumentPartsBuilder.Build(Path.GetExtension(docName));
+            IDocumentParts parts = new WordDocumentParts();
 
 			return parts.Get(new MemoryStream(documentFile));
 		}
@@ -73,9 +73,9 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public List<PartsSelectionTreeElement> GetPresentationParts(string preName, byte[] presentationFile)
         {
-            IDocumentParts parts = DocumentPartsBuilder.Build(Path.GetExtension(preName));
+            IPresentationParts parts = new PresentationDocumentParts();
 
-            return parts.Get(new MemoryStream(presentationFile));
+            return parts.GetSlides(new MemoryStream(presentationFile));
         }
 
         [WebMethod]

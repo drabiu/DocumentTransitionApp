@@ -8,27 +8,42 @@ using DocumentEditPartsEngine.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using D = DocumentFormat.OpenXml.Drawing;
-using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
-using Present = DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace DocumentEditPartsEngine
 {
-	public class PresentationDocumentParts : IDocumentParts
-	{
-        private class PresentationDocumentPartAttributes
+    public static class PresentationDocumentPartAttributes
+    {
+        public const int MaxNameLength = 30;
+
+        public static bool IsSupportedPart(OpenXmlPart part)
         {
-            public const int MaxNameLength = 30;
+            bool isSupported = false;
+            isSupported = part is SlidePart;
+            //|| element is Wordproc.Picture
+            //|| element is Wordproc.Drawing
+            //|| element is Wordproc.Table;
+
+            return isSupported;
+        }
+    }
+
+    public class PresentationDocumentParts : IPresentationParts
+	{
+        public List<PartsSelectionTreeElement> GetSlidesWithAdditionalPats(Stream file, Predicate<OpenXmlPart> supportedParts)
+        {
+            throw new NotImplementedException();
         }
 
-        public List<PartsSelectionTreeElement> Get(Stream file)
+        public List<PartsSelectionTreeElement> GetSlides(Stream file)
 		{
             List<PartsSelectionTreeElement> presentationElements = new List<PartsSelectionTreeElement>();
             using (PresentationDocument preDoc =
                 PresentationDocument.Open(file, true))
             {
-                Present.Presentation presentation = preDoc.PresentationPart.Presentation;
+                Presentation presentation = preDoc.PresentationPart.Presentation;
                 var idIndex = 1;
-                foreach (var slideId in presentation.SlideIdList.Elements<Present.SlideId>())
+                foreach (var slideId in presentation.SlideIdList.Elements<SlideId>())
                 {
                     SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
                     string elementId = slideId.RelationshipId;
@@ -58,7 +73,7 @@ namespace DocumentEditPartsEngine
             string paragraphSeparator = null;
             if (slidePart.Slide != null)
             {
-                var shapes = from shape in slidePart.Slide.Descendants<Present.Shape>()
+                var shapes = from shape in slidePart.Slide.Descendants<Shape>()
                              where IsTitleShape(shape)
                              select shape;
 
@@ -84,15 +99,15 @@ namespace DocumentEditPartsEngine
             return string.Empty;
         }
 
-        private static bool IsTitleShape(Present.Shape shape)
+        private static bool IsTitleShape(Shape shape)
         {
-            var placeholderShape = shape.NonVisualShapeProperties.ApplicationNonVisualDrawingProperties.GetFirstChild<Present.PlaceholderShape>();
+            var placeholderShape = shape.NonVisualShapeProperties.ApplicationNonVisualDrawingProperties.GetFirstChild<PlaceholderShape>();
             if (placeholderShape != null && placeholderShape.Type != null && placeholderShape.Type.HasValue)
             {
-                switch ((Present.PlaceholderValues)placeholderShape.Type)
+                switch ((PlaceholderValues)placeholderShape.Type)
                 {
-                    case Present.PlaceholderValues.Title:
-                    case Present.PlaceholderValues.CenteredTitle:
+                    case PlaceholderValues.Title:
+                    case PlaceholderValues.CenteredTitle:
                         return true;
 
                     default:
@@ -101,6 +116,6 @@ namespace DocumentEditPartsEngine
             }
 
             return false;
-        }
+        }      
     }
 }

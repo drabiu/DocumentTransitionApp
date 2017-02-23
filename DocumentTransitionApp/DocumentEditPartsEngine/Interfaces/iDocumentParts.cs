@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace DocumentEditPartsEngine.Interfaces
 {
     public interface IDocumentParts
     {
+        List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedType);
         List<PartsSelectionTreeElement> Get(Stream file);
     }
 }
