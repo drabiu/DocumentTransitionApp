@@ -5,10 +5,10 @@ namespace OpenXMLTools.Interfaces
 {
     public interface IPresentationTools
     {
-        void InsertSlideFromTemplate(PresentationPart presentationPart, MemoryStream mem, string sourceRelationshipId);
+        PresentationDocument InsertSlideFromTemplate(PresentationDocument target, PresentationDocument template, string sourceRelationshipId);
 
         PresentationDocument InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle);
 
-        void RemoveAllSlides(PresentationPart presentationPart);
+        PresentationDocument RemoveAllSlides(PresentationDocument presentationDocument);
     }
 }

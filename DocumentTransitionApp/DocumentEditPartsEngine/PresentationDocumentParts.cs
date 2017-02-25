@@ -1,14 +1,10 @@
-﻿using System;
+﻿using DocumentEditPartsEngine.Interfaces;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Presentation;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using DocumentEditPartsEngine.Interfaces;
-
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using D = DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Presentation;
+using OpenXMLTools;
 
 namespace DocumentEditPartsEngine
 {
@@ -58,75 +54,9 @@ namespace DocumentEditPartsEngine
         private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(SlidePart slidePart, int id, string elementId)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-            result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, GetSlideTitle(slidePart), 0));
+            result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(slidePart, PresentationDocumentPartAttributes.MaxNameLength), 0));
 
             return result;
-        }
-
-        public static string GetSlideTitle(SlidePart slidePart)
-        {
-            if (slidePart == null)
-            {
-                throw new ArgumentNullException("presentationDocument");
-            }
-
-            string paragraphSeparator = null;
-            if (slidePart.Slide != null)
-            {
-                var shapes = from shape in slidePart.Slide.Descendants<Shape>()
-                             where IsTitleShape(shape)
-                             select shape;
-
-                StringBuilder paragraphText = new StringBuilder();
-                foreach (var shape in shapes)
-                {
-                    foreach (var paragraph in shape.TextBody.Descendants<D.Paragraph>())
-                    {
-                        paragraphText.Append(paragraphSeparator);
-                        paragraphText.Append("[Sld]: ");
-                        foreach (var text in paragraph.Descendants<D.Text>())
-                        {
-                            paragraphText.Append(text.Text);
-                        }
-
-                        paragraphSeparator = "\n";
-                    }
-                }
-
-                StringBuilder result = new StringBuilder();
-                var listWords = paragraphText.ToString().Split(default(char[]), StringSplitOptions.RemoveEmptyEntries);
-                foreach (var word in listWords)
-                {
-                    result.Append(string.Format("{0} ", word));
-                    if (result.Length > PresentationDocumentPartAttributes.MaxNameLength)
-                        break;
-                }
-
-                result.Remove(result.Length - 1, 1);
-
-                return result.ToString();
-            }
-
-            return string.Empty;
-        }
-
-        private static bool IsTitleShape(Shape shape)
-        {
-            var placeholderShape = shape.NonVisualShapeProperties.ApplicationNonVisualDrawingProperties.GetFirstChild<PlaceholderShape>();
-            if (placeholderShape != null && placeholderShape.Type != null && placeholderShape.Type.HasValue)
-            {
-                switch ((PlaceholderValues)placeholderShape.Type)
-                {
-                    case PlaceholderValues.Title:
-                    case PlaceholderValues.CenteredTitle:
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-
-            return false;
-        }      
+        }        
     }
 }

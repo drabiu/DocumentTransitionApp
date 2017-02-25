@@ -53,6 +53,8 @@
     <Compile Include="Interfaces\IPresentationTools.cs" />
     <Compile Include="PresentationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PtOpenXmlDocument.cs" />
+    <Compile Include="PtOpenXmlUtil.cs" />
     <Compile Include="StreamTools.cs" />
   </ItemGroup>
   <ItemGroup>

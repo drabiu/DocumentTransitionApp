@@ -6,16 +6,18 @@ using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Packaging;
 using System.IO;
 using OpenXMLTools.Interfaces;
+using System.Text;
+using D = DocumentFormat.OpenXml.Drawing;
 
 namespace OpenXMLTools
 {
     public class PresentationTools : IPresentationTools
     {
-        public void InsertSlideFromTemplate(PresentationPart presentationPart, MemoryStream mem, string sourceRelationshipId)
+        public PresentationDocument InsertSlideFromTemplate(PresentationDocument target, PresentationDocument template, string slideRelationshipId)
         {
             uint maxSlideId = 256;
 
-            var slideIdList = presentationPart.Presentation.SlideIdList;
+            var slideIdList = target.PresentationPart.Presentation.SlideIdList;
             //Find the highest slide ID in the current list.
 
             foreach (SlideId slideId in slideIdList.ChildElements)
@@ -31,36 +33,37 @@ namespace OpenXMLTools
             SlidePart newSlidePart;
             //SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
             //Slide slide = new Slide(new CommonSlideData(new ShapeTree()));
-            using (PresentationDocument templateDocument = PresentationDocument.Open(mem, false))
-            {
-                newSlidePart = (SlidePart)templateDocument.PresentationPart.GetPartById(sourceRelationshipId);
-                //var templateSlide = (SlidePart)templateDocument.PresentationPart.GetPartById(sourceRelationshipId);
-                //newSlidePart.FeedData(templateSlide.GetStream());
-                //Use the same slide layout as that of the template slide.
-                //if (templateSlide.SlideLayoutPart != null)
-                //{
-                // newSlidePart.AddPart(templateSlide.SlideLayoutPart);
-                //}
+            newSlidePart = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
+            //var templateSlide = (SlidePart)templateDocument.PresentationPart.GetPartById(sourceRelationshipId);
+            //newSlidePart.FeedData(templateSlide.GetStream());
+            //Use the same slide layout as that of the template slide.
+            //if (templateSlide.SlideLayoutPart != null)
+            //{
+            // newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+            //}
 
 
-                //slide.Save(newSlidePart);
+            //slide.Save(newSlidePart);
 
-                //Insert the new slide into the slide list.
-                SlideId newSlideId = slideIdList.AppendChild(new SlideId());
-                //SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), slideIdList.Last());
+            //Insert the new slide into the slide list.
+            SlideId newSlideId = slideIdList.AppendChild(new SlideId());
+            //SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), slideIdList.Last());
 
-                string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
-                //Set the slide id and relationship id
-                newSlideId.Id = maxSlideId;
-                newSlideId.RelationshipId = relationshipId;
-                presentationPart.AddPart(newSlidePart, relationshipId);
+            string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
+            //Set the slide id and relationship id
+            newSlideId.Id = maxSlideId;
+            newSlideId.RelationshipId = relationshipId;
+            target.PresentationPart.AddPart(newSlidePart, relationshipId);
 
-                presentationPart.Presentation.Save();
-            }
+            target.PresentationPart.Presentation.Save();
+
+            return target;
         }
 
         public PresentationDocument InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle)
         {
+            PresentationPart presentationPart = presentationDocument.PresentationPart;
+            SlideIdList slideIdList = presentationPart.Presentation.SlideIdList;
 
             if (presentationDocument == null)
             {
@@ -70,14 +73,17 @@ namespace OpenXMLTools
             if (slideTitle == null)
             {
                 throw new ArgumentNullException("slideTitle");
-            }
-
-            PresentationPart presentationPart = presentationDocument.PresentationPart;
+            }           
 
             // Verify that the presentation is not empty.
             if (presentationPart == null)
             {
                 throw new InvalidOperationException("The presentation document is empty.");
+            }
+
+            if (position > slideIdList.ChildElements.Count)
+            {
+                throw new InvalidOperationException("The position is greather than number of slides");
             }
 
             // Declare and instantiate a new slide.
@@ -134,7 +140,7 @@ namespace OpenXMLTools
 
             // Modify the slide ID list in the presentation part.
             // The slide ID list should not be null.
-            SlideIdList slideIdList = presentationPart.Presentation.SlideIdList;
+
 
             // Find the highest slide ID in the current list.
             uint maxSlideId = 1;
@@ -186,9 +192,9 @@ namespace OpenXMLTools
             return presentationDocument;
         }
 
-        public void RemoveAllSlides(PresentationPart presentationPart)
+        public PresentationDocument RemoveAllSlides(PresentationDocument presentationDocument)
         {
-            Presentation presentation = presentationPart.Presentation;
+            Presentation presentation = presentationDocument.PresentationPart.Presentation;
             SlideIdList slideIdList = presentation.SlideIdList;
 
             foreach (SlideId slideId in slideIdList.ChildElements.ToList())
@@ -225,6 +231,86 @@ namespace OpenXMLTools
             }
 
             presentation.Save();
+
+            return presentationDocument;
+        }
+
+        public static string GetSlideTitle(SlidePart slidePart, int nameLength)
+        {
+            if (slidePart == null)
+            {
+                throw new ArgumentNullException("presentationDocument");
+            }
+
+            string paragraphSeparator = null;
+            if (slidePart.Slide != null)
+            {
+                var shapes = from shape in slidePart.Slide.Descendants<Shape>()
+                             where IsTitleShape(shape)
+                             select shape;
+
+                StringBuilder paragraphText = new StringBuilder();
+                foreach (var shape in shapes)
+                {
+                    foreach (var paragraph in shape.TextBody.Descendants<D.Paragraph>())
+                    {
+                        paragraphText.Append(paragraphSeparator);
+                        paragraphText.Append("[Sld]: ");
+                        foreach (var text in paragraph.Descendants<D.Text>())
+                        {
+                            paragraphText.Append(text.Text);
+                        }
+
+                        paragraphSeparator = "\n";
+                    }
+                }
+
+                StringBuilder result = new StringBuilder();
+                var listWords = paragraphText.ToString().Split(default(char[]), StringSplitOptions.RemoveEmptyEntries);
+                foreach (var word in listWords)
+                {
+                    result.Append(string.Format("{0} ", word));
+                    if (result.Length > nameLength)
+                        break;
+                }
+
+                result.Remove(result.Length - 1, 1);
+
+                return result.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        public static SlidePart GetSlidePart(PresentationDocument document, int index)
+        {
+            List<SlideId> slidesList = document.PresentationPart.Presentation.SlideIdList.Elements<SlideId>().ToList();
+
+            return document.PresentationPart.GetPartById(slidesList[index].RelationshipId) as SlidePart;
+        }
+
+        private static bool IsTitleShape(Shape shape)
+        {
+            var placeholderShape = shape.NonVisualShapeProperties.ApplicationNonVisualDrawingProperties.GetFirstChild<PlaceholderShape>();
+            if (placeholderShape != null && placeholderShape.Type != null && placeholderShape.Type.HasValue)
+            {
+                switch ((PlaceholderValues)placeholderShape.Type)
+                {
+                    case PlaceholderValues.Title:
+                    case PlaceholderValues.CenteredTitle:
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+
+            return false;
+        }
+
+        private void CloneSlide()
+        {
+
         }
     }
 }

@@ -137,14 +137,29 @@ namespace DocumentTransitionApp
                 fs.CopyTo(inMemoryCopy);
             }
 
-            byte[] byteArray = ReadFully(inMemoryCopy);
+            MemoryStream inMemoryCopy2 = new MemoryStream();
+            using (FileStream fs = File.OpenRead(@"C:\Users\drabiu\Documents\Testy\6.CGW15-prezentacja.pptx"))
+            {
+                fs.CopyTo(inMemoryCopy2);
+            }
+
+            byte[] byteArray = StreamTools.ReadFully(inMemoryCopy);
+            byte[] byteArray2 = StreamTools.ReadFully(inMemoryCopy2);
             using (MemoryStream mem = new MemoryStream())
             {
                 mem.Write(byteArray, 0, (int)byteArray.Length);
                 using (PresentationDocument preDoc =
                    PresentationDocument.Open(mem, true))
-                {
-                    PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");                 
+                {                    
+                    using (MemoryStream mem2 = new MemoryStream())
+                    {
+                        mem2.Write(byteArray2, 0, (int)byteArray2.Length);
+                        using (PresentationDocument pre2Doc =
+                   PresentationDocument.Open(mem2, true))
+                        {                          
+                            preDoc = PresentationTools.InsertSlideFromTemplate(preDoc, pre2Doc, "rId13");
+                        }
+                    }             
                 }
 
                 byteArray = mem.ToArray();
@@ -159,58 +174,6 @@ namespace DocumentTransitionApp
             //}
 
             inMemoryCopy.Close();
-        }
-
-        public static byte[] ReadFully(Stream stream)
-        {
-            long originalPosition = 0;
-
-            if (stream.CanSeek)
-            {
-                originalPosition = stream.Position;
-                stream.Position = 0;
-            }
-
-            try
-            {
-                byte[] readBuffer = new byte[4096];
-
-                int totalBytesRead = 0;
-                int bytesRead;
-
-                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
-                {
-                    totalBytesRead += bytesRead;
-
-                    if (totalBytesRead == readBuffer.Length)
-                    {
-                        int nextByte = stream.ReadByte();
-                        if (nextByte != -1)
-                        {
-                            byte[] temp = new byte[readBuffer.Length * 2];
-                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
-                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
-                            readBuffer = temp;
-                            totalBytesRead++;
-                        }
-                    }
-                }
-
-                byte[] buffer = readBuffer;
-                if (readBuffer.Length != totalBytesRead)
-                {
-                    buffer = new byte[totalBytesRead];
-                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
-                }
-                return buffer;
-            }
-            finally
-            {
-                if (stream.CanSeek)
-                {
-                    stream.Position = originalPosition;
-                }
-            }
-        }
+        }    
     }
 }
