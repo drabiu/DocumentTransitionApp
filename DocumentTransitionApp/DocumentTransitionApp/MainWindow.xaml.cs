@@ -1,34 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-
-using DocumentSplitEngine;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentMergeEngine;
-using Service = DocumentTransitionApp.TransitionAppService;
 using DocumentMergeEngine.Interfaces;
-using OpenXMLTools.Interfaces;
 using OpenXMLTools;
-using DocumentFormat.OpenXml.Presentation;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentSplitEngine.Data_Structures;
+using OpenXMLTools.Interfaces;
+using System;
+using System.IO;
+using System.Windows;
+using Service = DocumentTransitionApp.TransitionAppService;
+using System.Collections.Generic;
 
 namespace DocumentTransitionApp
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
 	{
 		Service.PersonFiles[] result;
         IPresentationTools PresentationTools;
@@ -157,7 +143,7 @@ namespace DocumentTransitionApp
                         using (PresentationDocument pre2Doc =
                    PresentationDocument.Open(mem2, true))
                         {                          
-                            PresentationTools.InsertSlideFromTemplate(preDoc, pre2Doc, "rId13");
+                            PresentationTools.InsertSlideFromTemplate(preDoc, pre2Doc, new List<string>() { "rId13" });
                         }
                     }             
                 }

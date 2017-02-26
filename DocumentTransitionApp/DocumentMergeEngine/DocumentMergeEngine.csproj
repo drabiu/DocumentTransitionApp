@@ -37,17 +37,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenXMLSDK-MOT.2.6.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentMerge.cs" />
@@ -56,6 +51,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Open-XML-SDK-Office2016\DocumentFormat.OpenXml\DocumentFormat.OpenXml.csproj">
+      <Project>{e5d39c6a-9067-477e-b0d3-a9419b86e6e5}</Project>
+      <Name>DocumentFormat.OpenXml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Open-XML-SDK-Office2016\System.IO.Packaging\System.IO.Packaging.csproj">
+      <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
+      <Name>System.IO.Packaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
       <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>
       <Name>SplitDescriptionObjects</Name>
@@ -64,9 +67,6 @@
       <Project>{84cbcbe8-ceae-43f0-a73a-856494db5e4f}</Project>
       <Name>UnmarshallingSplitXml</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
