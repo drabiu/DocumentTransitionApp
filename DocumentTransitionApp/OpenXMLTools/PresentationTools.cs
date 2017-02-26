@@ -13,14 +13,25 @@ namespace OpenXMLTools
 {
     public class PresentationTools : IPresentationTools
     {
+        #region Public methods
+
         public PresentationDocument InsertSlideFromTemplate(PresentationDocument target, PresentationDocument template, IList<string> slideRelationshipIdList)
         {
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
             uint maxSlideId = 256;
 
             var slideIdList = target.PresentationPart.Presentation.SlideIdList;
             var presentationPart = target.PresentationPart;
             //Find the highest slide ID in the current list.
-
             foreach (SlideId slideId in slideIdList.ChildElements)
             {
                 if (slideId.Id.Value > maxSlideId)
@@ -30,16 +41,13 @@ namespace OpenXMLTools
             }
 
             uint uniqueId = GetMaxIdFromChild(presentationPart.Presentation.SlideMasterIdList);
-
             foreach (string slideRelationshipId in slideRelationshipIdList)
             {
                 maxSlideId++;
                 uniqueId++;
+
                 //Create the slide part and copy the data from the first part
-                //SlidePart newSlidePart;
                 SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
-                //Slide slide = new Slide(new CommonSlideData(new ShapeTree()));
-                //newSlidePart = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
                 var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
                 newSlidePart.FeedData(templateSlide.GetStream());
                 //Use the same slide layout as that of the template slide.
@@ -51,13 +59,9 @@ namespace OpenXMLTools
                 SlideMasterPart destMasterPart = newSlidePart.SlideLayoutPart.SlideMasterPart;
                 presentationPart.AddPart(destMasterPart);
 
-                //slide.Save(newSlidePart);
-
                 //Insert the new slide into the slide list.
                 SlideId newSlideId = slideIdList.AppendChild(new SlideId());
-                //SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), slideIdList.Last());
 
-                //string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
                 //Set the slide id and relationship id
                 newSlideId.Id = maxSlideId;
                 newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);               
@@ -65,12 +69,12 @@ namespace OpenXMLTools
                 SlideMasterId newSlideMasterId = new SlideMasterId();
                 newSlideMasterId.RelationshipId = presentationPart.GetIdOfPart(destMasterPart);
                 newSlideMasterId.Id = uniqueId;
-                presentationPart.Presentation.SlideMasterIdList.Append(newSlideMasterId);
 
-                //target.PresentationPart.AddPart(newSlidePart, relationshipId);
+                presentationPart.Presentation.SlideMasterIdList.Append(newSlideMasterId);
             }
 
             FixSlideLayoutIds(presentationPart, uniqueId);
+            //after adding OPEN XML SDK 3.0 this fix no longer needed
             //PresentationMLUtil.FixUpPresentationDocument(target);
 
             target.PresentationPart.Presentation.Save();
@@ -80,9 +84,6 @@ namespace OpenXMLTools
 
         public PresentationDocument InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle)
         {
-            PresentationPart presentationPart = presentationDocument.PresentationPart;
-            SlideIdList slideIdList = presentationPart.Presentation.SlideIdList;
-
             if (presentationDocument == null)
             {
                 throw new ArgumentNullException("presentationDocument");
@@ -91,8 +92,10 @@ namespace OpenXMLTools
             if (slideTitle == null)
             {
                 throw new ArgumentNullException("slideTitle");
-            }           
+            }
 
+            PresentationPart presentationPart = presentationDocument.PresentationPart;
+            SlideIdList slideIdList = presentationPart.Presentation.SlideIdList;
             // Verify that the presentation is not empty.
             if (presentationPart == null)
             {
@@ -212,46 +215,92 @@ namespace OpenXMLTools
 
         public PresentationDocument RemoveAllSlides(PresentationDocument presentationDocument)
         {
+            if (presentationDocument == null)
+            {
+                throw new ArgumentNullException("presentationDocument");
+            }
+
             Presentation presentation = presentationDocument.PresentationPart.Presentation;
             SlideIdList slideIdList = presentation.SlideIdList;
-
-            foreach (SlideId slideId in slideIdList.ChildElements.ToList())
+            int index = CountSlides(presentationDocument) - 1;
+            while(index >= 0)
             {
-                slideIdList.RemoveChild(slideId);
-                string slideRelId = slideId.RelationshipId;
-
-                if (presentation.CustomShowList != null)
-                {
-                    // Iterate through the list of custom shows.
-                    foreach (var customShow in presentation.CustomShowList.Elements<CustomShow>())
-                    {
-                        if (customShow.SlideList != null)
-                        {
-                            // Declare a link list of slide list entries.
-                            LinkedList<SlideListEntry> slideListEntries = new LinkedList<SlideListEntry>();
-                            foreach (SlideListEntry slideListEntry in customShow.SlideList.Elements())
-                            {
-                                // Find the slide reference to remove from the custom show.
-                                if (slideListEntry.Id != null && slideListEntry.Id == slideRelId)
-                                {
-                                    slideListEntries.AddLast(slideListEntry);
-                                }
-                            }
-
-                            // Remove all references to the slide from the custom show.
-                            foreach (SlideListEntry slideListEntry in slideListEntries)
-                            {
-                                customShow.SlideList.RemoveChild(slideListEntry);
-                            }
-                        }
-                    }
-                }
+                DeleteSlide(presentationDocument, index);
+                index--;
             }
 
             presentation.Save();
 
             return presentationDocument;
         }
+
+        public PresentationDocument DeleteSlide(PresentationDocument presentationDocument, int slideIndex)
+        {
+            if (presentationDocument == null)
+            {
+                throw new ArgumentNullException("presentationDocument");
+            }
+
+            // Use the CountSlides sample to get the number of slides in the presentation.
+            int slidesCount = CountSlides(presentationDocument);
+
+            if (slideIndex < 0 || slideIndex >= slidesCount)
+            {
+                throw new InvalidOperationException("slideIndex out of range");
+            }
+
+            // Get the presentation part from the presentation document. 
+            PresentationPart presentationPart = presentationDocument.PresentationPart;
+            // Get the presentation from the presentation part.
+            Presentation presentation = presentationPart.Presentation;
+            // Get the list of slide IDs in the presentation.
+            SlideIdList slideIdList = presentation.SlideIdList;
+            // Get the slide ID of the specified slide
+            SlideId slideId = slideIdList.ChildElements[slideIndex] as SlideId;
+            // Get the relationship ID of the slide.
+            string slideRelId = slideId.RelationshipId;
+            // Remove the slide from the slide list.
+            slideIdList.RemoveChild(slideId);
+            if (presentation.CustomShowList != null)
+            {
+                // Iterate through the list of custom shows.
+                foreach (var customShow in presentation.CustomShowList.Elements<CustomShow>())
+                {
+                    if (customShow.SlideList != null)
+                    {
+                        // Declare a link list of slide list entries.
+                        LinkedList<SlideListEntry> slideListEntries = new LinkedList<SlideListEntry>();
+                        foreach (SlideListEntry slideListEntry in customShow.SlideList.Elements())
+                        {
+                            // Find the slide reference to remove from the custom show.
+                            if (slideListEntry.Id != null && slideListEntry.Id == slideRelId)
+                            {
+                                slideListEntries.AddLast(slideListEntry);
+                            }
+                        }
+
+                        // Remove all references to the slide from the custom show.
+                        foreach (SlideListEntry slideListEntry in slideListEntries)
+                        {
+                            customShow.SlideList.RemoveChild(slideListEntry);
+                        }
+                    }
+                }
+            }
+
+            presentation.Save();
+            // Get the slide part for the specified slide.
+            SlidePart slidePart = presentationPart.GetPartById(slideRelId) as SlidePart;
+
+            // Remove the slide part.
+            presentationPart.DeletePart(slidePart);
+
+            return presentationDocument;
+        }
+
+        #endregion
+
+        #region static Public methods
 
         public static string GetSlideTitle(SlidePart slidePart, int nameLength)
         {
@@ -322,6 +371,10 @@ namespace OpenXMLTools
             return max;
         }
 
+        #endregion
+
+        #region private methods
+
         private static void FixSlideLayoutIds(PresentationPart presPart, uint uniqueId)
         {
             //Need to make sure all slide layouts have unique ids
@@ -347,7 +400,6 @@ namespace OpenXMLTools
                     case PlaceholderValues.Title:
                     case PlaceholderValues.CenteredTitle:
                         return true;
-
                     default:
                         return false;
                 }
@@ -355,5 +407,29 @@ namespace OpenXMLTools
 
             return false;
         }
+
+        private int CountSlides(PresentationDocument presentationDocument)
+        {
+            // Check for a null document object.
+            if (presentationDocument == null)
+            {
+                throw new ArgumentNullException("presentationDocument");
+            }
+
+            int slidesCount = 0;
+            // Get the presentation part of document.
+            PresentationPart presentationPart = presentationDocument.PresentationPart;
+
+            // Get the slide count from the SlideParts.
+            if (presentationPart != null)
+            {
+                slidesCount = presentationPart.SlideParts.Count();
+            }
+
+            // Return the slide count to the previous method.
+            return slidesCount;
+        }
+
+        #endregion
     }
 }

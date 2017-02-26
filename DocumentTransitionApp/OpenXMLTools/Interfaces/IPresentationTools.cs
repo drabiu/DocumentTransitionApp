@@ -11,5 +11,7 @@ namespace OpenXMLTools.Interfaces
         PresentationDocument InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle);
 
         PresentationDocument RemoveAllSlides(PresentationDocument presentationDocument);
+
+        PresentationDocument DeleteSlide(PresentationDocument presentationDocument, int slideIndex);
     }
 }

@@ -1,96 +1,21 @@
 ﻿using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentSplitEngine.Data_Structures;
+using DocumentSplitEngine.Interfaces;
+using DocumentSplitEngine.Presentation;
+using OpenXmlPowerTools;
+using OpenXMLTools;
+using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
-using DocumentFormat.OpenXml.Presentation;
-using OpenXMLTools;
-using OpenXMLTools.Interfaces;
-using OpenXmlPowerTools;
 
 namespace DocumentSplitEngine
 {
-    public interface IPresentationMarkerMapper
-    {
-        IList<OpenXMLDocumentPart<SlideId>> Run();
-    }
-
-    public class MarkerPresentationMapper : MarkerMapper, IPresentationMarkerMapper
-	{
-        SplitDocument SplitPresentationObj { get; set; }
-        PresentationPart Presentation;
-        IUniversalPresentationMarker UniversalPreMarker;
-
-		public MarkerPresentationMapper(string documentName, Split xml, PresentationPart presentation)
-		{
-			Xml = xml;
-            SplitPresentationObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
-            //SplitPresentationObj = (SplitPresentation)Xml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, documentName)).SingleOrDefault();
-            Presentation = presentation;
-            UniversalPreMarker = new UniversalPresentationMarker(Presentation);
-            SubdividedParagraphs = new string[presentation.SlideParts.Count()];
-		}
-
-        /// <summary>
-        /// Finds parts of documents selected by the marker and returns as a list of persons each containing list of document elements
-        /// </summary>
-        /// <returns></returns>
-        public IList<OpenXMLDocumentPart<SlideId>> Run()
-		{
-            IList<OpenXMLDocumentPart<SlideId>> documentElements = new List<OpenXMLDocumentPart<SlideId>>();
-            if (SplitPresentationObj != null)
-            {
-                foreach (Person person in SplitPresentationObj.Person)
-                {
-                    if (person.UniversalMarker != null)
-                    {
-                        foreach (PersonUniversalMarker marker in person.UniversalMarker)
-                        {
-                            IList<int> result = UniversalPreMarker.GetCrossedSlideIdElements(marker.ElementId, marker.SelectionLastelementId);
-                            foreach (int index in result)
-                            {
-                                if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
-                                {
-                                    SubdividedParagraphs[index] = person.Email;
-                                }
-                                else
-                                    throw new ElementToPersonPairException();
-                            }
-                        }
-                    }
-                }
-
-                string email = string.Empty;
-                OpenXMLDocumentPart<SlideId> part = new OpenXMLDocumentPart<SlideId>();
-                var slidePartsList = Presentation.Presentation.SlideIdList.ChildElements;
-                for (int index = 0; index < slidePartsList.Count; index++)
-                {
-                    if (SubdividedParagraphs[index] != email)
-                    {
-                        part = new OpenXMLDocumentPart<SlideId>();
-                        part.CompositeElements.Add(slidePartsList[index] as SlideId);
-                        email = SubdividedParagraphs[index];
-                        if (string.IsNullOrEmpty(email))
-                            part.PartOwner = "undefined";
-                        else
-                            part.PartOwner = email;
-
-                        documentElements.Add(part);
-                    }
-                    else
-                        part.CompositeElements.Add(slidePartsList[index] as SlideId);
-                }
-            }
-
-            return documentElements;
-        }
-	}
-
-	public class PresentationSplit : MergeXml<SlideId>, ISplit, ILocalSplit
+    public class PresentationSplit : DescriptionXml<SlideId>, ISplit, ILocalSplit
 	{
         IPresentationTools PresentationTools;
 
@@ -120,7 +45,7 @@ namespace DocumentSplitEngine
               PresentationDocument.Open(docFile, true))
             {
                 PresentationPart body = preDoc.PresentationPart;
-                IPresentationMarkerMapper mapping = new MarkerPresentationMapper(DocumentName, splitXml, body);
+                IMarkerMapper<SlideId> mapping = new MarkerPresentationMapper(DocumentName, splitXml, body);
                 DocumentElements = mapping.Run();
             }
         }
@@ -173,11 +98,10 @@ namespace DocumentSplitEngine
             using (MemoryStream mem = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
             {
                 OpenXmlPowerToolsDocument docPowerTools = new OpenXmlPowerToolsDocument(string.Empty, mem);
-                using (OpenXmlMemoryStreamDocument streamDoc = new  OpenXmlMemoryStreamDocument(docPowerTools))
+                using (OpenXmlMemoryStreamDocument streamDoc = new OpenXmlMemoryStreamDocument(docPowerTools))
                 {
                     PresentationDocument preDoc = streamDoc.GetPresentationDocument();
-                    //PresentationTools.RemoveAllSlides(preDoc.PresentationPart);
-                    PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
+                    PresentationTools.RemoveAllSlides(preDoc);
 
                     var person = new PersonFiles();
                     person.Person = "/";
@@ -185,10 +109,7 @@ namespace DocumentSplitEngine
                     person.Name = "template.pptx";
                     person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
                 }
-            }
-            // At this point, the memory stream contains the modified document.
-            // We could write it back to a SharePoint document library or serve
-            // it from a web server.			
+            }			
 
             var xmlPerson = new PersonFiles();
             xmlPerson.Person = "/";
@@ -199,14 +120,14 @@ namespace DocumentSplitEngine
             return resultList;
         }
 
-        public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
+        public new byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
         {
             var docSplit = new DocumentSplit(DocumentName);
 
             return docSplit.CreateSplitXml(parts);
         }
 
-        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
+        public new List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
             var docSplit = new DocumentSplit(DocumentName);
 

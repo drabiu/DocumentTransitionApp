@@ -20,7 +20,7 @@ namespace DocumentMergeEngine
 		{
 			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentMerge)).Location);
 			string xmlFilePath = appPath + @"\Files\" + "mergeXmlDefinition.xml";
-			var xml = System.IO.File.ReadAllText(xmlFilePath);
+			var xml = File.ReadAllText(xmlFilePath);
 			Merge mergeXml;
 			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
 			{

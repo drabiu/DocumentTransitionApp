@@ -164,19 +164,38 @@ namespace OpenXMLToolsTests
         }
 
         [TestMethod]
-        public void test()
+        public void DeleteSlideShouldNotDeleteSlideOutOfRange()
         {
-            using (OpenXmlMemoryStreamDocument streamDoc = OpenXmlMemoryStreamDocument.CreatePresentationDocument())
+            try
             {
-                PresentationDocument output = streamDoc.GetPresentationDocument();
-                PresentationDocument document = PreTools.InsertSlideFromTemplate(output, PreSampleDoc, new List<string>() { "rId13", "rId12" });
-                var validationErrors = DocValidator.Validate(document);
-
-                Assert.AreEqual(0, validationErrors.Count());
-
-                streamDoc.GetModifiedDocument().SaveAs(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx");
+                PresentationDocument document = PreTools.DeleteSlide(PreSampleDoc, 14);
+                Assert.Fail();
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("slideIndex out of range", ex.Message);
             }
         }
+
+        [TestMethod]
+        public void DeleteSlideShouldResultInNoValidationErrors()
+        {
+            PresentationDocument document = PreTools.DeleteSlide(PreCGWDoc, 13);
+            var validationErrors = DocValidator.Validate(document);
+
+            Assert.AreEqual(0, validationErrors.Count());
+        }
+
+        [TestMethod]
+        public void DeleteSlideShouldDeleteOneSlide()
+        {
+            PresentationDocument document = PreTools.DeleteSlide(PreCGWDoc, 12);
+            var slideIdList = document.PresentationPart.Presentation.SlideIdList.Elements<SlideId>();
+
+            Assert.AreEqual(17, slideIdList.Count());
+            Assert.AreEqual(17, document.PresentationPart.SlideParts.Count());
+        }
+
 
         [TestCleanup]
         public void Finish()

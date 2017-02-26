@@ -7,178 +7,19 @@ using System.IO;
 using System.Reflection;
 
 using DocumentFormat.OpenXml.Packaging;
-using Wordproc = DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
 
 using SplitDescriptionObjects;
 using DocumentEditPartsEngine;
 using DocumentSplitEngine.Data_Structures;
 using OpenXMLTools;
+using DocumentSplitEngine.Document;
+using DocumentSplitEngine.Interfaces;
 
 namespace DocumentSplitEngine
 {
-	public abstract class MarkerMapper
-	{
-		protected Split Xml { get; set; }
-		protected string[] SubdividedParagraphs { get; set; }
-	}
-
-	public interface IMarkerMapper
-	{
-		IList<OpenXMLDocumentPart<OpenXmlElement>> Run();
-    }
-
-	public class MarkerDocumentMapper : MarkerMapper, IMarkerMapper
-	{	
-		SplitDocument SplitDocumentObj { get; set; }
-		Wordproc.Body DocumentBody { get; set; }
-        IUniversalDocumentMarker UniversalDocMarker;
-
-        public MarkerDocumentMapper(string documentName, Split xml, Wordproc.Body body)
-		{        
-			Xml = xml;
-			SplitDocumentObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
-			DocumentBody = body;
-            UniversalDocMarker = new UniversalDocumentMarker(DocumentBody);
-            SubdividedParagraphs = new string[body.ChildElements.Count];
-		}
-
-		public IList<OpenXMLDocumentPart<OpenXmlElement>> Run()
-		{
-			IList<OpenXMLDocumentPart<OpenXmlElement>> documentElements = new List<OpenXMLDocumentPart<OpenXmlElement>>();
-			if (SplitDocumentObj != null)
-			{
-				foreach (Person person in SplitDocumentObj.Person)
-				{
-					if (person.UniversalMarker != null)
-					{
-						foreach (PersonUniversalMarker marker in person.UniversalMarker)
-						{
-							IList<int> result = UniversalDocMarker.GetCrossedParagraphElements(marker.ElementId, marker.SelectionLastelementId);
-							foreach (int index in result)
-							{
-								if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
-								{
-									SubdividedParagraphs[index] = person.Email;
-								}
-								else
-									throw new ElementToPersonPairException();
-							}
-						}
-					}
-
-					if (person.TextMarker != null)
-					{
-					}
-
-					if (person.PictureMarker != null)
-					{
-					}
-
-					if (person.TableMarker != null)
-					{
-					}
-				}
-
-				string email = string.Empty;
-                OpenXMLDocumentPart<OpenXmlElement> part = new OpenXMLDocumentPart<OpenXmlElement>();				
-				for (int index = 0; index < DocumentBody.ChildElements.Count; index++)
-				{
-                    //check if parts are neighbours then join into one document
-					if (SubdividedParagraphs[index] != email)
-					{
-						part = new OpenXMLDocumentPart<OpenXmlElement>();
-						part.CompositeElements.Add(DocumentBody.ChildElements[index]);
-						email = SubdividedParagraphs[index];
-						if (string.IsNullOrEmpty(email))
-							part.PartOwner = "undefined";
-						else
-							part.PartOwner = email;
-						
-						documentElements.Add(part);
-					}
-					else
-						part.CompositeElements.Add(DocumentBody.ChildElements[index]);
-				}
-			}
-
-			return documentElements;
-		}
-	}
-
-    [Obsolete]
-	public interface ILocalSplit
-	{
-		void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath);		
-		void SaveSplitDocument(string filePath);		
-	}
-
-	public interface ISplit
-	{
-		List<PersonFiles> SaveSplitDocument(Stream document);
-		void OpenAndSearchDocument(Stream docFile, Stream xmlFile);
-        byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
-        List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts);
-    }
-
-	public interface IMergeXml
-	{
-		void CreateMergeXml(string path);
-		byte[] CreateMergeXml();
-    }
-
-	public class MergeXml<Element> : IMergeXml
-	{
-		protected IList<OpenXMLDocumentPart<Element>> DocumentElements;
-		protected string DocumentName { get; set; }
-
-		public void CreateMergeXml(string path)
-		{
-			Merge mergeXml = new Merge();
-			mergeXml.Items = new MergeDocument[1];
-			mergeXml.Items[0] = new MergeDocument();
-			mergeXml.Items[0].Name = DocumentName;
-			mergeXml.Items[0].Part = new MergeDocumentPart[DocumentElements.Count];
-			for (int index = 0; index < DocumentElements.Count; index++)
-			{
-				mergeXml.Items[0].Part[index] = new MergeDocumentPart();
-				mergeXml.Items[0].Part[index].Name = DocumentElements[index].PartOwner;
-				mergeXml.Items[0].Part[index].Id = DocumentElements[index].Guid.ToString();
-			}
-
-			using (FileStream fileStream = new FileStream(path + "mergeXmlDefinition" + ".xml",
-                            FileMode.CreateNew))
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
-				serializer.Serialize(fileStream, mergeXml);
-			}
-		}
-
-		public byte[] CreateMergeXml()
-		{
-			Merge mergeXml = new Merge();
-			mergeXml.Items = new MergeDocument[1];
-			mergeXml.Items[0] = new MergeDocument();
-			mergeXml.Items[0].Name = DocumentName;
-			mergeXml.Items[0].Part = new MergeDocumentPart[DocumentElements.Count];
-			for (int index = 0; index < DocumentElements.Count; index++)
-			{
-				mergeXml.Items[0].Part[index] = new MergeDocumentPart();
-				mergeXml.Items[0].Part[index].Name = DocumentElements[index].PartOwner;
-				mergeXml.Items[0].Part[index].Id = DocumentElements[index].Guid.ToString();
-			}
-
-			using (MemoryStream mergeStream = new MemoryStream())
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof(Merge));
-				serializer.Serialize(mergeStream, mergeXml);
-
-				return mergeStream.ToArray();
-			}
-		}	
-	}
-
-	public class DocumentSplit : MergeXml<OpenXmlElement>, ISplit, ILocalSplit
+	public class DocumentSplit : DescriptionXml<OpenXmlElement>, ISplit, ILocalSplit
     {
         private class NameIndexer
         {
@@ -202,7 +43,7 @@ namespace DocumentSplitEngine
 			DocumentName = docName;
 		}
 
-        public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
+        public new byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
         {
             var nameList = parts.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
             var indexer = new NameIndexer(nameList);
@@ -213,19 +54,19 @@ namespace DocumentSplitEngine
             (splitXml.Items[0] as SplitDocument).Name = DocumentName;
             var splitDocument = (splitXml.Items[0] as SplitDocument);
             splitDocument.Person = new Person[nameList.Count];
-            foreach(var name in nameList)
+            foreach (var name in nameList)
             {
                 var person = new Person();
                 person.Email = name;
                 person.UniversalMarker = new PersonUniversalMarker[parts.Where(p => p.OwnerName == name).Count()];
                 splitDocument.Person[nameList.IndexOf(name)] = person;
-                
+
             }
 
-            foreach(var part in parts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
+            foreach (var part in parts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
             {
                 var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];
-                var universalMarker = new PersonUniversalMarker();   
+                var universalMarker = new PersonUniversalMarker();
                 universalMarker.ElementId = part.ElementId;
                 universalMarker.SelectionLastelementId = part.ElementId;
                 person.UniversalMarker[indexer.GetNextIndex(part.OwnerName)] = universalMarker;
@@ -252,8 +93,8 @@ namespace DocumentSplitEngine
                 using (WordprocessingDocument wordDoc =
                 WordprocessingDocument.Open(mem, true))
                 {
-                    Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
-                    IMarkerMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
+                    Body body = wordDoc.MainDocumentPart.Document.Body;
+                    IMarkerMapper<OpenXmlElement> mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
                     DocumentElements = mapping.Run();
                 }
             }
@@ -263,7 +104,7 @@ namespace DocumentSplitEngine
 		public void OpenAndSearchDocument(string docxFilePath, string xmlFilePath)
 		{
 			//split XML Read
-			var xml = System.IO.File.ReadAllText(xmlFilePath);
+			var xml = File.ReadAllText(xmlFilePath);
 			Split splitXml;
 			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
 			{
@@ -276,7 +117,7 @@ namespace DocumentSplitEngine
 				WordprocessingDocument.Open(docxFilePath, true);
 
 			// Assign a reference to the existing document body.
-			Wordproc.Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
+			Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
 			MarkerDocumentMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
 			DocumentElements = mapping.Run();
 
@@ -301,8 +142,8 @@ namespace DocumentSplitEngine
 				{
 					foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
 					{						
-						wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
-						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+						wordDoc.MainDocumentPart.Document.Body = new Body();
+						Body body = wordDoc.MainDocumentPart.Document.Body;
 						foreach (OpenXmlElement compo in element.CompositeElements)
 							body.Append(compo.CloneNode(true));
 
@@ -333,7 +174,7 @@ namespace DocumentSplitEngine
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
-					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+					wordDoc.MainDocumentPart.Document.Body = new Body();
 					wordDoc.MainDocumentPart.Document.Save();
 
 					using (FileStream fileStream = new FileStream(appPath + @"\Files" + @"\template" + ".docx",
@@ -363,8 +204,8 @@ namespace DocumentSplitEngine
 				{
 					foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
 					{
-						wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
-						Wordproc.Body body = wordDoc.MainDocumentPart.Document.Body;
+						wordDoc.MainDocumentPart.Document.Body = new Body();
+						Body body = wordDoc.MainDocumentPart.Document.Body;
 						foreach (OpenXmlElement compo in element.CompositeElements)
 							body.Append(compo.CloneNode(true));
 
@@ -387,7 +228,7 @@ namespace DocumentSplitEngine
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{
-					wordDoc.MainDocumentPart.Document.Body = new Wordproc.Body();
+					wordDoc.MainDocumentPart.Document.Body = new Body();
 					wordDoc.MainDocumentPart.Document.Save();
 
 					var person = new PersonFiles();
@@ -410,7 +251,7 @@ namespace DocumentSplitEngine
 			return resultList;
 		}
 
-        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
+        public new List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
             Split splitXml;
             XmlSerializer serializer = new XmlSerializer(typeof(Split));
@@ -421,7 +262,7 @@ namespace DocumentSplitEngine
 
             foreach (var person in splitDocument.Person)
             {
-                foreach(var universalMarker in person.UniversalMarker)
+                foreach (var universalMarker in person.UniversalMarker)
                 {
                     var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
                     foreach (var index in selectedPartsIndexes)
