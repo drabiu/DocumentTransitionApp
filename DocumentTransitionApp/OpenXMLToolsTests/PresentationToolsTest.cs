@@ -115,7 +115,7 @@ namespace OpenXMLToolsTests
         }
 
         [TestMethod]
-        public void InsertNewSlideShouldResultInValidDocument()
+        public void InsertNewSlideShouldResultInNoValidationErrors()
         {
             PresentationDocument document = PreTools.InsertNewSlide(PreCGWDoc, 3, "InsertSlideShouldInsertSlideToPosition3");
             var validationErrors = DocValidator.Validate(document);
@@ -134,7 +134,7 @@ namespace OpenXMLToolsTests
         }
 
         [TestMethod]
-        public void RemoveAllSlidesShouldResultInValidDocument()
+        public void RemoveAllSlidesShouldResultInNoValidationErrors()
         {
             PresentationDocument document = PreTools.RemoveAllSlides(PreSampleDoc);
             var validationErrors = DocValidator.Validate(document);
@@ -143,25 +143,45 @@ namespace OpenXMLToolsTests
         }
 
         [TestMethod]
-        public void InsertSlideFromTemplateShouldAddValidSlide()
+        public void InsertSlideFromTemplateShouldInsertSlideToLastPosition()
         {
-            PresentationDocument document = PreTools.InsertSlideFromTemplate(PreCGWDoc, PreSampleDoc, "rId13");
+            PresentationDocument document = PreTools.InsertSlideFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
             var slideIdList = document.PresentationPart.Presentation.SlideIdList.Elements<SlideId>();
             string title = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(document, 18), 35);
-            var validationErrors = DocValidator.Validate(document);
 
             Assert.AreEqual(19, slideIdList.Count());
             Assert.AreEqual(19, document.PresentationPart.SlideParts.Count());
             Assert.AreEqual("[Sld]: Pokazy niestandardowe", title);
-            Assert.AreEqual(0, validationErrors.Count());
+        }
 
-            PreCGWDocInMemoryExpandable.GetModifiedDocument().SaveAs(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx");
+        [TestMethod]
+        public void InsertSlideFromTemplateShouldResultInNoValidationErrors()
+        {
+            PresentationDocument document = PreTools.InsertSlideFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
+            var validationErrors = DocValidator.Validate(document);
+                       
+            Assert.AreEqual(0, validationErrors.Count());
+        }
+
+        [TestMethod]
+        public void test()
+        {
+            using (OpenXmlMemoryStreamDocument streamDoc = OpenXmlMemoryStreamDocument.CreatePresentationDocument())
+            {
+                PresentationDocument output = streamDoc.GetPresentationDocument();
+                PresentationDocument document = PreTools.InsertSlideFromTemplate(output, PreSampleDoc, new List<string>() { "rId13", "rId12" });
+                var validationErrors = DocValidator.Validate(document);
+
+                Assert.AreEqual(0, validationErrors.Count());
+
+                streamDoc.GetModifiedDocument().SaveAs(@"C:\Users\drabiu\Documents\Testy\przykladowa-prezentacja-test.pptx");
+            }
         }
 
         [TestCleanup]
         public void Finish()
         {
-            //PreCGWDoc.Close();
+            PreCGWDoc.Close();
             PreSampleDoc.Close();
             PreCGWDocInMemoryExpandable.Close();
             PreSampleDocInMemoryExpandable.Close();

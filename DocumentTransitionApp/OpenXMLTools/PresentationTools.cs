@@ -7,16 +7,18 @@ using DocumentFormat.OpenXml.Packaging;
 using OpenXMLTools.Interfaces;
 using System.Text;
 using D = DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml;
 
 namespace OpenXMLTools
 {
     public class PresentationTools : IPresentationTools
     {
-        public PresentationDocument InsertSlideFromTemplate(PresentationDocument target, PresentationDocument template, string slideRelationshipId)
+        public PresentationDocument InsertSlideFromTemplate(PresentationDocument target, PresentationDocument template, IList<string> slideRelationshipIdList)
         {
             uint maxSlideId = 256;
 
             var slideIdList = target.PresentationPart.Presentation.SlideIdList;
+            var presentationPart = target.PresentationPart;
             //Find the highest slide ID in the current list.
 
             foreach (SlideId slideId in slideIdList.ChildElements)
@@ -27,36 +29,51 @@ namespace OpenXMLTools
                 }
             }
 
-            maxSlideId++;
-            //Create the slide part and copy the data from the first part
-            //SlidePart newSlidePart;
-            SlidePart newSlidePart = target.PresentationPart.AddNewPart<SlidePart>();
-            //Slide slide = new Slide(new CommonSlideData(new ShapeTree()));
-            //newSlidePart = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
-            var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
-            newSlidePart.FeedData(templateSlide.GetStream());
-            //Use the same slide layout as that of the template slide.
-            if (templateSlide.SlideLayoutPart != null)
+            uint uniqueId = GetMaxIdFromChild(presentationPart.Presentation.SlideMasterIdList);
+
+            foreach (string slideRelationshipId in slideRelationshipIdList)
             {
-             newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                maxSlideId++;
+                uniqueId++;
+                //Create the slide part and copy the data from the first part
+                //SlidePart newSlidePart;
+                SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
+                //Slide slide = new Slide(new CommonSlideData(new ShapeTree()));
+                //newSlidePart = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
+                var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
+                newSlidePart.FeedData(templateSlide.GetStream());
+                //Use the same slide layout as that of the template slide.
+                if (templateSlide.SlideLayoutPart != null)
+                {
+                    newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                }
+
+                SlideMasterPart destMasterPart = newSlidePart.SlideLayoutPart.SlideMasterPart;
+                presentationPart.AddPart(destMasterPart);
+
+                //slide.Save(newSlidePart);
+
+                //Insert the new slide into the slide list.
+                SlideId newSlideId = slideIdList.AppendChild(new SlideId());
+                //SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), slideIdList.Last());
+
+                //string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
+                //Set the slide id and relationship id
+                newSlideId.Id = maxSlideId;
+                newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);               
+
+                SlideMasterId newSlideMasterId = new SlideMasterId();
+                newSlideMasterId.RelationshipId = presentationPart.GetIdOfPart(destMasterPart);
+                newSlideMasterId.Id = uniqueId;
+                presentationPart.Presentation.SlideMasterIdList.Append(newSlideMasterId);
+
+                //target.PresentationPart.AddPart(newSlidePart, relationshipId);
             }
 
-
-            //slide.Save(newSlidePart);
-
-            //Insert the new slide into the slide list.
-            SlideId newSlideId = slideIdList.AppendChild(new SlideId());
-            //SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), slideIdList.Last());
-
-            //string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
-            //Set the slide id and relationship id
-            newSlideId.Id = maxSlideId;
-            newSlideId.RelationshipId = target.PresentationPart.GetIdOfPart(newSlidePart);
-            //target.PresentationPart.AddPart(newSlidePart, relationshipId);
-          
-            target.PresentationPart.Presentation.Save();
-
+            FixSlideLayoutIds(presentationPart, uniqueId);
             //PresentationMLUtil.FixUpPresentationDocument(target);
+
+            target.PresentationPart.Presentation.Save();
 
             return target;
         }
@@ -288,6 +305,36 @@ namespace OpenXMLTools
             List<SlideId> slidesList = document.PresentationPart.Presentation.SlideIdList.Elements<SlideId>().ToList();
 
             return document.PresentationPart.GetPartById(slidesList[index].RelationshipId) as SlidePart;
+        }
+
+        public static uint GetMaxIdFromChild(OpenXmlElement el)
+        {
+            uint max = 2147483648;
+            //Get max id value from set of children
+            foreach (OpenXmlElement child in el.ChildElements)
+            {
+                OpenXmlAttribute attribute = child.GetAttribute("id", "");
+                uint id = uint.Parse(attribute.Value);
+                if (id > max)
+                    max = id;
+            }
+
+            return max;
+        }
+
+        private static void FixSlideLayoutIds(PresentationPart presPart, uint uniqueId)
+        {
+            //Need to make sure all slide layouts have unique ids
+            foreach (SlideMasterPart slideMasterPart in presPart.SlideMasterParts)
+            {
+                foreach (SlideLayoutId slideLayoutId in slideMasterPart.SlideMaster.SlideLayoutIdList)
+                {
+                    uniqueId++;
+                    slideLayoutId.Id = uniqueId;
+                }
+
+                slideMasterPart.SlideMaster.Save();
+            }
         }
 
         private static bool IsTitleShape(Shape shape)

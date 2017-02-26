@@ -999,6 +999,7 @@ namespace OpenXMLTools
                     xd.Descendants().Attributes("smtId").Remove();
                     part.PutXDocument();
                 }
+               
                 if (part.ContentType == "application/vnd.openxmlformats-officedocument.vmlDrawing")
                 {
                     string fixedContent = null;
