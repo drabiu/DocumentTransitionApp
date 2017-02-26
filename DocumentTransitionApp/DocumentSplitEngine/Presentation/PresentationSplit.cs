@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Presentation;
 using OpenXMLTools;
 using OpenXMLTools.Interfaces;
+using OpenXmlPowerTools;
 
 namespace DocumentSplitEngine
 {
@@ -167,13 +168,14 @@ namespace DocumentSplitEngine
             }
             // At this point, the memory stream contains the modified document.
             // We could write it back to a SharePoint document library or serve
-            // it from a web server.			
-            using (MemoryStream mem = new MemoryStream())
+            // it from a web server.	
+            
+            using (MemoryStream mem = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
             {
-                mem.Write(byteArray, 0, byteArray.Length);
-                using (PresentationDocument preDoc =
-                    PresentationDocument.Open(mem, true))
+                OpenXmlPowerToolsDocument docPowerTools = new OpenXmlPowerToolsDocument(string.Empty, mem);
+                using (OpenXmlMemoryStreamDocument streamDoc = new  OpenXmlMemoryStreamDocument(docPowerTools))
                 {
+                    PresentationDocument preDoc = streamDoc.GetPresentationDocument();
                     //PresentationTools.RemoveAllSlides(preDoc.PresentationPart);
                     PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
 
@@ -181,7 +183,7 @@ namespace DocumentSplitEngine
                     person.Person = "/";
                     resultList.Add(person);
                     person.Name = "template.pptx";
-                    person.Data = mem.ToArray();
+                    person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
                 }
             }
             // At this point, the memory stream contains the modified document.

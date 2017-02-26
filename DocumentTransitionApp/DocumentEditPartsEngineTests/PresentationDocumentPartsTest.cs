@@ -34,35 +34,35 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void GetSlidesMethodShouldReturn18SlideElements()
         {
-            Assert.AreEqual(PartsSelectionElementsCGW.Count, 18);
+            Assert.AreEqual(18, PartsSelectionElementsCGW.Count);
         }
 
         [TestMethod]
         public void GetSlidesMethodShouldReturn13SlideElements()
         {
-            Assert.AreEqual(PartsSelectionElementsSample.Count, 13);
+            Assert.AreEqual(13, PartsSelectionElementsSample.Count);
         }
 
         [TestMethod]
         public void GetSlidesMethodShouldHaveCorrectSlideElementsId()
         {
-            Assert.AreEqual(PartsSelectionElementsCGW[1].ElementId, "rId4");
-            Assert.AreEqual(PartsSelectionElementsCGW[10].ElementId, "rId13");
+            Assert.AreEqual("rId4", PartsSelectionElementsCGW[1].ElementId);
+            Assert.AreEqual("rId13", PartsSelectionElementsCGW[10].ElementId);
         }
 
         [TestMethod]
         public void GetSlidesMethodShouldHaveCorrectSlideElementsName()
         {
-            Assert.AreEqual(PartsSelectionElementsCGW[2].Name, "[Sld]: Data processing in modern science");
-            Assert.AreEqual(PartsSelectionElementsCGW[5].Name, "[Sld]: Data processing in modern science");
-            Assert.AreEqual(PartsSelectionElementsSample[3].Name, "[Sld]: Elementy slajdu");
-            Assert.AreEqual(PartsSelectionElementsSample[7].Name, "[Sld]: Grafika - Obrazy");
+            Assert.AreEqual("[Sld]: Data processing in modern science", PartsSelectionElementsCGW[2].Name);
+            Assert.AreEqual("[Sld]: Data processing in modern science", PartsSelectionElementsCGW[5].Name);
+            Assert.AreEqual("[Sld]: Elementy slajdu", PartsSelectionElementsSample[3].Name);
+            Assert.AreEqual("[Sld]: Grafika - Obrazy", PartsSelectionElementsSample[7].Name);
         }
 
         [TestMethod]
         public void GetSlidesMethodShouldHaveCorrectSlideElementsChildrenCount()
         {
-            Assert.AreEqual(PartsSelectionElementsSample[3].Childs.Count, 0);
+            Assert.AreEqual(0, PartsSelectionElementsSample[3].Childs.Count);
         }
 
         [TestCleanup]

@@ -157,7 +157,7 @@ namespace DocumentTransitionApp
                         using (PresentationDocument pre2Doc =
                    PresentationDocument.Open(mem2, true))
                         {                          
-                            preDoc = PresentationTools.InsertSlideFromTemplate(preDoc, pre2Doc, "rId13");
+                            PresentationTools.InsertSlideFromTemplate(preDoc, pre2Doc, "rId13");
                         }
                     }             
                 }

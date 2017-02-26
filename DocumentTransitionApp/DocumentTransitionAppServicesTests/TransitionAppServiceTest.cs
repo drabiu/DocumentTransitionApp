@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DocumentTransitionAppServicesTests
 {
     [TestClass]
-    public class UnitTest1
+    public class TransitionAppServiceTest
     {
         [TestMethod]
         public void TestMethod1()

@@ -4,7 +4,6 @@ using System.Linq;
 using Drawing = DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Packaging;
-using System.IO;
 using OpenXMLTools.Interfaces;
 using System.Text;
 using D = DocumentFormat.OpenXml.Drawing;
@@ -30,17 +29,17 @@ namespace OpenXMLTools
 
             maxSlideId++;
             //Create the slide part and copy the data from the first part
-            SlidePart newSlidePart;
-            //SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
+            //SlidePart newSlidePart;
+            SlidePart newSlidePart = target.PresentationPart.AddNewPart<SlidePart>();
             //Slide slide = new Slide(new CommonSlideData(new ShapeTree()));
-            newSlidePart = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
-            //var templateSlide = (SlidePart)templateDocument.PresentationPart.GetPartById(sourceRelationshipId);
-            //newSlidePart.FeedData(templateSlide.GetStream());
+            //newSlidePart = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
+            var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
+            newSlidePart.FeedData(templateSlide.GetStream());
             //Use the same slide layout as that of the template slide.
-            //if (templateSlide.SlideLayoutPart != null)
-            //{
-            // newSlidePart.AddPart(templateSlide.SlideLayoutPart);
-            //}
+            if (templateSlide.SlideLayoutPart != null)
+            {
+             newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+            }
 
 
             //slide.Save(newSlidePart);
@@ -49,13 +48,15 @@ namespace OpenXMLTools
             SlideId newSlideId = slideIdList.AppendChild(new SlideId());
             //SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), slideIdList.Last());
 
-            string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
+            //string relationshipId = string.Format("cRelId{0}{1}", maxSlideId, new Random().Next(999));
             //Set the slide id and relationship id
             newSlideId.Id = maxSlideId;
-            newSlideId.RelationshipId = relationshipId;
-            target.PresentationPart.AddPart(newSlidePart, relationshipId);
-
+            newSlideId.RelationshipId = target.PresentationPart.GetIdOfPart(newSlidePart);
+            //target.PresentationPart.AddPart(newSlidePart, relationshipId);
+          
             target.PresentationPart.Presentation.Save();
+
+            //PresentationMLUtil.FixUpPresentationDocument(target);
 
             return target;
         }
@@ -306,11 +307,6 @@ namespace OpenXMLTools
             }
 
             return false;
-        }
-
-        private void CloneSlide()
-        {
-
         }
     }
 }

@@ -30,8 +30,8 @@ namespace SplitDescriptionObjectsTests
             IList<int> result = UniversalPreCGWMarker.GetCrossedSlideIdElements("rId5", "rId5");
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.Count, 1);
-            Assert.AreEqual(result[0], 2);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result[0]);
         }
 
         [TestMethod]
@@ -40,10 +40,10 @@ namespace SplitDescriptionObjectsTests
             IList<int> result = UniversalPreSampleMarker.GetCrossedSlideIdElements("rId12", "rId14");
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.Count, 3);
-            Assert.AreEqual(result[0], 10);
-            Assert.AreEqual(result[1], 11);
-            Assert.AreEqual(result[2], 12);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(10, result[0]);
+            Assert.AreEqual(11, result[1]);
+            Assert.AreEqual(12, result[2]);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace SplitDescriptionObjectsTests
             IList<int> result = UniversalPreCGWMarker.GetCrossedSlideIdElements("rId7", "rId5");
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.Count, 0);
+            Assert.AreEqual(0, result.Count);
         }
 
         [TestCleanup]

@@ -68,7 +68,6 @@ using System.Xml.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using System.IO.Packaging;
 using OpenXMLTools;
-using static OpenXMLTools.PtOpenXmlUtil;
 
 namespace OpenXmlPowerTools
 {
