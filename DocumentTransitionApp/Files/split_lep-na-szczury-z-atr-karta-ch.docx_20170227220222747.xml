@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<Split xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/">
+  <Document>
+    <Name>lep-na-szczury-z-atr-karta-ch</Name>
+    <Person Email="test">
+      <UniversalMarker>
+        <ElementId>noid:0</ElementId>
+        <SelectionLastelementId>noid:0</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>noid:1</ElementId>
+        <SelectionLastelementId>noid:1</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>noid:2</ElementId>
+        <SelectionLastelementId>noid:2</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>noid:3</ElementId>
+        <SelectionLastelementId>noid:3</SelectionLastelementId>
+      </UniversalMarker>
+    </Person>
+    <Person Email="test2">
+      <UniversalMarker>
+        <ElementId>noid:7</ElementId>
+        <SelectionLastelementId>noid:7</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>noid:9</ElementId>
+        <SelectionLastelementId>noid:9</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>noid:11</ElementId>
+        <SelectionLastelementId>noid:11</SelectionLastelementId>
+      </UniversalMarker>
+    </Person>
+  </Document>
+</Split>

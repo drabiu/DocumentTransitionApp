@@ -13,7 +13,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace DocumentSplitEngine
 {
-    public class ExcelSplit : DescriptionXml<OpenXMLDocumentPart<WorkbookPart>>, ISplit, ILocalSplit
+    public class ExcelSplit : MergeXml<OpenXMLDocumentPart<WorkbookPart>>, ISplit, ISplitXml, ILocalSplit
 	{
         [Obsolete]
 		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
@@ -51,7 +51,7 @@ namespace DocumentSplitEngine
 			throw new NotImplementedException();
 		}
 
-		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
+		public List<PersonFiles> SaveSplitDocument(Stream document)
 		{
 			throw new NotImplementedException();
 		}

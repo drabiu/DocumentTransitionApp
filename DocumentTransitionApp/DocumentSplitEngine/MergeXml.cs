@@ -3,6 +3,7 @@ using DocumentSplitEngine.Data_Structures;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace DocumentSplitEngine
@@ -13,15 +14,26 @@ namespace DocumentSplitEngine
         [Obsolete]
         byte[] CreateMergeXml();
     }
-
-    public interface ISplitXml
+      
+    public abstract class MergeXml<Element> : IMergeXml
     {
-        byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
-        List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts);
-    }
+        internal class NameIndexer
+        {
+            private Dictionary<string, int> Indexes;
 
-    public abstract class DescriptionXml<Element> : IMergeXml, ISplitXml
-    {
+            public NameIndexer(IList<string> nameList)
+            {
+                Indexes = new Dictionary<string, int>();
+                foreach (var name in nameList)
+                    Indexes.Add(name, 0);
+            }
+
+            public int GetNextIndex(string name)
+            {
+                return Indexes[name]++;
+            }
+        }
+
         protected IList<OpenXMLDocumentPart<Element>> DocumentElements;
         protected string DocumentName { get; set; }
 
@@ -69,16 +81,6 @@ namespace DocumentSplitEngine
 
                 return mergeStream.ToArray();
             }
-        }
-
-        public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -118,15 +118,15 @@ namespace DocumentTransitionUniversalApp
             InitButtons();
         }
 
-		private async void buttonXml_Click(object sender, RoutedEventArgs e)
-		{
+        private void buttonXml_Click(object sender, RoutedEventArgs e)
+        {
             _wasEditParts = true;
-			this.AppFrame.Navigate(typeof(WordSelectPartsPage), this);
+            this.AppFrame.Navigate(typeof(WordSelectPartsPage), this);
         }
 
-		private async void buttonSplit_Click(object sender, RoutedEventArgs e)
+        private async void buttonSplit_Click(object sender, RoutedEventArgs e)
 		{
-            var serviceClient = MainPage.Service.GetInstance();
+            var serviceClient = Service.GetInstance();
             string extension = string.Empty;
             var result = new ObservableCollection<Service.PersonFiles>();
             try
@@ -160,7 +160,7 @@ namespace DocumentTransitionUniversalApp
 
 		private async void buttonMerge_Click(object sender, RoutedEventArgs e)
 		{
-            var serviceClient = MainPage.Service.GetInstance();
+            var serviceClient = Service.GetInstance();
             var files = await GetFiles();
             if (files.Any())
             {
@@ -422,11 +422,23 @@ namespace DocumentTransitionUniversalApp
             foreach (var part in WordPartPage._pageData.SelectionParts)
                 selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
 
+            string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
             try
             {
-                var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-                string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
-                FileHelper.SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
+                switch (FileType)
+                {
+                    case (DocumentType.Word):
+                        var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
+                        break;
+                    case (DocumentType.Excel):
+                        break;
+                    case (DocumentType.Presentation):
+                        var result2 = await serviceClient.GenerateSplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result2.Body.GenerateSplitPresentationResult, splitFileName, ".xml");
+                        break;
+                }
+
                 EnableSplitButton();
             }
             catch (System.ServiceModel.CommunicationException ex)
@@ -468,7 +480,7 @@ namespace DocumentTransitionUniversalApp
                             comboItems.Add(new Data_Structures.ComboBoxItem() { Id = indexer++, Name = name });
 
                         WordPartPage = new WordSelectPartsPage();
-                        Data_Structures.WordPartsPageData pageData = new Data_Structures.WordPartsPageData();
+                        WordPartsPageData pageData = new Data_Structures.WordPartsPageData();
                         pageData.SelectionParts = parts;
                         pageData.LastId = names.Count();
                         pageData.ComboItems.AddRange(comboItems);
@@ -498,13 +510,13 @@ namespace DocumentTransitionUniversalApp
             {
                 switch (FileType)
                 {
-                    case (MainPage.DocumentType.Word):
+                    case (DocumentType.Word):
                         var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                         result = response.Body.GetDocumentPartsFromXmlResult;
                         break;
-                    case (MainPage.DocumentType.Excel):
+                    case (DocumentType.Excel):
                         break;
-                    case (MainPage.DocumentType.Presentation):
+                    case (DocumentType.Presentation):
                         var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                         result = response2.Body.GetPresentationPartsFromXmlResult;
                         break;

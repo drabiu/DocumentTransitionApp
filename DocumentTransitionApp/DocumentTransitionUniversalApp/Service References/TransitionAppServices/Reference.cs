@@ -272,6 +272,9 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GenerateSplitDocument", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitDocumentResponse> GenerateSplitDocumentAsync(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitDocumentRequest request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GenerateSplitPresentation", ReplyAction="*")]
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponse> GenerateSplitPresentationAsync(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequest request);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergeDocument", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse> MergeDocumentAsync(DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentRequest request);
         
@@ -509,6 +512,78 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         public GenerateSplitDocumentResponseBody(byte[] GenerateSplitDocumentResult) {
             this.GenerateSplitDocumentResult = GenerateSplitDocumentResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GenerateSplitPresentationRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitPresentation", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequestBody Body;
+        
+        public GenerateSplitPresentationRequest() {
+        }
+        
+        public GenerateSplitPresentationRequest(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GenerateSplitPresentationRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string docName;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> parts;
+        
+        public GenerateSplitPresentationRequestBody() {
+        }
+        
+        public GenerateSplitPresentationRequestBody(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> parts) {
+            this.docName = docName;
+            this.parts = parts;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GenerateSplitPresentationResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitPresentationResponse", Namespace="http://tempuri.org/", Order=0)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponseBody Body;
+        
+        public GenerateSplitPresentationResponse() {
+        }
+        
+        public GenerateSplitPresentationResponse(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class GenerateSplitPresentationResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public byte[] GenerateSplitPresentationResult;
+        
+        public GenerateSplitPresentationResponseBody() {
+        }
+        
+        public GenerateSplitPresentationResponseBody(byte[] GenerateSplitPresentationResult) {
+            this.GenerateSplitPresentationResult = GenerateSplitPresentationResult;
         }
     }
     
@@ -958,6 +1033,19 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             inValue.Body.docName = docName;
             inValue.Body.parts = parts;
             return ((DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap)(this)).GenerateSplitDocumentAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponse> DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap.GenerateSplitPresentationAsync(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequest request) {
+            return base.Channel.GenerateSplitPresentationAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponse> GenerateSplitPresentationAsync(string docName, System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> parts) {
+            DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequest inValue = new DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequest();
+            inValue.Body = new DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequestBody();
+            inValue.Body.docName = docName;
+            inValue.Body.parts = parts;
+            return ((DocumentTransitionUniversalApp.TransitionAppServices.Service1Soap)(this)).GenerateSplitPresentationAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

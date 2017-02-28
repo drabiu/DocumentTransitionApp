@@ -8,41 +8,49 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Linq;
 
 namespace DocumentSplitEngineTests
 {
     [TestClass]
     public class PresentationSplitTest
     {
-        MemoryStream PreCGWDocInMemory;
+        int ErrorsCount;
+        int WarningsCount;
         MemoryStream PreSampleDocInMemory;
-        MemoryStream PreCGWDocXmlInMemory;
         MemoryStream PreSampleDocXmlInMemory;
-        ISplit DocCGWSplit;
         ISplit DocSampleSplit;
 
         [TestInitialize]
         public void Init()
         {
-            DocCGWSplit = new PresentationSplit("6.CGW15-prezentacja");
             DocSampleSplit = new PresentationSplit("przykladowa-prezentacja");
-
-            PreCGWDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/6.CGW15-prezentacja.pptx"));
             PreSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/przykladowa-prezentacja.pptx"));
-
-            PreCGWDocXmlInMemory = new MemoryStream();
-            PreSampleDocXmlInMemory = new MemoryStream();          
+            PreSampleDocXmlInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/split_przykladowa-prezentacja.pptx_20170227215707619.xml"));
+            ErrorsCount = 0;
+            WarningsCount = 0;
         }
 
         [TestMethod]
-        public void test()
+        public void CreateSplitXMLShouldReturnValidXml()
         {
-            DocCGWSplit.OpenAndSearchDocument(PreCGWDocInMemory, PreCGWDocXmlInMemory);
-            IList<PersonFiles> result = DocCGWSplit.SaveSplitDocument(PreCGWDocInMemory);
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.Schemas.Add("https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/", @"../../../UnmarshallingSplitXml/splitXmlDefinitionTemplate.xsd");
+            settings.ValidationType = ValidationType.Schema;
+
+            XmlReader reader = XmlReader.Create(@"../../../Files/split_przykladowa-prezentacja.pptx_20170227215707619.xml", settings);
+            XmlDocument document = new XmlDocument();
+            document.Load(reader);
+            document.Validate(ValidationEventHandler);
+
+            Assert.AreEqual(0, ErrorsCount);
+            Assert.AreEqual(0, WarningsCount);
         }
 
         [TestMethod]
-        public void test1()
+        public void CreateSplitXMLShouldReturn2PersonsWithCorrectNames()
         {
             DocSampleSplit.OpenAndSearchDocument(PreSampleDocInMemory, PreSampleDocXmlInMemory);
             IList<PersonFiles> result = DocSampleSplit.SaveSplitDocument(PreSampleDocInMemory);
@@ -51,10 +59,21 @@ namespace DocumentSplitEngineTests
         [TestCleanup]
         public void Finish()
         {
-            PreCGWDocInMemory.Close();
-            PreCGWDocXmlInMemory.Close();
             PreSampleDocInMemory.Close();
             PreSampleDocXmlInMemory.Close();
+        }
+
+        private void ValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            switch (e.Severity)
+            {
+                case XmlSeverityType.Error:
+                    ErrorsCount++;
+                    break;
+                case XmlSeverityType.Warning:
+                    WarningsCount++;
+                    break;
+            }
         }
     }
 }

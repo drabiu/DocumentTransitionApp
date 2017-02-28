@@ -10,15 +10,14 @@ namespace DocumentSplitEngine.Presentation
 {
     public class MarkerPresentationMapper : MarkerMapper, IMarkerMapper<SlideId>
     {
-        SplitDocument SplitPresentationObj { get; set; }
+        SplitPresentation SplitPresentationObj { get; set; }
         PresentationPart Presentation;
         IUniversalPresentationMarker UniversalPreMarker;
 
         public MarkerPresentationMapper(string documentName, Split xml, PresentationPart presentation)
         {
-            Xml = xml;
-            SplitPresentationObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
-            //SplitPresentationObj = (SplitPresentation)Xml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, documentName)).SingleOrDefault();
+            Xml = xml;            
+            SplitPresentationObj = (SplitPresentation)Xml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, documentName)).SingleOrDefault();
             Presentation = presentation;
             UniversalPreMarker = new UniversalPresentationMarker(Presentation);
             SubdividedParagraphs = new string[presentation.SlideParts.Count()];

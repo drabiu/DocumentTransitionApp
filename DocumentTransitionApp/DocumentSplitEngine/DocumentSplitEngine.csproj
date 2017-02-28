@@ -53,8 +53,9 @@
     <Compile Include="Interfaces\IMarkerMapper.cs" />
     <Compile Include="Interfaces\ISplit.cs" />
     <Compile Include="Interfaces\ILocalSplit.cs" />
+    <Compile Include="Interfaces\ISplitXml.cs" />
     <Compile Include="MarkerMapper.cs" />
-    <Compile Include="DescriptionXml.cs" />
+    <Compile Include="MergeXml.cs" />
     <Compile Include="Presentation\MarkerPresentationMapper.cs" />
     <Compile Include="Presentation\PresentationSplit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

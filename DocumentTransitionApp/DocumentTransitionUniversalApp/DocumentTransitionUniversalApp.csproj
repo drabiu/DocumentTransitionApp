@@ -100,6 +100,9 @@
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitDocumentResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsFromXmlResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

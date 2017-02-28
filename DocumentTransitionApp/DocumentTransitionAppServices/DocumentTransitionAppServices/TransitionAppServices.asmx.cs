@@ -52,7 +52,15 @@ namespace DocumentTransitionAppServices
             return split.CreateSplitXml(parts);
         }
 
-		[WebMethod]
+        [WebMethod]
+        public byte[] GenerateSplitPresentation(string docName, PartsSelectionTreeElement[] parts)
+        {
+            ISplitXml split = new PresentationSplit(docName);
+
+            return split.CreateSplitXml(parts);
+        }
+
+        [WebMethod]
 		public byte[] MergeDocument(PersonFiles[] files)
 		{
 			IMerge merge = new DocumentMerge();

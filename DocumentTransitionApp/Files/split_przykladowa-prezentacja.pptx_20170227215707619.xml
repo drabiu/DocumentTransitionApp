@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Split xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/">
+  <Presentation>
+    <Name>przykladowa-prezentacja</Name>
+    <Person Email="test">
+      <UniversalMarker>
+        <ElementId>rId2</ElementId>
+        <SelectionLastelementId>rId2</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>rId3</ElementId>
+        <SelectionLastelementId>rId3</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>rId4</ElementId>
+        <SelectionLastelementId>rId4</SelectionLastelementId>
+      </UniversalMarker>
+    </Person>
+    <Person Email="test2">
+      <UniversalMarker>
+        <ElementId>rId9</ElementId>
+        <SelectionLastelementId>rId9</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>rId11</ElementId>
+        <SelectionLastelementId>rId11</SelectionLastelementId>
+      </UniversalMarker>
+    </Person>
+  </Presentation>
+</Split>

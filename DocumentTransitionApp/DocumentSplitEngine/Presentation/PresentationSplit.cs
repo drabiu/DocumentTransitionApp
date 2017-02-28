@@ -11,11 +11,12 @@ using SplitDescriptionObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace DocumentSplitEngine
 {
-    public class PresentationSplit : DescriptionXml<SlideId>, ISplit, ILocalSplit
+    public class PresentationSplit : MergeXml<SlideId>, ISplit, ISplitXml, ILocalSplit
 	{
         IPresentationTools PresentationTools;
 
@@ -120,18 +121,67 @@ namespace DocumentSplitEngine
             return resultList;
         }
 
-        public new byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
+        public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
         {
-            var docSplit = new DocumentSplit(DocumentName);
+            var nameList = parts.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+            var indexer = new NameIndexer(nameList);
 
-            return docSplit.CreateSplitXml(parts);
+            Split splitXml = new Split();
+            splitXml.Items = new SplitPresentation[1];
+            splitXml.Items[0] = new SplitPresentation();
+            (splitXml.Items[0] as SplitPresentation).Name = DocumentName;
+            var splitDocument = (splitXml.Items[0] as SplitPresentation);
+            splitDocument.Person = new Person[nameList.Count];
+            foreach (var name in nameList)
+            {
+                var person = new Person();
+                person.Email = name;
+                person.UniversalMarker = new PersonUniversalMarker[parts.Where(p => p.OwnerName == name).Count()];
+                splitDocument.Person[nameList.IndexOf(name)] = person;
+
+            }
+
+            foreach (var part in parts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
+            {
+                var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];
+                var universalMarker = new PersonUniversalMarker();
+                universalMarker.ElementId = part.ElementId;
+                universalMarker.SelectionLastelementId = part.ElementId;
+                person.UniversalMarker[indexer.GetNextIndex(part.OwnerName)] = universalMarker;
+            }
+
+            using (MemoryStream splitStream = new MemoryStream())
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Split));
+                serializer.Serialize(splitStream, splitXml);
+
+                return splitStream.ToArray();
+            }
         }
 
-        public new List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
+        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
-            var docSplit = new DocumentSplit(DocumentName);
+            Split splitXml;
+            XmlSerializer serializer = new XmlSerializer(typeof(Split));
+            splitXml = (Split)serializer.Deserialize(xmlFile);
+            var splitDocument = (SplitPresentation)splitXml.Items.Where(it => it is SplitPresentation && string.Equals(((SplitPresentation)it).Name, DocumentName)).SingleOrDefault();
+            if (splitDocument == null)
+                throw new SplitNameDifferenceExcception(string.Format("This split xml describes a different document."));
 
-            return docSplit.PartsFromSplitXml(xmlFile, parts);
+            foreach (var person in splitDocument.Person)
+            {
+                foreach (var universalMarker in person.UniversalMarker)
+                {
+                    var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
+                    foreach (var index in selectedPartsIndexes)
+                    {
+                        parts[index].OwnerName = person.Email;
+                        parts[index].Selected = true;
+                    }
+                }
+            }
+
+            return parts;
         }
 
         #region Private methods

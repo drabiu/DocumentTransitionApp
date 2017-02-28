@@ -77,6 +77,21 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GenerateSplitPresentation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="parts" type="tns:ArrayOfPartsSelectionTreeElement" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateSplitPresentationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateSplitPresentationResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="MergeDocument">
         <s:complexType>
           <s:sequence>
@@ -180,6 +195,12 @@
   <wsdl:message name="GenerateSplitDocumentSoapOut">
     <wsdl:part name="parameters" element="tns:GenerateSplitDocumentResponse" />
   </wsdl:message>
+  <wsdl:message name="GenerateSplitPresentationSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateSplitPresentation" />
+  </wsdl:message>
+  <wsdl:message name="GenerateSplitPresentationSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateSplitPresentationResponse" />
+  </wsdl:message>
   <wsdl:message name="MergeDocumentSoapIn">
     <wsdl:part name="parameters" element="tns:MergeDocument" />
   </wsdl:message>
@@ -222,6 +243,10 @@
     <wsdl:operation name="GenerateSplitDocument">
       <wsdl:input message="tns:GenerateSplitDocumentSoapIn" />
       <wsdl:output message="tns:GenerateSplitDocumentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitPresentation">
+      <wsdl:input message="tns:GenerateSplitPresentationSoapIn" />
+      <wsdl:output message="tns:GenerateSplitPresentationSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="MergeDocument">
       <wsdl:input message="tns:MergeDocumentSoapIn" />
@@ -266,6 +291,15 @@
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitDocument">
       <soap:operation soapAction="http://tempuri.org/GenerateSplitDocument" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitPresentation">
+      <soap:operation soapAction="http://tempuri.org/GenerateSplitPresentation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -341,6 +375,15 @@
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitDocument">
       <soap12:operation soapAction="http://tempuri.org/GenerateSplitDocument" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitPresentation">
+      <soap12:operation soapAction="http://tempuri.org/GenerateSplitPresentation" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

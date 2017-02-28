@@ -12,6 +12,7 @@ namespace DocumentTransitionAppServices.Interfaces
         PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile);
         PersonFiles[] SplitPresentation(string docName, byte[] docFile, byte[] xmlFile);
         byte[] GenerateSplitDocument(string docName, PartsSelectionTreeElement[] parts);
+        byte[] GenerateSplitPresentation(string docName, PartsSelectionTreeElement[] parts);
         byte[] MergeDocument(PersonFiles[] files);
         List<PartsSelectionTreeElement> GetDocumentParts(string docName, byte[] documentFile);
         List<PartsSelectionTreeElement> GetPresentationParts(string preName, byte[] presentationFile);
