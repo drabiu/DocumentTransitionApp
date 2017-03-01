@@ -63,10 +63,15 @@
     <Compile Include="MarkerDocumentMapperTest.cs" />
     <Compile Include="MarkerExcelMapperTest.cs" />
     <Compile Include="MarkerPresentationMapperTest.cs" />
+    <Compile Include="Mocks\PartsSelectionTreeElementMock.cs" />
     <Compile Include="PresentationSplitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DocumentEditPartsEngine\DocumentEditPartsEngine.csproj">
+      <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
+      <Name>DocumentEditPartsEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DocumentSplitEngine\DocumentSplitEngine.csproj">
       <Project>{13bc6bc9-e590-491c-8eb3-37559c25994c}</Project>
       <Name>DocumentSplitEngine</Name>

@@ -15,6 +15,11 @@ namespace DocumentSplitEngine
 {
     public class ExcelSplit : MergeXml<OpenXMLDocumentPart<WorkbookPart>>, ISplit, ISplitXml, ILocalSplit
 	{
+        public ExcelSplit(string docName)
+        {
+            DocumentName = docName;
+        }
+
         [Obsolete]
 		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
 		{
