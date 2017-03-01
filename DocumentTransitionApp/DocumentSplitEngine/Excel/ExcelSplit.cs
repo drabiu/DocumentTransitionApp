@@ -66,7 +66,7 @@ namespace DocumentSplitEngine
             throw new NotImplementedException();
         }
 
-        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
+        public List<PartsSelectionTreeElement> SelectPartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
             throw new NotImplementedException();
         }

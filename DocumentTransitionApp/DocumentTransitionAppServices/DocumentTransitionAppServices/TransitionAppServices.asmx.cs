@@ -9,6 +9,7 @@ using SplitDescriptionObjects;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Services;
+using System;
 
 namespace DocumentTransitionAppServices
 {
@@ -92,7 +93,7 @@ namespace DocumentTransitionAppServices
             
             try
             {
-                return new ServiceResponse(split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+                return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
             }
             catch (SplitNameDifferenceExcception ex)
             {
@@ -108,12 +109,36 @@ namespace DocumentTransitionAppServices
 
             try
             {
-                return new ServiceResponse(split.PartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+                return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
             }
             catch (SplitNameDifferenceExcception ex)
             {
                 return new ServiceResponse(ex.Message);
             }
+        }
+
+        [WebMethod]
+        public PersonFiles[] SplitExcel(string docName, byte[] docFile, byte[] xmlFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        [WebMethod]
+        public byte[] GenerateSplitExcel(string docName, PartsSelectionTreeElement[] parts)
+        {
+            throw new NotImplementedException();
+        }
+
+        [WebMethod]
+        public List<PartsSelectionTreeElement> GetExcelParts(string excName, byte[] excelFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        [WebMethod]
+        public ServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        {
+            throw new NotImplementedException();
         }
     }	
 }

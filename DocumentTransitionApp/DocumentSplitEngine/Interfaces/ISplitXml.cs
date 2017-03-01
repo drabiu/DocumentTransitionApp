@@ -7,6 +7,6 @@ namespace DocumentSplitEngine.Interfaces
     public interface ISplitXml
     {
         byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts);
-        List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts);
+        List<PartsSelectionTreeElement> SelectPartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts);
     }
 }

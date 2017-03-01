@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DocumentMergeEngineTests
 {
     [TestClass]
-    public class UnitTest1
+    public class DocumentMergeTest
     {
         [TestMethod]
         public void TestMethod1()

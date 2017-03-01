@@ -104,6 +104,33 @@ namespace DocumentSplitEngineTests
             Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
+        [TestMethod]
+        public void PartsFromSplitXMLShouldReturn3Selected()
+        {
+            var parts = SplitXml.SelectPartsFromSplitXml(new MemoryStream(SplitXmlBinary), PartsSelectionTreeElementMock.GetUnselectedPartsListMock());
+            var selectedParts = parts.Where(p => p.Selected && p.OwnerName == "test1");
+
+            Assert.AreEqual(3, selectedParts.Count());
+        }
+
+        [TestMethod]
+        public void PartsFromSplitXMLShouldReturn2Selected()
+        {
+            var parts = SplitXml.SelectPartsFromSplitXml(new MemoryStream(SplitXmlBinary), PartsSelectionTreeElementMock.GetUnselectedPartsListMock());
+            var selectedParts = parts.Where(p => p.Selected && p.OwnerName == "test2");
+
+            Assert.AreEqual(2, selectedParts.Count());
+        }
+
+        [TestMethod]
+        public void PartsFromSplitXMLShouldReturn2Unselected()
+        {
+            var parts = SplitXml.SelectPartsFromSplitXml(new MemoryStream(SplitXmlBinary), PartsSelectionTreeElementMock.GetUnselectedPartsListMock());
+            var selectedParts = parts.Where(p => !p.Selected);
+
+            Assert.AreEqual(2, selectedParts.Count());
+        }
+
         [TestCleanup]
         public void Finish()
         {

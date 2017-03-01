@@ -159,7 +159,7 @@ namespace DocumentSplitEngine
             }
         }
 
-        public List<PartsSelectionTreeElement> PartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
+        public List<PartsSelectionTreeElement> SelectPartsFromSplitXml(Stream xmlFile, List<PartsSelectionTreeElement> parts)
         {
             Split splitXml;
             XmlSerializer serializer = new XmlSerializer(typeof(Split));

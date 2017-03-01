@@ -10,5 +10,14 @@ namespace DocumentSplitEngineTests
     [TestClass]
     public class MarkerExcelMapperTest
     {
+        [TestInitialize]
+        public void Init()
+        {
+
+        }
+
+        [TestCleanup]
+        public void Finish()
+        { }
     }
 }
