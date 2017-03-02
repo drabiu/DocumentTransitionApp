@@ -8,18 +8,18 @@ using System.Linq;
 
 namespace DocumentSplitEngine.Document
 {
-    public class MarkerDocumentMapper : MarkerMapper, IMarkerMapper<OpenXmlElement>
+    public class MarkerWordMapper : MarkerDocumentMapper, IMarkerMapper<OpenXmlElement>
     {
         SplitDocument SplitDocumentObj { get; set; }
         Body DocumentBody { get; set; }
-        IUniversalDocumentMarker UniversalDocMarker;
+        IUniversalWordMarker UniversalDocMarker;
 
-        public MarkerDocumentMapper(string documentName, Split xml, Body body)
+        public MarkerWordMapper(string documentName, Split xml, Body body)
         {
             Xml = xml;
             SplitDocumentObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
             DocumentBody = body;
-            UniversalDocMarker = new UniversalDocumentMarker(DocumentBody);
+            UniversalDocMarker = new UniversalWordMarker(DocumentBody);
             SubdividedParagraphs = new string[body.ChildElements.Count];
         }
 

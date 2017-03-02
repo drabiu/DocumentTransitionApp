@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentMarkers\DocumentMarkers.cs" />
+    <Compile Include="DocumentMarkers\WordMarkers.cs" />
     <Compile Include="ExcelMarkers\ExcelMarkers.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="PersonFiles.cs" />

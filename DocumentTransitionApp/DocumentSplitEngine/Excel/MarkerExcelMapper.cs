@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DocumentSplitEngine.Excel
 {
-    public class MarkerExcelMapper : MarkerMapper, IMarkerMapper<WorkbookPart>
+    public class MarkerExcelMapper : MarkerDocumentMapper, IMarkerMapper<WorkbookPart>
     {
         SplitExcel SplitExcelObj { get; set; }
         Workbook WorkBook;

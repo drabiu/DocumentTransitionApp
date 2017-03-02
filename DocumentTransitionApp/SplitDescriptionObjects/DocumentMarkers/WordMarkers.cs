@@ -8,18 +8,18 @@ using DocumentEditPartsEngine;
 
 namespace SplitDescriptionObjects
 {
-    public interface IDocumentMarker
+    public interface IWordMarker
     {
         int FindElement(string id);
         IList<int> GetCrossedParagraphElements(string id, string id2);
     }
 
-    public abstract class DocumentMarker : IDocumentMarker
+    public abstract class WordMarker : IWordMarker
     {
         Body DocumentBody;
         List<OpenXmlElement> ElementsList;
 
-        public DocumentMarker(Body body)
+        public WordMarker(Body body)
         {
             DocumentBody = body;
             ElementsList = DocumentBody.ChildElements.ToList();
@@ -51,13 +51,13 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public interface IUniversalDocumentMarker : IDocumentMarker
+    public interface IUniversalWordMarker : IWordMarker
     {
     }
 
-    public class UniversalDocumentMarker : DocumentMarker, IUniversalDocumentMarker
+    public class UniversalWordMarker : WordMarker, IUniversalWordMarker
     {
-        public UniversalDocumentMarker(Body body) :
+        public UniversalWordMarker(Body body) :
             base(body)
         {
         }

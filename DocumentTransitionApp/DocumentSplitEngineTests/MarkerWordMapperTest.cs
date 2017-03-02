@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 namespace DocumentSplitEngineTests
 {
     [TestClass]
-    public class MarkerDocumentMapperTest
+    public class MarkerWordMapperTest
     {
         IMarkerMapper<OpenXmlElement> MarkerDocumentMapper;
         WordprocessingDocument WordDemoDoc;
@@ -25,7 +25,7 @@ namespace DocumentSplitEngineTests
 
             WordDemoDoc = WordprocessingDocument.Open(@"../../../Files/demo.docx", false);
 
-            MarkerDocumentMapper = new MarkerDocumentMapper("demo", splitXml, WordDemoDoc.MainDocumentPart.Document.Body);
+            MarkerDocumentMapper = new MarkerWordMapper("demo", splitXml, WordDemoDoc.MainDocumentPart.Document.Body);
         }
 
         [TestMethod]

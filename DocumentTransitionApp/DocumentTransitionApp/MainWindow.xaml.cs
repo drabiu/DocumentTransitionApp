@@ -107,7 +107,7 @@ namespace DocumentTransitionApp
 			{
 				// Open document 
 				string filename = dlg.FileName;
-				ILocalMerge merge = new DocumentMerge();
+				ILocalMerge merge = new WordMerge();
 				merge.Run(filename);
 			}
 			//Service.Service1SoapClient serviceClient = new Service.Service1SoapClient();

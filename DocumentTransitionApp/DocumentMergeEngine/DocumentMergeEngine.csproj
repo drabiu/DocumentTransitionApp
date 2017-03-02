@@ -45,9 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentMerge.cs" />
+    <Compile Include="ExcelMerge.cs" />
+    <Compile Include="PresentationMerge.cs" />
+    <Compile Include="WordMerge.cs" />
     <Compile Include="Interfaces\ILocalMerge.cs" />
     <Compile Include="Interfaces\IMerge.cs" />
+    <Compile Include="DocumentMerge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -51,7 +51,7 @@ namespace DocumentSplitEngine
             }
         }
 
-		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
+		public List<PersonFiles> SaveSplitDocument(Stream document)
 		{
             List<PersonFiles> resultList = new List<PersonFiles>();
 

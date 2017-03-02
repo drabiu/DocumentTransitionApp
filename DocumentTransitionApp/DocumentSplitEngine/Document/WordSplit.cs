@@ -19,9 +19,9 @@ using DocumentSplitEngine.Interfaces;
 
 namespace DocumentSplitEngine
 {
-	public class DocumentSplit : MergeXml<OpenXmlElement>, ISplit, ISplitXml, ILocalSplit
+	public class WordSplit : MergeXml<OpenXmlElement>, ISplit, ISplitXml, ILocalSplit
     {       
-		public DocumentSplit(string docName)
+		public WordSplit(string docName)
 		{
 			DocumentName = docName;
 		}
@@ -39,7 +39,7 @@ namespace DocumentSplitEngine
                 WordprocessingDocument.Open(mem, true))
                 {
                     Body body = wordDoc.MainDocumentPart.Document.Body;
-                    IMarkerMapper<OpenXmlElement> mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
+                    IMarkerMapper<OpenXmlElement> mapping = new MarkerWordMapper(DocumentName, splitXml, body);
                     DocumentElements = mapping.Run();
                 }
             }
@@ -63,7 +63,7 @@ namespace DocumentSplitEngine
 
 			// Assign a reference to the existing document body.
 			Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-			MarkerDocumentMapper mapping = new MarkerDocumentMapper(DocumentName, splitXml, body);
+			MarkerWordMapper mapping = new MarkerWordMapper(DocumentName, splitXml, body);
 			DocumentElements = mapping.Run();
 
 			// Close the handle explicitly.
@@ -74,7 +74,7 @@ namespace DocumentSplitEngine
 		public void SaveSplitDocument(string docxFilePath)
 		{
 			DirectoryInfo initDi;
-			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DocumentSplit)).Location);
+			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(WordSplit)).Location);
 			if (!Directory.Exists(appPath + @"\Files"))
 				initDi = Directory.CreateDirectory(appPath + @"\Files");
 

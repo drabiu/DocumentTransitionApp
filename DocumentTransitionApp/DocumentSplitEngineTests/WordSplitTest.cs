@@ -11,38 +11,39 @@ using System.Xml.Schema;
 namespace DocumentSplitEngineTests
 {
     [TestClass]
-    public class ExcelSplitTest
+    public class WordSplitTest
     {
         int ErrorsCount;
         int WarningsCount;
-        MemoryStream ExcSampleDocInMemory;
+        MemoryStream WordSampleDocInMemory;
 
-        ISplit ExcSampleSplit;
+        ISplit WordSampleSplit;
         ISplitXml SplitXml;
 
         //testing merge since it`s abstract
-        IMergeXml ExcSampleMerge;
+        IMergeXml WordSampleMerge;
 
-        byte[] MergeXmlBinary;
         byte[] CreateSplitXmlBinary;
+        byte[] MergeXmlBinary;
         XNamespace Xlmns = "https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/";
 
         [TestInitialize]
         public void Init()
         {
-            var excelSplit = new ExcelSplit("test");
-            ExcSampleSplit = excelSplit;
-            SplitXml = excelSplit;
+            var wordSplit = new WordSplit("demo");
+            WordSampleMerge = wordSplit;
+            WordSampleSplit = wordSplit;
+            SplitXml = wordSplit;
 
             var parts = PartsSelectionTreeElementMock.GetListMock();
             CreateSplitXmlBinary = SplitXml.CreateSplitXml(parts);
 
-            //ExcSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/przykladowa-prezentacja.pptx"));
+            WordSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/demo.docx"));
 
-            //byte[] sampleXmlBinary = File.ReadAllBytes(@"../../../Files/split_demo.docx_20170227215840894.xml");
-            //excelSplit.OpenAndSearchDocument(ExcSampleDocInMemory, new MemoryStream(sampleXmlBinary));
+            byte[] sampleXmlBinary = File.ReadAllBytes(@"../../../Files/split_demo.docx_20170227215840894.xml");
+            wordSplit.OpenAndSearchDocument(WordSampleDocInMemory, new MemoryStream(sampleXmlBinary));
 
-            //MergeXmlBinary = ExcSampleMerge.CreateMergeXml();
+            MergeXmlBinary = WordSampleMerge.CreateMergeXml();
 
             ErrorsCount = 0;
             WarningsCount = 0;
@@ -61,7 +62,7 @@ namespace DocumentSplitEngineTests
             document.Validate(ValidationEventHandler);
 
             XDocument xdoc = XDocument.Load(new MemoryStream(CreateSplitXmlBinary));
-            var elements = xdoc.Descendants(Xlmns + "Excel");
+            var elements = xdoc.Descendants(Xlmns + "Document");
 
             Assert.AreEqual(0, ErrorsCount);
             Assert.AreEqual(0, WarningsCount);
@@ -197,7 +198,7 @@ namespace DocumentSplitEngineTests
         [TestMethod]
         public void SaveSplitDocumentShouldReturn9PersonFiles()
         {
-            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
             Assert.AreEqual(9, personFilesList.Count);
         }
@@ -205,7 +206,7 @@ namespace DocumentSplitEngineTests
         [TestMethod]
         public void SaveSplitDocumentShouldReturn4Undefined()
         {
-            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
             Assert.AreEqual(4, personFilesList.Where(p => p.Person == "undefined").Count());
         }
@@ -213,7 +214,7 @@ namespace DocumentSplitEngineTests
         [TestMethod]
         public void SaveSplitDocumentShouldReturn1Test()
         {
-            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
             Assert.AreEqual(1, personFilesList.Where(p => p.Person == "test").Count());
         }
@@ -221,7 +222,7 @@ namespace DocumentSplitEngineTests
         [TestMethod]
         public void SaveSplitDocumentShouldReturn2Test2()
         {
-            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
             Assert.AreEqual(2, personFilesList.Where(p => p.Person == "test2").Count());
         }
@@ -229,7 +230,7 @@ namespace DocumentSplitEngineTests
         [TestMethod]
         public void SaveSplitDocumentShouldReturnTemplate()
         {
-            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
             Assert.AreEqual(1, personFilesList.Where(p => p.Person == "/" && p.Name == "template.docx").Count());
         }
@@ -237,7 +238,7 @@ namespace DocumentSplitEngineTests
         [TestMethod]
         public void SaveSplitDocumentShouldReturnMergeXml()
         {
-            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
             Assert.AreEqual(1, personFilesList.Where(p => p.Person == "/" && p.Name == "mergeXmlDefinition.xml").Count());
         }
@@ -245,7 +246,7 @@ namespace DocumentSplitEngineTests
         [TestCleanup]
         public void Finish()
         {
-            ExcSampleDocInMemory.Close();
+            WordSampleDocInMemory.Close();
         }
 
         private void ValidationEventHandler(object sender, ValidationEventArgs e)

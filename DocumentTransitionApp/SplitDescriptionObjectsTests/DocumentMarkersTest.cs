@@ -9,8 +9,8 @@ namespace SplitDescriptionObjectsTests
     [TestClass]
     public class DocumentMarkersTest
     {
-        IUniversalDocumentMarker UniversalDocNoParagraphIdMarker;
-        IUniversalDocumentMarker UniversalDocParagraphIdMarker;
+        IUniversalWordMarker UniversalDocNoParagraphIdMarker;
+        IUniversalWordMarker UniversalDocParagraphIdMarker;
         WordprocessingDocument WordNoParagraphIdDoc;
         WordprocessingDocument WordDemoDoc;
 
@@ -21,8 +21,8 @@ namespace SplitDescriptionObjectsTests
             WordDemoDoc = WordprocessingDocument.Open(@"../../../Files/demo.docx", false);
 
             //test scenarios when paragraphs have an Id and a paragraph hasn`t got an Id
-            UniversalDocNoParagraphIdMarker = new UniversalDocumentMarker(WordNoParagraphIdDoc.MainDocumentPart.Document.Body);
-            UniversalDocParagraphIdMarker = new UniversalDocumentMarker(WordDemoDoc.MainDocumentPart.Document.Body);
+            UniversalDocNoParagraphIdMarker = new UniversalWordMarker(WordNoParagraphIdDoc.MainDocumentPart.Document.Body);
+            UniversalDocParagraphIdMarker = new UniversalWordMarker(WordDemoDoc.MainDocumentPart.Document.Body);
         }
 
         [TestMethod]

@@ -24,9 +24,9 @@ namespace DocumentTransitionAppServices
 	public class Service1 : WebService, ITransitionAppService
     {
 		[WebMethod]
-		public PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile)
+		public PersonFiles[] SplitWord(string docName, byte[] docxFile, byte[] xmlFile)
 		{
-			ISplit run = new DocumentSplit(docName);
+			ISplit run = new WordSplit(docName);
 			MemoryStream doc = new MemoryStream(docxFile);
 			MemoryStream xml = new MemoryStream(xmlFile);
 			run.OpenAndSearchDocument(doc, xml);
@@ -46,9 +46,9 @@ namespace DocumentTransitionAppServices
         }
 
         [WebMethod]
-        public byte[] GenerateSplitDocument(string docName, PartsSelectionTreeElement[] parts)
+        public byte[] GenerateSplitWord(string docName, PartsSelectionTreeElement[] parts)
         {
-            ISplitXml split = new DocumentSplit(docName);
+            ISplitXml split = new WordSplit(docName);
 
             return split.CreateSplitXml(parts);
         }
@@ -64,13 +64,13 @@ namespace DocumentTransitionAppServices
         [WebMethod]
 		public byte[] MergeDocument(PersonFiles[] files)
 		{
-			IMerge merge = new DocumentMerge();
+			IMerge merge = new WordMerge();
 
 			return merge.Run(new List<PersonFiles>(files));
 		}
 
 		[WebMethod]
-		public List<PartsSelectionTreeElement> GetDocumentParts(string docName, byte[] documentFile)
+		public List<PartsSelectionTreeElement> GetWordParts(string docName, byte[] documentFile)
 		{
             IDocumentParts parts = new WordDocumentParts();
 
@@ -86,10 +86,10 @@ namespace DocumentTransitionAppServices
         }
 
         [WebMethod]
-        public ServiceResponse GetDocumentPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public ServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
-            ISplitXml split = new DocumentSplit(Path.GetFileNameWithoutExtension(docName));
-            var cleanParts = GetDocumentParts(docName, documentFile);
+            ISplitXml split = new WordSplit(Path.GetFileNameWithoutExtension(docName));
+            var cleanParts = GetWordParts(docName, documentFile);
             
             try
             {

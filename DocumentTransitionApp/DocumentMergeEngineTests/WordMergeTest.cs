@@ -4,11 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DocumentMergeEngineTests
 {
     [TestClass]
-    public class DocumentMergeTest
+    public class WordMergeTest
     {
-        [TestMethod]
-        public void TestMethod1()
+        [TestInitialize]
+        public void Init()
         {
+
         }
+
+        [TestCleanup]
+        public void Finish()
+        { }
     }
 }

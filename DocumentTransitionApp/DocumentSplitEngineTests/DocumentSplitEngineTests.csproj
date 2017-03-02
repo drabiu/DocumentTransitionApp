@@ -57,10 +57,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MergeXmlTest.cs" />
-    <Compile Include="DocumentSplitTest.cs" />
+    <Compile Include="WordSplitTest.cs" />
     <Compile Include="ExcelSplitTest.cs" />
-    <Compile Include="MarkerDocumentMapperTest.cs" />
+    <Compile Include="MarkerWordMapperTest.cs" />
     <Compile Include="MarkerExcelMapperTest.cs" />
     <Compile Include="MarkerPresentationMapperTest.cs" />
     <Compile Include="Mocks\PartsSelectionTreeElementMock.cs" />

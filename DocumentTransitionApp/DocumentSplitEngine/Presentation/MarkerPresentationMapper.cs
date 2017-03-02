@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DocumentSplitEngine.Presentation
 {
-    public class MarkerPresentationMapper : MarkerMapper, IMarkerMapper<SlideId>
+    public class MarkerPresentationMapper : MarkerDocumentMapper, IMarkerMapper<SlideId>
     {
         SplitPresentation SplitPresentationObj { get; set; }
         PresentationPart Presentation;

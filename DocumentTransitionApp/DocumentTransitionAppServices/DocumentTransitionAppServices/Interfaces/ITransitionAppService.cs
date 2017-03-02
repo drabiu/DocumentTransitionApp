@@ -6,10 +6,10 @@ namespace DocumentTransitionAppServices.Interfaces
 {
     public interface IDocumentService
     {
-        PersonFiles[] SplitDocument(string docName, byte[] docxFile, byte[] xmlFile);
-        byte[] GenerateSplitDocument(string docName, PartsSelectionTreeElement[] parts);
-        List<PartsSelectionTreeElement> GetDocumentParts(string docName, byte[] documentFile);
-        ServiceResponse GetDocumentPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        PersonFiles[] SplitWord(string docName, byte[] docxFile, byte[] xmlFile);
+        byte[] GenerateSplitWord(string docName, PartsSelectionTreeElement[] parts);
+        List<PartsSelectionTreeElement> GetWordParts(string docName, byte[] documentFile);
+        ServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
 
     }
 

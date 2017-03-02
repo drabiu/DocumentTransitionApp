@@ -1,17 +1,15 @@
-﻿using DocumentEditPartsEngine;
-using DocumentSplitEngine.Data_Structures;
+﻿using DocumentSplitEngine.Data_Structures;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace DocumentSplitEngine
 {
     public interface IMergeXml
     {
-        void CreateMergeXml(string path);
         [Obsolete]
+        void CreateMergeXml(string path);       
         byte[] CreateMergeXml();
     }
       
