@@ -56,49 +56,29 @@ namespace DocumentSplitEngine
             List<PersonFiles> resultList = new List<PersonFiles>();
 
             byte[] byteArray = StreamTools.ReadFully(document);
-            using (MemoryStream mem = new MemoryStream())
+            using (MemoryStream documentInMemoryStream = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
             {
-                mem.Write(byteArray, 0, byteArray.Length);                
-                using (PresentationDocument preDoc =
-                    PresentationDocument.Open(mem, true))
+                OpenXmlPowerToolsDocument docPowerTools = new OpenXmlPowerToolsDocument(DocumentName, documentInMemoryStream);
+                using (OpenXmlMemoryStreamDocument streamTemplateDoc = new OpenXmlMemoryStreamDocument(docPowerTools))
                 {
-                    PresentationPart presentationPart = preDoc.PresentationPart;
-                    //using (PresentationDocument templateDocument = PresentationDocument.Open(mem, false))
-                    //{
-                    //    foreach (SlideId slideId in templateDocument.PresentationPart.Presentation.SlideIdList.ChildElements)
-                    //    {
-                    //        presentationPart.DeletePart(slideId.RelationshipId);
-                    //    }
-                    //}
+                    PresentationDocument templatePresentation = streamTemplateDoc.GetPresentationDocument();
                     foreach (OpenXMLDocumentPart<SlideId> element in DocumentElements)
                     {
-                        //PresentationTools.RemoveAllSlides(presentationPart);
-
-                        //alternative RemoveAllSlides
-                        //presentationPart.Presentation = new Presentation();
-                        //presentationPart.Presentation.SlideIdList = new SlideIdList();         
-
-                        foreach (SlideId compo in element.CompositeElements)
+                        var relationshipIds = element.CompositeElements.Select(c => c.RelationshipId.Value).ToList();
+                        using (OpenXmlMemoryStreamDocument streamDividedDoc = OpenXmlMemoryStreamDocument.CreatePresentationDocument())
                         {
-                            //PresentationTools.InsertSlideFromTemplate(presentationPart, mem, compo.RelationshipId);
-                            //PresentationTools.InsertNewSlide(preDoc, 1, "aaaa");
+                            PresentationDocument dividedPresentation = streamDividedDoc.GetPresentationDocument();
+                            PresentationTools.InsertSlidesFromTemplate(dividedPresentation, templatePresentation, relationshipIds);
+
+                            var person = new PersonFiles();
+                            person.Person = element.PartOwner;
+                            resultList.Add(person);
+                            person.Name = element.Guid.ToString();
+                            person.Data = streamDividedDoc.GetModifiedDocument().DocumentByteArray;
                         }
-                        
-                        var person = new PersonFiles();
-                        person.Person = element.PartOwner;
-                        resultList.Add(person);
-                        person.Name = element.Guid.ToString();
-                        person.Data = mem.ToArray();
                     }
                 }
-            }
-            // At this point, the memory stream contains the modified document.
-            // We could write it back to a SharePoint document library or serve
-            // it from a web server.	
-            
-            using (MemoryStream mem = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
-            {
-                OpenXmlPowerToolsDocument docPowerTools = new OpenXmlPowerToolsDocument(string.Empty, mem);
+
                 using (OpenXmlMemoryStreamDocument streamDoc = new OpenXmlMemoryStreamDocument(docPowerTools))
                 {
                     PresentationDocument preDoc = streamDoc.GetPresentationDocument();
@@ -110,13 +90,13 @@ namespace DocumentSplitEngine
                     person.Name = "template.pptx";
                     person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
                 }
-            }			
 
-            var xmlPerson = new PersonFiles();
-            xmlPerson.Person = "/";
-            resultList.Add(xmlPerson);
-            xmlPerson.Name = "mergeXmlDefinition.xml";
-            xmlPerson.Data = CreateMergeXml();
+                var xmlPerson = new PersonFiles();
+                xmlPerson.Person = "/";
+                resultList.Add(xmlPerson);
+                xmlPerson.Name = "mergeXmlDefinition.xml";
+                xmlPerson.Data = CreateMergeXml();
+            }
 
             return resultList;
         }

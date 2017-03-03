@@ -75,7 +75,7 @@ namespace DocumentMergeEngine
 				byte[] byteArray = files.Where(p => p.Person == part.Name && p.Name == part.Id).Select(d => d.Data).FirstOrDefault();
 				using (MemoryStream mem = new MemoryStream())
 				{
-					mem.Write(byteArray, 0, (int)byteArray.Length);
+					mem.Write(byteArray, 0, byteArray.Length);
 					WordprocessingDocument wordprocessingDocument =
 						WordprocessingDocument.Open(mem, true);
 
@@ -93,7 +93,7 @@ namespace DocumentMergeEngine
 			byte[] template = files.Where(p => p.Person == "/" && p.Name == "template.docx").Select(d => d.Data).FirstOrDefault();
 			using (MemoryStream mem = new MemoryStream())
 			{
-				mem.Write(template, 0, (int)template.Length);
+				mem.Write(template, 0, template.Length);
 				using (WordprocessingDocument wordDoc =
 					WordprocessingDocument.Open(mem, true))
 				{

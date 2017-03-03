@@ -191,8 +191,8 @@ namespace DocumentTransitionUniversalApp.Views
             var serviceClient = MainPage.Service.GetInstance();
             try
             {
-                var result = await serviceClient.GetDocumentPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetDocumentPartsResult, _source.DocumentElementTypes);
+                var result = await serviceClient.GetWordPartsAsync(_source.FileName, _source.documentBinary);
+                PrepareListOfItems(result.Body.GetWordPartsResult, _source.DocumentElementTypes);
             }
             catch(System.ServiceModel.CommunicationException ex)
             {

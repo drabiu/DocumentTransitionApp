@@ -1,7 +1,10 @@
-﻿using DocumentSplitEngine;
+﻿using DocumentFormat.OpenXml.Validation;
+using DocumentSplitEngine;
 using DocumentSplitEngine.Interfaces;
 using DocumentSplitEngineTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenXmlPowerTools;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -19,6 +22,7 @@ namespace DocumentSplitEngineTests
 
         ISplit ExcSampleSplit;
         ISplitXml SplitXml;
+        OpenXmlValidator DocValidator;
 
         //testing merge since it`s abstract
         IMergeXml ExcSampleMerge;
@@ -33,6 +37,8 @@ namespace DocumentSplitEngineTests
             var excelSplit = new ExcelSplit("test");
             ExcSampleSplit = excelSplit;
             SplitXml = excelSplit;
+
+            DocValidator = new OpenXmlValidator();
 
             var parts = PartsSelectionTreeElementMock.GetListMock();
             CreateSplitXmlBinary = SplitXml.CreateSplitXml(parts);
@@ -240,6 +246,66 @@ namespace DocumentSplitEngineTests
             var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
 
             Assert.AreEqual(1, personFilesList.Where(p => p.Person == "/" && p.Name == "mergeXmlDefinition.xml").Count());
+        }
+
+        [TestMethod]
+        public void SaveSplitDocumentShouldReturnValidUndefinedDocuments()
+        {
+            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var docs = personFilesList.Where(p => p.Person == "undefined").Select(u => u.Data);
+
+            List<ValidationErrorInfo> validationErrors = new List<ValidationErrorInfo>();
+            foreach (byte[] doc in docs)
+            {
+                MemoryStream partDocInMemory = new MemoryStream(doc, 0, doc.Length, true, true);
+                var partDocPowerTools = new OpenXmlPowerToolsDocument("undefined.docx", partDocInMemory);
+
+                OpenXmlMemoryStreamDocument partDocInMemoryExpandable = new OpenXmlMemoryStreamDocument(partDocPowerTools);
+
+                validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetSpreadsheetDocument()));
+            }
+
+            Assert.AreEqual(0, validationErrors.Count());
+        }
+
+        [TestMethod]
+        public void SaveSplitDocumentShouldReturnValidTestDocuments()
+        {
+            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var docs = personFilesList.Where(p => p.Person == "test").Select(u => u.Data);
+
+            List<ValidationErrorInfo> validationErrors = new List<ValidationErrorInfo>();
+            foreach (byte[] doc in docs)
+            {
+                MemoryStream partDocInMemory = new MemoryStream(doc, 0, doc.Length, true, true);
+                var partDocPowerTools = new OpenXmlPowerToolsDocument("test.docx", partDocInMemory);
+
+                OpenXmlMemoryStreamDocument partDocInMemoryExpandable = new OpenXmlMemoryStreamDocument(partDocPowerTools);
+
+                validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetSpreadsheetDocument()));
+            }
+
+            Assert.AreEqual(0, validationErrors.Count());
+        }
+
+        [TestMethod]
+        public void SaveSplitDocumentShouldReturnValidTest2dDocuments()
+        {
+            var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
+            var docs = personFilesList.Where(p => p.Person == "test2").Select(u => u.Data);
+
+            List<ValidationErrorInfo> validationErrors = new List<ValidationErrorInfo>();
+            foreach (byte[] doc in docs)
+            {
+                MemoryStream partDocInMemory = new MemoryStream(doc, 0, doc.Length, true, true);
+                var partDocPowerTools = new OpenXmlPowerToolsDocument("test2.docx", partDocInMemory);
+
+                OpenXmlMemoryStreamDocument partDocInMemoryExpandable = new OpenXmlMemoryStreamDocument(partDocPowerTools);
+
+                validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetSpreadsheetDocument()));
+            }
+
+            Assert.AreEqual(0, validationErrors.Count());
         }
 
         [TestCleanup]

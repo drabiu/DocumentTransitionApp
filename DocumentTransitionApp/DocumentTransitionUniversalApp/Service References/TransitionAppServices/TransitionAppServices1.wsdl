@@ -2,7 +2,7 @@
 <wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
-      <s:element name="SplitDocument">
+      <s:element name="SplitWord">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
@@ -11,10 +11,10 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="SplitDocumentResponse">
+      <s:element name="SplitWordResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="SplitDocumentResult" type="tns:ArrayOfPersonFiles" />
+            <s:element minOccurs="0" maxOccurs="1" name="SplitWordResult" type="tns:ArrayOfPersonFiles" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -46,7 +46,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GenerateSplitDocument">
+      <s:element name="GenerateSplitWord">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
@@ -70,10 +70,10 @@
           <s:element minOccurs="1" maxOccurs="1" name="Selected" type="s:boolean" />
         </s:sequence>
       </s:complexType>
-      <s:element name="GenerateSplitDocumentResponse">
+      <s:element name="GenerateSplitWordResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GenerateSplitDocumentResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateSplitWordResult" type="s:base64Binary" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -92,21 +92,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="MergeDocument">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="files" type="tns:ArrayOfPersonFiles" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="MergeDocumentResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="MergeDocumentResult" type="s:base64Binary" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetDocumentParts">
+      <s:element name="GetWordParts">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
@@ -114,10 +100,10 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetDocumentPartsResponse">
+      <s:element name="GetWordPartsResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetDocumentPartsResult" type="tns:ArrayOfPartsSelectionTreeElement" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetWordPartsResult" type="tns:ArrayOfPartsSelectionTreeElement" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -136,7 +122,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetDocumentPartsFromXml">
+      <s:element name="GetWordPartsFromXml">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
@@ -145,10 +131,10 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetDocumentPartsFromXmlResponse">
+      <s:element name="GetWordPartsFromXmlResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetDocumentPartsFromXmlResult" type="tns:ServiceResponse" />
+            <s:element minOccurs="0" maxOccurs="1" name="GetWordPartsFromXmlResult" type="tns:ServiceResponse" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -175,13 +161,117 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="SplitExcel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="docFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlFile" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SplitExcelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SplitExcelResult" type="tns:ArrayOfPersonFiles" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateSplitExcel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="parts" type="tns:ArrayOfPartsSelectionTreeElement" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateSplitExcelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateSplitExcelResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExcelParts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="excName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="excelFile" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExcelPartsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExcelPartsResult" type="tns:ArrayOfPartsSelectionTreeElement" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExcelPartsFromXml">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="documentFile" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="splitFile" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExcelPartsFromXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExcelPartsFromXmlResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MergeWord">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="files" type="tns:ArrayOfPersonFiles" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MergeWordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MergeWordResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MergePresentation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="files" type="tns:ArrayOfPersonFiles" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MergePresentationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MergePresentationResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MergeExcel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="files" type="tns:ArrayOfPersonFiles" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MergeExcelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MergeExcelResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="SplitDocumentSoapIn">
-    <wsdl:part name="parameters" element="tns:SplitDocument" />
+  <wsdl:message name="SplitWordSoapIn">
+    <wsdl:part name="parameters" element="tns:SplitWord" />
   </wsdl:message>
-  <wsdl:message name="SplitDocumentSoapOut">
-    <wsdl:part name="parameters" element="tns:SplitDocumentResponse" />
+  <wsdl:message name="SplitWordSoapOut">
+    <wsdl:part name="parameters" element="tns:SplitWordResponse" />
   </wsdl:message>
   <wsdl:message name="SplitPresentationSoapIn">
     <wsdl:part name="parameters" element="tns:SplitPresentation" />
@@ -189,11 +279,11 @@
   <wsdl:message name="SplitPresentationSoapOut">
     <wsdl:part name="parameters" element="tns:SplitPresentationResponse" />
   </wsdl:message>
-  <wsdl:message name="GenerateSplitDocumentSoapIn">
-    <wsdl:part name="parameters" element="tns:GenerateSplitDocument" />
+  <wsdl:message name="GenerateSplitWordSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateSplitWord" />
   </wsdl:message>
-  <wsdl:message name="GenerateSplitDocumentSoapOut">
-    <wsdl:part name="parameters" element="tns:GenerateSplitDocumentResponse" />
+  <wsdl:message name="GenerateSplitWordSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateSplitWordResponse" />
   </wsdl:message>
   <wsdl:message name="GenerateSplitPresentationSoapIn">
     <wsdl:part name="parameters" element="tns:GenerateSplitPresentation" />
@@ -201,17 +291,11 @@
   <wsdl:message name="GenerateSplitPresentationSoapOut">
     <wsdl:part name="parameters" element="tns:GenerateSplitPresentationResponse" />
   </wsdl:message>
-  <wsdl:message name="MergeDocumentSoapIn">
-    <wsdl:part name="parameters" element="tns:MergeDocument" />
+  <wsdl:message name="GetWordPartsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWordParts" />
   </wsdl:message>
-  <wsdl:message name="MergeDocumentSoapOut">
-    <wsdl:part name="parameters" element="tns:MergeDocumentResponse" />
-  </wsdl:message>
-  <wsdl:message name="GetDocumentPartsSoapIn">
-    <wsdl:part name="parameters" element="tns:GetDocumentParts" />
-  </wsdl:message>
-  <wsdl:message name="GetDocumentPartsSoapOut">
-    <wsdl:part name="parameters" element="tns:GetDocumentPartsResponse" />
+  <wsdl:message name="GetWordPartsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWordPartsResponse" />
   </wsdl:message>
   <wsdl:message name="GetPresentationPartsSoapIn">
     <wsdl:part name="parameters" element="tns:GetPresentationParts" />
@@ -219,11 +303,11 @@
   <wsdl:message name="GetPresentationPartsSoapOut">
     <wsdl:part name="parameters" element="tns:GetPresentationPartsResponse" />
   </wsdl:message>
-  <wsdl:message name="GetDocumentPartsFromXmlSoapIn">
-    <wsdl:part name="parameters" element="tns:GetDocumentPartsFromXml" />
+  <wsdl:message name="GetWordPartsFromXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWordPartsFromXml" />
   </wsdl:message>
-  <wsdl:message name="GetDocumentPartsFromXmlSoapOut">
-    <wsdl:part name="parameters" element="tns:GetDocumentPartsFromXmlResponse" />
+  <wsdl:message name="GetWordPartsFromXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWordPartsFromXmlResponse" />
   </wsdl:message>
   <wsdl:message name="GetPresentationPartsFromXmlSoapIn">
     <wsdl:part name="parameters" element="tns:GetPresentationPartsFromXml" />
@@ -231,48 +315,114 @@
   <wsdl:message name="GetPresentationPartsFromXmlSoapOut">
     <wsdl:part name="parameters" element="tns:GetPresentationPartsFromXmlResponse" />
   </wsdl:message>
+  <wsdl:message name="SplitExcelSoapIn">
+    <wsdl:part name="parameters" element="tns:SplitExcel" />
+  </wsdl:message>
+  <wsdl:message name="SplitExcelSoapOut">
+    <wsdl:part name="parameters" element="tns:SplitExcelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateSplitExcelSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateSplitExcel" />
+  </wsdl:message>
+  <wsdl:message name="GenerateSplitExcelSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateSplitExcelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExcelPartsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExcelParts" />
+  </wsdl:message>
+  <wsdl:message name="GetExcelPartsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExcelPartsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExcelPartsFromXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExcelPartsFromXml" />
+  </wsdl:message>
+  <wsdl:message name="GetExcelPartsFromXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExcelPartsFromXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="MergeWordSoapIn">
+    <wsdl:part name="parameters" element="tns:MergeWord" />
+  </wsdl:message>
+  <wsdl:message name="MergeWordSoapOut">
+    <wsdl:part name="parameters" element="tns:MergeWordResponse" />
+  </wsdl:message>
+  <wsdl:message name="MergePresentationSoapIn">
+    <wsdl:part name="parameters" element="tns:MergePresentation" />
+  </wsdl:message>
+  <wsdl:message name="MergePresentationSoapOut">
+    <wsdl:part name="parameters" element="tns:MergePresentationResponse" />
+  </wsdl:message>
+  <wsdl:message name="MergeExcelSoapIn">
+    <wsdl:part name="parameters" element="tns:MergeExcel" />
+  </wsdl:message>
+  <wsdl:message name="MergeExcelSoapOut">
+    <wsdl:part name="parameters" element="tns:MergeExcelResponse" />
+  </wsdl:message>
   <wsdl:portType name="Service1Soap">
-    <wsdl:operation name="SplitDocument">
-      <wsdl:input message="tns:SplitDocumentSoapIn" />
-      <wsdl:output message="tns:SplitDocumentSoapOut" />
+    <wsdl:operation name="SplitWord">
+      <wsdl:input message="tns:SplitWordSoapIn" />
+      <wsdl:output message="tns:SplitWordSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="SplitPresentation">
       <wsdl:input message="tns:SplitPresentationSoapIn" />
       <wsdl:output message="tns:SplitPresentationSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GenerateSplitDocument">
-      <wsdl:input message="tns:GenerateSplitDocumentSoapIn" />
-      <wsdl:output message="tns:GenerateSplitDocumentSoapOut" />
+    <wsdl:operation name="GenerateSplitWord">
+      <wsdl:input message="tns:GenerateSplitWordSoapIn" />
+      <wsdl:output message="tns:GenerateSplitWordSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitPresentation">
       <wsdl:input message="tns:GenerateSplitPresentationSoapIn" />
       <wsdl:output message="tns:GenerateSplitPresentationSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="MergeDocument">
-      <wsdl:input message="tns:MergeDocumentSoapIn" />
-      <wsdl:output message="tns:MergeDocumentSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetDocumentParts">
-      <wsdl:input message="tns:GetDocumentPartsSoapIn" />
-      <wsdl:output message="tns:GetDocumentPartsSoapOut" />
+    <wsdl:operation name="GetWordParts">
+      <wsdl:input message="tns:GetWordPartsSoapIn" />
+      <wsdl:output message="tns:GetWordPartsSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetPresentationParts">
       <wsdl:input message="tns:GetPresentationPartsSoapIn" />
       <wsdl:output message="tns:GetPresentationPartsSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetDocumentPartsFromXml">
-      <wsdl:input message="tns:GetDocumentPartsFromXmlSoapIn" />
-      <wsdl:output message="tns:GetDocumentPartsFromXmlSoapOut" />
+    <wsdl:operation name="GetWordPartsFromXml">
+      <wsdl:input message="tns:GetWordPartsFromXmlSoapIn" />
+      <wsdl:output message="tns:GetWordPartsFromXmlSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetPresentationPartsFromXml">
       <wsdl:input message="tns:GetPresentationPartsFromXmlSoapIn" />
       <wsdl:output message="tns:GetPresentationPartsFromXmlSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="SplitExcel">
+      <wsdl:input message="tns:SplitExcelSoapIn" />
+      <wsdl:output message="tns:SplitExcelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitExcel">
+      <wsdl:input message="tns:GenerateSplitExcelSoapIn" />
+      <wsdl:output message="tns:GenerateSplitExcelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelParts">
+      <wsdl:input message="tns:GetExcelPartsSoapIn" />
+      <wsdl:output message="tns:GetExcelPartsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelPartsFromXml">
+      <wsdl:input message="tns:GetExcelPartsFromXmlSoapIn" />
+      <wsdl:output message="tns:GetExcelPartsFromXmlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MergeWord">
+      <wsdl:input message="tns:MergeWordSoapIn" />
+      <wsdl:output message="tns:MergeWordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MergePresentation">
+      <wsdl:input message="tns:MergePresentationSoapIn" />
+      <wsdl:output message="tns:MergePresentationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MergeExcel">
+      <wsdl:input message="tns:MergeExcelSoapIn" />
+      <wsdl:output message="tns:MergeExcelSoapOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="SplitDocument">
-      <soap:operation soapAction="http://tempuri.org/SplitDocument" style="document" />
+    <wsdl:operation name="SplitWord">
+      <soap:operation soapAction="http://tempuri.org/SplitWord" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -289,8 +439,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GenerateSplitDocument">
-      <soap:operation soapAction="http://tempuri.org/GenerateSplitDocument" style="document" />
+    <wsdl:operation name="GenerateSplitWord">
+      <soap:operation soapAction="http://tempuri.org/GenerateSplitWord" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -307,17 +457,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="MergeDocument">
-      <soap:operation soapAction="http://tempuri.org/MergeDocument" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDocumentParts">
-      <soap:operation soapAction="http://tempuri.org/GetDocumentParts" style="document" />
+    <wsdl:operation name="GetWordParts">
+      <soap:operation soapAction="http://tempuri.org/GetWordParts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -334,8 +475,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDocumentPartsFromXml">
-      <soap:operation soapAction="http://tempuri.org/GetDocumentPartsFromXml" style="document" />
+    <wsdl:operation name="GetWordPartsFromXml">
+      <soap:operation soapAction="http://tempuri.org/GetWordPartsFromXml" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -352,11 +493,74 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SplitExcel">
+      <soap:operation soapAction="http://tempuri.org/SplitExcel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitExcel">
+      <soap:operation soapAction="http://tempuri.org/GenerateSplitExcel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelParts">
+      <soap:operation soapAction="http://tempuri.org/GetExcelParts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelPartsFromXml">
+      <soap:operation soapAction="http://tempuri.org/GetExcelPartsFromXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergeWord">
+      <soap:operation soapAction="http://tempuri.org/MergeWord" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergePresentation">
+      <soap:operation soapAction="http://tempuri.org/MergePresentation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergeExcel">
+      <soap:operation soapAction="http://tempuri.org/MergeExcel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="SplitDocument">
-      <soap12:operation soapAction="http://tempuri.org/SplitDocument" style="document" />
+    <wsdl:operation name="SplitWord">
+      <soap12:operation soapAction="http://tempuri.org/SplitWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -373,8 +577,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GenerateSplitDocument">
-      <soap12:operation soapAction="http://tempuri.org/GenerateSplitDocument" style="document" />
+    <wsdl:operation name="GenerateSplitWord">
+      <soap12:operation soapAction="http://tempuri.org/GenerateSplitWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -391,17 +595,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="MergeDocument">
-      <soap12:operation soapAction="http://tempuri.org/MergeDocument" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDocumentParts">
-      <soap12:operation soapAction="http://tempuri.org/GetDocumentParts" style="document" />
+    <wsdl:operation name="GetWordParts">
+      <soap12:operation soapAction="http://tempuri.org/GetWordParts" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -418,8 +613,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDocumentPartsFromXml">
-      <soap12:operation soapAction="http://tempuri.org/GetDocumentPartsFromXml" style="document" />
+    <wsdl:operation name="GetWordPartsFromXml">
+      <soap12:operation soapAction="http://tempuri.org/GetWordPartsFromXml" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -429,6 +624,69 @@
     </wsdl:operation>
     <wsdl:operation name="GetPresentationPartsFromXml">
       <soap12:operation soapAction="http://tempuri.org/GetPresentationPartsFromXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitExcel">
+      <soap12:operation soapAction="http://tempuri.org/SplitExcel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitExcel">
+      <soap12:operation soapAction="http://tempuri.org/GenerateSplitExcel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelParts">
+      <soap12:operation soapAction="http://tempuri.org/GetExcelParts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelPartsFromXml">
+      <soap12:operation soapAction="http://tempuri.org/GetExcelPartsFromXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergeWord">
+      <soap12:operation soapAction="http://tempuri.org/MergeWord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergePresentation">
+      <soap12:operation soapAction="http://tempuri.org/MergePresentation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergeExcel">
+      <soap12:operation soapAction="http://tempuri.org/MergeExcel" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

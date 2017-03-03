@@ -15,7 +15,7 @@ namespace OpenXMLTools
     {
         #region Public methods
 
-        public PresentationDocument InsertSlideFromTemplate(PresentationDocument target, PresentationDocument template, IList<string> slideRelationshipIdList)
+        public PresentationDocument InsertSlidesFromTemplate(PresentationDocument target, PresentationDocument template, IList<string> slideRelationshipIdList)
         {
             if (target == null)
             {
@@ -80,6 +80,13 @@ namespace OpenXMLTools
             target.PresentationPart.Presentation.Save();
 
             return target;
+        }
+
+        public PresentationDocument InsertSlidesFromTemplate(PresentationDocument target, PresentationDocument template)
+        {
+            var slideRelationshipIdList = template.PresentationPart.Presentation.SlideIdList.Elements<SlideId>().Select(s => s.RelationshipId.Value).ToList();
+
+            return InsertSlidesFromTemplate(target, template, slideRelationshipIdList);
         }
 
         public PresentationDocument InsertNewSlide(PresentationDocument presentationDocument, int position, string slideTitle)

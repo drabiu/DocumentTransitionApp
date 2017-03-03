@@ -145,7 +145,7 @@ namespace OpenXMLToolsTests
         [TestMethod]
         public void InsertSlideFromTemplateShouldInsertSlideToLastPosition()
         {
-            PresentationDocument document = PreTools.InsertSlideFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
+            PresentationDocument document = PreTools.InsertSlidesFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
             var slideIdList = document.PresentationPart.Presentation.SlideIdList.Elements<SlideId>();
             string title = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(document, 18), 35);
 
@@ -157,7 +157,7 @@ namespace OpenXMLToolsTests
         [TestMethod]
         public void InsertSlideFromTemplateShouldResultInNoValidationErrors()
         {
-            PresentationDocument document = PreTools.InsertSlideFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
+            PresentationDocument document = PreTools.InsertSlidesFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
             var validationErrors = DocValidator.Validate(document);
                        
             Assert.AreEqual(0, validationErrors.Count());

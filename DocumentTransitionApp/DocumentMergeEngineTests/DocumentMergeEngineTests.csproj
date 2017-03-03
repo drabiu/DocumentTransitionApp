@@ -54,6 +54,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ExcelMergeTest.cs" />
+    <Compile Include="PresentationMergeTest.cs" />
     <Compile Include="WordMergeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

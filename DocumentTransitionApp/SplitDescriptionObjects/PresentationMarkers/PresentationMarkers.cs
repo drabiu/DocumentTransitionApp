@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Present = DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Packaging;
 
 namespace SplitDescriptionObjects
@@ -29,8 +28,8 @@ namespace SplitDescriptionObjects
 
         public IList<int> GetCrossedSlideIdElements(string id, string id2)
         {
-            var elements = DocumentBody.Presentation.SlideIdList.Elements<Present.SlideId>();
-            var indexes = MarkerHelper<Present.SlideId>.GetCrossedElements(id, id2, elements.ToList(), element => element.RelationshipId);
+            var elements = DocumentBody.Presentation.SlideIdList.Elements<SlideId>();
+            var indexes = MarkerHelper<SlideId>.GetCrossedElements(id, id2, elements.ToList(), element => element.RelationshipId);
 
             return indexes;
         }

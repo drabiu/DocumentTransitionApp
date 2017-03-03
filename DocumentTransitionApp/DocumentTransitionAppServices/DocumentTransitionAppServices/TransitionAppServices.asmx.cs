@@ -61,14 +61,6 @@ namespace DocumentTransitionAppServices
             return split.CreateSplitXml(parts);
         }
 
-        [WebMethod]
-		public byte[] MergeDocument(PersonFiles[] files)
-		{
-			IMerge merge = new WordMerge();
-
-			return merge.Run(new List<PersonFiles>(files));
-		}
-
 		[WebMethod]
 		public List<PartsSelectionTreeElement> GetWordParts(string docName, byte[] documentFile)
 		{
@@ -137,6 +129,28 @@ namespace DocumentTransitionAppServices
 
         [WebMethod]
         public ServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        [WebMethod]
+        public byte[] MergeWord(PersonFiles[] files)
+        {
+            IMerge merge = new WordMerge();
+
+            return merge.Run(new List<PersonFiles>(files));
+        }
+
+        [WebMethod]
+        public byte[] MergePresentation(PersonFiles[] files)
+        {
+            IMerge merge = new PresentationMerge();
+
+            return merge.Run(new List<PersonFiles>(files));
+        }
+
+        [WebMethod]
+        public byte[] MergeExcel(PersonFiles[] files)
         {
             throw new NotImplementedException();
         }

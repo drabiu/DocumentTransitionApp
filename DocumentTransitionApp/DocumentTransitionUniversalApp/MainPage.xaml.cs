@@ -96,22 +96,7 @@ namespace DocumentTransitionUniversalApp
 			{
 				DocumentFile = file;
 				FileName = DocumentFile.Name;
-				switch (Path.GetExtension(file.Name))
-				{
-					case (".docx"):
-						FileType = DocumentType.Word;
-                        DocumentElementTypes = new WordElementType();
-                        break;
-					case (".xlsx"):
-						FileType = DocumentType.Excel;
-                        DocumentElementTypes = new ExcelElementType();
-                        break;
-					case (".pptx"):
-						FileType = DocumentType.Presentation;
-                        DocumentElementTypes = new PresentationElementType();
-						break;
-				}
-
+                SetFileType(file.Name);
 				documentBinary = await StorageFileToByteArray(DocumentFile);
 			}
 
@@ -135,8 +120,8 @@ namespace DocumentTransitionUniversalApp
                 {
                     case (DocumentType.Word):
                         extension = ".docx";
-                        var response = await serviceClient.SplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
-                        result = response.Body.SplitDocumentResult;
+                        var response = await serviceClient.SplitWordAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
+                        result = response.Body.SplitWordResult;
                         break;
                     case (DocumentType.Excel):
                         extension = ".xlsx";
@@ -166,15 +151,26 @@ namespace DocumentTransitionUniversalApp
             {
                 try
                 {
-                    var result = await serviceClient.MergeDocumentAsync(files);
-                    FileHelper.SaveFile(result.Body.MergeDocumentResult, "Merged Document Name", ".docx", ".xlsx", ".pptx");
+                    switch (FileType)
+                    {
+                        case (DocumentType.Word):
+                            var result = await serviceClient.MergeWordAsync(files);
+                            FileHelper.SaveFile(result.Body.MergeWordResult, "Merged Document Name", ".docx");
+                            break;
+                        case (DocumentType.Excel):
+                            break;
+                        case (DocumentType.Presentation):
+                            var result2 = await serviceClient.MergePresentationAsync(files);
+                            FileHelper.SaveFile(result2.Body.MergePresentationResult, "Merged Document Name", ".pptx");
+                            break;
+                    }
                 }
                 catch (System.ServiceModel.CommunicationException ex)
                 {
                     MessageDialog dialog = new MessageDialog(ex.Message);
                     await dialog.ShowAsync();
                 }
-            }
+            }           
         }
 
         private async void buttonSettings_Click(object sender, RoutedEventArgs e)
@@ -182,6 +178,92 @@ namespace DocumentTransitionUniversalApp
             var endpointAdress = await InputTextDialogAsync("Set service adress", Service.DefaultEndpoint);
             if (!string.IsNullOrEmpty(endpointAdress))
                 Service.DefaultEndpoint = endpointAdress;
+        }
+
+        private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
+        {
+            var serviceClient = MainPage.Service.GetInstance();
+            var selectionParts = new ObservableCollection<Service.PartsSelectionTreeElement>();
+            foreach (var part in WordPartPage._pageData.SelectionParts)
+                selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
+
+            string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
+            try
+            {
+                switch (FileType)
+                {
+                    case (DocumentType.Word):
+                        var result = await serviceClient.GenerateSplitWordAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result.Body.GenerateSplitWordResult, splitFileName, ".xml");
+                        break;
+                    case (DocumentType.Excel):
+                        break;
+                    case (DocumentType.Presentation):
+                        var result2 = await serviceClient.GenerateSplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result2.Body.GenerateSplitPresentationResult, splitFileName, ".xml");
+                        break;
+                }
+
+                EnableSplitButton();
+            }
+            catch (System.ServiceModel.CommunicationException ex)
+            {
+                MessageDialog dialog = new MessageDialog(ex.Message);
+                await dialog.ShowAsync();
+            }
+        }
+
+        private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var picker = new FileOpenPicker();
+                picker.ViewMode = PickerViewMode.List;
+                picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                picker.FileTypeFilter.Add(".xml");
+
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    XmlFile = file;
+                    xmlBinary = await StorageFileToByteArray(XmlFile);
+                    List<PartsSelectionTreeElement<ElementTypes>> parts = new List<PartsSelectionTreeElement<ElementTypes>>();
+                    var response = await GetPartsFromXml();
+                    if (!response.IsError)
+                    {
+                        var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
+                        foreach (var element in partsFromXml)
+                        {
+                            var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, DocumentElementTypes, element.Name, element.Indent, element.Selected, element.OwnerName);
+                            parts.Add(item);
+                        }
+
+                        var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+                        List<Data_Structures.ComboBoxItem> comboItems = new List<Data_Structures.ComboBoxItem>();
+                        int indexer = 1;
+                        foreach (var name in names)
+                            comboItems.Add(new Data_Structures.ComboBoxItem() { Id = indexer++, Name = name });
+
+                        WordPartPage = new WordSelectPartsPage();
+                        WordPartsPageData pageData = new Data_Structures.WordPartsPageData();
+                        pageData.SelectionParts = parts;
+                        pageData.LastId = names.Count();
+                        pageData.ComboItems.AddRange(comboItems);
+                        WordPartPage.CopyDataToControl(pageData);
+                        EnableSplitButton();
+                    }
+                    else
+                    {
+                        MessageDialog dialog = new MessageDialog(response.Message);
+                        await dialog.ShowAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialog dialog = new MessageDialog(ex.Message);
+                await dialog.ShowAsync();
+            }
         }
 
         private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
@@ -257,12 +339,14 @@ namespace DocumentTransitionUniversalApp
                 }
             }
 		}
-   
-		private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
+
+        private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
 		{
 			ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
 			FolderPicker folderPicker = new FolderPicker();
             folderPicker.FileTypeFilter.Add(".docx");
+            folderPicker.FileTypeFilter.Add(".pptx");
+            folderPicker.FileTypeFilter.Add(".xlsx");
             folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
 			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
             if (folder != null)
@@ -279,14 +363,26 @@ namespace DocumentTransitionUniversalApp
                     return files;
                 }
 
+                string templateName = string.Empty;
                 StorageFile templateFile;
                 try
                 {
-                    templateFile = await folder.GetFileAsync("template.docx");
+                    IReadOnlyList<StorageFile> filesInFolder = await folder.GetFilesAsync();
+                    foreach (StorageFile item in filesInFolder)
+                    {
+                        if (Path.GetFileNameWithoutExtension(item.Name) == "template")
+                        {
+                            templateName = item.Name;
+                            break;
+                        }
+                    }
+
+                    templateFile = await folder.GetFileAsync(templateName);
+                    SetFileType(templateName);
                 }
                 catch (FileNotFoundException ex)
                 {
-                    var dialog = new MessageDialog("template.docx does not exist");
+                    var dialog = new MessageDialog(string.Format("{0} does not exist", templateName));
                     await dialog.ShowAsync();
                     return files;
                 }
@@ -320,6 +416,25 @@ namespace DocumentTransitionUniversalApp
 
 			return files;
 		}
+
+        private void SetFileType(string fileName)
+        {
+            switch (Path.GetExtension(fileName))
+            {
+                case (".docx"):
+                    FileType = DocumentType.Word;
+                    DocumentElementTypes = new WordElementType();
+                    break;
+                case (".xlsx"):
+                    FileType = DocumentType.Excel;
+                    DocumentElementTypes = new ExcelElementType();
+                    break;
+                case (".pptx"):
+                    FileType = DocumentType.Presentation;
+                    DocumentElementTypes = new PresentationElementType();
+                    break;
+            }
+        }
 
         private void ResetControls()
         {
@@ -415,92 +530,6 @@ namespace DocumentTransitionUniversalApp
                 return string.Empty;
         }
 
-        private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
-        {
-            var serviceClient = MainPage.Service.GetInstance();
-            var selectionParts = new ObservableCollection<Service.PartsSelectionTreeElement>();
-            foreach (var part in WordPartPage._pageData.SelectionParts)
-                selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
-
-            string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
-            try
-            {
-                switch (FileType)
-                {
-                    case (DocumentType.Word):
-                        var result = await serviceClient.GenerateSplitDocumentAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-                        FileHelper.SaveFile(result.Body.GenerateSplitDocumentResult, splitFileName, ".xml");
-                        break;
-                    case (DocumentType.Excel):
-                        break;
-                    case (DocumentType.Presentation):
-                        var result2 = await serviceClient.GenerateSplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-                        FileHelper.SaveFile(result2.Body.GenerateSplitPresentationResult, splitFileName, ".xml");
-                        break;
-                }
-
-                EnableSplitButton();
-            }
-            catch (System.ServiceModel.CommunicationException ex)
-            {
-                MessageDialog dialog = new MessageDialog(ex.Message);
-                await dialog.ShowAsync();
-            }
-        }
-
-        private async void buttonLoadSplit_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            { 
-                var picker = new FileOpenPicker();
-                picker.ViewMode = PickerViewMode.List;
-                picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                picker.FileTypeFilter.Add(".xml");
-
-                StorageFile file = await picker.PickSingleFileAsync();
-                if (file != null)
-                {
-                    XmlFile = file;
-                    xmlBinary = await StorageFileToByteArray(XmlFile);
-                    List<PartsSelectionTreeElement<ElementTypes>> parts = new List<PartsSelectionTreeElement<ElementTypes>>();
-                    var response = await GetPartsFromXml();
-                    if (!response.IsError)
-                    {
-                        var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
-                        foreach (var element in partsFromXml)
-                        {
-                            var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, DocumentElementTypes, element.Name, element.Indent, element.Selected, element.OwnerName);
-                            parts.Add(item);
-                        }
-
-                        var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
-                        List<Data_Structures.ComboBoxItem> comboItems = new List<Data_Structures.ComboBoxItem>();
-                        int indexer = 1;
-                        foreach (var name in names)
-                            comboItems.Add(new Data_Structures.ComboBoxItem() { Id = indexer++, Name = name });
-
-                        WordPartPage = new WordSelectPartsPage();
-                        WordPartsPageData pageData = new Data_Structures.WordPartsPageData();
-                        pageData.SelectionParts = parts;
-                        pageData.LastId = names.Count();
-                        pageData.ComboItems.AddRange(comboItems);
-                        WordPartPage.CopyDataToControl(pageData);
-                        EnableSplitButton();
-                    }
-                    else
-                    {
-                        MessageDialog dialog = new MessageDialog(response.Message);
-                        await dialog.ShowAsync();
-                    }                  
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageDialog dialog = new MessageDialog(ex.Message);
-                await dialog.ShowAsync();
-            }           
-        }
-
         private async Task<Service.ServiceResponse> GetPartsFromXml()
         {
             var result = new TransitionAppServices.ServiceResponse();
@@ -511,8 +540,8 @@ namespace DocumentTransitionUniversalApp
                 switch (FileType)
                 {
                     case (DocumentType.Word):
-                        var response = await serviceClient.GetDocumentPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                        result = response.Body.GetDocumentPartsFromXmlResult;
+                        var response = await serviceClient.GetWordPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                        result = response.Body.GetWordPartsFromXmlResult;
                         break;
                     case (DocumentType.Excel):
                         break;

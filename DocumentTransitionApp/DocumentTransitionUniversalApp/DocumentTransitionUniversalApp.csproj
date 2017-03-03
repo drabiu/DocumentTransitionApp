@@ -97,16 +97,19 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitDocumentResponse.datasource">
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitExcelResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsFromXmlResponse.datasource">
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitWordResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetDocumentPartsResponse.datasource">
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsFromXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponse.datasource">
@@ -115,16 +118,31 @@
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsFromXmlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergeExcelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergePresentationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergeWordResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.SplitExcelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.SplitPresentationResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.SplitWordResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppServices\TransitionAppServices1.disco" />
-    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.MergeDocumentResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.SplitDocumentResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\TransitionAppServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

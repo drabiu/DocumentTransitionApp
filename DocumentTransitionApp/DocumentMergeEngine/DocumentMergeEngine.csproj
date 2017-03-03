@@ -62,6 +62,10 @@
       <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
       <Name>System.IO.Packaging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OpenXMLTools\OpenXMLTools.csproj">
+      <Project>{46987be4-7719-42d4-a2e3-d0a60fa5f2c7}</Project>
+      <Name>OpenXMLTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
       <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>
       <Name>SplitDescriptionObjects</Name>

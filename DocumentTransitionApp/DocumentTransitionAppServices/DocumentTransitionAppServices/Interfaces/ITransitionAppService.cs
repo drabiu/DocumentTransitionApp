@@ -10,6 +10,7 @@ namespace DocumentTransitionAppServices.Interfaces
         byte[] GenerateSplitWord(string docName, PartsSelectionTreeElement[] parts);
         List<PartsSelectionTreeElement> GetWordParts(string docName, byte[] documentFile);
         ServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        byte[] MergeWord(PersonFiles[] files);
 
     }
 
@@ -19,6 +20,7 @@ namespace DocumentTransitionAppServices.Interfaces
         byte[] GenerateSplitPresentation(string docName, PartsSelectionTreeElement[] parts);
         List<PartsSelectionTreeElement> GetPresentationParts(string preName, byte[] presentationFile);
         ServiceResponse GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        byte[] MergePresentation(PersonFiles[] files);
     }
 
     public interface IExcelService
@@ -27,10 +29,11 @@ namespace DocumentTransitionAppServices.Interfaces
         byte[] GenerateSplitExcel(string docName, PartsSelectionTreeElement[] parts);
         List<PartsSelectionTreeElement> GetExcelParts(string excName, byte[] excelFile);
         ServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        byte[] MergeExcel(PersonFiles[] files);
     }
 
     public interface ITransitionAppService : IDocumentService, IPresentationService, IExcelService
     {
-        byte[] MergeDocument(PersonFiles[] files);                           
+                                 
     }
 }
