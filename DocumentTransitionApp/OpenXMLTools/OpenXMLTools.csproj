@@ -51,6 +51,7 @@
     <Compile Include="PtOpenXmlDocument.cs" />
     <Compile Include="PtOpenXmlUtil.cs" />
     <Compile Include="StreamTools.cs" />
+    <Compile Include="WordTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Open-XML-SDK-Office2016\DocumentFormat.OpenXml\DocumentFormat.OpenXml.csproj">

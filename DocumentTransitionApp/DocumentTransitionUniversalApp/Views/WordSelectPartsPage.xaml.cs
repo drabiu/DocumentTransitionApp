@@ -218,7 +218,17 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitExcel()
         {
-            throw new NotImplementedException();
+            var serviceClient = MainPage.Service.GetInstance();
+            try
+            {
+                var result = await serviceClient.GetExcelPartsAsync(_source.FileName, _source.documentBinary);
+                PrepareListOfItems(result.Body.GetExcelPartsResult, _source.DocumentElementTypes);
+            }
+            catch(System.ServiceModel.CommunicationException ex)
+            {
+                MessageDialog dialog = new MessageDialog(ex.Message);
+                await dialog.ShowAsync();
+            }
         }
     }    
 }

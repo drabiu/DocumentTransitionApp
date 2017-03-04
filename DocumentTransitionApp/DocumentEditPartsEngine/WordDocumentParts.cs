@@ -72,11 +72,11 @@ namespace DocumentEditPartsEngine
                 if (element is Paragraph)
                 {
                     string elementId = (element as Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, GetElementName(element), 0);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), 0);
                     _paragraphCounter++;
                 }
                 else
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), GetElementName(element), 0);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), 0);
 
                 result.Add(elementToAdd);
                 if (element.HasChildren)
@@ -92,47 +92,6 @@ namespace DocumentEditPartsEngine
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             return result;
-        }
-
-        private string GetElementName(OpenXmlElement element)
-        {
-            StringBuilder result = new StringBuilder();
-            if (element is Paragraph)
-            {
-                var paragraph = element as Paragraph;
-                if (paragraph.ChildElements.Any(ch => ch is Run))
-                {
-                    result.Append("[Par]: ");
-                    StringBuilder text = new StringBuilder();
-                    foreach (Run run in paragraph.ChildElements.OfType<Run>())
-                    {
-                        text.Append(run.InnerText);                                                        
-                    }
-
-                    var listWords = text.ToString().Split(default(char[]), StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var word in listWords)
-                    {
-                        result.Append(string.Format("{0} ", word));
-                        if (result.Length > WordDocumentPartAttributes.MaxNameLength)
-                            break;
-                    }
-
-                    result.Remove(result.Length - 1, 1);
-                }
-            }
-            else if (element is Table)
-            {
-
-
-            }
-            else if (element is Picture)
-            {
-
-            }
-            else if (element is Drawing)
-            { }
-
-            return result.ToString();
-        }       
+        }      
     }
 }

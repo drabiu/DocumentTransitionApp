@@ -7,7 +7,7 @@ namespace DocumentEditPartsEngine.Interfaces
 {
     public interface IPresentationParts
     {
-        List<PartsSelectionTreeElement> GetSlidesWithAdditionalPats(Stream file, Predicate<OpenXmlPart> supportedParts);
+        List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlPart> supportedParts);
         List<PartsSelectionTreeElement> GetSlides(Stream file);
     }
 }

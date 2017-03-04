@@ -26,13 +26,8 @@ namespace DocumentEditPartsEngine
 
     public class PresentationDocumentParts : IPresentationParts
 	{
-        public List<PartsSelectionTreeElement> GetSlidesWithAdditionalPats(Stream file, Predicate<OpenXmlPart> supportedParts)
+        public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlPart> supportedParts)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<PartsSelectionTreeElement> GetSlides(Stream file)
-		{
             List<PartsSelectionTreeElement> presentationElements = new List<PartsSelectionTreeElement>();
             using (PresentationDocument preDoc =
                 PresentationDocument.Open(file, true))
@@ -43,7 +38,7 @@ namespace DocumentEditPartsEngine
                 {
                     SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
                     string elementId = slideId.RelationshipId;
-                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, elementId));
+                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, elementId, supportedParts));
                     idIndex++;
                 }
             }
@@ -51,10 +46,21 @@ namespace DocumentEditPartsEngine
             return presentationElements;
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(SlidePart slidePart, int id, string elementId)
+        public List<PartsSelectionTreeElement> GetSlides(Stream file)
+		{
+            return Get(file, el => PresentationDocumentPartAttributes.IsSupportedPart(el));
+        }
+
+        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlPart openXmlPart, int id, string elementId, Predicate<OpenXmlPart> isSupportedPart)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-            result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(slidePart, PresentationDocumentPartAttributes.MaxNameLength), 0));
+            if (isSupportedPart(openXmlPart))
+            {
+                if (openXmlPart is SlidePart)
+                {
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), 0));
+                }
+            }
 
             return result;
         }        

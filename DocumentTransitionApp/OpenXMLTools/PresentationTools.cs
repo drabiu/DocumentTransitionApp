@@ -40,41 +40,47 @@ namespace OpenXMLTools
                 }
             }
 
+            presentationPart.Presentation.SlideMasterIdList.RemoveAllChildren();
             uint uniqueId = GetMaxIdFromChild(presentationPart.Presentation.SlideMasterIdList);
             foreach (string slideRelationshipId in slideRelationshipIdList)
             {
                 maxSlideId++;
                 uniqueId++;
 
-                //Create the slide part and copy the data from the first part
-                SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();
+                //Create the slide part and copy the data from the first part           
+                //SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();              
                 var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
-                newSlidePart.FeedData(templateSlide.GetStream());
+                var newIdFromTemplateId = string.Format("source{0}", slideRelationshipId);
+                SlidePart newSlidePart = presentationPart.AddPart(templateSlide, newIdFromTemplateId);
+                //newSlidePart.FeedData(templateSlide.GetStream());
                 //Use the same slide layout as that of the template slide.
-                if (templateSlide.SlideLayoutPart != null)
+                //if (templateSlide.SlideLayoutPart != null)
+                //{
+                //    newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                //}
+
+                if (newSlidePart.SlideLayoutPart != null)
                 {
-                    newSlidePart.AddPart(templateSlide.SlideLayoutPart);
+                    SlideMasterPart destMasterPart = newSlidePart.SlideLayoutPart.SlideMasterPart;
+                    presentationPart.AddPart(destMasterPart);
+
+                    SlideMasterId newSlideMasterId = new SlideMasterId();
+                    newSlideMasterId.RelationshipId = presentationPart.GetIdOfPart(destMasterPart);
+                    newSlideMasterId.Id = uniqueId;
+
+                    presentationPart.Presentation.SlideMasterIdList.Append(newSlideMasterId);
                 }
-
-                SlideMasterPart destMasterPart = newSlidePart.SlideLayoutPart.SlideMasterPart;
-                presentationPart.AddPart(destMasterPart);
-
+                                
                 //Insert the new slide into the slide list.
                 SlideId newSlideId = slideIdList.AppendChild(new SlideId());
 
                 //Set the slide id and relationship id
                 newSlideId.Id = maxSlideId;
-                newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);               
-
-                SlideMasterId newSlideMasterId = new SlideMasterId();
-                newSlideMasterId.RelationshipId = presentationPart.GetIdOfPart(destMasterPart);
-                newSlideMasterId.Id = uniqueId;
-
-                presentationPart.Presentation.SlideMasterIdList.Append(newSlideMasterId);
+                newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);                             
             }
 
             FixSlideLayoutIds(presentationPart, uniqueId);
-            //after adding OPEN XML SDK 3.0 this fix no longer needed
+            //after adding OPEN XML SDK 3.0 this fix no longer needed but removes validation errors
             //PresentationMLUtil.FixUpPresentationDocument(target);
 
             target.PresentationPart.Presentation.Save();

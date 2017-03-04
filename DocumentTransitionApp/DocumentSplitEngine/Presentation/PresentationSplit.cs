@@ -64,11 +64,12 @@ namespace DocumentSplitEngine
                     PresentationDocument templatePresentation = streamTemplateDoc.GetPresentationDocument();
                     foreach (OpenXMLDocumentPart<SlideId> element in DocumentElements)
                     {
-                        var relationshipIds = element.CompositeElements.Select(c => c.RelationshipId.Value).ToList();
-                        using (OpenXmlMemoryStreamDocument streamDividedDoc = OpenXmlMemoryStreamDocument.CreatePresentationDocument())
+                        OpenXmlPowerToolsDocument emptyDocPowerTools = new OpenXmlPowerToolsDocument(DocumentName, documentInMemoryStream);
+                        using (OpenXmlMemoryStreamDocument streamDividedDoc = new OpenXmlMemoryStreamDocument(emptyDocPowerTools))
                         {
+                            var relationshipIds = element.CompositeElements.Select(c => c.RelationshipId.Value).ToList();
                             PresentationDocument dividedPresentation = streamDividedDoc.GetPresentationDocument();
-                            PresentationTools.InsertSlidesFromTemplate(dividedPresentation, templatePresentation, relationshipIds);
+                            PresentationTools.InsertSlidesFromTemplate(PresentationTools.RemoveAllSlides(dividedPresentation), templatePresentation, relationshipIds);
 
                             var person = new PersonFiles();
                             person.Person = element.PartOwner;

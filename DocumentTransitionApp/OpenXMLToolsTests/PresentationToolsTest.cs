@@ -157,7 +157,7 @@ namespace OpenXMLToolsTests
         [TestMethod]
         public void InsertSlideFromTemplateShouldResultInNoValidationErrors()
         {
-            PresentationDocument document = PreTools.InsertSlidesFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13" });
+            PresentationDocument document = PreTools.InsertSlidesFromTemplate(PreCGWDoc, PreSampleDoc, new List<string>() { "rId13", "rId11" });
             var validationErrors = DocValidator.Validate(document);
                        
             Assert.AreEqual(0, validationErrors.Count());
@@ -195,7 +195,6 @@ namespace OpenXMLToolsTests
             Assert.AreEqual(17, slideIdList.Count());
             Assert.AreEqual(17, document.PresentationPart.SlideParts.Count());
         }
-
 
         [TestCleanup]
         public void Finish()

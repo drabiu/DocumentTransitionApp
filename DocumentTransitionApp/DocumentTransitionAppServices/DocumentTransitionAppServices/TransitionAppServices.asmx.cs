@@ -124,7 +124,9 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public List<PartsSelectionTreeElement> GetExcelParts(string excName, byte[] excelFile)
         {
-            throw new NotImplementedException();
+            IExcelParts parts = new ExcelDocumentParts();
+
+            return parts.GetSheets(new MemoryStream(excelFile));
         }
 
         [WebMethod]
