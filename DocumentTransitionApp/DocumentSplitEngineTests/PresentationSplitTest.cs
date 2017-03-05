@@ -264,7 +264,8 @@ namespace DocumentSplitEngineTests
 
                 validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetPresentationDocument()));
             }
-             
+
+            Assert.IsTrue(docs.Count() > 0);
             Assert.AreEqual(0, validationErrors.Count());
         }
 
@@ -285,6 +286,7 @@ namespace DocumentSplitEngineTests
                 validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetPresentationDocument()));
             }
 
+            Assert.IsTrue(docs.Count() > 0);
             Assert.AreEqual(0, validationErrors.Count());
         }
 
@@ -305,6 +307,7 @@ namespace DocumentSplitEngineTests
                 validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetPresentationDocument()));
             }
 
+            Assert.IsTrue(docs.Count() > 0);
             Assert.AreEqual(0, validationErrors.Count());
         }
 

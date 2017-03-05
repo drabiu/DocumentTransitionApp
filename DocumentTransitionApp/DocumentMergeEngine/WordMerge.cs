@@ -106,7 +106,6 @@ namespace DocumentMergeEngine
                     return streamEmptyDoc.GetModifiedDocument().DocumentByteArray;
                 }
             }
-
         }
 	}
 }

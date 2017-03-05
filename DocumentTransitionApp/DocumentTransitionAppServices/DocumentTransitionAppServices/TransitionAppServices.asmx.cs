@@ -139,7 +139,17 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public ServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
-            throw new NotImplementedException();
+            ISplitXml split = new ExcelSplit(Path.GetFileNameWithoutExtension(docName));
+            var cleanParts = GetExcelParts(docName, documentFile);
+
+            try
+            {
+                return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+            }
+            catch (SplitNameDifferenceExcception ex)
+            {
+                return new ServiceResponse(ex.Message);
+            }
         }
 
         [WebMethod]
@@ -161,7 +171,9 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public byte[] MergeExcel(PersonFiles[] files)
         {
-            throw new NotImplementedException();
+            IMerge merge = new ExcelMerge();
+
+            return merge.Run(new List<PersonFiles>(files));
         }
     }	
 }

@@ -34,9 +34,10 @@ namespace DocumentSplitEngineTests
         [TestInitialize]
         public void Init()
         {
-            var excelSplit = new ExcelSplit("ExcelTutorialR1 — edytowalny.");
+            var excelSplit = new ExcelSplit("ExcelTutorialR1 — edytowalny");
             ExcSampleSplit = excelSplit;
             SplitXml = excelSplit;
+            ExcSampleMerge = excelSplit;
 
             DocValidator = new OpenXmlValidator();
 
@@ -237,7 +238,7 @@ namespace DocumentSplitEngineTests
         {
             var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
 
-            Assert.AreEqual(1, personFilesList.Where(p => p.Person == "/" && p.Name == "template.docx").Count());
+            Assert.AreEqual(1, personFilesList.Where(p => p.Person == "/" && p.Name == "template.xlsx").Count());
         }
 
         [TestMethod]
@@ -258,13 +259,14 @@ namespace DocumentSplitEngineTests
             foreach (byte[] doc in docs)
             {
                 MemoryStream partDocInMemory = new MemoryStream(doc, 0, doc.Length, true, true);
-                var partDocPowerTools = new OpenXmlPowerToolsDocument("undefined.docx", partDocInMemory);
+                var partDocPowerTools = new OpenXmlPowerToolsDocument("undefined.xlsx", partDocInMemory);
 
                 OpenXmlMemoryStreamDocument partDocInMemoryExpandable = new OpenXmlMemoryStreamDocument(partDocPowerTools);
 
                 validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetSpreadsheetDocument()));
             }
 
+            Assert.IsTrue(docs.Count() > 0);
             Assert.AreEqual(0, validationErrors.Count());
         }
 
@@ -278,13 +280,14 @@ namespace DocumentSplitEngineTests
             foreach (byte[] doc in docs)
             {
                 MemoryStream partDocInMemory = new MemoryStream(doc, 0, doc.Length, true, true);
-                var partDocPowerTools = new OpenXmlPowerToolsDocument("test.docx", partDocInMemory);
+                var partDocPowerTools = new OpenXmlPowerToolsDocument("test.xlsx", partDocInMemory);
 
                 OpenXmlMemoryStreamDocument partDocInMemoryExpandable = new OpenXmlMemoryStreamDocument(partDocPowerTools);
 
                 validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetSpreadsheetDocument()));
             }
 
+            Assert.IsTrue(docs.Count() > 0);
             Assert.AreEqual(0, validationErrors.Count());
         }
 
@@ -298,13 +301,14 @@ namespace DocumentSplitEngineTests
             foreach (byte[] doc in docs)
             {
                 MemoryStream partDocInMemory = new MemoryStream(doc, 0, doc.Length, true, true);
-                var partDocPowerTools = new OpenXmlPowerToolsDocument("test2.docx", partDocInMemory);
+                var partDocPowerTools = new OpenXmlPowerToolsDocument("test2.xlsx", partDocInMemory);
 
                 OpenXmlMemoryStreamDocument partDocInMemoryExpandable = new OpenXmlMemoryStreamDocument(partDocPowerTools);
 
                 validationErrors.AddRange(DocValidator.Validate(partDocInMemoryExpandable.GetSpreadsheetDocument()));
             }
 
+            Assert.IsTrue(docs.Count() > 0);
             Assert.AreEqual(0, validationErrors.Count());
         }
 

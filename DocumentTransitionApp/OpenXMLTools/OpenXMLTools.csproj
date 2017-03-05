@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExcelTools.cs" />
     <Compile Include="Interfaces\IPresentationTools.cs" />
     <Compile Include="PresentationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentSplitEngine.Data_Structures;
 using DocumentSplitEngine.Interfaces;
+using SplitDescriptionObjects;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,13 +12,15 @@ namespace DocumentSplitEngine.Excel
     {
         SplitExcel SplitExcelObj { get; set; }
         Workbook WorkBook;
+        IUniversalExcelMarker UniversalExcMarker;
 
         public MarkerExcelMapper(string documentName, Split xml, Workbook workBook)
         {
             Xml = xml;
             SplitExcelObj = (SplitExcel)Xml.Items.Where(it => it is SplitExcel && string.Equals(((SplitExcel)it).Name, documentName)).SingleOrDefault();
             WorkBook = workBook;
-            SubdividedParagraphs = new string[workBook.ChildElements.Count];
+            UniversalExcMarker = new UniversalExcelMarker(workBook);
+            SubdividedParagraphs = new string[workBook.Sheets.Count()];
         }
 
         public IList<OpenXMLDocumentPart<Sheet>> Run()
@@ -27,29 +30,33 @@ namespace DocumentSplitEngine.Excel
             {
                 foreach (Person person in SplitExcelObj.Person)
                 {
-                    if (person.SheetMarker != null)
+                    if (person.UniversalMarker != null)
                     {
-                        foreach (PersonSheetMarker marker in person.SheetMarker)
+                        foreach (PersonUniversalMarker marker in person.UniversalMarker)
                         {
-                            //int result = GetSheetMarker().FindElement(marker.ElementId);
-                            //if (string.IsNullOrEmpty(SubdividedParagraphs[result]))
-                            //{
-                            //	SubdividedParagraphs[result] = person.Email;
-                            //}
-                            //else
-                            //	throw new ElementToPersonPairException();
+                            IList<int> result = UniversalExcMarker.GetCrossedSheetElements(marker.ElementId, marker.SelectionLastelementId);
+                            foreach (int index in result)
+                            {
+                                if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
+                                {
+                                    SubdividedParagraphs[index] = person.Email;
+                                }
+                                else
+                                    throw new ElementToPersonPairException();
+                            }
                         }
                     }
                 }
 
                 string email = string.Empty;
                 OpenXMLDocumentPart<Sheet> part = new OpenXMLDocumentPart<Sheet>();
-                for (int index = 0; index < WorkBook.ChildElements.Count; index++)
+                var sheetPartsList = WorkBook.Sheets.Elements<Sheet>().ToList();
+                for (int index = 0; index < sheetPartsList.Count; index++)
                 {
                     if (SubdividedParagraphs[index] != email)
                     {
                         part = new OpenXMLDocumentPart<Sheet>();
-                        //part.CompositeElements.Add(WorkBook.ChildElements[index]);
+                        part.CompositeElements.Add(sheetPartsList[index] as Sheet);
                         email = SubdividedParagraphs[index];
                         if (string.IsNullOrEmpty(email))
                             part.PartOwner = "undefined";
@@ -59,8 +66,7 @@ namespace DocumentSplitEngine.Excel
                         documentElements.Add(part);
                     }
                     else
-                    { }
-                    //part.CompositeElements.Add(WorkBook.ChildElements[index]);
+                        part.CompositeElements.Add(sheetPartsList[index] as Sheet);
                 }
             }
 

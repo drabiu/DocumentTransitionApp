@@ -125,6 +125,8 @@ namespace DocumentTransitionUniversalApp
                         break;
                     case (DocumentType.Excel):
                         extension = ".xlsx";
+                        var response1 = await serviceClient.SplitExcelAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
+                        result = response1.Body.SplitExcelResult;
                         break;
                     case (DocumentType.Presentation):
                         extension = ".pptx";
@@ -158,6 +160,8 @@ namespace DocumentTransitionUniversalApp
                             FileHelper.SaveFile(result.Body.MergeWordResult, "Merged Document Name", ".docx");
                             break;
                         case (DocumentType.Excel):
+                            var result1 = await serviceClient.MergeExcelAsync(files);
+                            FileHelper.SaveFile(result1.Body.MergeExcelResult, "Merged Document Name", ".xlsx");
                             break;
                         case (DocumentType.Presentation):
                             var result2 = await serviceClient.MergePresentationAsync(files);
@@ -546,6 +550,8 @@ namespace DocumentTransitionUniversalApp
                         result = response.Body.GetWordPartsFromXmlResult;
                         break;
                     case (DocumentType.Excel):
+                        var response1 = await serviceClient.GetExcelPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
+                        result = response1.Body.GetExcelPartsFromXmlResult;
                         break;
                     case (DocumentType.Presentation):
                         var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
