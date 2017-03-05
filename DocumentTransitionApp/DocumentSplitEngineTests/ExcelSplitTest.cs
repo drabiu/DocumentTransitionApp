@@ -34,7 +34,7 @@ namespace DocumentSplitEngineTests
         [TestInitialize]
         public void Init()
         {
-            var excelSplit = new ExcelSplit("test");
+            var excelSplit = new ExcelSplit("ExcelTutorialR1 — edytowalny.");
             ExcSampleSplit = excelSplit;
             SplitXml = excelSplit;
 
@@ -43,12 +43,12 @@ namespace DocumentSplitEngineTests
             var parts = PartsSelectionTreeElementMock.GetListMock();
             CreateSplitXmlBinary = SplitXml.CreateSplitXml(parts);
 
-            //ExcSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/przykladowa-prezentacja.pptx"));
+            ExcSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/ExcelTutorialR1 — edytowalny.xlsx"));
 
-            //byte[] sampleXmlBinary = File.ReadAllBytes(@"../../../Files/split_demo.docx_20170227215840894.xml");
-            //excelSplit.OpenAndSearchDocument(ExcSampleDocInMemory, new MemoryStream(sampleXmlBinary));
+            byte[] sampleXmlBinary = File.ReadAllBytes(@"../../../Files/split_ExcelTutorialR1 — edytowalny.xlsx_20170304230639351.xml");
+            excelSplit.OpenAndSearchDocument(ExcSampleDocInMemory, new MemoryStream(sampleXmlBinary));
 
-            //MergeXmlBinary = ExcSampleMerge.CreateMergeXml();
+            MergeXmlBinary = ExcSampleMerge.CreateMergeXml();
 
             ErrorsCount = 0;
             WarningsCount = 0;

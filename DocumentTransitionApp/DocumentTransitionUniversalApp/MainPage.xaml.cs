@@ -197,6 +197,8 @@ namespace DocumentTransitionUniversalApp
                         FileHelper.SaveFile(result.Body.GenerateSplitWordResult, splitFileName, ".xml");
                         break;
                     case (DocumentType.Excel):
+                        var result1 = await serviceClient.GenerateSplitExcelAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result1.Body.GenerateSplitExcelResult, splitFileName, ".xml");
                         break;
                     case (DocumentType.Presentation):
                         var result2 = await serviceClient.GenerateSplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);

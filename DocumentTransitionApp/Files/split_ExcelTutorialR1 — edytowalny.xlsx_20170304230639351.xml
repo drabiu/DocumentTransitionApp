@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Split xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/">
+  <Excel>
+    <Name>ExcelTutorialR1 — edytowalny</Name>
+    <Person Email="test">
+      <UniversalMarker>
+        <ElementId>slId2</ElementId>
+        <SelectionLastelementId>slId2</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>slId3</ElementId>
+        <SelectionLastelementId>slId3</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>slId4</ElementId>
+        <SelectionLastelementId>slId4</SelectionLastelementId>
+      </UniversalMarker>
+    </Person>
+    <Person Email="test2">
+      <UniversalMarker>
+        <ElementId>slId36</ElementId>
+        <SelectionLastelementId>slId36</SelectionLastelementId>
+      </UniversalMarker>
+      <UniversalMarker>
+        <ElementId>slId39</ElementId>
+        <SelectionLastelementId>slId39</SelectionLastelementId>
+      </UniversalMarker>
+    </Person>
+  </Excel>
+</Split>

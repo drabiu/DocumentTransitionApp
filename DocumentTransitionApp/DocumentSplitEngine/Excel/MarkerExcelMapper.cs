@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DocumentSplitEngine.Excel
 {
-    public class MarkerExcelMapper : MarkerDocumentMapper, IMarkerMapper<WorkbookPart>
+    public class MarkerExcelMapper : MarkerDocumentMapper, IMarkerMapper<Sheet>
     {
         SplitExcel SplitExcelObj { get; set; }
         Workbook WorkBook;
@@ -20,9 +20,9 @@ namespace DocumentSplitEngine.Excel
             SubdividedParagraphs = new string[workBook.ChildElements.Count];
         }
 
-        public IList<OpenXMLDocumentPart<WorkbookPart>> Run()
+        public IList<OpenXMLDocumentPart<Sheet>> Run()
         {
-            IList<OpenXMLDocumentPart<WorkbookPart>> documentElements = new List<OpenXMLDocumentPart<WorkbookPart>>();
+            IList<OpenXMLDocumentPart<Sheet>> documentElements = new List<OpenXMLDocumentPart<Sheet>>();
             if (SplitExcelObj != null)
             {
                 foreach (Person person in SplitExcelObj.Person)
@@ -43,12 +43,12 @@ namespace DocumentSplitEngine.Excel
                 }
 
                 string email = string.Empty;
-                OpenXMLDocumentPart<WorkbookPart> part = new OpenXMLDocumentPart<WorkbookPart>();
+                OpenXMLDocumentPart<Sheet> part = new OpenXMLDocumentPart<Sheet>();
                 for (int index = 0; index < WorkBook.ChildElements.Count; index++)
                 {
                     if (SubdividedParagraphs[index] != email)
                     {
-                        part = new OpenXMLDocumentPart<WorkbookPart>();
+                        part = new OpenXMLDocumentPart<Sheet>();
                         //part.CompositeElements.Add(WorkBook.ChildElements[index]);
                         email = SubdividedParagraphs[index];
                         if (string.IsNullOrEmpty(email))

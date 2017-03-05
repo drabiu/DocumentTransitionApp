@@ -39,6 +39,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Split XML Files", "Split XML Files", "{8E0D8A4B-68A3-41C6-A3C6-9F366F4D85A0}"
 	ProjectSection(SolutionItems) = preProject
 		Files\split_demo.docx_20170227215840894.xml = Files\split_demo.docx_20170227215840894.xml
+		Files\split_ExcelTutorialR1 — edytowalny.xlsx_20170304230639351.xml = Files\split_ExcelTutorialR1 — edytowalny.xlsx_20170304230639351.xml
 		Files\split_lep-na-szczury-z-atr-karta-ch.docx_20170227220222747.xml = Files\split_lep-na-szczury-z-atr-karta-ch.docx_20170227220222747.xml
 		Files\split_przykladowa-prezentacja.pptx_20170227215707619.xml = Files\split_przykladowa-prezentacja.pptx_20170227215707619.xml
 	EndProjectSection

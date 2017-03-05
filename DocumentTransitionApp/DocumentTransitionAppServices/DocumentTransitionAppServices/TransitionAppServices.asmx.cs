@@ -112,13 +112,20 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public PersonFiles[] SplitExcel(string docName, byte[] docFile, byte[] xmlFile)
         {
-            throw new NotImplementedException();
+            ISplit run = new ExcelSplit(docName);
+            MemoryStream doc = new MemoryStream(docFile);
+            MemoryStream xml = new MemoryStream(xmlFile);
+            run.OpenAndSearchDocument(doc, xml);
+
+            return run.SaveSplitDocument(doc).ToArray();
         }
 
         [WebMethod]
         public byte[] GenerateSplitExcel(string docName, PartsSelectionTreeElement[] parts)
         {
-            throw new NotImplementedException();
+            ISplitXml split = new ExcelSplit(docName);
+
+            return split.CreateSplitXml(parts);
         }
 
         [WebMethod]
