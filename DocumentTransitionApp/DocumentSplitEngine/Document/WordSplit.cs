@@ -16,6 +16,7 @@ using DocumentSplitEngine.Data_Structures;
 using OpenXMLTools;
 using DocumentSplitEngine.Document;
 using DocumentSplitEngine.Interfaces;
+using OpenXmlPowerTools;
 
 namespace DocumentSplitEngine
 {
@@ -136,53 +137,53 @@ namespace DocumentSplitEngine
 			CreateMergeXml(appPath + @"\Files" + @"\");
 		}
 
-		List<PersonFiles> ISplit.SaveSplitDocument(Stream document)
+		public List<PersonFiles> SaveSplitDocument(Stream document)
 		{
 			List<PersonFiles> resultList = new List<PersonFiles>();
 
 			byte[] byteArray = StreamTools.ReadFully(document);
-			using (MemoryStream mem = new MemoryStream())
-			{
-				mem.Write(byteArray, 0, byteArray.Length);
-				using (WordprocessingDocument wordDoc =
-					WordprocessingDocument.Open(mem, true))
-				{
-					foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
-					{
-						wordDoc.MainDocumentPart.Document.Body = new Body();
-						Body body = wordDoc.MainDocumentPart.Document.Body;
-						foreach (OpenXmlElement compo in element.CompositeElements)
-							body.Append(compo.CloneNode(true));
+            using (MemoryStream documentInMemoryStream = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
+            {
+                foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
+                {
+                    OpenXmlPowerToolsDocument docDividedPowerTools = new OpenXmlPowerToolsDocument(DocumentName, documentInMemoryStream);
+                    using (OpenXmlMemoryStreamDocument streamDoc = new OpenXmlMemoryStreamDocument(docDividedPowerTools))
+                    {
+                        WordprocessingDocument wordDoc = streamDoc.GetWordprocessingDocument();
+                        wordDoc.MainDocumentPart.Document.Body.RemoveAllChildren();
+                        Body body = wordDoc.MainDocumentPart.Document.Body;
+                        foreach (OpenXmlElement compo in element.CompositeElements)
+                            body.Append(compo.CloneNode(true));
 
-						wordDoc.MainDocumentPart.Document.Save();
+                        wordDoc.MainDocumentPart.Document.Save();
 
-						var person = new PersonFiles();
-						person.Person = element.PartOwner;
-						resultList.Add(person);
-						person.Name = element.Guid.ToString();
-						person.Data = mem.ToArray();
-					}
-				}
-			}
-			// At this point, the memory stream contains the modified document.
-			// We could write it back to a SharePoint document library or serve
-			// it from a web server.			
-			using (MemoryStream mem = new MemoryStream())
-			{
-				mem.Write(byteArray, 0, byteArray.Length);
-				using (WordprocessingDocument wordDoc =
-					WordprocessingDocument.Open(mem, true))
-				{
-					wordDoc.MainDocumentPart.Document.Body = new Body();
-					wordDoc.MainDocumentPart.Document.Save();
+                        var person = new PersonFiles();
+                        person.Person = element.PartOwner;
+                        resultList.Add(person);
+                        person.Name = element.Guid.ToString();
+                        person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
 
-					var person = new PersonFiles();
-					person.Person = "/";
-					resultList.Add(person);
-					person.Name = "template.docx";
-					person.Data = mem.ToArray();
-				}
-			}
+                    }
+			    }
+                // At this point, the memory stream contains the modified document.
+                // We could write it back to a SharePoint document library or serve
+                // it from a web server.	
+
+                OpenXmlPowerToolsDocument docPowerTools = new OpenXmlPowerToolsDocument(DocumentName, documentInMemoryStream);
+                using (OpenXmlMemoryStreamDocument streamDoc = new OpenXmlMemoryStreamDocument(docPowerTools))
+                {
+                    WordprocessingDocument wordDoc = streamDoc.GetWordprocessingDocument();
+
+                    wordDoc.MainDocumentPart.Document.Body.RemoveAllChildren();
+                    wordDoc.MainDocumentPart.Document.Save();
+
+                    var person = new PersonFiles();
+                    person.Person = "/";
+                    resultList.Add(person);
+                    person.Name = "template.docx";
+                    person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
+                }
+            }
 			// At this point, the memory stream contains the modified document.
 			// We could write it back to a SharePoint document library or serve
 			// it from a web server.			
