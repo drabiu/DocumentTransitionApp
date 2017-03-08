@@ -187,6 +187,15 @@
     <None Include="DocumentTransitionUniversalApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\ic_add_black_48dp.png" />
+    <Content Include="Assets\ic_dashboard_black_48dp.png" />
+    <Content Include="Assets\ic_description_black_48dp.png" />
+    <Content Include="Assets\ic_library_add_black_48dp.png" />
+    <Content Include="Assets\ic_library_books_black_48dp.png" />
+    <Content Include="Assets\ic_settings_black_36dp.png" />
+    <Content Include="Assets\ic_sort_black_48dp.png" />
+    <Content Include="Assets\ic_undo_black_48dp.png" />
+    <Content Include="Assets\ic_view_carousel_black_48dp.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

@@ -8,13 +8,22 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="340" Click="BackButton_Click"/>
+        <Button x:Name="BackButton" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="340" Height="32" Click="BackButton_Click">
+            <Grid>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Back</TextBlock>
+                <Image Source="ms-appx:///Assets/ic_undo_black_48dp.png" Stretch="Uniform" Margin="-142,-2,147,0" Height="30" Width="30" />
+            </Grid>
+        </Button>
         <TextBox x:Name="PersonTextBox" HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="-0.352,0.531" Width="287" TextChanged="PersonTextBox_TextChanged"/>
         <ScrollViewer HorizontalAlignment="Left" Height="509" Margin="10,121,0,0" VerticalAlignment="Top" Width="340">
             <ItemsControl Name="WordSelectPartsItems">
             </ItemsControl>
         </ScrollViewer>
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="340" SelectionChanged="comboBox_SelectionChanged"/>
-        <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="302,47,0,0" VerticalAlignment="Top" Click="AddButton_Click"/>
+        <Button x:Name="AddButton" HorizontalAlignment="Left" Margin="302,47,0,0" VerticalAlignment="Top" Click="AddButton_Click" Height="32" Width="48">
+            <Grid>
+                <Image Source="ms-appx:///Assets/ic_add_black_48dp.png" Stretch="Uniform" Margin="-2,-4,0,0" Height="30" Width="32" />
+            </Grid>
+        </Button>
     </Grid>
 </Page>

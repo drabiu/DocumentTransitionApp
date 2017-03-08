@@ -11,13 +11,48 @@
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" >
             <Frame Name="frame">
                 <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" >
-                    <Button x:Name="buttonFile" Content="Open File" HorizontalAlignment="Stretch" Margin="10,67,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonDocx_Click"/>
-                    <Button x:Name="buttonXml" Content="Edit Parts" IsEnabled="False" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonXml_Click"/>
-                    <Button x:Name="buttonSplit" Content="Split" IsEnabled="False" HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonSplit_Click"/>
-                    <Button x:Name="buttonMerge" Content="Merge" IsEnabled="True" HorizontalAlignment="Left" Margin="10,426,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonMerge_Click"/>
-                    <Button x:Name="buttonGenerateSplit" Content="Generate Split XML" IsEnabled="False" HorizontalAlignment="Stretch" Margin="10,220,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonGenerateSplit_Click"/>
-                    <Button x:Name="buttonLoadSplit" Content="Load Split XML" IsEnabled="False" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonLoadSplit_Click"/>
-                    <Button x:Name="buttonSettings" HorizontalAlignment="Left" Margin="10,598,0,0" VerticalAlignment="Top" Width="340" Height="30" Content="Settings" FontSize="12" Click="buttonSettings_Click"/>
+                    <Button x:Name="buttonFile" HorizontalAlignment="Stretch" Margin="10,67,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonDocx_Click" Background="#33000000">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Open File</TextBlock>
+                            <Image Source="Assets/ic_description_black_48dp.png" Stretch="Uniform" Margin="-132,0,147,0" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="buttonXml" IsEnabled="False" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonXml_Click">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Edit Parts</TextBlock>
+                            <Image Source="Assets/ic_sort_black_48dp.png" Stretch="Uniform" Margin="-132,0,147,0" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="buttonSplit" IsEnabled="False" HorizontalAlignment="Left" Margin="10,366,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonSplit_Click">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Split</TextBlock>
+                            <Image Source="Assets/ic_dashboard_black_48dp.png" Stretch="Uniform" Margin="-132,0,147,0" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="buttonMerge" IsEnabled="True" HorizontalAlignment="Left" Margin="10,426,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonMerge_Click">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Merge</TextBlock>
+                            <Image Source="Assets/ic_view_carousel_black_48dp.png" Stretch="Uniform" Margin="-132,0,147,0" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="buttonGenerateSplit" IsEnabled="False" HorizontalAlignment="Stretch" Margin="10,220,10,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonGenerateSplit_Click">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Generate Split XML</TextBlock>
+                            <Image Source="Assets/ic_library_add_black_48dp.png" Stretch="Uniform" Margin="-132,0,147,0" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="buttonLoadSplit" IsEnabled="False" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="55" Width="340" Click="buttonLoadSplit_Click">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Load Split XML</TextBlock>
+                            <Image Source="Assets/ic_library_books_black_48dp.png" Stretch="Uniform" Margin="-132,0,147,0" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="buttonSettings" HorizontalAlignment="Left" Margin="10,598,0,0" VerticalAlignment="Top" Width="340" Height="30" FontSize="12" Click="buttonSettings_Click">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Settings</TextBlock>
+                            <Image Source="Assets/ic_settings_black_36dp.png" Stretch="Uniform" Margin="-142,0,157,0" />
+                        </Grid>
+                    </Button>
                 </Grid>
             </Frame>
         </Grid>
