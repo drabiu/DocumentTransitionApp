@@ -61,11 +61,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Open-XML-SDK-Office2016\DocumentFormat.OpenXml\DocumentFormat.OpenXml.csproj">
+    <ProjectReference Include="..\..\DocumentFormat\DocumentFormat.OpenXml.csproj">
       <Project>{e5d39c6a-9067-477e-b0d3-a9419b86e6e5}</Project>
       <Name>DocumentFormat.OpenXml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Open-XML-SDK-Office2016\System.IO.Packaging\System.IO.Packaging.csproj">
+    <ProjectReference Include="..\..\System.IO\System.IO.Packaging.csproj">
       <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
       <Name>System.IO.Packaging</Name>
     </ProjectReference>

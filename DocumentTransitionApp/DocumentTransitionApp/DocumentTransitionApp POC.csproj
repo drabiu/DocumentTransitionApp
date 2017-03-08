@@ -41,10 +41,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenXMLSDK-MOT.2.6.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -100,7 +96,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -124,6 +119,10 @@
     <None Include="Service References\TransitionAppService\TransitionAppServices1.wsdl" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DocumentFormat\DocumentFormat.OpenXml.csproj">
+      <Project>{e5d39c6a-9067-477e-b0d3-a9419b86e6e5}</Project>
+      <Name>DocumentFormat.OpenXml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DocumentMergeEngine\DocumentMergeEngine.csproj">
       <Project>{9fa41ede-2545-4f48-901b-e29e4605967b}</Project>
       <Name>DocumentMergeEngine</Name>

@@ -60,7 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Open-XML-SDK-Office2016\DocumentFormat.OpenXml\DocumentFormat.OpenXml.csproj">
+    <ProjectReference Include="..\..\DocumentFormat\DocumentFormat.OpenXml.csproj">
       <Project>{e5d39c6a-9067-477e-b0d3-a9419b86e6e5}</Project>
       <Name>DocumentFormat.OpenXml</Name>
     </ProjectReference>
