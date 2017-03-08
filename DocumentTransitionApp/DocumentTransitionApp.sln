@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionApp POC", "DocumentTransitionApp\DocumentTransitionApp POC.csproj", "{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{364AF44B-B5C5-4A2F-8231-092B72F1878B} = {364AF44B-B5C5-4A2F-8231-092B72F1878B}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitDescriptionObjects", "SplitDescriptionObjects\SplitDescriptionObjects.csproj", "{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnmarshallingSplitXml", "UnmarshallingSplitXml\UnmarshallingSplitXml.csproj", "{84CBCBE8-CEAE-43F0-A73A-856494DB5E4F}"
@@ -17,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentMergeEngine", "DocumentMergeEngine\DocumentMergeEngine.csproj", "{9FA41EDE-2545-4F48-901B-E29E4605967B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionAppServices", "DocumentTransitionAppServices\DocumentTransitionAppServices\DocumentTransitionAppServices.csproj", "{364AF44B-B5C5-4A2F-8231-092B72F1878B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentTransitionUniversalApp", "DocumentTransitionUniversalApp\DocumentTransitionUniversalApp.csproj", "{0AED4B07-0FFA-4215-92FE-BB01B4F09929}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentEditPartsEngine", "DocumentEditPartsEngine\DocumentEditPartsEngine.csproj", "{55FC58A3-200E-4FE1-84F5-337427620426}"
 EndProject
@@ -88,18 +81,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Debug|x64.Build.0 = Debug|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Release|ARM.ActiveCfg = Release|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Release|x64.ActiveCfg = Release|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Release|x64.Build.0 = Release|Any CPU
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F}.Release|x86.ActiveCfg = Release|Any CPU
 		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60F4C12A-49BA-4831-ABCE-6D83FF46FBDE}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -160,26 +141,6 @@ Global
 		{364AF44B-B5C5-4A2F-8231-092B72F1878B}.Release|x64.ActiveCfg = Release|Any CPU
 		{364AF44B-B5C5-4A2F-8231-092B72F1878B}.Release|x64.Build.0 = Release|Any CPU
 		{364AF44B-B5C5-4A2F-8231-092B72F1878B}.Release|x86.ActiveCfg = Release|Any CPU
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|ARM.ActiveCfg = Debug|ARM
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|ARM.Build.0 = Debug|ARM
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|ARM.Deploy.0 = Debug|ARM
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|x64.ActiveCfg = Debug|x64
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|x64.Build.0 = Debug|x64
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|x64.Deploy.0 = Debug|x64
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|x86.ActiveCfg = Debug|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|x86.Build.0 = Debug|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Debug|x86.Deploy.0 = Debug|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|Any CPU.ActiveCfg = Release|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|ARM.ActiveCfg = Release|ARM
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|ARM.Build.0 = Release|ARM
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|ARM.Deploy.0 = Release|ARM
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x64.ActiveCfg = Release|x64
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x64.Build.0 = Release|x64
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x64.Deploy.0 = Release|x64
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x86.ActiveCfg = Release|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x86.Build.0 = Release|x86
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929}.Release|x86.Deploy.0 = Release|x86
 		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55FC58A3-200E-4FE1-84F5-337427620426}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -329,9 +290,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E2F76D79-69B5-47C3-91E4-5A49FDA31D2F} = {D8038963-C722-4C6A-A06F-980FA949D4A2}
 		{364AF44B-B5C5-4A2F-8231-092B72F1878B} = {226D04B7-B3D6-47E1-9503-72788BC755C0}
-		{0AED4B07-0FFA-4215-92FE-BB01B4F09929} = {D8038963-C722-4C6A-A06F-980FA949D4A2}
 		{DFDF3DD7-AD04-4950-BF93-0910A190BFD7} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
 		{BEEB9A6C-7580-45C7-AC7D-10EF647E0FF3} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
 		{8E0D8A4B-68A3-41C6-A3C6-9F366F4D85A0} = {5D65747E-01E0-4CBB-BEB6-8A774EF01CA0}
