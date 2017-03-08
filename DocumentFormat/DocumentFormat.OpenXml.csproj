@@ -261,16 +261,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.IO\System.IO.Packaging.csproj">
-      <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
-      <Name>System.IO.Packaging</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="src\GeneratedCode\O12SchemaConstraintDatas.bin" />
     <None Include="src\GeneratedCode\O14SchemaConstraintDatas.bin" />
     <None Include="src\GeneratedCode\O15SchemaConstraintDatas.bin" />
     <None Include="src\GeneratedCode\O16SchemaConstraintDatas.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.IO\System.IO.Packaging.csproj">
+      <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
+      <Name>System.IO.Packaging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

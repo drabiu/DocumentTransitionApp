@@ -123,6 +123,10 @@
       <Project>{e5d39c6a-9067-477e-b0d3-a9419b86e6e5}</Project>
       <Name>DocumentFormat.OpenXml</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\System.IO\System.IO.Packaging.csproj">
+      <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
+      <Name>System.IO.Packaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DocumentMergeEngine\DocumentMergeEngine.csproj">
       <Project>{9fa41ede-2545-4f48-901b-e29e4605967b}</Project>
       <Name>DocumentMergeEngine</Name>
