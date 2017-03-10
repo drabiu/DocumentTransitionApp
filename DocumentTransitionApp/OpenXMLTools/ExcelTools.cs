@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using OpenXMLTools.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,11 @@ namespace OpenXMLTools
             _excelDocument = document;
         }
 
-        public void AppendToSharedStringTablePart()
+        public IEnumerable<SharedStringItem> GetAddedSharedStringItems(SpreadsheetDocument target)
         {
-            //need to add string to this table in order for them to be merged later
-            //excelDoc.WorkbookPart.SharedStringTablePart
+            var items = target.WorkbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().Select(el => el.CloneNode(true) as SharedStringItem);
+
+            return items;
         }
 
         public void RemoveReferencesFromCalculationChainPart()
