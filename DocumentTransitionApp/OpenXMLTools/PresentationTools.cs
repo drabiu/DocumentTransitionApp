@@ -42,6 +42,7 @@ namespace OpenXMLTools
 
             presentationPart.Presentation.SlideMasterIdList.RemoveAllChildren();
             uint uniqueId = GetMaxIdFromChild(presentationPart.Presentation.SlideMasterIdList);
+            //check what if relationshipids repeat?
             foreach (string slideRelationshipId in slideRelationshipIdList)
             {
                 maxSlideId++;

@@ -6,6 +6,7 @@ namespace OpenXMLTools.Interfaces
 {
     public interface IExcelTools
     {
-        IEnumerable<SharedStringItem> GetAddedSharedStringItems(SpreadsheetDocument target);
+        GetMissingSharedStringItemsResult GetMissingSharedStringItems(SpreadsheetDocument target, SpreadsheetDocument source);
+        SpreadsheetDocument MergeWorkSheets(SpreadsheetDocument target, SpreadsheetDocument source);
     }
 }

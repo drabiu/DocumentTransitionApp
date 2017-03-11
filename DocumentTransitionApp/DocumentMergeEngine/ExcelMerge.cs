@@ -5,6 +5,7 @@ using OpenXmlPowerTools;
 using OpenXMLTools;
 using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace DocumentMergeEngine
     public class ExcelMerge : DocumentMerge, IMerge
     {
         IExcelTools ExcelTools;
+
+        public ExcelMerge()
+        {
+            ExcelTools = new ExcelTools();
+        }
 
         public byte[] Run(List<PersonFiles> files)
         {
@@ -26,9 +32,7 @@ namespace DocumentMergeEngine
                 using (OpenXmlMemoryStreamDocument streamEmptyDoc = new OpenXmlMemoryStreamDocument(docPowerTools))
                 {
                     SpreadsheetDocument excelTemplateDoc = streamEmptyDoc.GetSpreadsheetDocument();
-                    ExcelTools = new ExcelTools(excelTemplateDoc);
-                    Sheets sheets = new Sheets();
-                    List<SharedStringItem> sharedStringItems = new List<SharedStringItem>();
+                    excelTemplateDoc.WorkbookPart.Workbook.Sheets = new Sheets();
 
                     MergeDocument documentXml = mergeXml.Items.First();
                     foreach (MergeDocumentPart part in documentXml.Part)
@@ -39,29 +43,18 @@ namespace DocumentMergeEngine
                             OpenXmlPowerToolsDocument docPartPowerTools = new OpenXmlPowerToolsDocument(string.Empty, docPartInMemoryStream);
                             using (OpenXmlMemoryStreamDocument streamPartDoc = new OpenXmlMemoryStreamDocument(docPartPowerTools))
                             {                     
-                                SpreadsheetDocument spreadSheetDocument = streamPartDoc.GetSpreadsheetDocument();
-
-                                sharedStringItems.AddRange(ExcelTools.GetAddedSharedStringItems(spreadSheetDocument));
-                                // Assign a reference to the existing document body.
-                                foreach (Sheet element in spreadSheetDocument.WorkbookPart.Workbook.Sheets)
-                                {
-                                    sheets.Append(element.CloneNode(true));
-                                }
+                                SpreadsheetDocument spreadSheetDocument = streamPartDoc.GetSpreadsheetDocument();                               
+                                ExcelTools.MergeWorkSheets(excelTemplateDoc, spreadSheetDocument);
 
                                 // Close the handle explicitly.
                                 spreadSheetDocument.Close();
                             }
                         }
                     }
-
-
-                    excelTemplateDoc.WorkbookPart.Workbook.Sheets = sheets;
-                    excelTemplateDoc.WorkbookPart.SharedStringTablePart.SharedStringTable.Append(sharedStringItems);
-                    excelTemplateDoc.WorkbookPart.Workbook.Save();
-
+                                                
                     return streamEmptyDoc.GetModifiedDocument().DocumentByteArray;
                 }
             }
-        }
+        }      
     }
 }

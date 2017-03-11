@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelTools.cs" />
+    <Compile Include="Excel\ExcelMergeData.cs" />
+    <Compile Include="Excel\ExcelTools.cs" />
+    <Compile Include="Excel\GetMissingSharedStringItems.cs" />
     <Compile Include="Interfaces\IExcelTools.cs" />
     <Compile Include="Interfaces\IPresentationTools.cs" />
     <Compile Include="PresentationTools.cs" />

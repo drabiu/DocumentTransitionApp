@@ -12,10 +12,12 @@ namespace OpenXMLToolsTests
     {
         [TestInitialize]
         public void Init()
-        { }
+        {
+        }
 
         [TestCleanup]
         public void Finish()
-        { }
+        {
+        }
     }
 }
