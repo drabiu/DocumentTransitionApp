@@ -78,9 +78,10 @@ namespace DocumentTransitionUniversalApp.Views
 
         private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements, ElementTypes elementType)
         {
+            TreeElementIcon icon = new TreeElementIcon(elementType);
             foreach (var element in elements)
             {
-                var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, elementType, element.Name, element.Indent, TreeElementIcon.WordParagraph);
+                var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, elementType, element.Name, element.Indent, icon.GetIcon());
                 _pageData.SelectionParts.Add(item);
             }
         }

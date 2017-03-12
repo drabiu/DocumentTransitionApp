@@ -112,7 +112,7 @@ namespace DocumentTransitionUniversalApp
             this._ownerName = ownerName;
         }
 
-        public DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement ConvertToPartsSelectionTreeElement()
+        public TransitionAppServices.PartsSelectionTreeElement ConvertToPartsSelectionTreeElement()
         {
             var part = new TransitionAppServices.PartsSelectionTreeElement();
             part.Id = this.Id;

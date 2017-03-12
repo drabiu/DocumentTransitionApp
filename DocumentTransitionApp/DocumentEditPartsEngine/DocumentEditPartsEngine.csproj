@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\DocumentElementTypes.cs" />
     <Compile Include="Interfaces\IExcelParts.cs" />
     <Compile Include="Interfaces\IPresentationParts.cs" />
     <Compile Include="PresentationDocumentParts.cs" />

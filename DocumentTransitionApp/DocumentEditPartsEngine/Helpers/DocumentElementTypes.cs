@@ -1,9 +1,8 @@
-﻿namespace DocumentTransitionUniversalApp.Data_Structures
-{
-    public interface ISubTypeElement
-    {
-    }
+﻿using System;
 
+namespace DocumentEditPartsEngine.Helpers
+{
+    [Serializable]
     public abstract class ElementTypes
     {
     }

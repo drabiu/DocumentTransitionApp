@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DocumentEditPartsEngine.Helpers;
 using DocumentEditPartsEngine.Interfaces;
-using System.IO;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace DocumentEditPartsEngine
 {
@@ -20,13 +18,12 @@ namespace DocumentEditPartsEngine
             return string.Format("slId{0}", id);
         }
 
-        public static bool IsSupportedType(OpenXmlElement part)
+        public static bool IsSupportedType(OpenXmlElement element)
         {
             bool isSupported = false;
-            isSupported = part is Sheet;
-            //|| element is Wordproc.Picture
-            //|| element is Wordproc.Drawing
-            //|| element is Wordproc.Table;
+            isSupported = element is Sheet
+            || element is Row
+            || element is Column;
 
             return isSupported;
         }
@@ -65,7 +62,7 @@ namespace DocumentEditPartsEngine
                 if (element is Sheet)
                 {
                     string sheetName = string.Format("[Sht]: {0}", (element as Sheet).Name);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSlideIdFormatter(id), sheetName, 0));
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSlideIdFormatter(id), sheetName, 0, new ExcelElementType.SheetElementSubType()));
                 }
             }
 
