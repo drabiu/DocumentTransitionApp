@@ -1,5 +1,4 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
-using System;
 using System.Collections.Generic;
 
 namespace OpenXMLTools
@@ -16,12 +15,12 @@ namespace OpenXMLTools
         }
     }
 
-    public class GetMissingSharedStringItemsResult
+    public class GetMergedSharedStringItemsResult
     {
-        public IList<SharedStringItem> SharedStringItems { get; set; }
+        public List<SharedStringItem> SharedStringItems { get; set; }
         public IList<SharedStringIndex> SharedStringIndexes { get; set; }
 
-        public GetMissingSharedStringItemsResult()
+        public GetMergedSharedStringItemsResult()
         {
             SharedStringItems = new List<SharedStringItem>();
             SharedStringIndexes = new List<SharedStringIndex>();

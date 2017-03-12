@@ -8,7 +8,6 @@ namespace OpenXMLTools
     public class ExcelMergeData
     {
         public List<Sheet> Sheets;
-        public List<SharedStringItem> SharedStringItems;
         public Dictionary<string, WorksheetPart> WorksheetPartList;
 
         public ExcelMergeData()
@@ -30,8 +29,6 @@ namespace OpenXMLTools
                 if (document.WorkbookPart.Workbook.Sheets.Any(s => (s as Sheet).Id == elemntId))
                     WorksheetPartList.Add(elemntId, element);
             }
-
-            //SharedStringItems.AddRange(ExcelTools.GetAddedSharedStringItems(document));
         }
 
         public void SetDocumentData(SpreadsheetDocument document)
@@ -43,7 +40,6 @@ namespace OpenXMLTools
         private void InitFields()
         {
             Sheets = new List<Sheet>();
-            SharedStringItems = new List<SharedStringItem>();
             WorksheetPartList = new Dictionary<string, WorksheetPart>();
         }
     }

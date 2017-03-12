@@ -5,7 +5,6 @@ using OpenXmlPowerTools;
 using OpenXMLTools;
 using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,8 +41,8 @@ namespace DocumentMergeEngine
                         {
                             OpenXmlPowerToolsDocument docPartPowerTools = new OpenXmlPowerToolsDocument(string.Empty, docPartInMemoryStream);
                             using (OpenXmlMemoryStreamDocument streamPartDoc = new OpenXmlMemoryStreamDocument(docPartPowerTools))
-                            {                     
-                                SpreadsheetDocument spreadSheetDocument = streamPartDoc.GetSpreadsheetDocument();                               
+                            {
+                                SpreadsheetDocument spreadSheetDocument = streamPartDoc.GetSpreadsheetDocument();
                                 ExcelTools.MergeWorkSheets(excelTemplateDoc, spreadSheetDocument);
 
                                 // Close the handle explicitly.
@@ -51,10 +50,10 @@ namespace DocumentMergeEngine
                             }
                         }
                     }
-                                                
+
                     return streamEmptyDoc.GetModifiedDocument().DocumentByteArray;
                 }
             }
-        }      
+        }
     }
 }

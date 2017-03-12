@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -11,7 +7,7 @@ namespace DocumentTransitionUniversalApp.Helpers
 {
     public static class FileHelper
     {
-        public static async void SaveFile(string fileName, byte[] fileBinary, params string[] filters)
+        public static async void SaveFilePickFolder(string fileName, byte[] fileBinary, params string[] filters)
         {
             FolderPicker folderPicker = new FolderPicker();
             foreach (var filter in filters)
@@ -51,6 +47,7 @@ namespace DocumentTransitionUniversalApp.Helpers
             {
                 using (var s = await file.OpenStreamForWriteAsync())
                 {
+                    s.SetLength(0);
                     s.Write(fileBinary, 0, fileBinary.Length);
                 }
             }

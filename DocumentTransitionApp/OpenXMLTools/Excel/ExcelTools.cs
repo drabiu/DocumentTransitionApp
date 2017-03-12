@@ -16,44 +16,39 @@ namespace OpenXMLTools
             ExcelMergeData mergeData = new ExcelMergeData();
             mergeData.SetDocumentData(source);
 
-            var missingSharedStringItems = GetMissingSharedStringItems(target, source);
-            target.WorkbookPart.SharedStringTablePart.SharedStringTable.Append(missingSharedStringItems.SharedStringItems);
-            FixSharedStringReference(mergeData.WorksheetPartList, missingSharedStringItems.SharedStringIndexes);
+            var mergedSharedStringItemsResult = GetMergedSharedStringItems(target, source);
+            target.WorkbookPart.SharedStringTablePart.SharedStringTable.RemoveAllChildren();
+            target.WorkbookPart.SharedStringTablePart.SharedStringTable.Append(mergedSharedStringItemsResult.SharedStringItems);
+            FixSharedStringReference(mergeData.WorksheetPartList, mergedSharedStringItemsResult.SharedStringIndexes);
 
-            //delete all related worksheetparts
-            foreach (Sheet element in mergeData.Sheets)
-            {
-                //target.WorkbookPart.DeletePart(element.Id);
-            }
+            DeleteSheetsAndReferencedWorksheetParts(target, mergeData);
+            ReplaceWorkSheetparts(target, mergeData);
 
-            //check if parts relationship id won`t repeat
-            foreach (KeyValuePair<string, WorksheetPart> element in mergeData.WorksheetPartList)
-            {
-                //var elementId = workbook.GetIdOfPart(element);
-                //target.WorkbookPart.AddPart(element.Value, element.Key);
-            }
-
+            FixSheetsIds(target, mergeData);
             target.WorkbookPart.Workbook.Sheets.Append(mergeData.Sheets);
-            //target.WorkbookPart.Workbook.Save();
+
             target.Save();
 
             return target;
         }
 
-        public GetMissingSharedStringItemsResult GetMissingSharedStringItems(SpreadsheetDocument target, SpreadsheetDocument source)
+        public GetMergedSharedStringItemsResult GetMergedSharedStringItems(SpreadsheetDocument target, SpreadsheetDocument source)
         {
-            var targetItems = target.WorkbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().Select(el => el.CloneNode(true) as SharedStringItem).ToList();
-            var targetItemsText = new HashSet<string>(targetItems.Select(t => t.Text.Text));
-            var sourceItems = source.WorkbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().Select(el => el.CloneNode(true) as SharedStringItem);
+            var targetItems = target.WorkbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>();
+            var sourceItems = source.WorkbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>();
 
-            GetMissingSharedStringItemsResult result = new GetMissingSharedStringItemsResult();
+            var mergedItems = targetItems.Union(sourceItems, new SharedStringItemsComparer()).ToArray();
+
+            GetMergedSharedStringItemsResult result = new GetMergedSharedStringItemsResult();
+            result.SharedStringItems.AddRange(mergedItems.Select(el => el.CloneNode(true) as SharedStringItem));
+
             int sourceItemIndex = 0;
             foreach (SharedStringItem item in sourceItems)
             {
-                if (!targetItemsText.Contains(item.Text.Text))
+                int newIndex = Array.FindIndex(mergedItems, m => m.InnerText == item.InnerText);
+                if (newIndex != -1 && newIndex != sourceItemIndex)
                 {
-                    result.SharedStringItems.Add(item);
-                    result.SharedStringIndexes.Add(new SharedStringIndex(sourceItemIndex, targetItems.Count - 1));
+                    result.SharedStringIndexes.Add(new SharedStringIndex(sourceItemIndex, newIndex));
                 }
 
                 sourceItemIndex++;
@@ -71,8 +66,8 @@ namespace OpenXMLTools
             //when spliting need to remove unused references to removed sheets
             //excelDoc.WorkbookPart.CalculationChainPart 
         }
-      
-        private IDictionary<string, WorksheetPart> FixSharedStringReference(IDictionary<string, WorksheetPart> workSheetPartList, IList<SharedStringIndex> indexes)
+
+        private Dictionary<string, WorksheetPart> FixSharedStringReference(Dictionary<string, WorksheetPart> workSheetPartList, IList<SharedStringIndex> indexes)
         {
             var oldIndexes = new HashSet<string>(indexes.Select(i => i.OldIndex.ToString()));
             foreach (KeyValuePair<string, WorksheetPart> element in workSheetPartList)
@@ -80,18 +75,72 @@ namespace OpenXMLTools
                 var cells = element.Value.Worksheet.Descendants<Cell>().Where(cell => cell?.DataType?.Value == CellValues.SharedString);
                 foreach (Cell cell in cells)
                 {
-                    if (oldIndexes.Contains(cell.CellValue.Text))
+                    if (oldIndexes.Contains(cell.CellValue.InnerText))
                     {
-                        int cellOldIndex = int.Parse(cell.CellValue.Text);
+                        int cellOldIndex = int.Parse(cell.CellValue.InnerText);
                         cell.CellValue.Text = indexes.First(i => i.OldIndex == cellOldIndex).NewIndex.ToString();
+                        element.Value.Worksheet.Save();
                     }
-                }              
+                }
             }
 
             return workSheetPartList;
         }
 
-        #endregion  
+        private SpreadsheetDocument DeleteSheetsAndReferencedWorksheetParts(SpreadsheetDocument target, ExcelMergeData mergeData)
+        {
+            //delete all already existing sheets and related worksheetparts
+            foreach (Sheet element in mergeData.Sheets)
+            {
+                var sheetId = element.Id;
+                var sheet = target.WorkbookPart.Workbook.Descendants<Sheet>()
+                           .FirstOrDefault(s => s.Id == sheetId);
+                sheet?.Remove();
 
+                try
+                {
+                    var worksheetPart = (WorksheetPart)(target.WorkbookPart.GetPartById(sheetId));
+                    target.WorkbookPart.DeletePart(worksheetPart);
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    continue;
+                }
+            }
+
+            return target;
+        }
+
+        private void FixSheetsIds(SpreadsheetDocument target, ExcelMergeData mergeData)
+        {
+            foreach (var item in mergeData.Sheets)
+            {
+                item.Id = target.WorkbookPart.GetIdOfPart(mergeData.WorksheetPartList[item.Id]);
+            }
+        }
+
+        private void ReplaceWorkSheetparts(SpreadsheetDocument target, ExcelMergeData mergeData)
+        {
+            //check make sure relationship id won`t repeat in differnet documents after adding sheets
+            var worksheetPartList = mergeData.WorksheetPartList.ToList();
+            foreach (KeyValuePair<string, WorksheetPart> element in worksheetPartList)
+            {
+                var addedWorksheetPart = target.WorkbookPart.AddPart(element.Value);
+                mergeData.WorksheetPartList[element.Key] = addedWorksheetPart;
+            }
+        }
+
+        private void CleanView(WorksheetPart worksheetPart)
+        {
+            //There can only be one sheet that has focus
+            SheetViews views = worksheetPart.Worksheet.GetFirstChild<SheetViews>();
+            if (views != null)
+            {
+                views.Remove();
+                worksheetPart.Worksheet.Save();
+            }
+        }
+
+        #endregion
     }
 }

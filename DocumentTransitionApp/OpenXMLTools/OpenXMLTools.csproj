@@ -47,7 +47,8 @@
   <ItemGroup>
     <Compile Include="Excel\ExcelMergeData.cs" />
     <Compile Include="Excel\ExcelTools.cs" />
-    <Compile Include="Excel\GetMissingSharedStringItems.cs" />
+    <Compile Include="Excel\GetMergedSharedStringItems.cs" />
+    <Compile Include="Excel\SharedStringItemsComparer.cs" />
     <Compile Include="Interfaces\IExcelTools.cs" />
     <Compile Include="Interfaces\IPresentationTools.cs" />
     <Compile Include="PresentationTools.cs" />
