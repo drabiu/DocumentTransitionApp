@@ -1,45 +1,61 @@
-﻿using System;
+﻿using DocumentTransitionUniversalApp.Data_Structures;
+using DocumentTransitionUniversalApp.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using Windows.UI.Popups;
-using System.Collections.ObjectModel;
 using Service = DocumentTransitionUniversalApp.TransitionAppServices;
-using DocumentTransitionUniversalApp.Data_Structures;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace DocumentTransitionUniversalApp.Views
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class WordSelectPartsPage : Page
-	{
-		MainPage _source;
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class WordSelectPartsPage : Page
+    {
+        #region Fields
+
+        MainPage _source;
         public WordPartsPageData _pageData { get; private set; }
 
-		public WordSelectPartsPage()
-		{
-			this.InitializeComponent();
+        #endregion
+
+        #region Constructors
+
+        public WordSelectPartsPage()
+        {
+            this.InitializeComponent();
             InitializeVariables();
         }
+
+        #endregion
+
+        #region public methods
 
         public void CopyDataToControl(WordPartsPageData data)
         {
             _pageData = data;
         }
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			if (e.Parameter is MainPage)
-			{
-				this._source = e.Parameter as MainPage;
+        #endregion
+
+        #region Private methods
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is MainPage)
+            {
+                this._source = e.Parameter as MainPage;
                 if (this._source.WordPartPage != null)
                 {
                     _pageData = new WordPartsPageData(this._source.WordPartPage);
@@ -49,28 +65,28 @@ namespace DocumentTransitionUniversalApp.Views
                 {
                     InitializeItems();
                 }
-			}
+            }
 
             base.OnNavigatedTo(e);
-		}
+        }
 
-		private void BackButton_Click(object sender, RoutedEventArgs e)
-		{
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
             _source.WordPartPage = this;
             this.Frame.Navigate(typeof(MainPage), _source);
-		}
+        }
 
         private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements, ElementTypes elementType)
         {
             foreach (var element in elements)
             {
-                var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, elementType, element.Name, element.Indent);
+                var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, elementType, element.Name, element.Indent, TreeElementIcon.WordParagraph);
                 _pageData.SelectionParts.Add(item);
             }
         }
 
-		private void CreateSelectPartsUI(IEnumerable<PartsSelectionTreeElement<ElementTypes>> elements)
-		{
+        private void CreateSelectPartsUI(IEnumerable<PartsSelectionTreeElement<ElementTypes>> elements)
+        {
             WordSelectPartsItems.Items.Clear();
             foreach (var element in elements)
             {
@@ -79,7 +95,7 @@ namespace DocumentTransitionUniversalApp.Views
         }
 
         private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes> element)
-		{
+        {
             Button button = new Button();
 
             if (element.Selected)
@@ -89,7 +105,23 @@ namespace DocumentTransitionUniversalApp.Views
 
             button.Name = element.Id;
             button.Margin = new Thickness(element.Indent * 20, 5, 0, 5);
-            button.Content = element.Name;
+
+            Grid grid = new Grid();
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = element.Name;
+            textBlock.Margin = new Thickness(30, 0, 0, 0);
+            textBlock.VerticalAlignment = VerticalAlignment.Center;
+            Image image = new Image();
+            image.Source = new BitmapImage(new Uri(element.Icon));
+            image.Stretch = Stretch.Uniform;
+            image.Width = 30;
+            image.Height = 30;
+            image.HorizontalAlignment = HorizontalAlignment.Left;
+            image.Margin = new Thickness(-4, 0, 0, 0);
+            grid.Children.Add(image);
+            grid.Children.Add(textBlock);
+
+            button.Content = grid;
 
             ToolTip toolTip = new ToolTip();
             toolTip.Content = element.Name;
@@ -98,13 +130,13 @@ namespace DocumentTransitionUniversalApp.Views
             if ((string)comboBox.SelectedItem != null)
             {
                 var comboItem = Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem);
-                if (element.CheckIfCanBeSelected(Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboItem.Name).Name) && comboItem.Id != WordPartsPageData.AllItemsId)
+                if (element.CheckIfCanBeSelected(Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, comboItem.Name).Name) && comboItem.Id != WordPartsPageData.AllItemsId)
                 {
                     button.Tapped += Button_Tapped;
                 }
                 else
                     button.Background = new SolidColorBrush(Colors.DimGray);
-            }                               
+            }
             else
                 button.Background = new SolidColorBrush(Colors.DimGray);
 
@@ -129,9 +161,9 @@ namespace DocumentTransitionUniversalApp.Views
         }
 
         private async void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
+        {
             CreateSelectPartsUI(_pageData.SelectionParts);
-		}
+        }
 
         private void PersonTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -154,7 +186,7 @@ namespace DocumentTransitionUniversalApp.Views
             {
                 _pageData.ComboItems.Add(new Data_Structures.ComboBoxItem() { Id = ++_pageData.LastId, Name = name });
             }
-            
+
             comboBox.ItemsSource = _pageData.ComboItems.Select(cb => cb.Name);
             comboBox.SelectedValue = name;
             PersonTextBox.Text = string.Empty;
@@ -182,7 +214,7 @@ namespace DocumentTransitionUniversalApp.Views
                 case (MainPage.DocumentType.Presentation):
                     InitPresentation();
                     break;
-            }     
+            }
         }
 
         private async void InitWord()
@@ -194,11 +226,11 @@ namespace DocumentTransitionUniversalApp.Views
                 var result = await serviceClient.GetWordPartsAsync(_source.FileName, _source.documentBinary);
                 PrepareListOfItems(result.Body.GetWordPartsResult, _source.DocumentElementTypes);
             }
-            catch(System.ServiceModel.CommunicationException ex)
+            catch (System.ServiceModel.CommunicationException ex)
             {
                 MessageDialog dialog = new MessageDialog(ex.Message);
                 await dialog.ShowAsync();
-            }           
+            }
         }
 
         private async void InitPresentation()
@@ -224,11 +256,13 @@ namespace DocumentTransitionUniversalApp.Views
                 var result = await serviceClient.GetExcelPartsAsync(_source.FileName, _source.documentBinary);
                 PrepareListOfItems(result.Body.GetExcelPartsResult, _source.DocumentElementTypes);
             }
-            catch(System.ServiceModel.CommunicationException ex)
+            catch (System.ServiceModel.CommunicationException ex)
             {
                 MessageDialog dialog = new MessageDialog(ex.Message);
                 await dialog.ShowAsync();
             }
         }
-    }    
+
+        #endregion
+    }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DocumentTransitionUniversalApp.Data_Structures
+﻿namespace DocumentTransitionUniversalApp.Data_Structures
 {
     public abstract class ElementTypes
     {
