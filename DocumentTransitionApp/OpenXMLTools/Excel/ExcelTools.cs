@@ -59,6 +59,16 @@ namespace OpenXMLTools
 
         #endregion
 
+        #region Static public methods
+
+        public static string GetRowTitle(Row row, int nameLength)
+        {
+
+            return string.Empty;
+        }
+
+        #endregion
+
         #region Private methods
 
         private void RemoveReferencesFromCalculationChainPart()

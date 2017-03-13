@@ -1,9 +1,7 @@
-﻿using DocumentTransitionUniversalApp.Views;
-using System;
+﻿using DocumentTransitionUniversalApp.TransitionAppServices;
+using DocumentTransitionUniversalApp.Views;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace DocumentTransitionUniversalApp.Data_Structures
 {
@@ -12,13 +10,13 @@ namespace DocumentTransitionUniversalApp.Data_Structures
         public List<ComboBoxItem> ComboItems { get; set; }
         public int LastId { get; set; }
         public static int AllItemsId = 0;
-        public List<PartsSelectionTreeElement<ElementTypes>> SelectionParts { get; set; }
+        public ObservableCollection<PartsSelectionTreeElement<ElementType>> SelectionParts { get; set; }
 
         public WordPartsPageData()
         {
             ComboItems = new List<ComboBoxItem>();
             ComboItems.Add(new ComboBoxItem() { Id = LastId = AllItemsId, Name = "All" });
-            SelectionParts = new List<PartsSelectionTreeElement<ElementTypes>>();
+            SelectionParts = new ObservableCollection<PartsSelectionTreeElement<ElementType>>();
         }
 
         public WordPartsPageData(WordSelectPartsPage page)

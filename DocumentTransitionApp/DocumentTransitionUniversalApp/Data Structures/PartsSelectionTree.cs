@@ -10,7 +10,7 @@ namespace DocumentTransitionUniversalApp
 
         public string Id { get; private set; }
         public string ElementId { get; private set; }
-        public ElementType Type { get; private set; }
+        public TransitionAppServices.ElementType Type { get; private set; }
         public IList<PartsSelectionTreeElement<ElementType>> Childs { get; private set; }
         public string Name { get; private set; }
         public string Icon { get; private set; }
@@ -22,7 +22,7 @@ namespace DocumentTransitionUniversalApp
 
         #region Constructors
 
-        public PartsSelectionTreeElement(string id, ElementType type, string name, int indent)
+        public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, string name, int indent)
         {
             this.Id = id;
             this.Type = type;
@@ -33,30 +33,30 @@ namespace DocumentTransitionUniversalApp
             this._ownerName = string.Empty;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent, string icon) : this(id, type, name, indent)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, string icon) : this(id, type, name, indent)
         {
             this.ElementId = elementId;
             this.Icon = icon;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent) : this(id, type, name, indent)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent) : this(id, type, name, indent)
         {
             this.ElementId = elementId;
         }
 
-        public PartsSelectionTreeElement(string id, ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)
+        public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)
             : this(id, type, name, indent)
         {
             this.Childs.Add(child);
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent, bool selected)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, bool selected)
             : this(id, elementId, type, name, indent)
         {
             this.Selected = selected;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, ElementType type, string name, int indent, bool selected, string ownerName)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, bool selected, string ownerName)
             : this(id, elementId, type, name, indent, selected)
         {
             this._ownerName = ownerName;
@@ -121,6 +121,7 @@ namespace DocumentTransitionUniversalApp
             part.Name = this.Name;
             part.OwnerName = this._ownerName;
             part.Selected = this.Selected;
+            part.Type = this.Type;
 
             return part;
         }

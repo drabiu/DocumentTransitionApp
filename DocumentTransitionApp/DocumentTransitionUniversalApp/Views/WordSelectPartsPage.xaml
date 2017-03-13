@@ -15,7 +15,7 @@
             </Grid>
         </Button>
         <TextBox x:Name="PersonTextBox" HorizontalAlignment="Left" Margin="10,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" RenderTransformOrigin="-0.352,0.531" Width="287" TextChanged="PersonTextBox_TextChanged"/>
-        <ScrollViewer HorizontalAlignment="Left" Height="509" Margin="10,121,0,0" VerticalAlignment="Top" Width="340">
+        <ScrollViewer Name="PartsScrollViewer" HorizontalAlignment="Left" Height="509" Margin="10,121,0,0" VerticalAlignment="Top" Width="340">
             <ItemsControl Name="WordSelectPartsItems">
             </ItemsControl>
         </ScrollViewer>

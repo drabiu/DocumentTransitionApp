@@ -11,7 +11,7 @@
     <AssemblyName>DocumentTransitionUniversalApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
@@ -159,9 +159,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data Structures\ComboBoxItem.cs" />
-    <Compile Include="Data Structures\DocumentElementTypes.cs" />
     <Compile Include="Data Structures\WordPartsPageData.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\LazyLoadingItems.cs" />
     <Compile Include="Helpers\TreeElementIcon.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -186,6 +186,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\align_right_icon&amp;48.png" />
+    <Content Include="Assets\cancel_icon&amp;48.png" />
+    <Content Include="Assets\checkbox_unchecked_icon&amp;48.png" />
     <Content Include="Assets\doc_empty_icon&amp;48.png" />
     <Content Include="Assets\ic_add_black_48dp.png" />
     <Content Include="Assets\ic_dashboard_black_48dp.png" />
@@ -197,6 +199,7 @@
     <Content Include="Assets\ic_undo_black_48dp.png" />
     <Content Include="Assets\ic_view_carousel_black_48dp.png" />
     <Content Include="Assets\layers_2_icon&amp;48.png" />
+    <Content Include="Assets\table_selection_row.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

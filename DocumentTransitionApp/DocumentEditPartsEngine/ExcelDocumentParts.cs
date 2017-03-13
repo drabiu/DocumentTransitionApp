@@ -23,7 +23,8 @@ namespace DocumentEditPartsEngine
             bool isSupported = false;
             isSupported = element is Sheet
             || element is Row
-            || element is Column;
+            //|| element is Column
+            || element is Cell;
 
             return isSupported;
         }
@@ -39,10 +40,27 @@ namespace DocumentEditPartsEngine
             {
                 Workbook workBook = excDoc.WorkbookPart.Workbook;
                 var idIndex = 1;
-                foreach (var sheet in workBook.Sheets)
+                foreach (Sheet sheet in workBook.Sheets)
                 {
                     workBookElements.AddRange(CreatePartsSelectionTreeElements(sheet, idIndex, supportedTypes));
                     idIndex++;
+
+                    var worksheetPart = (WorksheetPart)(excDoc.WorkbookPart.GetPartById(sheet.Id));
+                    //foreach (var row in worksheetPart.Worksheet.Descendants<Column>())
+                    //{
+                    //    idIndex++;
+                    //}
+
+                    foreach (var row in worksheetPart.Worksheet.Descendants<Row>())
+                    {
+                        workBookElements.AddRange(CreatePartsSelectionTreeElements(row, idIndex, supportedTypes));
+                        idIndex++;
+                        foreach (var cell in row.Elements<Cell>())
+                        {
+                            workBookElements.AddRange(CreatePartsSelectionTreeElements(cell, idIndex, supportedTypes));
+                            idIndex++;
+                        }
+                    }
                 }
             }
 
@@ -61,8 +79,22 @@ namespace DocumentEditPartsEngine
             {
                 if (element is Sheet)
                 {
-                    string sheetName = string.Format("[Sht]: {0}", (element as Sheet).Name);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSlideIdFormatter(id), sheetName, 0, new ExcelElementType.SheetElementSubType()));
+                    string sheetName = string.Format("{0}", (element as Sheet).Name);
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSlideIdFormatter(id), sheetName, 0, ElementType.Sheet));
+                }
+                else if (element is Row)
+                {
+                    string rowName = string.Format("Row index: {0}", (element as Row).RowIndex);
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), (element as Row).RowIndex, rowName, 1, ElementType.Row));
+                }
+                else if (element is Column)
+                {
+
+                }
+                else if (element is Cell)
+                {
+                    string cellName = string.Format("Cell name: {0}", (element as Cell).CellReference.Value);
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), (element as Cell).CellReference.Value, cellName, 2, ElementType.Cell));
                 }
             }
 

@@ -1,10 +1,8 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenXMLTools
 {
@@ -20,7 +18,6 @@ namespace OpenXMLTools
                 var paragraph = element as Paragraph;
                 if (paragraph.ChildElements.Any(ch => ch is Run))
                 {
-                    result.Append("[Par]: ");
                     StringBuilder text = new StringBuilder();
                     foreach (Run run in paragraph.ChildElements.OfType<Run>())
                     {

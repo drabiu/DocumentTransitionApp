@@ -1,13 +1,11 @@
 ﻿using DocumentEditPartsEngine.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLTools;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace DocumentEditPartsEngine
 {
@@ -72,7 +70,7 @@ namespace DocumentEditPartsEngine
                 if (element is Paragraph)
                 {
                     string elementId = (element as Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), 0);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), 0, Helpers.ElementType.Paragraph);
                     _paragraphCounter++;
                 }
                 else
@@ -92,6 +90,6 @@ namespace DocumentEditPartsEngine
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             return result;
-        }      
+        }
     }
 }

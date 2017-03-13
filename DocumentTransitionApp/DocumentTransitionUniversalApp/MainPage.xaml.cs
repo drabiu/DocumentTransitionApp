@@ -1,42 +1,40 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
+﻿using DocumentTransitionUniversalApp.Data_Structures;
+using DocumentTransitionUniversalApp.Helpers;
+using DocumentTransitionUniversalApp.Views;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
-using DocumentTransitionUniversalApp.Data_Structures;
 using Service = DocumentTransitionUniversalApp.TransitionAppServices;
-using DocumentTransitionUniversalApp.Views;
-using Windows.UI.Popups;
-using Windows.UI.Core;
-using System.Collections.Generic;
-using System.Globalization;
-using DocumentTransitionUniversalApp.Helpers;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace DocumentTransitionUniversalApp
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class MainPage : Page
-	{
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainPage : Page
+    {
         public WordSelectPartsPage WordPartPage;
-		public StorageFile DocumentFile;
-		public string FileName;
-		public DocumentType FileType;
-        public ElementTypes DocumentElementTypes;
+        public StorageFile DocumentFile;
+        public string FileName;
+        public DocumentType FileType;
 
         public Frame AppFrame { get { return this.frame; } }
-		public byte[] documentBinary;
-		public byte[] xmlBinary;
+        public byte[] documentBinary;
+        public byte[] xmlBinary;
         public static ServiceDecorator Service = new ServiceDecorator();
 
         public enum DocumentType
@@ -50,55 +48,55 @@ namespace DocumentTransitionUniversalApp
         private bool _wasEditParts;
         private StorageFile XmlFile;
 
-		public MainPage()
-		{
-			this.InitializeComponent();
+        public MainPage()
+        {
+            this.InitializeComponent();
 
-			SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
-		}
+            SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
+        }
 
-		private void SystemNavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
-		{
-			bool handled = e.Handled;
-			this.BackRequested(ref handled);
-			e.Handled = handled;
-		}
+        private void SystemNavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            bool handled = e.Handled;
+            this.BackRequested(ref handled);
+            e.Handled = handled;
+        }
 
-		private void BackRequested(ref bool handled)
-		{
-			// Get a hold of the current frame so that we can inspect the app back stack.
+        private void BackRequested(ref bool handled)
+        {
+            // Get a hold of the current frame so that we can inspect the app back stack.
 
-			if (this.AppFrame == null)
-				return;
+            if (this.AppFrame == null)
+                return;
 
-			// Check to see if this is the top-most page on the app back stack.
-			if (this.AppFrame.CanGoBack && !handled)
-			{
-				// If not, set the event to handled and go back to the previous page in the app.
-				handled = true;
-				this.AppFrame.GoBack();
-			}
-		}
+            // Check to see if this is the top-most page on the app back stack.
+            if (this.AppFrame.CanGoBack && !handled)
+            {
+                // If not, set the event to handled and go back to the previous page in the app.
+                handled = true;
+                this.AppFrame.GoBack();
+            }
+        }
 
-		private async void buttonDocx_Click(object sender, RoutedEventArgs e)
-		{
+        private async void buttonDocx_Click(object sender, RoutedEventArgs e)
+        {
             ResetControls();
 
             var picker = new FileOpenPicker();
-			picker.ViewMode = PickerViewMode.List;
-			picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-			picker.FileTypeFilter.Add(".docx");
-			picker.FileTypeFilter.Add(".xlsx");
-			picker.FileTypeFilter.Add(".pptx");
+            picker.ViewMode = PickerViewMode.List;
+            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            picker.FileTypeFilter.Add(".docx");
+            picker.FileTypeFilter.Add(".xlsx");
+            picker.FileTypeFilter.Add(".pptx");
 
-			StorageFile file = await picker.PickSingleFileAsync();
-			if (file != null)
-			{
-				DocumentFile = file;
-				FileName = DocumentFile.Name;
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                DocumentFile = file;
+                FileName = DocumentFile.Name;
                 SetFileType(file.Name);
-				documentBinary = await StorageFileToByteArray(DocumentFile);
-			}
+                documentBinary = await StorageFileToByteArray(DocumentFile);
+            }
 
             InitButtons();
         }
@@ -110,10 +108,10 @@ namespace DocumentTransitionUniversalApp
         }
 
         private async void buttonSplit_Click(object sender, RoutedEventArgs e)
-		{
+        {
             var serviceClient = Service.GetInstance();
             string extension = string.Empty;
-            var result = new ObservableCollection<Service.PersonFiles>();
+            ObservableCollection<TransitionAppServices.PersonFiles> result = new ObservableCollection<TransitionAppServices.PersonFiles>();
             try
             {
                 switch (FileType)
@@ -145,8 +143,8 @@ namespace DocumentTransitionUniversalApp
             }
         }
 
-		private async void buttonMerge_Click(object sender, RoutedEventArgs e)
-		{
+        private async void buttonMerge_Click(object sender, RoutedEventArgs e)
+        {
             var serviceClient = Service.GetInstance();
             var files = await GetFiles();
             if (files.Any())
@@ -174,7 +172,7 @@ namespace DocumentTransitionUniversalApp
                     MessageDialog dialog = new MessageDialog(ex.Message);
                     await dialog.ShowAsync();
                 }
-            }           
+            }
         }
 
         private async void buttonSettings_Click(object sender, RoutedEventArgs e)
@@ -233,14 +231,14 @@ namespace DocumentTransitionUniversalApp
                 {
                     XmlFile = file;
                     xmlBinary = await StorageFileToByteArray(XmlFile);
-                    List<PartsSelectionTreeElement<ElementTypes>> parts = new List<PartsSelectionTreeElement<ElementTypes>>();
+                    ObservableCollection<PartsSelectionTreeElement<Service.ElementType>> parts = new ObservableCollection<PartsSelectionTreeElement<Service.ElementType>>();
                     var response = await GetPartsFromXml();
                     if (!response.IsError)
                     {
                         var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
-                            var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, DocumentElementTypes, element.Name, element.Indent, element.Selected, element.OwnerName);
+                            var item = new PartsSelectionTreeElement<Service.ElementType>(element.Id, element.ElementId, element.Type, element.Name, element.Indent, element.Selected, element.OwnerName);
                             parts.Add(item);
                         }
 
@@ -282,7 +280,7 @@ namespace DocumentTransitionUniversalApp
             StorageFolder folder = await folderPicker.PickSingleFolderAsync();
             StorageFolder filesSaveFolder;
             if (folder != null)
-            { 
+            {
                 try
                 {
                     filesSaveFolder = await folder.GetFolderAsync(string.Format("Split Files ({0})", FileName));
@@ -344,17 +342,17 @@ namespace DocumentTransitionUniversalApp
                     }
                 }
             }
-		}
+        }
 
         private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
-		{
-			ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
-			FolderPicker folderPicker = new FolderPicker();
+        {
+            ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
+            FolderPicker folderPicker = new FolderPicker();
             folderPicker.FileTypeFilter.Add(".docx");
             folderPicker.FileTypeFilter.Add(".pptx");
             folderPicker.FileTypeFilter.Add(".xlsx");
             folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
-			StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
             if (folder != null)
             {
                 StorageFile xmlFile;
@@ -420,8 +418,8 @@ namespace DocumentTransitionUniversalApp
                 files.Add(personTemplateFile);
             }
 
-			return files;
-		}
+            return files;
+        }
 
         private void SetFileType(string fileName)
         {
@@ -429,15 +427,12 @@ namespace DocumentTransitionUniversalApp
             {
                 case (".docx"):
                     FileType = DocumentType.Word;
-                    DocumentElementTypes = new WordElementType();
                     break;
                 case (".xlsx"):
                     FileType = DocumentType.Excel;
-                    DocumentElementTypes = new ExcelElementType();
                     break;
                 case (".pptx"):
                     FileType = DocumentType.Presentation;
-                    DocumentElementTypes = new PresentationElementType();
                     break;
             }
         }
@@ -451,15 +446,15 @@ namespace DocumentTransitionUniversalApp
             XmlFile = null;
         }
 
-		private void EnablePartsButton()
-		{
-			buttonXml.IsEnabled = DocumentFile != null;
+        private void EnablePartsButton()
+        {
+            buttonXml.IsEnabled = DocumentFile != null;
         }
 
-		private void EnableSplitButton()
-		{
-			buttonSplit.IsEnabled = DocumentFile != null && XmlFile != null;
-		}
+        private void EnableSplitButton()
+        {
+            buttonSplit.IsEnabled = DocumentFile != null && XmlFile != null;
+        }
 
         private void EnableGenerateButton()
         {
@@ -470,53 +465,53 @@ namespace DocumentTransitionUniversalApp
         {
             buttonLoadSplit.IsEnabled = DocumentFile != null;
         }
-		
-		private void InitButtons()
-		{
-			EnablePartsButton();
-			EnableSplitButton();
+
+        private void InitButtons()
+        {
+            EnablePartsButton();
+            EnableSplitButton();
             EnableGenerateButton();
             EnableLoadButton();
         }
 
-		public async Task<byte[]> StorageFileToByteArray(StorageFile file)
-		{
-			var fileStream = await file.OpenAsync(FileAccessMode.Read);
-			return ReadFully(fileStream.AsStream());
-		}
+        public async Task<byte[]> StorageFileToByteArray(StorageFile file)
+        {
+            var fileStream = await file.OpenAsync(FileAccessMode.Read);
+            return ReadFully(fileStream.AsStream());
+        }
 
-		public static byte[] ReadFully(Stream input)
-		{
-			byte[] buffer = new byte[16 * 1024];
-			using (MemoryStream ms = new MemoryStream())
-			{
-				int read;
-				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-				{
-					ms.Write(buffer, 0, read);
-				}
-				return ms.ToArray();
-			}
-		}
+        public static byte[] ReadFully(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			if (e.Parameter is MainPage)
-			{
-				var main = e.Parameter as MainPage;
-				this.DocumentFile = main.DocumentFile;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is MainPage)
+            {
+                var main = e.Parameter as MainPage;
+                this.DocumentFile = main.DocumentFile;
                 this.documentBinary = main.documentBinary;
-				this.XmlFile = main.XmlFile;
-				this.FileName = main.FileName;
-				this.FileType = main.FileType;
-				this._wasSplit = main._wasSplit;
+                this.XmlFile = main.XmlFile;
+                this.FileName = main.FileName;
+                this.FileType = main.FileType;
+                this._wasSplit = main._wasSplit;
                 this._wasEditParts = main._wasEditParts;
                 this.WordPartPage = main.WordPartPage;
                 this.xmlBinary = main.xmlBinary;
 
-				InitButtons();
-			}
-		}
+                InitButtons();
+            }
+        }
 
         private async Task<string> InputTextDialogAsync(string title, string textBoxContent)
         {

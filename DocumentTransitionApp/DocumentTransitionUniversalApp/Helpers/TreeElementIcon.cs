@@ -1,54 +1,46 @@
-﻿using DocumentTransitionUniversalApp.Data_Structures;
+﻿using DocumentTransitionUniversalApp.TransitionAppServices;
 
 namespace DocumentTransitionUniversalApp.Helpers
 {
     public class TreeElementIcon
     {
-        public ElementTypes ElementType { get; private set; }
+        public ElementType ElementType { get; private set; }
 
         public const string ExcelSheet = "ms-appx:///Assets/layers_2_icon&48.png";
         public const string WordParagraph = "ms-appx:///Assets/align_right_icon&48.png";
         public const string PresentationSlide = "ms-appx:///Assets/doc_empty_icon&48.png";
+        public const string Default = "ms-appx:///Assets/cancel_icon & 48.png";
+        public const string ExcelRow = "ms-appx:///Assets/checkbox_unchecked_icon&48.png";
+        public const string ExcelCell = "ms-appx:///Assets/table_selection_row.png";
 
-        public TreeElementIcon(ElementTypes elmentType)
+        public TreeElementIcon(ElementType elmentType)
         {
             ElementType = elmentType;
         }
 
         public string GetIcon()
         {
-            string result = WordParagraph;
-
-            if (ElementType is WordElementType)
+            switch (ElementType)
             {
-                if (ElementType is WordElementType.ParagraphElementSubType)
-                    result = WordParagraph;
-
-                if (ElementType is WordElementType.PictureElementSubType)
-                    result = "";
-
-                if (ElementType is WordElementType.TableElementSubType)
-                    result = "";
+                case ElementType.Paragraph:
+                    return WordParagraph;
+                case ElementType.Picture:
+                    return "";
+                case ElementType.Table:
+                    return "";
+                case ElementType.Sheet:
+                    return ExcelSheet;
+                case ElementType.Row:
+                    return ExcelRow;
+                case ElementType.Column:
+                    return "";
+                case ElementType.Cell:
+                    return ExcelCell;
+                case ElementType.Slide:
+                    return PresentationSlide;
+                default:
+                    return Default;
             }
-            else if (ElementType is ExcelElementType)
-            {
-                if (ElementType is ExcelElementType.ColumnElementSubType)
-                    result = "";
-
-                if (ElementType is ExcelElementType.RowElementSubType)
-                    result = "";
-
-                if (ElementType is ExcelElementType.SheetElementSubType)
-                    result = ExcelSheet;
-
-            }
-            else if (ElementType is PresentationElementType)
-            {
-                if (ElementType is PresentationElementType.SlideElementSubType)
-                    result = PresentationSlide;
-            }
-
-            return result;
         }
     }
 }

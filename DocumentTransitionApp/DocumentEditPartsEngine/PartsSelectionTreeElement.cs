@@ -7,7 +7,7 @@ namespace DocumentEditPartsEngine
     {
         public string Id { get; set; }
         public string ElementId { get; set; }
-        public ElementTypes Type { get; set; }
+        public ElementType Type { get; set; }
         public List<PartsSelectionTreeElement> Childs { get; set; }
         public string Name { get; set; }
         public int Indent { get; set; }
@@ -26,7 +26,7 @@ namespace DocumentEditPartsEngine
             this.Childs = new List<PartsSelectionTreeElement>();
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, string name, int indent, ElementTypes type) : this(id, elementId, name, indent)
+        public PartsSelectionTreeElement(string id, string elementId, string name, int indent, ElementType type) : this(id, elementId, name, indent)
         {
             this.Type = type;
         }

@@ -1,7 +1,6 @@
 ﻿using DocumentTransitionUniversalApp.Data_Structures;
 using DocumentTransitionUniversalApp.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.UI;
@@ -76,26 +75,37 @@ namespace DocumentTransitionUniversalApp.Views
             this.Frame.Navigate(typeof(MainPage), _source);
         }
 
-        private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements, ElementTypes elementType)
+        private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements)
         {
-            TreeElementIcon icon = new TreeElementIcon(elementType);
             foreach (var element in elements)
             {
-                var item = new PartsSelectionTreeElement<ElementTypes>(element.Id, element.ElementId, elementType, element.Name, element.Indent, icon.GetIcon());
+                TreeElementIcon icon = new TreeElementIcon(element.Type);
+                var item = new PartsSelectionTreeElement<Service.ElementType>(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
                 _pageData.SelectionParts.Add(item);
             }
         }
 
-        private void CreateSelectPartsUI(IEnumerable<PartsSelectionTreeElement<ElementTypes>> elements)
+        private void CreateSelectPartsUI(ObservableCollection<PartsSelectionTreeElement<Service.ElementType>> elements)
         {
             WordSelectPartsItems.Items.Clear();
-            foreach (var element in elements)
+            LazyLoadingItems<PartsSelectionTreeElement<Service.ElementType>> lazyItems = new LazyLoadingItems<PartsSelectionTreeElement<Service.ElementType>>(elements, PartsScrollViewer);
+            lazyItems.PropertyChanged += LazyItems_PropertyChanged;
+            foreach (var element in lazyItems.Items)
             {
                 CreateButtonBlock(element);
             }
         }
 
-        private void CreateButtonBlock(PartsSelectionTreeElement<ElementTypes> element)
+        private void LazyItems_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var lazy = sender as LazyLoadingItems<PartsSelectionTreeElement<Service.ElementType>>;
+            foreach (var item in lazy.Items)
+            {
+                CreateButtonBlock(item);
+            }
+        }
+
+        private void CreateButtonBlock(PartsSelectionTreeElement<Service.ElementType> element)
         {
             Button button = new Button();
 
@@ -157,7 +167,7 @@ namespace DocumentTransitionUniversalApp.Views
             else
             {
                 selectedElement.SelectItem(ownerName);
-                button.Background = new SolidColorBrush(Colors.DodgerBlue);
+                button.Background = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
             }
         }
 
@@ -225,7 +235,7 @@ namespace DocumentTransitionUniversalApp.Views
             try
             {
                 var result = await serviceClient.GetWordPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetWordPartsResult, _source.DocumentElementTypes);
+                PrepareListOfItems(result.Body.GetWordPartsResult);
             }
             catch (System.ServiceModel.CommunicationException ex)
             {
@@ -240,7 +250,7 @@ namespace DocumentTransitionUniversalApp.Views
             try
             {
                 var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetPresentationPartsResult, _source.DocumentElementTypes);
+                PrepareListOfItems(result.Body.GetPresentationPartsResult);
             }
             catch (System.ServiceModel.CommunicationException ex)
             {
@@ -255,7 +265,7 @@ namespace DocumentTransitionUniversalApp.Views
             try
             {
                 var result = await serviceClient.GetExcelPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetExcelPartsResult, _source.DocumentElementTypes);
+                PrepareListOfItems(result.Body.GetExcelPartsResult);
             }
             catch (System.ServiceModel.CommunicationException ex)
             {
