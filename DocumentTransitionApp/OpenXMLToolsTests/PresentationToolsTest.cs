@@ -53,7 +53,7 @@ namespace OpenXMLToolsTests
         {
             string title = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(PreCGWDoc, 1), 35);
 
-            Assert.AreEqual("[Sld]: Agenda", title);
+            Assert.AreEqual("Agenda", title);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace OpenXMLToolsTests
             PresentationDocument document = PreTools.InsertNewSlide(PreCGWDoc, 3, "InsertSlideShouldInsertSlideToPosition3");
             string title = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(document, 3), 35);
 
-            Assert.AreEqual("[Sld]: InsertSlideShouldInsertSlideToPosition3", title);
+            Assert.AreEqual("InsertSlideShouldInsertSlideToPosition3", title);
         }
 
         [TestMethod]
@@ -74,8 +74,8 @@ namespace OpenXMLToolsTests
             string title4 = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(PreSampleDoc, 4), 35);
             string title3 = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(PreSampleDoc, 3), 35);
 
-            Assert.AreEqual("[Sld]: InsertSlideShouldInsertSlideToPosition4", title4);
-            Assert.AreEqual("[Sld]: InsertSlideShouldInsertSlideToPosition3", title3);
+            Assert.AreEqual("InsertSlideShouldInsertSlideToPosition4", title4);
+            Assert.AreEqual("InsertSlideShouldInsertSlideToPosition3", title3);
         }
 
         [TestMethod]
@@ -87,8 +87,8 @@ namespace OpenXMLToolsTests
             string title3 = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(PreCGWDoc, 3), 35);
             string title8 = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(PreCGWDoc, 8), 35);
 
-            Assert.AreEqual("[Sld]: InsertSlideShouldInsertSlideToPosition3", title3);
-            Assert.AreEqual("[Sld]: InsertSlideShouldInsertSlideToPosition8", title8);
+            Assert.AreEqual("InsertSlideShouldInsertSlideToPosition3", title3);
+            Assert.AreEqual("InsertSlideShouldInsertSlideToPosition8", title8);
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace OpenXMLToolsTests
             PresentationDocument document = PreTools.InsertNewSlide(PreSampleDoc, 13, "InsertSlideShouldInsertSlideToPosition13");
             string title = PresentationTools.GetSlideTitle(PresentationTools.GetSlidePart(document, 13), 35);
 
-            Assert.AreEqual("[Sld]: InsertSlideShouldInsertSlideToPosition13", title);
+            Assert.AreEqual("InsertSlideShouldInsertSlideToPosition13", title);
         }
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace OpenXMLToolsTests
 
             Assert.AreEqual(19, slideIdList.Count());
             Assert.AreEqual(19, document.PresentationPart.SlideParts.Count());
-            Assert.AreEqual("[Sld]: Pokazy niestandardowe", title);
+            Assert.AreEqual("Pokazy niestandardowe", title);
         }
 
         [TestMethod]

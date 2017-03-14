@@ -3,6 +3,7 @@ using DocumentEditPartsEngine.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DocumentEditPartsEngineTests
 {
@@ -42,17 +43,20 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void GetSheetsMethodShouldHaveCorrectSheetElementsId()
         {
-            Assert.AreEqual("slId2", PartsSelectionElementsTest[1].ElementId);
-            Assert.AreEqual("slId11", PartsSelectionElementsTutorial[10].ElementId);
+            var elementsTest = PartsSelectionElementsTest.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+            var elementsTutorial = PartsSelectionElementsTutorial.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+
+            Assert.AreEqual("slId2", elementsTest[1].ElementId);
+            Assert.AreEqual("slId11", elementsTutorial[10].ElementId);
         }
 
         [TestMethod]
         public void GetSheetsMethodShouldHaveCorrectSheetElementsName()
         {
-            Assert.AreEqual("[Sht]: Hyperlink Test", PartsSelectionElementsTest[1].Name);
-            Assert.AreEqual("[Sht]: Notes", PartsSelectionElementsTest[4].Name);
-            Assert.AreEqual("[Sht]: Tabs, Ribbons", PartsSelectionElementsTutorial[3].Name);
-            Assert.AreEqual("[Sht]: Right-clicking", PartsSelectionElementsTutorial[8].Name);
+            Assert.AreEqual("Hyperlink Test", PartsSelectionElementsTest[1].Name);
+            Assert.AreEqual("Notes", PartsSelectionElementsTest[4].Name);
+            Assert.AreEqual("Tabs, Ribbons", PartsSelectionElementsTutorial[3].Name);
+            Assert.AreEqual("Right-clicking", PartsSelectionElementsTutorial[8].Name);
         }
 
         [TestMethod]

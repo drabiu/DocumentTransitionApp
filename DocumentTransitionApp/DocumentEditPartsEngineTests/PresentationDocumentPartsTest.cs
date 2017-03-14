@@ -1,12 +1,8 @@
 ﻿using DocumentEditPartsEngine;
 using DocumentEditPartsEngine.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocumentEditPartsEngineTests
 {
@@ -53,10 +49,10 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void GetSlidesMethodShouldHaveCorrectSlideElementsName()
         {
-            Assert.AreEqual("[Sld]: Data processing in modern science", PartsSelectionElementsCGW[2].Name);
-            Assert.AreEqual("[Sld]: Data processing in modern science", PartsSelectionElementsCGW[5].Name);
-            Assert.AreEqual("[Sld]: Elementy slajdu", PartsSelectionElementsSample[3].Name);
-            Assert.AreEqual("[Sld]: Grafika - Obrazy", PartsSelectionElementsSample[7].Name);
+            Assert.AreEqual("Data processing in modern science", PartsSelectionElementsCGW[2].Name);
+            Assert.AreEqual("Data processing in modern science", PartsSelectionElementsCGW[5].Name);
+            Assert.AreEqual("Elementy slajdu", PartsSelectionElementsSample[3].Name);
+            Assert.AreEqual("Grafika - Obrazy", PartsSelectionElementsSample[7].Name);
         }
 
         [TestMethod]

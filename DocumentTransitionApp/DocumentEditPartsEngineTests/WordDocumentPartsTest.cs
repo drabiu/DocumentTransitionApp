@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
+﻿using DocumentEditPartsEngine;
 using DocumentEditPartsEngine.Interfaces;
-using DocumentEditPartsEngine;
-using System.Collections.Generic;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace DocumentEditPartsEngineTests
 {
@@ -60,11 +60,14 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void WordGetMethodShouldHaveCorrectParagraphElementsName()
         {
-            Assert.AreEqual("[Par]: There is support for images,", PartsSelectionElementsParagraphDemo[2].Name);
-            Assert.AreEqual("[Par]: Text Formatting", PartsSelectionElementsParagraphDemo[5].Name);
-            Assert.AreEqual("[Par]: Next, we have something a little", PartsSelectionElementsParagraphDemo[21].Name);
-            Assert.AreEqual("[Par]: Nazwa handlowa Pułapka na szczury", PartsSelectionElementsNoParagraphId[2].Name);
-            Assert.AreEqual("[Par]: Klasyfikacja produktu", PartsSelectionElementsNoParagraphId[18].Name);
+            var elementsParagraphDemo = PartsSelectionElementsParagraphDemo.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Paragraph).ToList();
+            var elementsParagraphNoId = PartsSelectionElementsNoParagraphId.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Paragraph).ToList();
+
+            Assert.AreEqual("There is support for images, tables,", elementsParagraphDemo[2].Name);
+            Assert.AreEqual("Text Formatting", elementsParagraphDemo[5].Name);
+            Assert.AreEqual("Next, we have something a little more", elementsParagraphDemo[21].Name);
+            Assert.AreEqual("Nazwa handlowa Pułapka na szczury", elementsParagraphNoId[2].Name);
+            Assert.AreEqual("Klasyfikacja produktu", elementsParagraphNoId[17].Name);
         }
 
         [TestMethod]
