@@ -27,7 +27,7 @@ namespace SplitDescriptionObjectsTests
         [TestMethod]
         public void ExcelMarkerGetCrossedSlideIdElementsShouldReturnOne()
         {
-            IList<int> result = UniversalExcTestMarker.GetCrossedSheetElements("slId5", "slId5");
+            IList<int> result = UniversalExcTestMarker.GetCrossedSheetElements("shId5", "shId5");
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
@@ -37,7 +37,7 @@ namespace SplitDescriptionObjectsTests
         [TestMethod]
         public void ExcelMarkerGetCrossedSlideIdElementsShouldReturnThree()
         {
-            IList<int> result = UniversalExcTutorialMarker.GetCrossedSheetElements("slId12", "slId14");
+            IList<int> result = UniversalExcTutorialMarker.GetCrossedSheetElements("shId12", "shId14");
 
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count);
@@ -49,7 +49,7 @@ namespace SplitDescriptionObjectsTests
         [TestMethod]
         public void ExcelMarkerGetCrossedSlideIdElementsShouldReturnNone()
         {
-            IList<int> result = UniversalExcTutorialMarker.GetCrossedSheetElements("slId7", "slId5");
+            IList<int> result = UniversalExcTutorialMarker.GetCrossedSheetElements("shId7", "shId5");
 
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);

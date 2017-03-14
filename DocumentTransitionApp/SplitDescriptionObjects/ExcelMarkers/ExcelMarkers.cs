@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using DocumentEditPartsEngine;
 
 namespace SplitDescriptionObjects
 {
@@ -44,7 +43,7 @@ namespace SplitDescriptionObjects
             {
                 Sheet sheet = (element as Sheet);
                 int index = ElementsList.FindIndex(el => el.Equals(element));
-                result = ExcelDocumentPartAttributes.GetSlideIdFormatter(index + 1);
+                result = ExcelDocumentPartAttributes.GetSheetIdFormatter(index + 1);
             }
 
             return result;

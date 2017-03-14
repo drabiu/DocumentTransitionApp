@@ -31,13 +31,17 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void GetSheetsMethodShouldReturn6SheetElements()
         {
-            Assert.AreEqual(6, PartsSelectionElementsTest.Count);
+            var elementsTest = PartsSelectionElementsTest.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+
+            Assert.AreEqual(6, elementsTest.Count);
         }
 
         [TestMethod]
         public void GetSheetsMethodShouldReturn82SheetElements()
         {
-            Assert.AreEqual(82, PartsSelectionElementsTutorial.Count);
+            var elementsTutorial = PartsSelectionElementsTutorial.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+
+            Assert.AreEqual(82, elementsTutorial.Count);
         }
 
         [TestMethod]
@@ -46,23 +50,28 @@ namespace DocumentEditPartsEngineTests
             var elementsTest = PartsSelectionElementsTest.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
             var elementsTutorial = PartsSelectionElementsTutorial.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
 
-            Assert.AreEqual("slId2", elementsTest[1].ElementId);
-            Assert.AreEqual("slId11", elementsTutorial[10].ElementId);
+            Assert.AreEqual("shId2", elementsTest[1].ElementId);
+            Assert.AreEqual("shId11", elementsTutorial[10].ElementId);
         }
 
         [TestMethod]
         public void GetSheetsMethodShouldHaveCorrectSheetElementsName()
         {
-            Assert.AreEqual("Hyperlink Test", PartsSelectionElementsTest[1].Name);
-            Assert.AreEqual("Notes", PartsSelectionElementsTest[4].Name);
-            Assert.AreEqual("Tabs, Ribbons", PartsSelectionElementsTutorial[3].Name);
-            Assert.AreEqual("Right-clicking", PartsSelectionElementsTutorial[8].Name);
+            var elementsTest = PartsSelectionElementsTest.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+            var elementsTutorial = PartsSelectionElementsTutorial.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+
+            Assert.AreEqual("Hyperlink Test", elementsTest[1].Name);
+            Assert.AreEqual("Notes", elementsTest[4].Name);
+            Assert.AreEqual("Tabs, Ribbons", elementsTutorial[3].Name);
+            Assert.AreEqual("Right-clicking", elementsTutorial[8].Name);
         }
 
         [TestMethod]
         public void GetSlidesMethodShouldHaveCorrectSlideElementsChildrenCount()
         {
-            Assert.AreEqual(0, PartsSelectionElementsTutorial[3].Childs.Count);
+            var elementsTutorial = PartsSelectionElementsTutorial.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Sheet).ToList();
+
+            Assert.AreEqual(0, elementsTutorial[3].Childs.Count);
         }
 
         [TestCleanup]

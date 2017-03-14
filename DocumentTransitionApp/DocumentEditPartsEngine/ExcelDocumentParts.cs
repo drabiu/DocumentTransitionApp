@@ -13,9 +13,9 @@ namespace DocumentEditPartsEngine
     {
         public const int MaxNameLength = 36;
 
-        public static string GetSlideIdFormatter(int id)
+        public static string GetSheetIdFormatter(int id)
         {
-            return string.Format("slId{0}", id);
+            return string.Format("shId{0}", id);
         }
 
         public static bool IsSupportedType(OpenXmlElement element)
@@ -40,9 +40,10 @@ namespace DocumentEditPartsEngine
             {
                 Workbook workBook = excDoc.WorkbookPart.Workbook;
                 var idIndex = 1;
-                foreach (Sheet sheet in workBook.Sheets)
+                for (int cellIndex = 0; cellIndex < workBook.Sheets.ChildElements.Count; cellIndex++)
                 {
-                    workBookElements.AddRange(CreatePartsSelectionTreeElements(sheet, idIndex, supportedTypes));
+                    Sheet sheet = workBook.Sheets.ChildElements[cellIndex] as Sheet;
+                    workBookElements.AddRange(CreatePartsSelectionTreeElements(sheet, cellIndex + 1, supportedTypes));
                     idIndex++;
 
                     var worksheetPart = (WorksheetPart)(excDoc.WorkbookPart.GetPartById(sheet.Id));
@@ -80,12 +81,13 @@ namespace DocumentEditPartsEngine
                 if (element is Sheet)
                 {
                     string sheetName = string.Format("{0}", (element as Sheet).Name);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSlideIdFormatter(id), sheetName, 0, ElementType.Sheet));
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSheetIdFormatter(id), sheetName, 0, ElementType.Sheet));
                 }
                 else if (element is Row)
                 {
-                    string rowName = string.Format("Row index: {0}", (element as Row).RowIndex);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), (element as Row).RowIndex, rowName, 1, ElementType.Row));
+                    Row row = element as Row;
+                    string rowName = string.Format("Row index: {0}", row.RowIndex);
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, 1, ElementType.Row));
                 }
                 else if (element is Column)
                 {
@@ -93,8 +95,9 @@ namespace DocumentEditPartsEngine
                 }
                 else if (element is Cell)
                 {
-                    string cellName = string.Format("Cell name: {0}", (element as Cell).CellReference.Value);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), (element as Cell).CellReference.Value, cellName, 2, ElementType.Cell));
+                    Cell cell = element as Cell;
+                    string cellName = string.Format("Cell name: {0}", cell.CellReference.Value);
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, 2, ElementType.Cell));
                 }
             }
 
