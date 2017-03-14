@@ -48,17 +48,10 @@ namespace OpenXMLTools
                 maxSlideId++;
                 uniqueId++;
 
-                //Create the slide part and copy the data from the first part           
-                //SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();              
+                //Create the slide part and copy the data from the first part                       
                 var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
                 var newIdFromTemplateId = string.Format("source{0}", slideRelationshipId);
                 SlidePart newSlidePart = presentationPart.AddPart(templateSlide, newIdFromTemplateId);
-                //newSlidePart.FeedData(templateSlide.GetStream());
-                //Use the same slide layout as that of the template slide.
-                //if (templateSlide.SlideLayoutPart != null)
-                //{
-                //    newSlidePart.AddPart(templateSlide.SlideLayoutPart);
-                //}
 
                 if (newSlidePart.SlideLayoutPart != null)
                 {

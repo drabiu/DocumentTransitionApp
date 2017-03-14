@@ -14,6 +14,8 @@ namespace DocumentTransitionUniversalApp.Helpers
         public const string ExcelCell = "ms-appx:///Assets/table_selection_row.png";
         public const string WordPicture = "ms-appx:///Assets/picture_icon&48.png";
         public const string WordTable = "ms-appx:///Assets/3x3_grid_icon&48.png";
+        public const string WordBulletList = "ms-appx:///Assets/list_bullets_icon&48.png";
+        public const string WordNumberedList = "ms-appx:///Assets/list_num_icon&48.png";
 
         public TreeElementIcon(ElementType elmentType)
         {
@@ -26,6 +28,10 @@ namespace DocumentTransitionUniversalApp.Helpers
             {
                 case ElementType.Paragraph:
                     return WordParagraph;
+                case ElementType.BulletList:
+                    return WordBulletList;
+                case ElementType.NumberedList:
+                    return WordNumberedList;
                 case ElementType.Picture:
                     return WordPicture;
                 case ElementType.Table:

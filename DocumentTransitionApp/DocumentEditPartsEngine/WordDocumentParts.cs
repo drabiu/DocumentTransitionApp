@@ -6,11 +6,15 @@ using OpenXMLTools;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DocumentEditPartsEngine
 {
     public static class WordDocumentPartAttributes
     {
+        public static int[] NumberedListIds = new int[] { 2, 3 };
+        public static int[] BulletListIds = new int[] { 1 };
+
         public const int MaxNameLength = 35;
         public const string ParagraphHasNoId = "noid:";
 
@@ -72,8 +76,23 @@ namespace DocumentEditPartsEngine
                 PartsSelectionTreeElement elementToAdd;
                 if (element is Paragraph)
                 {
-                    string elementId = (element as Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Paragraph);
+                    Paragraph paragraph = element as Paragraph;
+                    var numberingProperties = paragraph.ParagraphProperties?.NumberingProperties;
+                    string elementId = paragraph.ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
+
+                    if (numberingProperties != null)
+                    {
+                        indent += numberingProperties.NumberingLevelReference.Val.Value;
+                        if (WordDocumentPartAttributes.BulletListIds.Any(b => b == numberingProperties.NumberingId.Val?.Value))
+                            elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
+                        else if (WordDocumentPartAttributes.NumberedListIds.Any(b => b == numberingProperties.NumberingId.Val?.Value))
+                            elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.NumberedList);
+                        else
+                            elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
+                    }
+                    else
+                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Paragraph);
+
                     _paragraphCounter++;
                 }
                 else if (element is Picture || element is Drawing)
@@ -101,11 +120,5 @@ namespace DocumentEditPartsEngine
 
             return result;
         }
-
-        //private IEnumerable<PartsSelectionTreeElement> CreateChildrenPartsSelectionTreeElements(OpenXmlElement element)
-        //{
-        //    List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-        //    return result;
-        //}
     }
 }

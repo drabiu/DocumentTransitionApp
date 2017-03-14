@@ -200,6 +200,8 @@
     <Content Include="Assets\ic_undo_black_48dp.png" />
     <Content Include="Assets\ic_view_carousel_black_48dp.png" />
     <Content Include="Assets\layers_2_icon&amp;48.png" />
+    <Content Include="Assets\list_bullets_icon&amp;48.png" />
+    <Content Include="Assets\list_num_icon&amp;48.png" />
     <Content Include="Assets\picture_icon&amp;48.png" />
     <Content Include="Assets\table_selection_row.png" />
     <Content Include="Properties\Default.rd.xml" />

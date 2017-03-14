@@ -3,6 +3,8 @@
     public enum ElementType
     {
         Paragraph,
+        BulletList,
+        NumberedList,
         Table,
         Picture,
         Sheet,

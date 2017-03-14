@@ -74,6 +74,8 @@
       <s:simpleType name="ElementType">
         <s:restriction base="s:string">
           <s:enumeration value="Paragraph" />
+          <s:enumeration value="BulletList" />
+          <s:enumeration value="NumberedList" />
           <s:enumeration value="Table" />
           <s:enumeration value="Picture" />
           <s:enumeration value="Sheet" />
