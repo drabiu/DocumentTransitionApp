@@ -7,6 +7,8 @@ namespace DocumentTransitionUniversalApp.Helpers
 {
     public class LazyLoadingItems<Elements> : INotifyPropertyChanged
     {
+        #region Fields
+
         public ObservableCollection<Elements> Items { get; private set; }
 
         public bool IsPullRefresh
@@ -29,6 +31,10 @@ namespace DocumentTransitionUniversalApp.Helpers
         bool _isPullRefresh = false;
         ScrollViewer _scrollViewer;
 
+        #endregion
+
+        #region Constructors
+
         public LazyLoadingItems(ObservableCollection<Elements> items, ScrollViewer scrollViewer)
         {
             Items = new ObservableCollection<Elements>();
@@ -37,12 +43,20 @@ namespace DocumentTransitionUniversalApp.Helpers
             SetScrollViewer();
         }
 
+        #endregion
+
+        #region Public methods
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        #endregion
+
+        #region Private methods
 
         private void SetScrollViewer()
         {
@@ -70,11 +84,13 @@ namespace DocumentTransitionUniversalApp.Helpers
                         Items.Add(_sourceItems[i]);
                     }
 
-                    sv.ChangeView(null, sv.ExtentHeight, null);
+                    sv.ChangeView(null, sv.VerticalOffset, null);
                 }
 
                 IsPullRefresh = false;
             }
         }
+
+        #endregion
     }
 }

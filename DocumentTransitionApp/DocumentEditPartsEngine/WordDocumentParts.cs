@@ -22,10 +22,10 @@ namespace DocumentEditPartsEngine
         public static bool IsSupportedType(OpenXmlElement element)
         {
             bool isSupported = false;
-            isSupported = element is Paragraph;
-            //|| element is Wordproc.Picture
-            //|| element is Wordproc.Drawing
-            //|| element is Wordproc.Table;
+            isSupported = element is Paragraph
+                || element is Picture
+                || element is Table
+                || element is Drawing;
 
             return isSupported;
         }
@@ -34,6 +34,8 @@ namespace DocumentEditPartsEngine
     public class WordDocumentParts : IDocumentParts
     {
         int _paragraphCounter = 0;
+        int _index = 0;
+
         public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedType)
         {
             List<PartsSelectionTreeElement> documentElements = new List<PartsSelectionTreeElement>();
@@ -45,10 +47,11 @@ namespace DocumentEditPartsEngine
                 WordprocessingDocument.Open(mem, true))
                 {
                     Body body = wordDoc.MainDocumentPart.Document.Body;
-                    for (int index = 0; index < body.ChildElements.Count; index++)
+
+                    foreach (var element in body.ChildElements)
                     {
-                        var element = body.ChildElements[index];
-                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, index, supportedType));
+                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, _index, supportedType, 0));
+                        _index++;
                     }
                 }
             }
@@ -61,7 +64,7 @@ namespace DocumentEditPartsEngine
             return Get(file, el => WordDocumentPartAttributes.IsSupportedType(el));
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id, Predicate<OpenXmlElement> supportedType)
+        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id, Predicate<OpenXmlElement> supportedType, int indent)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             if (supportedType(element))
@@ -70,26 +73,39 @@ namespace DocumentEditPartsEngine
                 if (element is Paragraph)
                 {
                     string elementId = (element as Paragraph).ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), 0, Helpers.ElementType.Paragraph);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Paragraph);
                     _paragraphCounter++;
                 }
+                else if (element is Picture || element is Drawing)
+                {
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), element.LocalName, indent, Helpers.ElementType.Picture);
+                }
+                else if (element is Table)
+                {
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Table).LocalName, indent, Helpers.ElementType.Table);
+                }
                 else
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), 0);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent);
 
                 result.Add(elementToAdd);
                 if (element.HasChildren)
                 {
-                    CreateChildrenPartsSelectionTreeElements(element);
+                    foreach (var elmentChild in element.ChildElements)
+                    {
+                        _index++;
+                        CreatePartsSelectionTreeElements(elmentChild, _index, supportedType, ++indent);
+                    }
+
                 }
             }
 
             return result;
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreateChildrenPartsSelectionTreeElements(OpenXmlElement element)
-        {
-            List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-            return result;
-        }
+        //private IEnumerable<PartsSelectionTreeElement> CreateChildrenPartsSelectionTreeElements(OpenXmlElement element)
+        //{
+        //    List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
+        //    return result;
+        //}
     }
 }

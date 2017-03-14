@@ -185,6 +185,7 @@
     <None Include="DocumentTransitionUniversalApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\3x3_grid_icon&amp;48.png" />
     <Content Include="Assets\align_right_icon&amp;48.png" />
     <Content Include="Assets\cancel_icon&amp;48.png" />
     <Content Include="Assets\checkbox_unchecked_icon&amp;48.png" />
@@ -199,6 +200,7 @@
     <Content Include="Assets\ic_undo_black_48dp.png" />
     <Content Include="Assets\ic_view_carousel_black_48dp.png" />
     <Content Include="Assets\layers_2_icon&amp;48.png" />
+    <Content Include="Assets\picture_icon&amp;48.png" />
     <Content Include="Assets\table_selection_row.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />

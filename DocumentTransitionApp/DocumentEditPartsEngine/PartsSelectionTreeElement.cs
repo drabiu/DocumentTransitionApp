@@ -35,5 +35,10 @@ namespace DocumentEditPartsEngine
         {
             this.ElementId = elementId;
         }
+
+        public PartsSelectionTreeElement(string id, string name, int indent, ElementType type) : this(id, name, indent)
+        {
+            this.Type = type;
+        }
     }
 }

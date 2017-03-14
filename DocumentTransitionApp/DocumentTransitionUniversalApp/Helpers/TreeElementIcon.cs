@@ -12,6 +12,8 @@ namespace DocumentTransitionUniversalApp.Helpers
         public const string Default = "ms-appx:///Assets/cancel_icon & 48.png";
         public const string ExcelRow = "ms-appx:///Assets/checkbox_unchecked_icon&48.png";
         public const string ExcelCell = "ms-appx:///Assets/table_selection_row.png";
+        public const string WordPicture = "ms-appx:///Assets/picture_icon&48.png";
+        public const string WordTable = "ms-appx:///Assets/3x3_grid_icon&48.png";
 
         public TreeElementIcon(ElementType elmentType)
         {
@@ -25,9 +27,9 @@ namespace DocumentTransitionUniversalApp.Helpers
                 case ElementType.Paragraph:
                     return WordParagraph;
                 case ElementType.Picture:
-                    return "";
+                    return WordPicture;
                 case ElementType.Table:
-                    return "";
+                    return WordTable;
                 case ElementType.Sheet:
                     return ExcelSheet;
                 case ElementType.Row:

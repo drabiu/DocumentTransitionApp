@@ -32,7 +32,8 @@ namespace OpenXMLTools
                             break;
                     }
 
-                    result.Remove(result.Length - 1, 1);
+                    if (result.Length > 0)
+                        result.Remove(result.Length - 1, 1);
                 }
             }
             else if (element is Table)
