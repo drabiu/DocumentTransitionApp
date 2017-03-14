@@ -25,6 +25,7 @@ namespace OpenXMLTools
             ReplaceWorkSheetparts(target, mergeData);
 
             FixSheetsIds(target, mergeData);
+            GetMergedCalculationChainPart();
             target.WorkbookPart.Workbook.Sheets.Append(mergeData.Sheets);
 
             target.Save();
@@ -57,11 +58,39 @@ namespace OpenXMLTools
             return result;
         }
 
+        public SpreadsheetDocument RemoveReferencedCalculationChainCell(SpreadsheetDocument target)
+        {
+            var calculationCells = target.WorkbookPart.CalculationChainPart.CalculationChain.Elements<CalculationCell>().ToList();
+            var sheetIds = new HashSet<uint>(target.WorkbookPart.Workbook.Sheets.Select(s => (s as Sheet).SheetId.Value));
+            foreach (var calculationCell in calculationCells)
+            {
+                if (!sheetIds.Contains((uint)calculationCell.SheetId.Value))
+                    target.WorkbookPart.CalculationChainPart.CalculationChain.RemoveChild(calculationCell);
+            }
+
+            target.WorkbookPart.CalculationChainPart.CalculationChain.Save();
+
+            var calculationChainPart = target.WorkbookPart.CalculationChainPart;
+            if (calculationChainPart.CalculationChain.ChildElements.Count == 0)
+                target.WorkbookPart.DeletePart(calculationChainPart);
+
+            return target;
+        }
+
+        #endregion
+
+        #region Static public methods
+
+        public static string GetRowTitle(Row row, int nameLength)
+        {
+            return string.Empty;
+        }
+
         #endregion
 
         #region Private methods
 
-        private void RemoveReferencesFromCalculationChainPart()
+        private void GetMergedCalculationChainPart()
         {
             //when spliting need to remove unused references to removed sheets
             //excelDoc.WorkbookPart.CalculationChainPart 
@@ -113,9 +142,12 @@ namespace OpenXMLTools
 
         private void FixSheetsIds(SpreadsheetDocument target, ExcelMergeData mergeData)
         {
+            uint sheetId = 1;
             foreach (var item in mergeData.Sheets)
             {
                 item.Id = target.WorkbookPart.GetIdOfPart(mergeData.WorksheetPartList[item.Id]);
+                //item.SheetId.Value = sheetId;
+                sheetId++;
             }
         }
 
