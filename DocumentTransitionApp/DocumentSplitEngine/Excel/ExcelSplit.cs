@@ -1,61 +1,65 @@
 ﻿using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentSplitEngine.Data_Structures;
 using DocumentSplitEngine.Excel;
 using DocumentSplitEngine.Interfaces;
+using OpenXmlPowerTools;
+using OpenXMLTools;
+using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System.Linq;
-using OpenXMLTools;
-using OpenXmlPowerTools;
 
 namespace DocumentSplitEngine
 {
     public class ExcelSplit : MergeXml<Sheet>, ISplit, ISplitXml, ILocalSplit
-	{
+    {
+        IExcelTools ExcelTools;
+
         public ExcelSplit(string docName)
         {
             DocumentName = docName;
+            ExcelTools = new ExcelTools();
         }
 
         [Obsolete]
-		public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
-		{
-			//split XML Read
-			var xml = File.ReadAllText(xmlSplitDefinitionFilePath);
-			Split splitXml;
-			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof(Split));
-				splitXml = (Split)serializer.Deserialize(stream);
-			}
+        public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
+        {
+            //split XML Read
+            var xml = File.ReadAllText(xmlSplitDefinitionFilePath);
+            Split splitXml;
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Split));
+                splitXml = (Split)serializer.Deserialize(stream);
+            }
 
             // Open a SpreadsheetDocumentDocument for editing using the filepath.
             SpreadsheetDocument wordprocessingDocument =
-				SpreadsheetDocument.Open(filePath, true);
+                SpreadsheetDocument.Open(filePath, true);
 
-			// Assign a reference to the existing document body.
-			Workbook body = wordprocessingDocument.WorkbookPart.Workbook;
-			IMarkerMapper<Sheet> mapping = new MarkerExcelMapper(DocumentName, splitXml, body);
-			//DocumentElements = mapping.Run();
+            // Assign a reference to the existing document body.
+            Workbook body = wordprocessingDocument.WorkbookPart.Workbook;
+            IMarkerMapper<Sheet> mapping = new MarkerExcelMapper(DocumentName, splitXml, body);
+            //DocumentElements = mapping.Run();
 
-			// Close the handle explicitly.
-			wordprocessingDocument.Close();
-		}
+            // Close the handle explicitly.
+            wordprocessingDocument.Close();
+        }
 
         [Obsolete]
-		public void SaveSplitDocument(string filePath)
-		{
-			throw new NotImplementedException();
-		}
+        public void SaveSplitDocument(string filePath)
+        {
+            throw new NotImplementedException();
+        }
 
-		public void OpenAndSearchDocument(Stream excelFile, Stream xmlFile)
-		{
+        public void OpenAndSearchDocument(Stream excelFile, Stream xmlFile)
+        {
             XmlSerializer serializer = new XmlSerializer(typeof(Split));
             Split splitXml = (Split)serializer.Deserialize(xmlFile);
             using (SpreadsheetDocument excelDoc =
@@ -67,8 +71,8 @@ namespace DocumentSplitEngine
             }
         }
 
-		public List<PersonFiles> SaveSplitDocument(Stream document)
-		{
+        public List<PersonFiles> SaveSplitDocument(Stream document)
+        {
             List<PersonFiles> resultList = new List<PersonFiles>();
 
             byte[] byteArray = StreamTools.ReadFully(document);
@@ -85,6 +89,7 @@ namespace DocumentSplitEngine
                         foreach (Sheet compo in element.CompositeElements)
                             sheets.Append(compo.CloneNode(false));
 
+                        ExcelTools.RemoveReferencedCalculationChainCell(excelDoc);
                         excelDoc.WorkbookPart.Workbook.Save();
 
                         var person = new PersonFiles();
@@ -109,7 +114,7 @@ namespace DocumentSplitEngine
                     person.Name = "template.xlsx";
                     person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
                 }
-            }			
+            }
 
             var xmlPerson = new PersonFiles();
             xmlPerson.Person = "/";

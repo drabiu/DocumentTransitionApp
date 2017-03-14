@@ -6,5 +6,6 @@ namespace OpenXMLTools.Interfaces
     {
         GetMergedSharedStringItemsResult GetMergedSharedStringItems(SpreadsheetDocument target, SpreadsheetDocument source);
         SpreadsheetDocument MergeWorkSheets(SpreadsheetDocument target, SpreadsheetDocument source);
+        SpreadsheetDocument RemoveReferencedCalculationChainCell(SpreadsheetDocument target);
     }
 }
