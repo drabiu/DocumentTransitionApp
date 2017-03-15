@@ -41,6 +41,7 @@ namespace DocumentTransitionUniversalApp.Helpers
             _sourceItems = items;
             _scrollViewer = scrollViewer;
             SetScrollViewer();
+            FillItems();
         }
 
         #endregion
@@ -61,6 +62,13 @@ namespace DocumentTransitionUniversalApp.Helpers
         private void SetScrollViewer()
         {
             _scrollViewer.ViewChanged += _scrollViewer_ViewChanged;
+        }
+
+        private void FillItems()
+        {
+            if (_sourceItems.Count < _pageSize)
+                _pageSize = _sourceItems.Count;
+
             for (int i = 0; i < _pageSize; i++, _lastIndex++)
             {
                 Items.Add(_sourceItems[i]);

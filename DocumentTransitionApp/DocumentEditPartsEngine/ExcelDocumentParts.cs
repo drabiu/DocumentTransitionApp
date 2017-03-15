@@ -81,7 +81,8 @@ namespace DocumentEditPartsEngine
                 if (element is Sheet)
                 {
                     string sheetName = string.Format("{0}", (element as Sheet).Name);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), ExcelDocumentPartAttributes.GetSheetIdFormatter(id), sheetName, 0, ElementType.Sheet));
+                    string elementId = ExcelDocumentPartAttributes.GetSheetIdFormatter(id);
+                    result.Add(new PartsSelectionTreeElement(elementId, elementId, sheetName, 0, ElementType.Sheet));
                 }
                 else if (element is Row)
                 {
