@@ -1,10 +1,10 @@
 ﻿using DocumentEditPartsEngine.Interfaces;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
+using OpenXMLTools;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenXMLTools;
 
 namespace DocumentEditPartsEngine
 {
@@ -25,7 +25,7 @@ namespace DocumentEditPartsEngine
     }
 
     public class PresentationDocumentParts : IPresentationParts
-	{
+    {
         public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlPart> supportedParts)
         {
             List<PartsSelectionTreeElement> presentationElements = new List<PartsSelectionTreeElement>();
@@ -47,7 +47,7 @@ namespace DocumentEditPartsEngine
         }
 
         public List<PartsSelectionTreeElement> GetSlides(Stream file)
-		{
+        {
             return Get(file, el => PresentationDocumentPartAttributes.IsSupportedPart(el));
         }
 
@@ -58,11 +58,11 @@ namespace DocumentEditPartsEngine
             {
                 if (openXmlPart is SlidePart)
                 {
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), 0));
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), 0, Helpers.ElementType.Slide));
                 }
             }
 
             return result;
-        }        
+        }
     }
 }

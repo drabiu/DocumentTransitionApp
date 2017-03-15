@@ -1,13 +1,13 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Presentation;
+using OpenXMLTools.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Drawing = DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Presentation;
-using DocumentFormat.OpenXml.Packaging;
-using OpenXMLTools.Interfaces;
 using System.Text;
 using D = DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml;
+using Drawing = DocumentFormat.OpenXml.Drawing;
 
 namespace OpenXMLTools
 {
@@ -42,22 +42,16 @@ namespace OpenXMLTools
 
             presentationPart.Presentation.SlideMasterIdList.RemoveAllChildren();
             uint uniqueId = GetMaxIdFromChild(presentationPart.Presentation.SlideMasterIdList);
+            //check what if relationshipids repeat?
             foreach (string slideRelationshipId in slideRelationshipIdList)
             {
                 maxSlideId++;
                 uniqueId++;
 
-                //Create the slide part and copy the data from the first part           
-                //SlidePart newSlidePart = presentationPart.AddNewPart<SlidePart>();              
+                //Create the slide part and copy the data from the first part                       
                 var templateSlide = (SlidePart)template.PresentationPart.GetPartById(slideRelationshipId);
                 var newIdFromTemplateId = string.Format("source{0}", slideRelationshipId);
                 SlidePart newSlidePart = presentationPart.AddPart(templateSlide, newIdFromTemplateId);
-                //newSlidePart.FeedData(templateSlide.GetStream());
-                //Use the same slide layout as that of the template slide.
-                //if (templateSlide.SlideLayoutPart != null)
-                //{
-                //    newSlidePart.AddPart(templateSlide.SlideLayoutPart);
-                //}
 
                 if (newSlidePart.SlideLayoutPart != null)
                 {
@@ -70,13 +64,13 @@ namespace OpenXMLTools
 
                     presentationPart.Presentation.SlideMasterIdList.Append(newSlideMasterId);
                 }
-                                
+
                 //Insert the new slide into the slide list.
                 SlideId newSlideId = slideIdList.AppendChild(new SlideId());
 
                 //Set the slide id and relationship id
                 newSlideId.Id = maxSlideId;
-                newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);                             
+                newSlideId.RelationshipId = presentationPart.GetIdOfPart(newSlidePart);
             }
 
             FixSlideLayoutIds(presentationPart, uniqueId);
@@ -236,7 +230,7 @@ namespace OpenXMLTools
             Presentation presentation = presentationDocument.PresentationPart.Presentation;
             SlideIdList slideIdList = presentation.SlideIdList;
             int index = CountSlides(presentationDocument) - 1;
-            while(index >= 0)
+            while (index >= 0)
             {
                 DeleteSlide(presentationDocument, index);
                 index--;
@@ -313,7 +307,7 @@ namespace OpenXMLTools
 
         #endregion
 
-        #region static Public methods
+        #region Static public methods
 
         public static string GetSlideTitle(SlidePart slidePart, int nameLength)
         {
@@ -335,7 +329,6 @@ namespace OpenXMLTools
                     foreach (var paragraph in shape.TextBody.Descendants<D.Paragraph>())
                     {
                         paragraphText.Append(paragraphSeparator);
-                        paragraphText.Append("[Sld]: ");
                         foreach (var text in paragraph.Descendants<D.Text>())
                         {
                             paragraphText.Append(text.Text);
@@ -354,7 +347,8 @@ namespace OpenXMLTools
                         break;
                 }
 
-                result.Remove(result.Length - 1, 1);
+                if (result.Length > 0)
+                    result.Remove(result.Length - 1, 1);
 
                 return result.ToString();
             }
