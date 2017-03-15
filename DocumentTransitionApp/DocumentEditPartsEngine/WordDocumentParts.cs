@@ -77,15 +77,17 @@ namespace DocumentEditPartsEngine
                 if (element is Paragraph)
                 {
                     Paragraph paragraph = element as Paragraph;
-                    var numberingProperties = paragraph.ParagraphProperties?.NumberingProperties;
+					NumberingProperties numberingProperties = null;
+					if (paragraph.ParagraphProperties != null)
+						numberingProperties = paragraph.ParagraphProperties.NumberingProperties;
                     string elementId = paragraph.ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
 
                     if (numberingProperties != null)
                     {
                         indent += numberingProperties.NumberingLevelReference.Val.Value;
-                        if (WordDocumentPartAttributes.BulletListIds.Any(b => b == numberingProperties.NumberingId.Val?.Value))
+                        if (WordDocumentPartAttributes.BulletListIds.Any(b => b == numberingProperties.NumberingId.Val.Value))
                             elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
-                        else if (WordDocumentPartAttributes.NumberedListIds.Any(b => b == numberingProperties.NumberingId.Val?.Value))
+                        else if (WordDocumentPartAttributes.NumberedListIds.Any(b => b == numberingProperties.NumberingId.Val.Value))
                             elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.NumberedList);
                         else
                             elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
