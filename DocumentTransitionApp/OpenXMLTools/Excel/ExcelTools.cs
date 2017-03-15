@@ -101,7 +101,7 @@ namespace OpenXMLTools
             var oldIndexes = new HashSet<string>(indexes.Select(i => i.OldIndex.ToString()));
             foreach (KeyValuePair<string, WorksheetPart> element in workSheetPartList)
             {
-                var cells = element.Value.Worksheet.Descendants<Cell>().Where(cell => cell?.DataType?.Value == CellValues.SharedString);
+                var cells = element.Value.Worksheet.Descendants<Cell>().Where(cell => cell != null && cell.DataType != null && cell.DataType.Value == CellValues.SharedString);
                 foreach (Cell cell in cells)
                 {
                     if (oldIndexes.Contains(cell.CellValue.InnerText))
@@ -124,7 +124,8 @@ namespace OpenXMLTools
                 var sheetId = element.Id;
                 var sheet = target.WorkbookPart.Workbook.Descendants<Sheet>()
                            .FirstOrDefault(s => s.Id == sheetId);
-                sheet?.Remove();
+				if(sheet != null)
+					sheet.Remove();
 
                 try
                 {
