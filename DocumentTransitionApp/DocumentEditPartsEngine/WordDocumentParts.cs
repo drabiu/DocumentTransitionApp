@@ -29,7 +29,8 @@ namespace DocumentEditPartsEngine
             isSupported = element is Paragraph
                 || element is Picture
                 || element is Table
-                || element is Drawing;
+                || element is Drawing
+                || element is Run;
 
             return isSupported;
         }
@@ -73,13 +74,14 @@ namespace DocumentEditPartsEngine
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             if (supportedType(element))
             {
-                PartsSelectionTreeElement elementToAdd;
+                PartsSelectionTreeElement elementToAdd = null;
                 if (element is Paragraph)
                 {
                     Paragraph paragraph = element as Paragraph;
                     var numberingProperties = paragraph.ParagraphProperties?.NumberingProperties;
                     string elementId = paragraph.ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
 
+                    //todo grouping
                     if (numberingProperties != null)
                     {
                         indent += numberingProperties.NumberingLevelReference.Val.Value;
@@ -97,22 +99,21 @@ namespace DocumentEditPartsEngine
                 }
                 else if (element is Picture || element is Drawing)
                 {
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), element.LocalName, indent, Helpers.ElementType.Picture);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Picture);
                 }
                 else if (element is Table)
                 {
                     elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Table).LocalName, indent, Helpers.ElementType.Table);
                 }
-                else
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent);
 
-                result.Add(elementToAdd);
+                if (elementToAdd != null)
+                    result.Add(elementToAdd);
+
                 if (element.HasChildren)
                 {
                     foreach (var elmentChild in element.ChildElements)
                     {
-                        _index++;
-                        CreatePartsSelectionTreeElements(elmentChild, _index, supportedType, ++indent);
+                        result.AddRange(CreatePartsSelectionTreeElements(elmentChild, _index, supportedType, ++indent));
                     }
 
                 }
