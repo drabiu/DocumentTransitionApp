@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLTools;
+using OpenXMLTools.Word.OpenXmlElements;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,9 +13,6 @@ namespace DocumentEditPartsEngine
 {
     public static class WordDocumentPartAttributes
     {
-        public static int[] NumberedListIds = new int[] { 2, 3 };
-        public static int[] BulletListIds = new int[] { 1 };
-
         public const int MaxNameLength = 35;
         public const string ParagraphHasNoId = "noid:";
 
@@ -53,8 +51,18 @@ namespace DocumentEditPartsEngine
                 {
                     Body body = wordDoc.MainDocumentPart.Document.Body;
 
+                    HashSet<OpenXmlElement> siblingsList = new HashSet<OpenXmlElement>();
                     foreach (var element in body.ChildElements)
                     {
+                        //group list elements to one
+                        if (siblingsList.Contains(element))
+                            continue;
+
+                        if (element is Paragraph && WordTools.IsListParagraph(element as Paragraph))
+                        {
+                            siblingsList = WordTools.GetAllSiblingListElements(element as Paragraph, body.ChildElements.ToList(), WordTools.GetNumberingId(element as Paragraph));
+                        }
+
                         documentElements.AddRange(CreatePartsSelectionTreeElements(element, _index, supportedType, 0));
                         _index++;
                     }
@@ -77,29 +85,26 @@ namespace DocumentEditPartsEngine
                 PartsSelectionTreeElement elementToAdd = null;
                 if (element is Paragraph)
                 {
-                    Paragraph paragraph = element as Paragraph;
-                    var numberingProperties = paragraph.ParagraphProperties?.NumberingProperties;
-                    string elementId = paragraph.ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
+                    ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
+                    string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
 
-                    //todo grouping
-                    if (numberingProperties != null)
-                    {
-                        indent += numberingProperties.NumberingLevelReference.Val.Value;
-                        if (WordDocumentPartAttributes.BulletListIds.Any(b => b == numberingProperties.NumberingId.Val?.Value))
-                            elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
-                        else if (WordDocumentPartAttributes.NumberedListIds.Any(b => b == numberingProperties.NumberingId.Val?.Value))
-                            elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.NumberedList);
-                        else
-                            elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
-                    }
+                    if (paragraphDecorator.IsBulletList())
+                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
+                    else if (paragraphDecorator.IsNumberingList())
+                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.NumberedList);
                     else
-                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Paragraph);
+                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Paragraph);
 
                     _paragraphCounter++;
                 }
-                else if (element is Picture || element is Drawing)
+                else if (element is Drawing)
                 {
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), WordTools.GetElementName(element, WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Picture);
+                    DrawingDecorator drawingDecorator = new DrawingDecorator(element);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Picture);
+                }
+                else if (element is Picture)
+                {
+
                 }
                 else if (element is Table)
                 {
@@ -120,6 +125,11 @@ namespace DocumentEditPartsEngine
             }
 
             return result;
+        }
+
+        private void GroupList()
+        {
+
         }
     }
 }
