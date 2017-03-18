@@ -1,6 +1,8 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLTools.Helpers;
 using OpenXMLTools.Interfaces;
+using System;
 using System.Text;
 using P = DocumentFormat.OpenXml.Drawing.Pictures;
 
@@ -36,6 +38,11 @@ namespace OpenXMLTools.Word.OpenXmlElements
             result = WordTools.GetWordsFromTextElements(text, nameLength);
 
             return result.ToString();
+        }
+
+        public ElementType GetElementType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using DocumentEditPartsEngine.Helpers;
-using DocumentEditPartsEngine.Interfaces;
+﻿using DocumentEditPartsEngine.Interfaces;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using OpenXMLTools.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;

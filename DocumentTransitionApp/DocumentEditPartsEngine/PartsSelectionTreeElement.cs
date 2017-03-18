@@ -1,12 +1,16 @@
-﻿using DocumentEditPartsEngine.Helpers;
+﻿using OpenXMLTools.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace DocumentEditPartsEngine
 {
+    [Serializable]
     public class PartsSelectionTreeElement
     {
         public string Id { get; set; }
         public string ElementId { get; set; }
+        [DataMember]
         public ElementType Type { get; set; }
         public List<PartsSelectionTreeElement> Childs { get; set; }
         public string Name { get; set; }

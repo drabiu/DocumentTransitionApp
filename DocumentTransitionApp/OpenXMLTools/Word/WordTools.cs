@@ -69,6 +69,20 @@ namespace OpenXMLTools
             return result;
         }
 
+        public static bool HasWebHiddenRunProperties(Run run)
+        {
+            bool result = false;
+            var runProperties = run.Descendants<RunProperties>();
+            foreach (var runProp in runProperties)
+            {
+                var webHidden = runProp.ChildElements.OfType<WebHidden>();
+                if (webHidden != null && webHidden.Count() > 0)
+                    result = true;
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

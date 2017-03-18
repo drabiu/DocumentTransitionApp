@@ -16,6 +16,7 @@ namespace DocumentTransitionUniversalApp.Helpers
         public const string WordTable = "ms-appx:///Assets/3x3_grid_icon&48.png";
         public const string WordBulletList = "ms-appx:///Assets/list_bullets_icon&48.png";
         public const string WordNumberedList = "ms-appx:///Assets/list_num_icon&48.png";
+        public const string WordHyperlink = "ms-appx:///Assets/link_icon&48.png";
 
         public TreeElementIcon(ElementType elmentType)
         {
@@ -32,6 +33,8 @@ namespace DocumentTransitionUniversalApp.Helpers
                     return WordBulletList;
                 case ElementType.NumberedList:
                     return WordNumberedList;
+                case ElementType.Hyperlink:
+                    return WordHyperlink;
                 case ElementType.Picture:
                     return WordPicture;
                 case ElementType.Table:

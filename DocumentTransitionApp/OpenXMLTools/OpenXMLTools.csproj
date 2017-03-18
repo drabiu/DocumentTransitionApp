@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,7 @@
     <Compile Include="Excel\ExcelTools.cs" />
     <Compile Include="Excel\GetMergedSharedStringItems.cs" />
     <Compile Include="Excel\SharedStringItemsComparer.cs" />
+    <Compile Include="Helpers\DocumentElementTypes.cs" />
     <Compile Include="Interfaces\IExcelTools.cs" />
     <Compile Include="Interfaces\IOpenXmlElementExtended.cs" />
     <Compile Include="Interfaces\IPresentationTools.cs" />
@@ -70,9 +72,6 @@
       <Project>{4c88a3ad-1241-4a04-854b-8372df29828d}</Project>
       <Name>System.IO.Packaging</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

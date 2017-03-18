@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLTools;
+using OpenXMLTools.Helpers;
 using OpenXMLTools.Word.OpenXmlElements;
 using System;
 using System.Collections.Generic;
@@ -87,20 +88,14 @@ namespace DocumentEditPartsEngine
                 {
                     ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
                     string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
-
-                    if (paragraphDecorator.IsBulletList())
-                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.BulletList);
-                    else if (paragraphDecorator.IsNumberingList())
-                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.NumberedList);
-                    else
-                        elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Paragraph);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
 
                     _paragraphCounter++;
                 }
                 else if (element is Drawing)
                 {
                     DrawingDecorator drawingDecorator = new DrawingDecorator(element);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, Helpers.ElementType.Picture);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, ElementType.Picture);
                 }
                 else if (element is Picture)
                 {
@@ -108,7 +103,7 @@ namespace DocumentEditPartsEngine
                 }
                 else if (element is Table)
                 {
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Table).LocalName, indent, Helpers.ElementType.Table);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Table).LocalName, indent, ElementType.Table);
                 }
 
                 if (elementToAdd != null)

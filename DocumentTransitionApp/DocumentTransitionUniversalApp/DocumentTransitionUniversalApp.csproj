@@ -187,6 +187,7 @@
   <ItemGroup>
     <Content Include="Assets\3x3_grid_icon&amp;48.png" />
     <Content Include="Assets\align_right_icon&amp;48.png" />
+    <Content Include="Assets\bookmark_2_icon&amp;48.png" />
     <Content Include="Assets\cancel_icon&amp;48.png" />
     <Content Include="Assets\checkbox_unchecked_icon&amp;48.png" />
     <Content Include="Assets\doc_empty_icon&amp;48.png" />
@@ -200,6 +201,7 @@
     <Content Include="Assets\ic_undo_black_48dp.png" />
     <Content Include="Assets\ic_view_carousel_black_48dp.png" />
     <Content Include="Assets\layers_2_icon&amp;48.png" />
+    <Content Include="Assets\link_icon&amp;48.png" />
     <Content Include="Assets\list_bullets_icon&amp;48.png" />
     <Content Include="Assets\list_num_icon&amp;48.png" />
     <Content Include="Assets\picture_icon&amp;48.png" />

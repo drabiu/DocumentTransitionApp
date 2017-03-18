@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using OpenXMLTools;
+using OpenXMLTools.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,7 +59,7 @@ namespace DocumentEditPartsEngine
             {
                 if (openXmlPart is SlidePart)
                 {
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), 0, Helpers.ElementType.Slide));
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), 0, ElementType.Slide));
                 }
             }
 

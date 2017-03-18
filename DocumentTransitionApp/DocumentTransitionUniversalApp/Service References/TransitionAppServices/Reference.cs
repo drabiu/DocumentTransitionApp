@@ -224,25 +224,28 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         NumberedList = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Table = 3,
+        Hyperlink = 3,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Picture = 4,
+        Table = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Sheet = 5,
+        Picture = 5,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Column = 6,
+        Sheet = 6,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Row = 7,
+        Column = 7,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Cell = 8,
+        Row = 8,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Slide = 9,
+        Cell = 9,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Slide = 10,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
