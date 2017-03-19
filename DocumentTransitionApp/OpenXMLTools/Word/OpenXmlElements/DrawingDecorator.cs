@@ -2,9 +2,9 @@
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLTools.Helpers;
 using OpenXMLTools.Interfaces;
-using System;
 using System.Text;
 using P = DocumentFormat.OpenXml.Drawing.Pictures;
+using Wp = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 
 namespace OpenXMLTools.Word.OpenXmlElements
 {
@@ -28,10 +28,18 @@ namespace OpenXMLTools.Word.OpenXmlElements
             StringBuilder text = new StringBuilder();
             if (_drawing.Inline?.Graphic?.GraphicData != null)
             {
-                foreach (var picture in _drawing.Inline?.Graphic.GraphicData.Elements<P.Picture>())
+                foreach (var picture in _drawing.Inline.Graphic.GraphicData.Elements<P.Picture>())
                 {
                     foreach (var picProp in picture.Elements<P.NonVisualPictureProperties>())
                         text.Append(picProp.NonVisualDrawingProperties.Name);
+                }
+            }
+            else if (_drawing.Anchor != null)
+            {
+                var docProperties = _drawing.Anchor.Elements<Wp.DocProperties>();
+                foreach (var docProp in docProperties)
+                {
+                    text.Append(docProp.Name);
                 }
             }
 
@@ -42,7 +50,7 @@ namespace OpenXMLTools.Word.OpenXmlElements
 
         public ElementType GetElementType()
         {
-            throw new NotImplementedException();
+            return ElementType.Picture;
         }
     }
 }

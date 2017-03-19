@@ -61,6 +61,7 @@
     <Compile Include="StreamTools.cs" />
     <Compile Include="Word\OpenXmlElements\DrawingDecorator.cs" />
     <Compile Include="Word\OpenXmlElements\ParagraphDecorator.cs" />
+    <Compile Include="Word\OpenXmlElements\TableDecorator.cs" />
     <Compile Include="Word\WordTools.cs" />
   </ItemGroup>
   <ItemGroup>

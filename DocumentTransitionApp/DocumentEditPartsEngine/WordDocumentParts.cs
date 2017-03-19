@@ -3,7 +3,6 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLTools;
-using OpenXMLTools.Helpers;
 using OpenXMLTools.Word.OpenXmlElements;
 using System;
 using System.Collections.Generic;
@@ -95,7 +94,7 @@ namespace DocumentEditPartsEngine
                 else if (element is Drawing)
                 {
                     DrawingDecorator drawingDecorator = new DrawingDecorator(element);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, ElementType.Picture);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
                 }
                 else if (element is Picture)
                 {
@@ -103,17 +102,23 @@ namespace DocumentEditPartsEngine
                 }
                 else if (element is Table)
                 {
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), (element as Table).LocalName, indent, ElementType.Table);
+                    TableDecorator tableDecorator = new TableDecorator(element);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), tableDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, tableDecorator.GetElementType());
                 }
 
                 if (elementToAdd != null)
+                {
                     result.Add(elementToAdd);
+                    indent--;
+                }
 
                 if (element.HasChildren)
                 {
+                    indent++;
                     foreach (var elmentChild in element.ChildElements)
                     {
-                        result.AddRange(CreatePartsSelectionTreeElements(elmentChild, _index, supportedType, ++indent));
+                        _index++;
+                        result.AddRange(CreatePartsSelectionTreeElements(elmentChild, _index, supportedType, indent));
                     }
 
                 }
