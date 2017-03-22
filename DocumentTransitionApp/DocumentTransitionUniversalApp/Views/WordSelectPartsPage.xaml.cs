@@ -1,5 +1,6 @@
 ﻿using DocumentTransitionUniversalApp.Data_Structures;
 using DocumentTransitionUniversalApp.Helpers;
+using DocumentTransitionUniversalApp.Extension_Methods;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -80,15 +81,20 @@ namespace DocumentTransitionUniversalApp.Views
             foreach (var element in elements)
             {
                 TreeElementIcon icon = new TreeElementIcon(element.Type);
-                var item = new PartsSelectionTreeElement<Service.ElementType>(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
+                var item = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
+                foreach (var child in element.Childs)
+                {
+                    item.SetChild(PartsSelectionTreeElement.ConvertToPartsSelectionTreeElement(child));
+                }
+
                 _pageData.SelectionParts.Add(item);
             }
         }
 
-        private void CreateSelectPartsUI(ObservableCollection<PartsSelectionTreeElement<Service.ElementType>> elements)
+        private void CreateSelectPartsUI(ObservableCollection<PartsSelectionTreeElement> elements)
         {
             WordSelectPartsItems.Items.Clear();
-            LazyLoadingItems<PartsSelectionTreeElement<Service.ElementType>> lazyItems = new LazyLoadingItems<PartsSelectionTreeElement<Service.ElementType>>(elements, PartsScrollViewer);
+            LazyLoadingItems<PartsSelectionTreeElement> lazyItems = new LazyLoadingItems<PartsSelectionTreeElement>(elements, PartsScrollViewer);
             lazyItems.PropertyChanged += LazyItems_PropertyChanged;
             foreach (var element in lazyItems.Items)
             {
@@ -98,19 +104,24 @@ namespace DocumentTransitionUniversalApp.Views
 
         private void LazyItems_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var lazy = sender as LazyLoadingItems<PartsSelectionTreeElement<Service.ElementType>>;
-            foreach (var item in lazy.Items)
+
+            var lazy = sender as LazyLoadingItems<PartsSelectionTreeElement>;
+            if (!lazy.IsPullRefresh)
             {
-                CreateButtonBlock(item);
+                WordSelectPartsItems.Items.Clear();
+                foreach (var item in lazy.Items)
+                {
+                    CreateButtonBlock(item);
+                }
             }
         }
 
-        private void CreateButtonBlock(PartsSelectionTreeElement<Service.ElementType> element)
+        private void CreateButtonBlock(PartsSelectionTreeElement element)
         {
             Button button = new Button();
 
             if (element.Selected)
-                button.Background = new SolidColorBrush(Colors.DodgerBlue);
+                button.Background = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
             else
                 button.Background = new SolidColorBrush(Colors.WhiteSmoke);
 
@@ -152,22 +163,37 @@ namespace DocumentTransitionUniversalApp.Views
                 button.Background = new SolidColorBrush(Colors.DimGray);
 
             WordSelectPartsItems.Items.Add(button);
+
+            foreach (var child in element.Childs)
+            {
+                CreateButtonBlock(child);
+            }
         }
 
         private void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var ownerName = Data_Structures.ComboBoxItem.GetComboBoxItemByName(_pageData.ComboItems, (string)comboBox.SelectedItem).Name;
             var button = sender as Button;
-            var selectedElement = _pageData.SelectionParts.Single(el => el.Id == button.Name);
+            var selectedElement = _pageData.SelectionParts.Traverse(sp => sp.Childs).Single(el => el.Id == button.Name);
             if (selectedElement.Selected)
             {
                 selectedElement.SelectItem(string.Empty);
-                button.Background = new SolidColorBrush(Colors.WhiteSmoke);
+                ChangeButtonsColor(selectedElement, button, Colors.WhiteSmoke);
             }
             else
             {
                 selectedElement.SelectItem(ownerName);
-                button.Background = new SolidColorBrush((Color)Application.Current.Resources["SystemAccentColor"]);
+                ChangeButtonsColor(selectedElement, button, (Color)Application.Current.Resources["SystemAccentColor"]);
+            }
+        }
+
+        private void ChangeButtonsColor(PartsSelectionTreeElement element, Button button, Color color)
+        {
+            button.Background = new SolidColorBrush(color);
+            foreach (var child in element.Childs)
+            {
+                var childButton = WordSelectPartsItems.Items.First(b => (b as Button).Name == child.Id);
+                ChangeButtonsColor(child, childButton as Button, color);
             }
         }
 

@@ -2,6 +2,7 @@
 using DocumentEditPartsEngine.Interfaces;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenXMLTools.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,8 +61,8 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void WordGetMethodShouldHaveCorrectParagraphElementsName()
         {
-            var elementsParagraphDemo = PartsSelectionElementsParagraphDemo.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Paragraph).ToList();
-            var elementsParagraphNoId = PartsSelectionElementsNoParagraphId.Where(p => p.Type == DocumentEditPartsEngine.Helpers.ElementType.Paragraph).ToList();
+            var elementsParagraphDemo = PartsSelectionElementsParagraphDemo.Where(p => p.Type == ElementType.Paragraph).ToList();
+            var elementsParagraphNoId = PartsSelectionElementsNoParagraphId.Where(p => p.Type == ElementType.Paragraph).ToList();
 
             Assert.AreEqual("There is support for images, tables,", elementsParagraphDemo[2].Name);
             Assert.AreEqual("Text Formatting", elementsParagraphDemo[5].Name);

@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using DocumentTransitionUniversalApp.Helpers;
+using System.Collections.Generic;
 
 namespace DocumentTransitionUniversalApp
 {
-
-
-    public class PartsSelectionTreeElement<ElementType>
+    public class PartsSelectionTreeElement
     {
         #region Fields
 
         public string Id { get; private set; }
         public string ElementId { get; private set; }
         public TransitionAppServices.ElementType Type { get; private set; }
-        public IList<PartsSelectionTreeElement<ElementType>> Childs { get; private set; }
+        public List<PartsSelectionTreeElement> Childs { get; private set; }
         public string Name { get; private set; }
         public string Icon { get; private set; }
         public int Indent { get; private set; }
@@ -28,7 +27,7 @@ namespace DocumentTransitionUniversalApp
             this.Type = type;
             this.Name = name;
             this.Indent = indent;
-            this.Childs = new List<PartsSelectionTreeElement<ElementType>>();
+            this.Childs = new List<PartsSelectionTreeElement>();
             this.Selected = false;
             this._ownerName = string.Empty;
         }
@@ -44,7 +43,7 @@ namespace DocumentTransitionUniversalApp
             this.ElementId = elementId;
         }
 
-        public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, PartsSelectionTreeElement<ElementType> child, string name, int indent)
+        public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, PartsSelectionTreeElement child, string name, int indent)
             : this(id, type, name, indent)
         {
             this.Childs.Add(child);
@@ -66,17 +65,39 @@ namespace DocumentTransitionUniversalApp
 
         #region Public methods
 
-        public void SetChild(PartsSelectionTreeElement<ElementType> child)
+        public void SetChild(PartsSelectionTreeElement child)
         {
             this.Childs.Add(child);
         }
 
-        public IList<PartsSelectionTreeElement<ElementType>> GetFilesTreeList()
+        public void SetChildRecursive()
         {
-            List<PartsSelectionTreeElement<ElementType>> result = new List<PartsSelectionTreeElement<ElementType>>();
+
+        }
+
+        public void AddChilds(List<PartsSelectionTreeElement> childs)
+        {
+            foreach (var child in childs)
+            {
+                SetChild(child);
+            }
+        }
+
+        public void AddChildsRecursive(List<PartsSelectionTreeElement> childs)
+        {
+            AddChilds(childs);
+            foreach (var child in childs)
+            {
+                AddChildsRecursive(child.Childs);
+            }
+        }
+
+        public IList<PartsSelectionTreeElement> GetFilesTreeList()
+        {
+            List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             result.Add(this);
 
-            foreach (PartsSelectionTreeElement<ElementType> child in Childs)
+            foreach (PartsSelectionTreeElement child in Childs)
             {
                 result.AddRange(GetChilds(child));
             }
@@ -84,13 +105,13 @@ namespace DocumentTransitionUniversalApp
             return result;
         }
 
-        public IList<PartsSelectionTreeElement<ElementType>> GetChilds(PartsSelectionTreeElement<ElementType> element)
+        public IList<PartsSelectionTreeElement> GetChilds(PartsSelectionTreeElement element)
         {
-            List<PartsSelectionTreeElement<ElementType>> result = new List<PartsSelectionTreeElement<ElementType>>();
+            List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
 
             result.Add(element);
 
-            foreach (PartsSelectionTreeElement<ElementType> child in element.Childs)
+            foreach (PartsSelectionTreeElement child in element.Childs)
             {
                 result.AddRange(GetChilds(child));
             }
@@ -110,9 +131,14 @@ namespace DocumentTransitionUniversalApp
         {
             Selected = !Selected;
             this._ownerName = ownerName;
+            foreach (var child in Childs)
+            {
+                if (child.Selected != Selected)
+                    child.SelectItem(ownerName);
+            }
         }
 
-        public TransitionAppServices.PartsSelectionTreeElement ConvertToPartsSelectionTreeElement()
+        public TransitionAppServices.PartsSelectionTreeElement ConvertToServicePartsSelectionTreeElement()
         {
             var part = new TransitionAppServices.PartsSelectionTreeElement();
             part.Id = this.Id;
@@ -122,9 +148,36 @@ namespace DocumentTransitionUniversalApp
             part.OwnerName = this._ownerName;
             part.Selected = this.Selected;
             part.Type = this.Type;
+            foreach (var child in this.Childs)
+            {
+                part.Childs.Add(child.ConvertToServicePartsSelectionTreeElement());
+            }
 
             return part;
         }
+
+        #endregion
+
+        #region Public static methods
+
+        public static PartsSelectionTreeElement ConvertToPartsSelectionTreeElement(TransitionAppServices.PartsSelectionTreeElement element)
+        {
+            TreeElementIcon icon = new TreeElementIcon(element.Type);
+            var part = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
+            part._ownerName = element.OwnerName;
+            part.Selected = element.Selected;
+            foreach (var child in element.Childs)
+            {
+                part.Childs.Add(ConvertToPartsSelectionTreeElement(child));
+            }
+
+            return part;
+        }
+
+        #endregion
+
+        #region Private methods
+
 
         #endregion
     }

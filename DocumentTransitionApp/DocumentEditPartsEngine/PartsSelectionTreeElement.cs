@@ -8,15 +8,20 @@ namespace DocumentEditPartsEngine
     [Serializable]
     public class PartsSelectionTreeElement
     {
+        #region Fields
+
         public string Id { get; set; }
         public string ElementId { get; set; }
-        [DataMember]
         public ElementType Type { get; set; }
         public List<PartsSelectionTreeElement> Childs { get; set; }
         public string Name { get; set; }
         public int Indent { get; set; }
         public string OwnerName { get; set; }
         public bool Selected { get; set; }
+
+        #endregion
+
+        #region Constructors
 
         public PartsSelectionTreeElement()
         {
@@ -44,5 +49,16 @@ namespace DocumentEditPartsEngine
         {
             this.Type = type;
         }
+
+        #endregion
+
+        #region Public methods
+
+        public void SetChild(PartsSelectionTreeElement child)
+        {
+            this.Childs.Add(child);
+        }
+
+        #endregion
     }
 }

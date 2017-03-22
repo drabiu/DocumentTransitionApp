@@ -63,7 +63,7 @@ namespace DocumentEditPartsEngine
                             siblingsList = WordTools.GetAllSiblingListElements(element as Paragraph, body.ChildElements.ToList(), WordTools.GetNumberingId(element as Paragraph));
                         }
 
-                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, _index, supportedType, 0));
+                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, null, _index, supportedType, 0));
                         _index++;
                     }
                 }
@@ -77,7 +77,7 @@ namespace DocumentEditPartsEngine
             return Get(file, el => WordDocumentPartAttributes.IsSupportedType(el));
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id, Predicate<OpenXmlElement> supportedType, int indent)
+        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             if (supportedType(element))
@@ -100,6 +100,10 @@ namespace DocumentEditPartsEngine
                 {
 
                 }
+                //else if (element is Run)
+                //{
+                //    elementToAdd = new PartsSelectionTreeElement(id.ToString(), "run", indent, OpenXMLTools.Helpers.ElementType.Paragraph);
+                //}
                 else if (element is Table)
                 {
                     TableDecorator tableDecorator = new TableDecorator(element);
@@ -109,6 +113,14 @@ namespace DocumentEditPartsEngine
                 if (elementToAdd != null)
                 {
                     result.Add(elementToAdd);
+                    //if (parent != null)
+                    //{
+                    //    parent.SetChild(elementToAdd);
+                    //}
+                    //else
+                    //{
+                    //}
+
                     indent--;
                 }
 
@@ -118,18 +130,24 @@ namespace DocumentEditPartsEngine
                     foreach (var elmentChild in element.ChildElements)
                     {
                         _index++;
-                        result.AddRange(CreatePartsSelectionTreeElements(elmentChild, _index, supportedType, indent));
+                        if (parent != null)
+                        {
+                            var parentElement = elementToAdd ?? parent;
+                            parentElement.Childs.AddRange(CreatePartsSelectionTreeElements(elmentChild, parentElement, _index, supportedType, indent));
+                        }
+                        else
+                        {
+                            result.AddRange(CreatePartsSelectionTreeElements(elmentChild, elementToAdd, _index, supportedType, indent));
+                        }
                     }
 
                 }
+
+                //if (elementToAdd != null)
+                //    result.Add(elementToAdd);
             }
 
             return result;
-        }
-
-        private void GroupList()
-        {
-
         }
     }
 }

@@ -160,6 +160,7 @@
     </Compile>
     <Compile Include="Data Structures\ComboBoxItem.cs" />
     <Compile Include="Data Structures\WordPartsPageData.cs" />
+    <Compile Include="Extension Methods\IEnumerable.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\LazyLoadingItems.cs" />
     <Compile Include="Helpers\TreeElementIcon.cs" />

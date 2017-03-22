@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
@@ -8,6 +9,7 @@ namespace DocumentTransitionUniversalApp.Helpers
     public class LazyLoadingItems<Elements> : INotifyPropertyChanged
     {
         #region Fields
+        ReaderWriterLockSlim _itemsLock;
 
         public ObservableCollection<Elements> Items { get; private set; }
 
@@ -26,8 +28,8 @@ namespace DocumentTransitionUniversalApp.Helpers
         }
 
         ObservableCollection<Elements> _sourceItems { get; set; }
-        private int _pageSize = 20;
-        private int _lastIndex = 0;
+        private int _pageSize;
+        private int _lastIndex;
         bool _isPullRefresh = false;
         ScrollViewer _scrollViewer;
 
@@ -37,6 +39,10 @@ namespace DocumentTransitionUniversalApp.Helpers
 
         public LazyLoadingItems(ObservableCollection<Elements> items, ScrollViewer scrollViewer)
         {
+            _pageSize = 40;
+            _lastIndex = 0;
+            _itemsLock = new ReaderWriterLockSlim();
+
             Items = new ObservableCollection<Elements>();
             _sourceItems = items;
             _scrollViewer = scrollViewer;
@@ -82,20 +88,22 @@ namespace DocumentTransitionUniversalApp.Helpers
             if (!e.IsIntermediate)
             {
                 Items.Clear();
-                if (sv.ScrollableHeight - sv.VerticalOffset < 200.0)
+                if (sv.ScrollableHeight - sv.VerticalOffset < 400.0 && _lastIndex < _sourceItems.Count - 1)
                 {
                     IsPullRefresh = true;
                     await Task.Delay(50);
+                    _lastIndex += _pageSize;
                     int maxScroll = _lastIndex + _pageSize > _sourceItems.Count - 1 ? _sourceItems.Count : _lastIndex + _pageSize;
-                    for (int i = _lastIndex; i < maxScroll; i++, _lastIndex++)
+
+                    for (int i = 0; i < maxScroll; i++)
                     {
-                        Items.Add(_sourceItems[i]);
+                        if (i < _lastIndex)
+                            Items.Add(_sourceItems[i]);
                     }
 
                     sv.ChangeView(null, sv.VerticalOffset, null);
+                    IsPullRefresh = false;
                 }
-
-                IsPullRefresh = false;
             }
         }
 

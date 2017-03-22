@@ -187,7 +187,7 @@ namespace DocumentTransitionUniversalApp
             var serviceClient = MainPage.Service.GetInstance();
             var selectionParts = new ObservableCollection<Service.PartsSelectionTreeElement>();
             foreach (var part in WordPartPage._pageData.SelectionParts)
-                selectionParts.Add(part.ConvertToPartsSelectionTreeElement());
+                selectionParts.Add(part.ConvertToServicePartsSelectionTreeElement());
 
             string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
             try
@@ -231,14 +231,14 @@ namespace DocumentTransitionUniversalApp
                 {
                     XmlFile = file;
                     xmlBinary = await StorageFileToByteArray(XmlFile);
-                    ObservableCollection<PartsSelectionTreeElement<Service.ElementType>> parts = new ObservableCollection<PartsSelectionTreeElement<Service.ElementType>>();
+                    ObservableCollection<PartsSelectionTreeElement> parts = new ObservableCollection<PartsSelectionTreeElement>();
                     var response = await GetPartsFromXml();
                     if (!response.IsError)
                     {
                         var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
-                            var item = new PartsSelectionTreeElement<Service.ElementType>(element.Id, element.ElementId, element.Type, element.Name, element.Indent, element.Selected, element.OwnerName);
+                            var item = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, element.Selected, element.OwnerName);
                             parts.Add(item);
                         }
 
