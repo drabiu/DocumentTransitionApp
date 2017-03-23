@@ -17,9 +17,6 @@ namespace DocumentEditPartsEngine
         {
             bool isSupported = false;
             isSupported = part is SlidePart;
-            //|| element is Wordproc.Picture
-            //|| element is Wordproc.Drawing
-            //|| element is Wordproc.Table;
 
             return isSupported;
         }
@@ -39,7 +36,7 @@ namespace DocumentEditPartsEngine
                 {
                     SlidePart slidePart = preDoc.PresentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
                     string elementId = slideId.RelationshipId;
-                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, elementId, supportedParts));
+                    presentationElements.AddRange(CreatePartsSelectionTreeElements(slidePart, idIndex, elementId, supportedParts, 0));
                     idIndex++;
                 }
             }
@@ -52,14 +49,14 @@ namespace DocumentEditPartsEngine
             return Get(file, el => PresentationDocumentPartAttributes.IsSupportedPart(el));
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlPart openXmlPart, int id, string elementId, Predicate<OpenXmlPart> isSupportedPart)
+        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlPart openXmlPart, int id, string elementId, Predicate<OpenXmlPart> isSupportedPart, int indent)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             if (isSupportedPart(openXmlPart))
             {
                 if (openXmlPart is SlidePart)
                 {
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), 0, ElementType.Slide));
+                    result.Add(new PartsSelectionTreeElement(id.ToString(), elementId, PresentationTools.GetSlideTitle(openXmlPart as SlidePart, PresentationDocumentPartAttributes.MaxNameLength), indent, ElementType.Slide));
                 }
             }
 

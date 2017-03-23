@@ -12,5 +12,6 @@ namespace DocumentEditPartsEngine.Interfaces
     {
         List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedType);
         List<PartsSelectionTreeElement> Get(Stream file);
+        PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent);
     }
 }

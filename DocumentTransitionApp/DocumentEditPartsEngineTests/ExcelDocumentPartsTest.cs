@@ -13,7 +13,7 @@ namespace DocumentEditPartsEngineTests
     {
         MemoryStream ExcTutorialDocInMemory;
         MemoryStream ExcTestDocInMemory;
-        IExcelParts PreDocumentParts;
+        IDocumentParts PreDocumentParts;
         IList<PartsSelectionTreeElement> PartsSelectionElementsTutorial;
         IList<PartsSelectionTreeElement> PartsSelectionElementsTest;
 
@@ -25,8 +25,8 @@ namespace DocumentEditPartsEngineTests
             ExcTutorialDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/ExcelTutorialR1 — edytowalny.xlsx"));
             ExcTestDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/test.xlsx"));
 
-            PartsSelectionElementsTutorial = PreDocumentParts.GetSheets(ExcTutorialDocInMemory);
-            PartsSelectionElementsTest = PreDocumentParts.GetSheets(ExcTestDocInMemory);
+            PartsSelectionElementsTutorial = PreDocumentParts.Get(ExcTutorialDocInMemory);
+            PartsSelectionElementsTest = PreDocumentParts.Get(ExcTestDocInMemory);
         }
 
         [TestMethod]

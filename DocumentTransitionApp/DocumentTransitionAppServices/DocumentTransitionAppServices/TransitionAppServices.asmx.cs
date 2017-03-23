@@ -9,7 +9,6 @@ using SplitDescriptionObjects;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Services;
-using System;
 
 namespace DocumentTransitionAppServices
 {
@@ -17,22 +16,22 @@ namespace DocumentTransitionAppServices
     /// Summary description for Service1
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
-	[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-	[System.ComponentModel.ToolboxItem(false)]
-	// To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-	// [System.Web.Script.Services.ScriptService]
-	public class Service1 : WebService, ITransitionAppService
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
+    // [System.Web.Script.Services.ScriptService]
+    public class Service1 : WebService, ITransitionAppService
     {
-		[WebMethod]
-		public PersonFiles[] SplitWord(string docName, byte[] docxFile, byte[] xmlFile)
-		{
-			ISplit run = new WordSplit(docName);
-			MemoryStream doc = new MemoryStream(docxFile);
-			MemoryStream xml = new MemoryStream(xmlFile);
-			run.OpenAndSearchDocument(doc, xml);
+        [WebMethod]
+        public PersonFiles[] SplitWord(string docName, byte[] docxFile, byte[] xmlFile)
+        {
+            ISplit run = new WordSplit(docName);
+            MemoryStream doc = new MemoryStream(docxFile);
+            MemoryStream xml = new MemoryStream(xmlFile);
+            run.OpenAndSearchDocument(doc, xml);
 
-			return run.SaveSplitDocument(doc).ToArray();
-		}
+            return run.SaveSplitDocument(doc).ToArray();
+        }
 
         [WebMethod]
         public PersonFiles[] SplitPresentation(string docName, byte[] docFile, byte[] xmlFile)
@@ -61,13 +60,13 @@ namespace DocumentTransitionAppServices
             return split.CreateSplitXml(parts);
         }
 
-		[WebMethod]
-		public List<PartsSelectionTreeElement> GetWordParts(string docName, byte[] documentFile)
-		{
+        [WebMethod]
+        public List<PartsSelectionTreeElement> GetWordParts(string docName, byte[] documentFile)
+        {
             IDocumentParts parts = new WordDocumentParts();
 
-			return parts.Get(new MemoryStream(documentFile));
-		}
+            return parts.Get(new MemoryStream(documentFile));
+        }
 
         [WebMethod]
         public List<PartsSelectionTreeElement> GetPresentationParts(string preName, byte[] presentationFile)
@@ -82,7 +81,7 @@ namespace DocumentTransitionAppServices
         {
             ISplitXml split = new WordSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetWordParts(docName, documentFile);
-            
+
             try
             {
                 return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
@@ -131,9 +130,9 @@ namespace DocumentTransitionAppServices
         [WebMethod]
         public List<PartsSelectionTreeElement> GetExcelParts(string excName, byte[] excelFile)
         {
-            IExcelParts parts = new ExcelDocumentParts();
+            IDocumentParts parts = new ExcelDocumentParts();
 
-            return parts.GetSheets(new MemoryStream(excelFile));
+            return parts.Get(new MemoryStream(excelFile));
         }
 
         [WebMethod]
@@ -175,5 +174,5 @@ namespace DocumentTransitionAppServices
 
             return merge.Run(new List<PersonFiles>(files));
         }
-    }	
+    }
 }

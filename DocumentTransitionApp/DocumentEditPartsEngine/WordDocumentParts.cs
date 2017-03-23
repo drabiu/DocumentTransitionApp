@@ -37,7 +37,12 @@ namespace DocumentEditPartsEngine
     public class WordDocumentParts : IDocumentParts
     {
         int _paragraphCounter = 0;
-        int _index = 0;
+        DocumentParts _documentParts;
+
+        public WordDocumentParts()
+        {
+            _documentParts = new DocumentParts(this);
+        }
 
         public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedType)
         {
@@ -63,8 +68,8 @@ namespace DocumentEditPartsEngine
                             siblingsList = WordTools.GetAllSiblingListElements(element as Paragraph, body.ChildElements.ToList(), WordTools.GetNumberingId(element as Paragraph));
                         }
 
-                        documentElements.AddRange(CreatePartsSelectionTreeElements(element, null, _index, supportedType, 0));
-                        _index++;
+                        documentElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(element, null, _documentParts.Index, supportedType, 0));
+                        _documentParts.Index++;
                     }
                 }
             }
@@ -77,77 +82,33 @@ namespace DocumentEditPartsEngine
             return Get(file, el => WordDocumentPartAttributes.IsSupportedType(el));
         }
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
+        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
         {
-            List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-            if (supportedType(element))
+            PartsSelectionTreeElement elementToAdd = null;
+            if (element is Paragraph)
             {
-                PartsSelectionTreeElement elementToAdd = null;
-                if (element is Paragraph)
-                {
-                    ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
-                    string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
+                ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
+                string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
 
-                    _paragraphCounter++;
-                }
-                else if (element is Drawing)
-                {
-                    DrawingDecorator drawingDecorator = new DrawingDecorator(element);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
-                }
-                else if (element is Picture)
-                {
+                _paragraphCounter++;
+            }
+            else if (element is Drawing)
+            {
+                DrawingDecorator drawingDecorator = new DrawingDecorator(element);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
+            }
+            else if (element is Picture)
+            {
 
-                }
-                //else if (element is Run)
-                //{
-                //    elementToAdd = new PartsSelectionTreeElement(id.ToString(), "run", indent, OpenXMLTools.Helpers.ElementType.Paragraph);
-                //}
-                else if (element is Table)
-                {
-                    TableDecorator tableDecorator = new TableDecorator(element);
-                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), tableDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, tableDecorator.GetElementType());
-                }
-
-                if (elementToAdd != null)
-                {
-                    result.Add(elementToAdd);
-                    //if (parent != null)
-                    //{
-                    //    parent.SetChild(elementToAdd);
-                    //}
-                    //else
-                    //{
-                    //}
-
-                    indent--;
-                }
-
-                if (element.HasChildren)
-                {
-                    indent++;
-                    foreach (var elmentChild in element.ChildElements)
-                    {
-                        _index++;
-                        if (parent != null)
-                        {
-                            var parentElement = elementToAdd ?? parent;
-                            parentElement.Childs.AddRange(CreatePartsSelectionTreeElements(elmentChild, parentElement, _index, supportedType, indent));
-                        }
-                        else
-                        {
-                            result.AddRange(CreatePartsSelectionTreeElements(elmentChild, elementToAdd, _index, supportedType, indent));
-                        }
-                    }
-
-                }
-
-                //if (elementToAdd != null)
-                //    result.Add(elementToAdd);
+            }
+            else if (element is Table)
+            {
+                TableDecorator tableDecorator = new TableDecorator(element);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), tableDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, tableDecorator.GetElementType());
             }
 
-            return result;
+            return elementToAdd;
         }
     }
 }

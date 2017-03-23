@@ -21,17 +21,29 @@ namespace DocumentEditPartsEngine
         public static bool IsSupportedType(OpenXmlElement element)
         {
             bool isSupported = false;
-            isSupported = element is Sheet
-            || element is Row
+            isSupported = element is Sheet;
+            //|| element is Row
             //|| element is Column
-            || element is Cell;
+            //|| element is Cell;
 
             return isSupported;
         }
     }
 
-    public class ExcelDocumentParts : IExcelParts
+    public class ExcelDocumentParts : IDocumentParts
     {
+        DocumentParts _documentParts;
+
+        public ExcelDocumentParts()
+        {
+            _documentParts = new DocumentParts(this);
+        }
+
+        public List<PartsSelectionTreeElement> Get(Stream file)
+        {
+            return Get(file, el => ExcelDocumentPartAttributes.IsSupportedType(el));
+        }
+
         public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedTypes)
         {
             List<PartsSelectionTreeElement> workBookElements = new List<PartsSelectionTreeElement>();
@@ -43,66 +55,59 @@ namespace DocumentEditPartsEngine
                 for (int cellIndex = 0; cellIndex < workBook.Sheets.ChildElements.Count; cellIndex++)
                 {
                     Sheet sheet = workBook.Sheets.ChildElements[cellIndex] as Sheet;
-                    workBookElements.AddRange(CreatePartsSelectionTreeElements(sheet, cellIndex + 1, supportedTypes));
+                    workBookElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(sheet, null, cellIndex + 1, supportedTypes, 0));
                     idIndex++;
 
-                    var worksheetPart = (WorksheetPart)(excDoc.WorkbookPart.GetPartById(sheet.Id));
+                    //var worksheetPart = (WorksheetPart)(excDoc.WorkbookPart.GetPartById(sheet.Id));
                     //foreach (var row in worksheetPart.Worksheet.Descendants<Column>())
                     //{
                     //    idIndex++;
                     //}
 
-                    foreach (var row in worksheetPart.Worksheet.Descendants<Row>())
-                    {
-                        workBookElements.AddRange(CreatePartsSelectionTreeElements(row, idIndex, supportedTypes));
-                        idIndex++;
-                        foreach (var cell in row.Elements<Cell>())
-                        {
-                            workBookElements.AddRange(CreatePartsSelectionTreeElements(cell, idIndex, supportedTypes));
-                            idIndex++;
-                        }
-                    }
+                    //foreach (var row in worksheetPart.Worksheet.Descendants<Row>())
+                    //{
+                    //    workBookElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(row, null, idIndex, supportedTypes, 1));
+                    //    idIndex++;
+                    //    foreach (var cell in row.Elements<Cell>())
+                    //    {
+                    //        workBookElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(cell, null, idIndex, supportedTypes, 2));
+                    //        idIndex++;
+                    //    }
+                    //}
                 }
             }
 
             return workBookElements;
         }
 
-        public List<PartsSelectionTreeElement> GetSheets(Stream file)
+        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
         {
-            return Get(file, el => ExcelDocumentPartAttributes.IsSupportedType(el));
-        }
+            PartsSelectionTreeElement elementToAdd = null;
 
-        private IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, int id, Predicate<OpenXmlElement> isSupportedType)
-        {
-            List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
-            if (isSupportedType(element))
+            if (element is Sheet)
             {
-                if (element is Sheet)
-                {
-                    string sheetName = string.Format("{0}", (element as Sheet).Name);
-                    string elementId = ExcelDocumentPartAttributes.GetSheetIdFormatter(id);
-                    result.Add(new PartsSelectionTreeElement(elementId, elementId, sheetName, 0, ElementType.Sheet));
-                }
-                else if (element is Row)
-                {
-                    Row row = element as Row;
-                    string rowName = string.Format("Row index: {0}", row.RowIndex);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, 1, ElementType.Row));
-                }
-                else if (element is Column)
-                {
+                string sheetName = string.Format("{0}", (element as Sheet).Name);
+                string elementId = ExcelDocumentPartAttributes.GetSheetIdFormatter(id);
+                elementToAdd = new PartsSelectionTreeElement(elementId, elementId, sheetName, 0, ElementType.Sheet);
+            }
+            else if (element is Row)
+            {
+                Row row = element as Row;
+                string rowName = string.Format("Row index: {0}", row.RowIndex);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, 1, ElementType.Row);
+            }
+            else if (element is Column)
+            {
 
-                }
-                else if (element is Cell)
-                {
-                    Cell cell = element as Cell;
-                    string cellName = string.Format("Cell name: {0}", cell.CellReference.Value);
-                    result.Add(new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, 2, ElementType.Cell));
-                }
+            }
+            else if (element is Cell)
+            {
+                Cell cell = element as Cell;
+                string cellName = string.Format("Cell name: {0}", cell.CellReference.Value);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, 2, ElementType.Cell);
             }
 
-            return result;
+            return elementToAdd;
         }
     }
 }
