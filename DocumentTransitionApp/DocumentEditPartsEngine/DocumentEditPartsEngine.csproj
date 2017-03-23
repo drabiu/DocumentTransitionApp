@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentParts.cs" />
+    <Compile Include="Extension Methods\IEnumerable.cs" />
     <Compile Include="Interfaces\IPresentationParts.cs" />
     <Compile Include="PresentationDocumentParts.cs" />
     <Compile Include="ExcelDocumentParts.cs" />

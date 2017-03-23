@@ -47,7 +47,7 @@ namespace DocumentSplitEngine.Document
                         }
                     }
 
-                    if (person.TextMarker != null)
+                    if (person.ListMarker != null)
                     {
                     }
 

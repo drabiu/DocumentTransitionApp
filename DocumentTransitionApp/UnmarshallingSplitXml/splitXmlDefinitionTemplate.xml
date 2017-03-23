@@ -6,10 +6,10 @@
 				<ElementId></ElementId>
 				<SelectionLastelementId></SelectionLastelementId>
 			</UniversalMarker>
-			<TextMarker>
+			<ListMarker>
 				<ElementId></ElementId>
 				<SelectionLastelementId></SelectionLastelementId>
-			</TextMarker>
+			</ListMarker>
 			<TableMarker>
 				<ElementId></ElementId>
 				<SelectionLastelementId></SelectionLastelementId>

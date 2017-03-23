@@ -11,7 +11,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="TextMarker" minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ListMarker" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ElementId" type="xs:string" minOccurs="0" />

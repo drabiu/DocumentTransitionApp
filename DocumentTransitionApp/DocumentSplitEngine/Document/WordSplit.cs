@@ -1,36 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using System.IO;
-using System.Reflection;
-
+﻿using DocumentEditPartsEngine;
+using DocumentEditPartsEngine.Extension_Methods;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml;
-
-using SplitDescriptionObjects;
-using DocumentEditPartsEngine;
 using DocumentSplitEngine.Data_Structures;
-using OpenXMLTools;
 using DocumentSplitEngine.Document;
 using DocumentSplitEngine.Interfaces;
 using OpenXmlPowerTools;
+using OpenXMLTools;
+using OpenXMLTools.Helpers;
+using SplitDescriptionObjects;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace DocumentSplitEngine
 {
-	public class WordSplit : MergeXml<OpenXmlElement>, ISplit, ISplitXml, ILocalSplit
-    {       
-		public WordSplit(string docName)
-		{
-			DocumentName = docName;
-		}
-      
+    public class WordSplit : MergeXml<OpenXmlElement>, ISplit, ISplitXml, ILocalSplit
+    {
+        public WordSplit(string docName)
+        {
+            DocumentName = docName;
+        }
+
         public void OpenAndSearchDocument(Stream docxFile, Stream xmlFile)
-		{
-			XmlSerializer serializer = new XmlSerializer(typeof(Split));
-			Split splitXml = (Split)serializer.Deserialize(xmlFile);
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Split));
+            Split splitXml = (Split)serializer.Deserialize(xmlFile);
 
             byte[] byteArray = StreamTools.ReadFully(docxFile);
             using (MemoryStream mem = new MemoryStream())
@@ -44,104 +44,104 @@ namespace DocumentSplitEngine
                     DocumentElements = mapping.Run();
                 }
             }
-		}
+        }
 
         [Obsolete]
-		public void OpenAndSearchDocument(string docxFilePath, string xmlFilePath)
-		{
-			//split XML Read
-			var xml = File.ReadAllText(xmlFilePath);
-			Split splitXml;
-			using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof(Split));
-				splitXml = (Split)serializer.Deserialize(stream);
-			}
+        public void OpenAndSearchDocument(string docxFilePath, string xmlFilePath)
+        {
+            //split XML Read
+            var xml = File.ReadAllText(xmlFilePath);
+            Split splitXml;
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Split));
+                splitXml = (Split)serializer.Deserialize(stream);
+            }
 
-			// Open a WordprocessingDocument for editing using the filepath.
-			WordprocessingDocument wordprocessingDocument =
-				WordprocessingDocument.Open(docxFilePath, true);
+            // Open a WordprocessingDocument for editing using the filepath.
+            WordprocessingDocument wordprocessingDocument =
+                WordprocessingDocument.Open(docxFilePath, true);
 
-			// Assign a reference to the existing document body.
-			Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-			MarkerWordMapper mapping = new MarkerWordMapper(DocumentName, splitXml, body);
-			DocumentElements = mapping.Run();
+            // Assign a reference to the existing document body.
+            Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
+            MarkerWordMapper mapping = new MarkerWordMapper(DocumentName, splitXml, body);
+            DocumentElements = mapping.Run();
 
-			// Close the handle explicitly.
-			wordprocessingDocument.Close();
-		}
+            // Close the handle explicitly.
+            wordprocessingDocument.Close();
+        }
 
         [Obsolete]
-		public void SaveSplitDocument(string docxFilePath)
-		{
-			DirectoryInfo initDi;
-			string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(WordSplit)).Location);
-			if (!Directory.Exists(appPath + @"\Files"))
-				initDi = Directory.CreateDirectory(appPath + @"\Files");
+        public void SaveSplitDocument(string docxFilePath)
+        {
+            DirectoryInfo initDi;
+            string appPath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(WordSplit)).Location);
+            if (!Directory.Exists(appPath + @"\Files"))
+                initDi = Directory.CreateDirectory(appPath + @"\Files");
 
-			byte[] byteArray = File.ReadAllBytes(docxFilePath);
-			using (MemoryStream mem = new MemoryStream())
-			{
-				mem.Write(byteArray, 0, byteArray.Length);
-				using (WordprocessingDocument wordDoc =
-					WordprocessingDocument.Open(mem, true))
-				{
-					foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
-					{						
-						wordDoc.MainDocumentPart.Document.Body = new Body();
-						Body body = wordDoc.MainDocumentPart.Document.Body;
-						foreach (OpenXmlElement compo in element.CompositeElements)
-							body.Append(compo.CloneNode(true));
+            byte[] byteArray = File.ReadAllBytes(docxFilePath);
+            using (MemoryStream mem = new MemoryStream())
+            {
+                mem.Write(byteArray, 0, byteArray.Length);
+                using (WordprocessingDocument wordDoc =
+                    WordprocessingDocument.Open(mem, true))
+                {
+                    foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
+                    {
+                        wordDoc.MainDocumentPart.Document.Body = new Body();
+                        Body body = wordDoc.MainDocumentPart.Document.Body;
+                        foreach (OpenXmlElement compo in element.CompositeElements)
+                            body.Append(compo.CloneNode(true));
 
-						wordDoc.MainDocumentPart.Document.Save();
+                        wordDoc.MainDocumentPart.Document.Save();
 
-						string directoryPath = appPath + @"\Files" + @"\" + element.PartOwner;
-						DirectoryInfo currentDi;
-						if (!Directory.Exists(directoryPath))
-						{
-							currentDi = Directory.CreateDirectory(directoryPath);
-						}
+                        string directoryPath = appPath + @"\Files" + @"\" + element.PartOwner;
+                        DirectoryInfo currentDi;
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            currentDi = Directory.CreateDirectory(directoryPath);
+                        }
 
-						using (FileStream fileStream = new FileStream(directoryPath + @"\" + element.Guid.ToString() + ".docx",
+                        using (FileStream fileStream = new FileStream(directoryPath + @"\" + element.Guid.ToString() + ".docx",
                             FileMode.CreateNew))
-						{
-							mem.WriteTo(fileStream);
-						}
-					}
-				}
-				// At this point, the memory stream contains the modified document.
-				// We could write it back to a SharePoint document library or serve
-				// it from a web server.			
-			}
+                        {
+                            mem.WriteTo(fileStream);
+                        }
+                    }
+                }
+                // At this point, the memory stream contains the modified document.
+                // We could write it back to a SharePoint document library or serve
+                // it from a web server.			
+            }
 
-			using (MemoryStream mem = new MemoryStream())
-			{
-				mem.Write(byteArray, 0, byteArray.Length);
-				using (WordprocessingDocument wordDoc =
-					WordprocessingDocument.Open(mem, true))
-				{
-					wordDoc.MainDocumentPart.Document.Body = new Body();
-					wordDoc.MainDocumentPart.Document.Save();
+            using (MemoryStream mem = new MemoryStream())
+            {
+                mem.Write(byteArray, 0, byteArray.Length);
+                using (WordprocessingDocument wordDoc =
+                    WordprocessingDocument.Open(mem, true))
+                {
+                    wordDoc.MainDocumentPart.Document.Body = new Body();
+                    wordDoc.MainDocumentPart.Document.Save();
 
-					using (FileStream fileStream = new FileStream(appPath + @"\Files" + @"\template" + ".docx",
+                    using (FileStream fileStream = new FileStream(appPath + @"\Files" + @"\template" + ".docx",
                         FileMode.CreateNew))
-					{
-						mem.WriteTo(fileStream);
-					}
-				}
-				// At this point, the memory stream contains the modified document.
-				// We could write it back to a SharePoint document library or serve
-				// it from a web server.			
-			}
+                    {
+                        mem.WriteTo(fileStream);
+                    }
+                }
+                // At this point, the memory stream contains the modified document.
+                // We could write it back to a SharePoint document library or serve
+                // it from a web server.			
+            }
 
-			CreateMergeXml(appPath + @"\Files" + @"\");
-		}
+            CreateMergeXml(appPath + @"\Files" + @"\");
+        }
 
-		public List<PersonFiles> SaveSplitDocument(Stream document)
-		{
-			List<PersonFiles> resultList = new List<PersonFiles>();
+        public List<PersonFiles> SaveSplitDocument(Stream document)
+        {
+            List<PersonFiles> resultList = new List<PersonFiles>();
 
-			byte[] byteArray = StreamTools.ReadFully(document);
+            byte[] byteArray = StreamTools.ReadFully(document);
             using (MemoryStream documentInMemoryStream = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
             {
                 foreach (OpenXMLDocumentPart<OpenXmlElement> element in DocumentElements)
@@ -164,7 +164,7 @@ namespace DocumentSplitEngine
                         person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
 
                     }
-			    }
+                }
                 // At this point, the memory stream contains the modified document.
                 // We could write it back to a SharePoint document library or serve
                 // it from a web server.	
@@ -184,22 +184,22 @@ namespace DocumentSplitEngine
                     person.Data = streamDoc.GetModifiedDocument().DocumentByteArray;
                 }
             }
-			// At this point, the memory stream contains the modified document.
-			// We could write it back to a SharePoint document library or serve
-			// it from a web server.			
+            // At this point, the memory stream contains the modified document.
+            // We could write it back to a SharePoint document library or serve
+            // it from a web server.			
 
-			var xmlPerson = new PersonFiles();
-			xmlPerson.Person = "/";
-			resultList.Add(xmlPerson);
-			xmlPerson.Name = "mergeXmlDefinition.xml";
-			xmlPerson.Data = CreateMergeXml();
+            var xmlPerson = new PersonFiles();
+            xmlPerson.Person = "/";
+            resultList.Add(xmlPerson);
+            xmlPerson.Name = "mergeXmlDefinition.xml";
+            xmlPerson.Data = CreateMergeXml();
 
-			return resultList;
-		}
+            return resultList;
+        }
 
         public byte[] CreateSplitXml(IList<PartsSelectionTreeElement> parts)
         {
-            var nameList = parts.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
+            var nameList = parts.Traverse(x => x.Childs).Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
             var indexer = new NameIndexer(nameList);
 
             Split splitXml = new Split();
@@ -208,22 +208,51 @@ namespace DocumentSplitEngine
             (splitXml.Items[0] as SplitDocument).Name = DocumentName;
             var splitDocument = (splitXml.Items[0] as SplitDocument);
             splitDocument.Person = new Person[nameList.Count];
+            var traversedParts = parts.Traverse(x => x.Childs);
             foreach (var name in nameList)
             {
+                var ownerParts = traversedParts.Where(p => p.OwnerName == name);
                 var person = new Person();
                 person.Email = name;
-                person.UniversalMarker = new PersonUniversalMarker[parts.Where(p => p.OwnerName == name).Count()];
+                person.UniversalMarker = new PersonUniversalMarker[ownerParts.Where(p => p.Type == ElementType.Paragraph).Count()];
+                person.TableMarker = new PersonTableMarker[ownerParts.Where(p => p.Type == ElementType.Table).Count()];
+                person.PictureMarker = new PersonPictureMarker[ownerParts.Where(p => p.Type == ElementType.Picture).Count()];
+                person.ListMarker = new PersonListMarker[ownerParts.Where(p => p.Type == ElementType.BulletList || p.Type == ElementType.NumberedList).Count()];
                 splitDocument.Person[nameList.IndexOf(name)] = person;
 
             }
 
-            foreach (var part in parts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
+            foreach (var part in parts.Traverse(x => x.Childs).Where(p => !string.IsNullOrEmpty(p.OwnerName)))
             {
                 var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];
-                var universalMarker = new PersonUniversalMarker();
-                universalMarker.ElementId = part.ElementId;
-                universalMarker.SelectionLastelementId = part.ElementId;
-                person.UniversalMarker[indexer.GetNextIndex(part.OwnerName)] = universalMarker;
+                switch (part.Type)
+                {
+                    case ElementType.Paragraph:
+                        var universalMarker = new PersonUniversalMarker();
+                        universalMarker.ElementId = part.ElementId;
+                        universalMarker.SelectionLastelementId = part.ElementId;
+                        person.UniversalMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = universalMarker;
+                        break;
+                    case ElementType.BulletList:
+                    case ElementType.NumberedList:
+                        var listMarker = new PersonListMarker();
+                        listMarker.ElementId = part.ElementId;
+                        listMarker.SelectionLastelementId = part.ElementId;
+                        person.ListMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = listMarker;
+                        break;
+                    case ElementType.Picture:
+                        var pictureMarker = new PersonPictureMarker();
+                        pictureMarker.ElementId = part.ElementId;
+                        pictureMarker.SelectionLastelementId = part.ElementId;
+                        person.PictureMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = pictureMarker;
+                        break;
+                    case ElementType.Table:
+                        var tableMarker = new PersonTableMarker();
+                        tableMarker.ElementId = part.ElementId;
+                        tableMarker.SelectionLastelementId = part.ElementId;
+                        person.TableMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = tableMarker;
+                        break;
+                }
             }
 
             using (MemoryStream splitStream = new MemoryStream())

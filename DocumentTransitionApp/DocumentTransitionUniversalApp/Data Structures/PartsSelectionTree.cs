@@ -1,5 +1,6 @@
 ﻿using DocumentTransitionUniversalApp.Helpers;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DocumentTransitionUniversalApp
 {
@@ -148,6 +149,7 @@ namespace DocumentTransitionUniversalApp
             part.OwnerName = this._ownerName;
             part.Selected = this.Selected;
             part.Type = this.Type;
+            part.Childs = new ObservableCollection<TransitionAppServices.PartsSelectionTreeElement>();
             foreach (var child in this.Childs)
             {
                 part.Childs.Add(child.ConvertToServicePartsSelectionTreeElement());
