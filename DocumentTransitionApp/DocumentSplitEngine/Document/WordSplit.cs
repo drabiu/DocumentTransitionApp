@@ -242,13 +242,11 @@ namespace DocumentSplitEngine
                     case ElementType.Picture:
                         var pictureMarker = new PersonPictureMarker();
                         pictureMarker.ElementId = part.ElementId;
-                        pictureMarker.SelectionLastelementId = part.ElementId;
                         person.PictureMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = pictureMarker;
                         break;
                     case ElementType.Table:
                         var tableMarker = new PersonTableMarker();
                         tableMarker.ElementId = part.ElementId;
-                        tableMarker.SelectionLastelementId = part.ElementId;
                         person.TableMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = tableMarker;
                         break;
                 }

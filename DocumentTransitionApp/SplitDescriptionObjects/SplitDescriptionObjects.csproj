@@ -48,9 +48,12 @@
     <Compile Include="DocumentMarkers\WordMarkers.cs" />
     <Compile Include="ExcelMarkers\ExcelMarkers.cs" />
     <Compile Include="Interfaces\IExcelMarker.cs" />
+    <Compile Include="Interfaces\IListWordMarker.cs" />
+    <Compile Include="Interfaces\IPictureWordMarker.cs" />
     <Compile Include="Interfaces\IPresentationMarker.cs" />
-    <Compile Include="Interfaces\IUniversalExcelMarker.cs" />
-    <Compile Include="Interfaces\IUniversalPresentationMarker.cs" />
+    <Compile Include="Interfaces\ISheetExcelMarker.cs" />
+    <Compile Include="Interfaces\ISlidePresentationMarker.cs" />
+    <Compile Include="Interfaces\ITableWordMarker.cs" />
     <Compile Include="Interfaces\IUniversalWordMarker.cs" />
     <Compile Include="Interfaces\IWordMarker.cs" />
     <Compile Include="Markers.cs" />

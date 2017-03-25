@@ -23,7 +23,6 @@
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ElementId" type="xs:string" minOccurs="0" />
-              <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -31,11 +30,17 @@
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ElementId" type="xs:string" minOccurs="0" />
-              <xs:element name="SelectionLastelementId" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
         <xs:element name="SheetMarker" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ElementId" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SlideMarker" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ElementId" type="xs:string" minOccurs="0" />

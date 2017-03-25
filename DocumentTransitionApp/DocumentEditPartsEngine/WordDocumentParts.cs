@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXMLTools;
+using OpenXMLTools.Helpers;
 using OpenXMLTools.Word.OpenXmlElements;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,21 @@ namespace DocumentEditPartsEngine
     {
         public const int MaxNameLength = 35;
         public const string ParagraphHasNoId = "noid:";
+        public const string CounterName = "counter";
 
         public static string GetParagraphNoIdFormatter(int id)
         {
             return string.Format("{0}{1}", ParagraphHasNoId, id);
+        }
+
+        public static string GetTableIdFormatter(int id)
+        {
+            return string.Format("tab{0}", id);
+        }
+
+        public static string GetDrawingIdFormatter(int id)
+        {
+            return string.Format("drw{0}", id);
         }
 
         public static bool IsSupportedType(OpenXmlElement element)
@@ -36,12 +48,13 @@ namespace DocumentEditPartsEngine
 
     public class WordDocumentParts : IDocumentParts
     {
-        int _paragraphCounter = 0;
+        NameIndexer _indexer;
         DocumentParts _documentParts;
 
         public WordDocumentParts()
         {
             _documentParts = new DocumentParts(this);
+            _indexer = new NameIndexer(new List<string>() { WordDocumentPartAttributes.CounterName });
         }
 
         public List<PartsSelectionTreeElement> Get(Stream file, Predicate<OpenXmlElement> supportedType)
@@ -88,15 +101,14 @@ namespace DocumentEditPartsEngine
             if (element is Paragraph)
             {
                 ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
-                string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_paragraphCounter);
+                string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, paragraphDecorator.GetElementType()));
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
-
-                _paragraphCounter++;
             }
             else if (element is Drawing)
             {
                 DrawingDecorator drawingDecorator = new DrawingDecorator(element);
-                elementToAdd = new PartsSelectionTreeElement(id.ToString(), drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
+                string elementId = WordDocumentPartAttributes.GetDrawingIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, drawingDecorator.GetElementType()));
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
             }
             else if (element is Picture)
             {
@@ -105,7 +117,8 @@ namespace DocumentEditPartsEngine
             else if (element is Table)
             {
                 TableDecorator tableDecorator = new TableDecorator(element);
-                elementToAdd = new PartsSelectionTreeElement(id.ToString(), tableDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, tableDecorator.GetElementType());
+                string elementId = WordDocumentPartAttributes.GetTableIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, tableDecorator.GetElementType()));
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, tableDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, tableDecorator.GetElementType());
             }
 
             return elementToAdd;

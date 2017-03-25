@@ -6,6 +6,7 @@ using DocumentSplitEngine.Interfaces;
 using DocumentSplitEngine.Presentation;
 using OpenXmlPowerTools;
 using OpenXMLTools;
+using OpenXMLTools.Helpers;
 using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
 using System;
@@ -17,7 +18,7 @@ using System.Xml.Serialization;
 namespace DocumentSplitEngine
 {
     public class PresentationSplit : MergeXml<SlideId>, ISplit, ISplitXml, ILocalSplit
-	{
+    {
         IPresentationTools PresentationTools;
 
         public PresentationSplit(string docName)
@@ -28,15 +29,15 @@ namespace DocumentSplitEngine
 
         [Obsolete]
         public void OpenAndSearchDocument(string filePath, string xmlSplitDefinitionFilePath)
-		{
+        {
             throw new NotImplementedException();
         }
 
         [Obsolete]
         public void SaveSplitDocument(string filePath)
-		{
-			throw new NotImplementedException();
-		}
+        {
+            throw new NotImplementedException();
+        }
 
         public void OpenAndSearchDocument(Stream docFile, Stream xmlFile)
         {
@@ -51,8 +52,8 @@ namespace DocumentSplitEngine
             }
         }
 
-		public List<PersonFiles> SaveSplitDocument(Stream document)
-		{
+        public List<PersonFiles> SaveSplitDocument(Stream document)
+        {
             List<PersonFiles> resultList = new List<PersonFiles>();
 
             byte[] byteArray = StreamTools.ReadFully(document);

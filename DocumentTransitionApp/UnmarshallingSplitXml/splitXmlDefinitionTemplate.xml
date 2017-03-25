@@ -12,11 +12,9 @@
 			</ListMarker>
 			<TableMarker>
 				<ElementId></ElementId>
-				<SelectionLastelementId></SelectionLastelementId>
 			</TableMarker>
 			<PictureMarker>
 				<ElementId></ElementId>
-				<SelectionLastelementId></SelectionLastelementId>
 			</PictureMarker>
 		</Person>
 		<Person Email="">
@@ -35,16 +33,11 @@
 	<Presentation>
 		<Name></Name>
 		<Person Email="">
-      <UniversalMarker>
+      <SlideMarker>
         <ElementId></ElementId>
-        <SelectionLastelementId></SelectionLastelementId>
-      </UniversalMarker>
+      </SlideMarker>
 		</Person>
 		<Person Email="">
-      <UniversalMarker>
-        <ElementId></ElementId>
-        <SelectionLastelementId></SelectionLastelementId>
-      </UniversalMarker>
 		</Person>
 	</Presentation>
 </Split>

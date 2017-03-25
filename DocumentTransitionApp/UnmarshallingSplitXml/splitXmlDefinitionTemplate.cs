@@ -36,6 +36,8 @@ public partial class Person {
     
     private PersonSheetMarker[] sheetMarkerField;
     
+    private PersonSlideMarker[] slideMarkerField;
+    
     private string emailField;
     
     /// <uwagi/>
@@ -90,6 +92,17 @@ public partial class Person {
         }
         set {
             this.sheetMarkerField = value;
+        }
+    }
+    
+    /// <uwagi/>
+    [System.Xml.Serialization.XmlElementAttribute("SlideMarker")]
+    public PersonSlideMarker[] SlideMarker {
+        get {
+            return this.slideMarkerField;
+        }
+        set {
+            this.slideMarkerField = value;
         }
     }
     
@@ -184,8 +197,6 @@ public partial class PersonTableMarker {
     
     private string elementIdField;
     
-    private string selectionLastelementIdField;
-    
     /// <uwagi/>
     public string ElementId {
         get {
@@ -193,16 +204,6 @@ public partial class PersonTableMarker {
         }
         set {
             this.elementIdField = value;
-        }
-    }
-    
-    /// <uwagi/>
-    public string SelectionLastelementId {
-        get {
-            return this.selectionLastelementIdField;
-        }
-        set {
-            this.selectionLastelementIdField = value;
         }
     }
 }
@@ -218,8 +219,6 @@ public partial class PersonPictureMarker {
     
     private string elementIdField;
     
-    private string selectionLastelementIdField;
-    
     /// <uwagi/>
     public string ElementId {
         get {
@@ -227,16 +226,6 @@ public partial class PersonPictureMarker {
         }
         set {
             this.elementIdField = value;
-        }
-    }
-    
-    /// <uwagi/>
-    public string SelectionLastelementId {
-        get {
-            return this.selectionLastelementIdField;
-        }
-        set {
-            this.selectionLastelementIdField = value;
         }
     }
 }
@@ -249,6 +238,28 @@ public partial class PersonPictureMarker {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
     "pp/")]
 public partial class PersonSheetMarker {
+    
+    private string elementIdField;
+    
+    /// <uwagi/>
+    public string ElementId {
+        get {
+            return this.elementIdField;
+        }
+        set {
+            this.elementIdField = value;
+        }
+    }
+}
+
+/// <uwagi/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+    "pp/")]
+public partial class PersonSlideMarker {
     
     private string elementIdField;
     

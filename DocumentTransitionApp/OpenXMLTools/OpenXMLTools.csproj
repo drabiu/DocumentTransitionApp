@@ -51,6 +51,7 @@
     <Compile Include="Excel\GetMergedSharedStringItems.cs" />
     <Compile Include="Excel\SharedStringItemsComparer.cs" />
     <Compile Include="Helpers\DocumentElementTypes.cs" />
+    <Compile Include="Helpers\NameIndexer.cs" />
     <Compile Include="Interfaces\IExcelTools.cs" />
     <Compile Include="Interfaces\IOpenXmlElementExtended.cs" />
     <Compile Include="Interfaces\IPresentationTools.cs" />

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentSplitEngine.Data_Structures;
 using DocumentSplitEngine.Interfaces;
 using SplitDescriptionObjects;
@@ -13,14 +12,14 @@ namespace DocumentSplitEngine.Excel
     {
         SplitExcel SplitExcelObj { get; set; }
         Workbook WorkBook;
-        IUniversalExcelMarker UniversalExcMarker;
+        ISheetExcelMarker UniversalExcMarker;
 
         public MarkerExcelMapper(string documentName, Split xml, Workbook workBook)
         {
             Xml = xml;
             SplitExcelObj = (SplitExcel)Xml.Items.Where(it => it is SplitExcel && string.Equals(((SplitExcel)it).Name, documentName)).SingleOrDefault();
             WorkBook = workBook;
-            UniversalExcMarker = new UniversalExcelMarker(workBook);
+            UniversalExcMarker = new SheetExcelMarker(workBook);
             SubdividedParagraphs = new string[workBook.Sheets.Count()];
         }
 

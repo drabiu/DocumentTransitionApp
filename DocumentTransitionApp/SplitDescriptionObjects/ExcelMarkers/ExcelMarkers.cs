@@ -45,9 +45,9 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public class UniversalExcelMarker : ExcelMarker, IUniversalExcelMarker
+    public class SheetExcelMarker : ExcelMarker, ISheetExcelMarker
     {
-        public UniversalExcelMarker(Workbook body) :
+        public SheetExcelMarker(Workbook body) :
             base(body)
         {
         }

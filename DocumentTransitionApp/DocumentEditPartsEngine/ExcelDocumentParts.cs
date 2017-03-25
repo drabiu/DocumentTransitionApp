@@ -88,13 +88,13 @@ namespace DocumentEditPartsEngine
             {
                 string sheetName = string.Format("{0}", (element as Sheet).Name);
                 string elementId = ExcelDocumentPartAttributes.GetSheetIdFormatter(id);
-                elementToAdd = new PartsSelectionTreeElement(elementId, elementId, sheetName, 0, ElementType.Sheet);
+                elementToAdd = new PartsSelectionTreeElement(elementId, elementId, sheetName, indent, ElementType.Sheet);
             }
             else if (element is Row)
             {
                 Row row = element as Row;
                 string rowName = string.Format("Row index: {0}", row.RowIndex);
-                elementToAdd = new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, 1, ElementType.Row);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, indent, ElementType.Row);
             }
             else if (element is Column)
             {
@@ -104,7 +104,7 @@ namespace DocumentEditPartsEngine
             {
                 Cell cell = element as Cell;
                 string cellName = string.Format("Cell name: {0}", cell.CellReference.Value);
-                elementToAdd = new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, 2, ElementType.Cell);
+                elementToAdd = new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, indent, ElementType.Cell);
             }
 
             return elementToAdd;

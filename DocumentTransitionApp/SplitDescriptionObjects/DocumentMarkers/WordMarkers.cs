@@ -66,7 +66,7 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public class TableWordMarker : WordMarker
+    public class TableWordMarker : WordMarker, ITableWordMarker
     {
         public TableWordMarker(Body body) :
             base(body)
@@ -78,7 +78,7 @@ namespace SplitDescriptionObjects
         {
             foreach (var tableMarker in person.TableMarker)
             {
-                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(tableMarker.ElementId, tableMarker.SelectionLastelementId, parts, element => element.ElementId);
+                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(tableMarker.ElementId, tableMarker.ElementId, parts, element => element.ElementId);
                 foreach (var index in selectedPartsIndexes)
                 {
                     parts[index].OwnerName = person.Email;
@@ -88,7 +88,7 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public class ListWordMarker : WordMarker
+    public class ListWordMarker : WordMarker, IListWordMarker
     {
         public ListWordMarker(Body body) :
             base(body)
@@ -110,7 +110,7 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public class PictureWordMarker : WordMarker
+    public class PictureWordMarker : WordMarker, IPictureWordMarker
     {
         public PictureWordMarker(Body body) : base(body)
         {
@@ -121,7 +121,7 @@ namespace SplitDescriptionObjects
         {
             foreach (var pictureMarker in person.PictureMarker)
             {
-                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(pictureMarker.ElementId, pictureMarker.SelectionLastelementId, parts, element => element.ElementId);
+                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(pictureMarker.ElementId, pictureMarker.ElementId, parts, element => element.ElementId);
                 foreach (var index in selectedPartsIndexes)
                 {
                     parts[index].OwnerName = person.Email;

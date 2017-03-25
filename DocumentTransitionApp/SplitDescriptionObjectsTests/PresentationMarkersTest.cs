@@ -1,17 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DocumentFormat.OpenXml.Packaging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SplitDescriptionObjects;
-using DocumentEditPartsEngine;
-using DocumentFormat.OpenXml.Packaging;
-using System.Collections.Generic;
 using SplitDescriptionObjects.Interfaces;
+using System.Collections.Generic;
 
 namespace SplitDescriptionObjectsTests
 {
     [TestClass]
     public class PresentationMarkersTest
     {
-        IUniversalPresentationMarker UniversalPreCGWMarker;
-        IUniversalPresentationMarker UniversalPreSampleMarker;
+        ISlidePresentationMarker UniversalPreCGWMarker;
+        ISlidePresentationMarker UniversalPreSampleMarker;
         PresentationDocument PreCGWDoc;
         PresentationDocument PreSampleDoc;
 
@@ -21,8 +20,8 @@ namespace SplitDescriptionObjectsTests
             PreCGWDoc = PresentationDocument.Open(@"../../../Files/6.CGW15-prezentacja.pptx", false);
             PreSampleDoc = PresentationDocument.Open(@"../../../Files/przykladowa-prezentacja.pptx", false);
 
-            UniversalPreCGWMarker = new UniversalPresentationMarker(PreCGWDoc.PresentationPart);
-            UniversalPreSampleMarker = new UniversalPresentationMarker(PreSampleDoc.PresentationPart);
+            UniversalPreCGWMarker = new SlidePresentationMarker(PreCGWDoc.PresentationPart);
+            UniversalPreSampleMarker = new SlidePresentationMarker(PreSampleDoc.PresentationPart);
         }
 
         [TestMethod]

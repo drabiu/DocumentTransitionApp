@@ -1,6 +1,6 @@
 ﻿namespace SplitDescriptionObjects.Interfaces
 {
-    public interface IUniversalExcelMarker : IExcelMarker
+    public interface IPictureWordMarker : IWordMarker
     {
     }
 }

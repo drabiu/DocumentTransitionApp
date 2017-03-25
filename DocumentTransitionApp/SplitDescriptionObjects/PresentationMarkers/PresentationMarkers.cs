@@ -30,9 +30,9 @@ namespace SplitDescriptionObjects
         }
     }
 
-    public class UniversalPresentationMarker : PresentationMarker, IUniversalPresentationMarker
+    public class SlidePresentationMarker : PresentationMarker, ISlidePresentationMarker
     {
-        public UniversalPresentationMarker(PresentationPart body) :
+        public SlidePresentationMarker(PresentationPart body) :
             base(body)
         {
         }

@@ -1,17 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DocumentFormat.OpenXml.Packaging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SplitDescriptionObjects;
-using DocumentEditPartsEngine;
-using DocumentFormat.OpenXml.Packaging;
-using System.Collections.Generic;
 using SplitDescriptionObjects.Interfaces;
+using System.Collections.Generic;
 
 namespace SplitDescriptionObjectsTests
 {
     [TestClass]
     public class ExcelMarkersTest
     {
-        IUniversalExcelMarker UniversalExcTutorialMarker;
-        IUniversalExcelMarker UniversalExcTestMarker;
+        ISheetExcelMarker UniversalExcTutorialMarker;
+        ISheetExcelMarker UniversalExcTestMarker;
         SpreadsheetDocument ExcTutorialDoc;
         SpreadsheetDocument ExcTestDoc;
 
@@ -21,8 +20,8 @@ namespace SplitDescriptionObjectsTests
             ExcTutorialDoc = SpreadsheetDocument.Open(@"../../../Files/ExcelTutorialR1 — edytowalny.xlsx", false);
             ExcTestDoc = SpreadsheetDocument.Open(@"../../../Files/test.xlsx", false);
 
-            UniversalExcTutorialMarker = new UniversalExcelMarker(ExcTutorialDoc.WorkbookPart.Workbook);
-            UniversalExcTestMarker = new UniversalExcelMarker(ExcTestDoc.WorkbookPart.Workbook);
+            UniversalExcTutorialMarker = new SheetExcelMarker(ExcTutorialDoc.WorkbookPart.Workbook);
+            UniversalExcTestMarker = new SheetExcelMarker(ExcTestDoc.WorkbookPart.Workbook);
         }
 
         [TestMethod]

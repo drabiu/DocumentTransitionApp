@@ -6,6 +6,7 @@ using DocumentSplitEngine.Excel;
 using DocumentSplitEngine.Interfaces;
 using OpenXmlPowerTools;
 using OpenXMLTools;
+using OpenXMLTools.Helpers;
 using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
 using System;
