@@ -72,16 +72,18 @@ namespace DocumentEditPartsEngine
                     HashSet<OpenXmlElement> siblingsList = new HashSet<OpenXmlElement>();
                     foreach (var element in body.ChildElements)
                     {
+                        bool visible = true;
                         //group list elements to one
                         if (siblingsList.Contains(element))
-                            continue;
-
-                        if (element is Paragraph && WordTools.IsListParagraph(element as Paragraph))
+                        {
+                            visible = false;
+                        }
+                        else if (element is Paragraph && WordTools.IsListParagraph(element as Paragraph))
                         {
                             siblingsList = WordTools.GetAllSiblingListElements(element as Paragraph, body.ChildElements.ToList(), WordTools.GetNumberingId(element as Paragraph));
                         }
 
-                        documentElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(element, null, _documentParts.Index, supportedType, 0));
+                        documentElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(element, null, _documentParts.Index, supportedType, 0, visible));
                         _documentParts.Index++;
                     }
                 }
@@ -95,7 +97,7 @@ namespace DocumentEditPartsEngine
             return Get(file, el => WordDocumentPartAttributes.IsSupportedType(el));
         }
 
-        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
+        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
         {
             PartsSelectionTreeElement elementToAdd = null;
             if (element is Paragraph)
@@ -103,6 +105,7 @@ namespace DocumentEditPartsEngine
                 ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
                 string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, paragraphDecorator.GetElementType()));
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
+                elementToAdd.Visible = visible;
             }
             else if (element is Drawing)
             {

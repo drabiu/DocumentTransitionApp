@@ -145,7 +145,6 @@
     <None Include="Service References\TransitionAppServices\DocumentTransitionUniversalApp.TransitionAppServices.SplitWordResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\TransitionAppServices\TransitionAppServices1.disco" />
     <None Include="Service References\TransitionAppServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -154,7 +153,7 @@
     <None Include="Service References\TransitionAppServices\configuration91.svcinfo" />
     <None Include="project.json" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
-    <None Include="Service References\TransitionAppServices\TransitionAppServices1.wsdl" />
+    <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -218,6 +217,7 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <None Include="Service References\TransitionAppServices\TransitionAppServices.disco" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

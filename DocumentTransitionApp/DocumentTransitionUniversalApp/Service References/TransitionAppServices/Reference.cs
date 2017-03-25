@@ -96,6 +96,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         private bool SelectedField;
         
+        private bool VisibleField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public string Id {
             get {
@@ -196,6 +198,19 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
                 if ((this.SelectedField.Equals(value) != true)) {
                     this.SelectedField = value;
                     this.RaisePropertyChanged("Selected");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
+        public bool Visible {
+            get {
+                return this.VisibleField;
+            }
+            set {
+                if ((this.VisibleField.Equals(value) != true)) {
+                    this.VisibleField = value;
+                    this.RaisePropertyChanged("Visible");
                 }
             }
         }
@@ -1718,7 +1733,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration) {
             if ((endpointConfiguration == EndpointConfiguration.Service1Soap)) {
-                return new System.ServiceModel.EndpointAddress("http://localhost:6943/TransitionAppServices.asmx");
+                return new System.ServiceModel.EndpointAddress("http://localhost:6943/DocumentTransitionAppServices/TransitionAppServices.asmx");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

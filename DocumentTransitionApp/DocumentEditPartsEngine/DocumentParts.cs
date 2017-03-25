@@ -15,12 +15,12 @@ namespace DocumentEditPartsEngine
             _documentParts = documentParts;
         }
 
-        public IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
+        public IEnumerable<PartsSelectionTreeElement> CreatePartsSelectionTreeElements(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
         {
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             if (supportedType(element))
             {
-                PartsSelectionTreeElement elementToAdd = _documentParts.GetParagraphSelectionTreeElement(element, parent, id, supportedType, indent);
+                PartsSelectionTreeElement elementToAdd = _documentParts.GetParagraphSelectionTreeElement(element, parent, id, supportedType, indent, visible);
 
                 if (elementToAdd != null)
                 {
@@ -37,11 +37,11 @@ namespace DocumentEditPartsEngine
                         if (parent != null)
                         {
                             var parentElement = elementToAdd ?? parent;
-                            parentElement.Childs.AddRange(CreatePartsSelectionTreeElements(elmentChild, parentElement, Index, supportedType, indent));
+                            parentElement.Childs.AddRange(CreatePartsSelectionTreeElements(elmentChild, parentElement, Index, supportedType, indent, visible));
                         }
                         else
                         {
-                            result.AddRange(CreatePartsSelectionTreeElements(elmentChild, elementToAdd, Index, supportedType, indent));
+                            result.AddRange(CreatePartsSelectionTreeElements(elmentChild, elementToAdd, Index, supportedType, indent, visible));
                         }
                     }
 

@@ -55,7 +55,7 @@ namespace DocumentEditPartsEngine
                 for (int cellIndex = 0; cellIndex < workBook.Sheets.ChildElements.Count; cellIndex++)
                 {
                     Sheet sheet = workBook.Sheets.ChildElements[cellIndex] as Sheet;
-                    workBookElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(sheet, null, cellIndex + 1, supportedTypes, 0));
+                    workBookElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(sheet, null, cellIndex + 1, supportedTypes, 0, true));
                     idIndex++;
 
                     //var worksheetPart = (WorksheetPart)(excDoc.WorkbookPart.GetPartById(sheet.Id));
@@ -80,7 +80,7 @@ namespace DocumentEditPartsEngine
             return workBookElements;
         }
 
-        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent)
+        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
         {
             PartsSelectionTreeElement elementToAdd = null;
 

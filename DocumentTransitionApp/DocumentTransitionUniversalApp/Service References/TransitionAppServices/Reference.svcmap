@@ -21,11 +21,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:6943/TransitionAppServices.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:6943/DocumentTransitionAppServices/TransitionAppServices.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="TransitionAppServices1.wsdl" MetadataType="Wsdl" ID="ae04a7d1-cb1a-4054-b127-459898af00ad" SourceId="1" SourceUrl="http://localhost:6943/TransitionAppServices.asmx?wsdl" />
-    <MetadataFile FileName="TransitionAppServices1.disco" MetadataType="Disco" ID="4da51c58-d7bd-4675-b93b-277231211d0d" SourceId="1" SourceUrl="http://localhost:6943/TransitionAppServices.asmx?disco" />
+    <MetadataFile FileName="TransitionAppServices.disco" MetadataType="Disco" ID="e317a4c6-a9de-449c-98d9-010072ff2588" SourceId="1" SourceUrl="http://localhost:6943/DocumentTransitionAppServices/TransitionAppServices.asmx?disco" />
+    <MetadataFile FileName="TransitionAppServices.wsdl" MetadataType="Wsdl" ID="e1cad8a4-6ad9-4619-83df-fffb8321f3b3" SourceId="1" SourceUrl="http://localhost:6943/DocumentTransitionAppServices/TransitionAppServices.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

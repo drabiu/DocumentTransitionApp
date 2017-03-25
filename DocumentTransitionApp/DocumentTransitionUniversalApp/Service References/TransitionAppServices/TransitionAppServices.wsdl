@@ -69,6 +69,7 @@
           <s:element minOccurs="1" maxOccurs="1" name="Indent" type="s:int" />
           <s:element minOccurs="0" maxOccurs="1" name="OwnerName" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Selected" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Visible" type="s:boolean" />
         </s:sequence>
       </s:complexType>
       <s:simpleType name="ElementType">
@@ -713,10 +714,10 @@
   </wsdl:binding>
   <wsdl:service name="Service1">
     <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
-      <soap:address location="http://localhost:6943/TransitionAppServices.asmx" />
+      <soap:address location="http://localhost:6943/DocumentTransitionAppServices/TransitionAppServices.asmx" />
     </wsdl:port>
     <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
-      <soap12:address location="http://localhost:6943/TransitionAppServices.asmx" />
+      <soap12:address location="http://localhost:6943/DocumentTransitionAppServices/TransitionAppServices.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

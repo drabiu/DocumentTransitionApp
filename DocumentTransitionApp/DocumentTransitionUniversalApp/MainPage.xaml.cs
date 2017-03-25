@@ -300,8 +300,7 @@ namespace DocumentTransitionUniversalApp
 
         private void AddPartsRecursive(ObservableCollection<PartsSelectionTreeElement> parts, TransitionAppServices.PartsSelectionTreeElement element)
         {
-            TreeElementIcon icon = new TreeElementIcon(element.Type);
-            var item = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, element.Selected, element.OwnerName, icon.GetIcon());
+            var item = PartsSelectionTreeElement.ConvertToPartsSelectionTreeElement(element);
             parts.Add(item);
             foreach (var child in element.Childs)
             {

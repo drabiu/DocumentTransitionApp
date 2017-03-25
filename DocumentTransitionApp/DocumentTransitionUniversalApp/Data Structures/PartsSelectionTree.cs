@@ -16,11 +16,16 @@ namespace DocumentTransitionUniversalApp
         public string Icon { get; private set; }
         public int Indent { get; private set; }
         public bool Selected { get; set; }
+        public bool Visible { get; set; }
         private string _ownerName { get; set; }
 
         #endregion
 
         #region Constructors
+
+        public PartsSelectionTreeElement()
+        {
+        }
 
         public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, string name, int indent)
         {
@@ -150,6 +155,7 @@ namespace DocumentTransitionUniversalApp
             part.OwnerName = this._ownerName;
             part.Selected = this.Selected;
             part.Type = this.Type;
+            part.Visible = this.Visible;
             part.Childs = new ObservableCollection<TransitionAppServices.PartsSelectionTreeElement>();
             foreach (var child in this.Childs)
             {
@@ -167,6 +173,7 @@ namespace DocumentTransitionUniversalApp
         {
             TreeElementIcon icon = new TreeElementIcon(element.Type);
             var part = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
+            part.Visible = element.Visible;
             part._ownerName = element.OwnerName;
             part.Selected = element.Selected;
             foreach (var child in element.Childs)

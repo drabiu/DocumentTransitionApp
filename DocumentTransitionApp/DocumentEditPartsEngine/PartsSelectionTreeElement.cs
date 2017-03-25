@@ -1,7 +1,6 @@
 ﻿using OpenXMLTools.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace DocumentEditPartsEngine
 {
@@ -18,6 +17,7 @@ namespace DocumentEditPartsEngine
         public int Indent { get; set; }
         public string OwnerName { get; set; }
         public bool Selected { get; set; }
+        public bool Visible { get; set; }
 
         #endregion
 
@@ -25,9 +25,10 @@ namespace DocumentEditPartsEngine
 
         public PartsSelectionTreeElement()
         {
+            Visible = true;
         }
 
-        public PartsSelectionTreeElement(string id, string name, int indent)
+        public PartsSelectionTreeElement(string id, string name, int indent) : this()
         {
             this.Id = id;
             this.Name = name;

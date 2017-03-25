@@ -1,6 +1,6 @@
 ﻿using DocumentTransitionUniversalApp.Data_Structures;
-using DocumentTransitionUniversalApp.Helpers;
 using DocumentTransitionUniversalApp.Extension_Methods;
+using DocumentTransitionUniversalApp.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -82,6 +82,7 @@ namespace DocumentTransitionUniversalApp.Views
             {
                 TreeElementIcon icon = new TreeElementIcon(element.Type);
                 var item = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
+                item.Visible = element.Visible;
                 foreach (var child in element.Childs)
                 {
                     item.SetChild(PartsSelectionTreeElement.ConvertToPartsSelectionTreeElement(child));
@@ -96,7 +97,7 @@ namespace DocumentTransitionUniversalApp.Views
             WordSelectPartsItems.Items.Clear();
             LazyLoadingItems<PartsSelectionTreeElement> lazyItems = new LazyLoadingItems<PartsSelectionTreeElement>(elements, PartsScrollViewer);
             lazyItems.PropertyChanged += LazyItems_PropertyChanged;
-            foreach (var element in lazyItems.Items)
+            foreach (var element in lazyItems.Items.Where(el => el.Visible))
             {
                 CreateButtonBlock(element);
             }
@@ -109,7 +110,7 @@ namespace DocumentTransitionUniversalApp.Views
             if (!lazy.IsPullRefresh)
             {
                 WordSelectPartsItems.Items.Clear();
-                foreach (var item in lazy.Items)
+                foreach (var item in lazy.Items.Where(el => el.Visible))
                 {
                     CreateButtonBlock(item);
                 }
