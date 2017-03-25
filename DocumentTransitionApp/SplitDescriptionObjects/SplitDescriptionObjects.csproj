@@ -47,6 +47,12 @@
   <ItemGroup>
     <Compile Include="DocumentMarkers\WordMarkers.cs" />
     <Compile Include="ExcelMarkers\ExcelMarkers.cs" />
+    <Compile Include="Interfaces\IExcelMarker.cs" />
+    <Compile Include="Interfaces\IPresentationMarker.cs" />
+    <Compile Include="Interfaces\IUniversalExcelMarker.cs" />
+    <Compile Include="Interfaces\IUniversalPresentationMarker.cs" />
+    <Compile Include="Interfaces\IUniversalWordMarker.cs" />
+    <Compile Include="Interfaces\IWordMarker.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="PersonFiles.cs" />
     <Compile Include="PresentationMarkers\PresentationMarkers.cs" />

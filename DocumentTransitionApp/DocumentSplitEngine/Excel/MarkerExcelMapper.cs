@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentSplitEngine.Data_Structures;
 using DocumentSplitEngine.Interfaces;
 using SplitDescriptionObjects;
+using SplitDescriptionObjects.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 

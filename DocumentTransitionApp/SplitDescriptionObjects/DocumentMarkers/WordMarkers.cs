@@ -1,19 +1,13 @@
-﻿using System;
+﻿using DocumentEditPartsEngine;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Wordprocessing;
+using SplitDescriptionObjects.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentEditPartsEngine;
-
 namespace SplitDescriptionObjects
 {
-    public interface IWordMarker
-    {
-        int FindElement(string id);
-        IList<int> GetCrossedParagraphElements(string id, string id2);
-    }
-
     public abstract class WordMarker : IWordMarker
     {
         Body DocumentBody;
@@ -45,14 +39,10 @@ namespace SplitDescriptionObjects
                 Paragraph parahraph = (element as Paragraph);
                 int index = ElementsList.FindIndex(el => el.Equals(element));
                 result = parahraph.ParagraphId != null ? parahraph.ParagraphId.Value : WordDocumentPartAttributes.GetParagraphNoIdFormatter(index);
-            }        
+            }
 
             return result;
         }
-    }
-
-    public interface IUniversalWordMarker : IWordMarker
-    {
     }
 
     public class UniversalWordMarker : WordMarker, IUniversalWordMarker
@@ -60,6 +50,84 @@ namespace SplitDescriptionObjects
         public UniversalWordMarker(Body body) :
             base(body)
         {
+        }
+
+        public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
+        {
+            foreach (var universalMarker in person.UniversalMarker)
+            {
+                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
+                foreach (var index in selectedPartsIndexes)
+                {
+                    parts[index].OwnerName = person.Email;
+                    parts[index].Selected = true;
+                }
+            }
+        }
+    }
+
+    public class TableWordMarker : WordMarker
+    {
+        public TableWordMarker(Body body) :
+            base(body)
+        {
+
+        }
+
+        public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
+        {
+            foreach (var tableMarker in person.TableMarker)
+            {
+                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(tableMarker.ElementId, tableMarker.SelectionLastelementId, parts, element => element.ElementId);
+                foreach (var index in selectedPartsIndexes)
+                {
+                    parts[index].OwnerName = person.Email;
+                    parts[index].Selected = true;
+                }
+            }
+        }
+    }
+
+    public class ListWordMarker : WordMarker
+    {
+        public ListWordMarker(Body body) :
+            base(body)
+        {
+
+        }
+
+        public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
+        {
+            foreach (var listMarker in person.ListMarker)
+            {
+                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(listMarker.ElementId, listMarker.SelectionLastelementId, parts, element => element.ElementId);
+                foreach (var index in selectedPartsIndexes)
+                {
+                    parts[index].OwnerName = person.Email;
+                    parts[index].Selected = true;
+                }
+            }
+        }
+    }
+
+    public class PictureWordMarker : WordMarker
+    {
+        public PictureWordMarker(Body body) : base(body)
+        {
+
+        }
+
+        public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
+        {
+            foreach (var pictureMarker in person.PictureMarker)
+            {
+                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(pictureMarker.ElementId, pictureMarker.SelectionLastelementId, parts, element => element.ElementId);
+                foreach (var index in selectedPartsIndexes)
+                {
+                    parts[index].OwnerName = person.Email;
+                    parts[index].Selected = true;
+                }
+            }
         }
     }
 }

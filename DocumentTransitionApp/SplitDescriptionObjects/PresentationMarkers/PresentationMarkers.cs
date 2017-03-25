@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Packaging;
+using SplitDescriptionObjects.Interfaces;
 
 namespace SplitDescriptionObjects
 {
-    public interface IPresentationMarker
-    {
-        int FindElement(string id);
-        IList<int> GetCrossedSlideIdElements(string id, string id2);
-    }
-
     public abstract class PresentationMarker : IPresentationMarker
     {
         PresentationPart DocumentBody;
@@ -33,10 +28,6 @@ namespace SplitDescriptionObjects
 
             return indexes;
         }
-    }
-
-    public interface IUniversalPresentationMarker : IPresentationMarker
-    {
     }
 
     public class UniversalPresentationMarker : PresentationMarker, IUniversalPresentationMarker

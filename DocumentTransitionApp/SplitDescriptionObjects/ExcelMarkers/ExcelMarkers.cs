@@ -1,18 +1,13 @@
 ﻿using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
+using SplitDescriptionObjects.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SplitDescriptionObjects
 {
-    public interface IExcelMarker
-    {
-        int FindElement(string id);
-        IList<int> GetCrossedSheetElements(string id, string id2);
-    }
-
     public abstract class ExcelMarker : IExcelMarker
     {
         Workbook DocumentBody;
@@ -48,10 +43,6 @@ namespace SplitDescriptionObjects
 
             return result;
         }
-    }
-
-    public interface IUniversalExcelMarker : IExcelMarker
-    {
     }
 
     public class UniversalExcelMarker : ExcelMarker, IUniversalExcelMarker

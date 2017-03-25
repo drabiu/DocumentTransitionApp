@@ -219,10 +219,9 @@ namespace DocumentSplitEngine
                 person.PictureMarker = new PersonPictureMarker[ownerParts.Where(p => p.Type == ElementType.Picture).Count()];
                 person.ListMarker = new PersonListMarker[ownerParts.Where(p => p.Type == ElementType.BulletList || p.Type == ElementType.NumberedList).Count()];
                 splitDocument.Person[nameList.IndexOf(name)] = person;
-
             }
 
-            foreach (var part in parts.Traverse(x => x.Childs).Where(p => !string.IsNullOrEmpty(p.OwnerName)))
+            foreach (var part in traversedParts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
             {
                 var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];
                 switch (part.Type)
@@ -275,15 +274,10 @@ namespace DocumentSplitEngine
 
             foreach (var person in splitDocument.Person)
             {
-                foreach (var universalMarker in person.UniversalMarker)
-                {
-                    var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
-                    foreach (var index in selectedPartsIndexes)
-                    {
-                        parts[index].OwnerName = person.Email;
-                        parts[index].Selected = true;
-                    }
-                }
+                UniversalWordMarker.SetPartsOwner(parts, person);
+                TableWordMarker.SetPartsOwner(parts, person);
+                ListWordMarker.SetPartsOwner(parts, person);
+                PictureWordMarker.SetPartsOwner(parts, person);
             }
 
             return parts;

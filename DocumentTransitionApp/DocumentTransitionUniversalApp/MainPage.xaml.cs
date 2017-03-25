@@ -27,6 +27,8 @@ namespace DocumentTransitionUniversalApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Fields
+
         public WordSelectPartsPage WordPartPage;
         public StorageFile DocumentFile;
         public string FileName;
@@ -47,6 +49,8 @@ namespace DocumentTransitionUniversalApp
         private bool _wasSplit;
         private bool _wasEditParts;
         private StorageFile XmlFile;
+
+        #endregion
 
         public MainPage()
         {
@@ -77,6 +81,27 @@ namespace DocumentTransitionUniversalApp
                 this.AppFrame.GoBack();
             }
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is MainPage)
+            {
+                var main = e.Parameter as MainPage;
+                this.DocumentFile = main.DocumentFile;
+                this.documentBinary = main.documentBinary;
+                this.XmlFile = main.XmlFile;
+                this.FileName = main.FileName;
+                this.FileType = main.FileType;
+                this._wasSplit = main._wasSplit;
+                this._wasEditParts = main._wasEditParts;
+                this.WordPartPage = main.WordPartPage;
+                this.xmlBinary = main.xmlBinary;
+
+                InitButtons();
+            }
+        }
+
+        #region Events
 
         private async void buttonDocx_Click(object sender, RoutedEventArgs e)
         {
@@ -238,8 +263,7 @@ namespace DocumentTransitionUniversalApp
                         var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
-                            var item = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, element.Selected, element.OwnerName);
-                            parts.Add(item);
+                            AddPartsRecursive(parts, element);
                         }
 
                         var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
@@ -249,7 +273,7 @@ namespace DocumentTransitionUniversalApp
                             comboItems.Add(new Data_Structures.ComboBoxItem() { Id = indexer++, Name = name });
 
                         WordPartPage = new WordSelectPartsPage();
-                        WordPartsPageData pageData = new Data_Structures.WordPartsPageData();
+                        WordPartsPageData pageData = new WordPartsPageData();
                         pageData.SelectionParts = parts;
                         pageData.LastId = names.Count();
                         pageData.ComboItems.AddRange(comboItems);
@@ -267,6 +291,21 @@ namespace DocumentTransitionUniversalApp
             {
                 MessageDialog dialog = new MessageDialog(ex.Message);
                 await dialog.ShowAsync();
+            }
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void AddPartsRecursive(ObservableCollection<PartsSelectionTreeElement> parts, TransitionAppServices.PartsSelectionTreeElement element)
+        {
+            TreeElementIcon icon = new TreeElementIcon(element.Type);
+            var item = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, element.Selected, element.OwnerName, icon.GetIcon());
+            parts.Add(item);
+            foreach (var child in element.Childs)
+            {
+                AddPartsRecursive(parts, child);
             }
         }
 
@@ -477,40 +516,7 @@ namespace DocumentTransitionUniversalApp
         public async Task<byte[]> StorageFileToByteArray(StorageFile file)
         {
             var fileStream = await file.OpenAsync(FileAccessMode.Read);
-            return ReadFully(fileStream.AsStream());
-        }
-
-        public static byte[] ReadFully(Stream input)
-        {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (e.Parameter is MainPage)
-            {
-                var main = e.Parameter as MainPage;
-                this.DocumentFile = main.DocumentFile;
-                this.documentBinary = main.documentBinary;
-                this.XmlFile = main.XmlFile;
-                this.FileName = main.FileName;
-                this.FileType = main.FileType;
-                this._wasSplit = main._wasSplit;
-                this._wasEditParts = main._wasEditParts;
-                this.WordPartPage = main.WordPartPage;
-                this.xmlBinary = main.xmlBinary;
-
-                InitButtons();
-            }
+            return StreamHelper.ReadFully(fileStream.AsStream());
         }
 
         private async Task<string> InputTextDialogAsync(string title, string textBoxContent)
@@ -562,5 +568,7 @@ namespace DocumentTransitionUniversalApp
 
             return result;
         }
+
+        #endregion
     }
 }

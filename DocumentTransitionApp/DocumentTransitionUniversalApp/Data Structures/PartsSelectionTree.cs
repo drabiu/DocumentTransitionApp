@@ -56,9 +56,10 @@ namespace DocumentTransitionUniversalApp
             this.Selected = selected;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, bool selected, string ownerName)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, bool selected, string ownerName, string icon)
             : this(id, elementId, type, name, indent, selected)
         {
+            Icon = icon;
             this._ownerName = ownerName;
         }
 

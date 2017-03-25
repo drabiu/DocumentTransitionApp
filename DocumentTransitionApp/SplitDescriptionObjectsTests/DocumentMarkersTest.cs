@@ -3,6 +3,7 @@ using SplitDescriptionObjects;
 using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml.Packaging;
 using System.Collections.Generic;
+using SplitDescriptionObjects.Interfaces;
 
 namespace SplitDescriptionObjectsTests
 {
