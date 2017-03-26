@@ -208,7 +208,7 @@ namespace DocumentSplitEngine
             (splitXml.Items[0] as SplitDocument).Name = DocumentName;
             var splitDocument = (splitXml.Items[0] as SplitDocument);
             splitDocument.Person = new Person[nameList.Count];
-            var traversedParts = parts.Traverse(x => x.Childs);
+            var traversedParts = parts.Where(p => p.Visible).Traverse(x => x.Childs);
             foreach (var name in nameList)
             {
                 var ownerParts = traversedParts.Where(p => p.OwnerName == name);
@@ -217,7 +217,7 @@ namespace DocumentSplitEngine
                 person.UniversalMarker = new PersonUniversalMarker[ownerParts.Where(p => p.Type == ElementType.Paragraph).Count()];
                 person.TableMarker = new PersonTableMarker[ownerParts.Where(p => p.Type == ElementType.Table).Count()];
                 person.PictureMarker = new PersonPictureMarker[ownerParts.Where(p => p.Type == ElementType.Picture).Count()];
-                person.ListMarker = new PersonListMarker[ownerParts.Where(p => p.Type == ElementType.BulletList || p.Type == ElementType.NumberedList).Count()];
+                person.ListMarker = new PersonListMarker[ownerParts.Where(p => p.IsListElement()).Count()];
                 splitDocument.Person[nameList.IndexOf(name)] = person;
             }
 
@@ -236,7 +236,8 @@ namespace DocumentSplitEngine
                     case ElementType.NumberedList:
                         var listMarker = new PersonListMarker();
                         listMarker.ElementId = part.ElementId;
-                        listMarker.SelectionLastelementId = part.ElementId;
+                        var lastSibling = ListWordMarker.GetSiblings(parts.ToList(), part).Last();
+                        listMarker.SelectionLastelementId = lastSibling.ElementId;
                         person.ListMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = listMarker;
                         break;
                     case ElementType.Picture:
@@ -269,6 +270,9 @@ namespace DocumentSplitEngine
             var splitDocument = (SplitDocument)splitXml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, DocumentName)).SingleOrDefault();
             if (splitDocument == null)
                 throw new SplitNameDifferenceExcception(string.Format("This split xml describes a different document."));
+
+            if (splitDocument.Person == null)
+                throw new ArgumentNullException("The split xml does not contain a person node.");
 
             foreach (var person in splitDocument.Person)
             {

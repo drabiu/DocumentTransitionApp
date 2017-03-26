@@ -31,7 +31,6 @@ namespace OpenXMLTools
         public static HashSet<OpenXmlElement> GetAllSiblingListElements(Paragraph paragraph, List<OpenXmlElement> elements, int numberingId)
         {
             IList<OpenXmlElement> result = new List<OpenXmlElement>();
-
             if (GetNumberingId(paragraph) == numberingId)
             {
                 result.Add(paragraph);

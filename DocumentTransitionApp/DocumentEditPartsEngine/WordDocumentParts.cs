@@ -17,10 +17,21 @@ namespace DocumentEditPartsEngine
         public const int MaxNameLength = 35;
         public const string ParagraphHasNoId = "noid:";
         public const string CounterName = "counter";
+        public const string NumIdTag = "[numId]";
 
         public static string GetParagraphNoIdFormatter(int id)
         {
             return string.Format("{0}{1}", ParagraphHasNoId, id);
+        }
+
+        public static string GetParagraphListIdFormatter(string id, int numberingId)
+        {
+            return string.Format("{0}{1}{2}", id, NumIdTag, numberingId);
+        }
+
+        public static int GetNumberingIdFromListId(string paragraphListId)
+        {
+            return int.Parse(paragraphListId.Split(new string[] { NumIdTag }, StringSplitOptions.None).Last());
         }
 
         public static string GetTableIdFormatter(int id)
@@ -103,7 +114,13 @@ namespace DocumentEditPartsEngine
             if (element is Paragraph)
             {
                 ParagraphDecorator paragraphDecorator = new ParagraphDecorator(element);
-                string elementId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, paragraphDecorator.GetElementType()));
+                string paragraphId = paragraphDecorator.GetParagraph().ParagraphId ?? WordDocumentPartAttributes.GetParagraphNoIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, paragraphDecorator.GetElementType()));
+                string elementId = string.Empty;
+                if (paragraphDecorator.GetElementType() == ElementType.NumberedList || paragraphDecorator.GetElementType() == ElementType.BulletList)
+                    elementId = WordDocumentPartAttributes.GetParagraphListIdFormatter(paragraphId, WordTools.GetNumberingId(paragraphDecorator.GetParagraph()));
+                else
+                    elementId = paragraphId;
+
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
                 elementToAdd.Visible = visible;
             }

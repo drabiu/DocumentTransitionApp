@@ -60,6 +60,11 @@ namespace DocumentEditPartsEngine
             this.Childs.Add(child);
         }
 
+        public bool IsListElement()
+        {
+            return Type == ElementType.BulletList || Type == ElementType.NumberedList;
+        }
+
         #endregion
     }
 }

@@ -108,6 +108,25 @@ namespace SplitDescriptionObjects
                 }
             }
         }
+
+        public static IList<PartsSelectionTreeElement> GetSiblings(List<PartsSelectionTreeElement> parts, PartsSelectionTreeElement part)
+        {
+            List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
+            var index = parts.FindIndex(e => e.ElementId == part.ElementId);
+            if (part.IsListElement())
+            {
+                var partNumberingId = WordDocumentPartAttributes.GetNumberingIdFromListId(part.ElementId);
+                foreach (var element in parts.Skip(index + 1))
+                {
+                    if (element.IsListElement() && WordDocumentPartAttributes.GetNumberingIdFromListId(element.ElementId) == partNumberingId)
+                        result.Add(element);
+                    else
+                        break;
+                }
+            }
+
+            return result;
+        }
     }
 
     public class PictureWordMarker : WordMarker, IPictureWordMarker
