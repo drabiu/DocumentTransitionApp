@@ -1,6 +1,7 @@
 ﻿using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXMLTools.Helpers;
 using SplitDescriptionObjects.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -54,13 +55,16 @@ namespace SplitDescriptionObjects
 
         public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
         {
-            foreach (var universalMarker in person.UniversalMarker)
+            if (person.UniversalMarker != null)
             {
-                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
-                foreach (var index in selectedPartsIndexes)
+                foreach (var universalMarker in person.UniversalMarker)
                 {
-                    parts[index].OwnerName = person.Email;
-                    parts[index].Selected = true;
+                    var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(universalMarker.ElementId, universalMarker.SelectionLastelementId, parts, element => element.ElementId);
+                    foreach (var index in selectedPartsIndexes)
+                    {
+                        parts[index].OwnerName = person.Email;
+                        parts[index].Selected = true;
+                    }
                 }
             }
         }
@@ -76,13 +80,16 @@ namespace SplitDescriptionObjects
 
         public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
         {
-            foreach (var tableMarker in person.TableMarker)
+            if (person.TableMarker != null)
             {
-                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(tableMarker.ElementId, tableMarker.ElementId, parts, element => element.ElementId);
-                foreach (var index in selectedPartsIndexes)
+                foreach (var tableMarker in person.TableMarker)
                 {
-                    parts[index].OwnerName = person.Email;
-                    parts[index].Selected = true;
+                    var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(tableMarker.ElementId, tableMarker.ElementId, parts, element => element.ElementId);
+                    foreach (var index in selectedPartsIndexes)
+                    {
+                        parts[index].OwnerName = person.Email;
+                        parts[index].Selected = true;
+                    }
                 }
             }
         }
@@ -98,13 +105,16 @@ namespace SplitDescriptionObjects
 
         public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
         {
-            foreach (var listMarker in person.ListMarker)
+            if (person.ListMarker != null)
             {
-                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(listMarker.ElementId, listMarker.SelectionLastelementId, parts, element => element.ElementId);
-                foreach (var index in selectedPartsIndexes)
+                foreach (var listMarker in person.ListMarker)
                 {
-                    parts[index].OwnerName = person.Email;
-                    parts[index].Selected = true;
+                    var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(listMarker.ElementId, listMarker.SelectionLastelementId, parts, element => element.ElementId);
+                    foreach (var index in selectedPartsIndexes)
+                    {
+                        parts[index].OwnerName = person.Email;
+                        parts[index].Selected = true;
+                    }
                 }
             }
         }
@@ -136,15 +146,27 @@ namespace SplitDescriptionObjects
 
         }
 
-        public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
+        public static void SetPartsOwner(IList<PartsSelectionTreeElement> parts, Person person)
         {
-            foreach (var pictureMarker in person.PictureMarker)
+            var pictureParts = parts.Where(p => p.Type == ElementType.Picture);
+            foreach (var part in parts)
+                SetPartsOwner(part.Childs, person);
+
+            foreach (var picturePart in pictureParts)
+                SelectPicturePart(picturePart, person);
+        }
+
+        private static void SelectPicturePart(PartsSelectionTreeElement part, Person person)
+        {
+            if (person.PictureMarker != null)
             {
-                var selectedPartsIndexes = MarkerHelper<PartsSelectionTreeElement>.GetCrossedElements(pictureMarker.ElementId, pictureMarker.ElementId, parts, element => element.ElementId);
-                foreach (var index in selectedPartsIndexes)
+                foreach (var pictureMarker in person.PictureMarker)
                 {
-                    parts[index].OwnerName = person.Email;
-                    parts[index].Selected = true;
+                    if (part.ElementId == pictureMarker.ElementId)
+                    {
+                        part.OwnerName = person.Email;
+                        part.Selected = true;
+                    }
                 }
             }
         }

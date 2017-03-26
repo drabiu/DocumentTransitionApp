@@ -263,7 +263,8 @@ namespace DocumentTransitionUniversalApp
                         var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
-                            AddPartsRecursive(parts, element);
+                            var item = PartsSelectionTreeElement.ConvertToPartsSelectionTreeElement(element);
+                            parts.Add(item);
                         }
 
                         var names = partsFromXml.Select(p => p.OwnerName).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToList();
@@ -297,16 +298,6 @@ namespace DocumentTransitionUniversalApp
         #endregion
 
         #region Private methods
-
-        private void AddPartsRecursive(ObservableCollection<PartsSelectionTreeElement> parts, TransitionAppServices.PartsSelectionTreeElement element)
-        {
-            var item = PartsSelectionTreeElement.ConvertToPartsSelectionTreeElement(element);
-            parts.Add(item);
-            foreach (var child in element.Childs)
-            {
-                AddPartsRecursive(parts, child);
-            }
-        }
 
         private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
         {
