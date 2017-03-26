@@ -68,7 +68,7 @@
   <ItemGroup>
     <Compile Include="ITransitionAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceResponse.cs" />
+    <Compile Include="Responses\ServiceResponse.cs" />
     <Compile Include="TransitionAppService.svc.cs">
       <DependentUpon>TransitionAppService.svc</DependentUpon>
     </Compile>

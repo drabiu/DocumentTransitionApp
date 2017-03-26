@@ -154,13 +154,13 @@
     <None Include="project.json" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
     <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
+    <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PersonFiles.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService.wsdl" />

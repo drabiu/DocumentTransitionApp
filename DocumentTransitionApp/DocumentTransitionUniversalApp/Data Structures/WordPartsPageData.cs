@@ -1,5 +1,4 @@
-﻿using DocumentTransitionUniversalApp.TransitionAppServices;
-using DocumentTransitionUniversalApp.Views;
+﻿using DocumentTransitionUniversalApp.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 

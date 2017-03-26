@@ -280,22 +280,17 @@ namespace DocumentTransitionUniversalApp.TransitionAppWCFSerivce {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceResponse", Namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService")]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PersonFiles>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PersonFiles))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ElementType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement))]
-    public partial class ServiceResponse : object, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.DataContractAttribute(Name="GetPartsFromXmlServiceResponse", Namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses")]
+    public partial class GetPartsFromXmlServiceResponse : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private object DataField;
+        private System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement> DataField;
         
         private bool IsErrorField;
         
         private string MessageField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public object Data {
+        public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement> Data {
             get {
                 return this.DataField;
             }
@@ -366,10 +361,10 @@ namespace DocumentTransitionUniversalApp.TransitionAppWCFSerivce {
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement>> GetPresentationPartsAsync(string preName, byte[] presentationFile);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITransitionAppService/GetWordPartsFromXml", ReplyAction="http://tempuri.org/ITransitionAppService/GetWordPartsFromXmlResponse")]
-        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse> GetWordPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile);
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetWordPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITransitionAppService/GetPresentationPartsFromXml", ReplyAction="http://tempuri.org/ITransitionAppService/GetPresentationPartsFromXmlResponse")]
-        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse> GetPresentationPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile);
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetPresentationPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITransitionAppService/SplitExcel", ReplyAction="http://tempuri.org/ITransitionAppService/SplitExcelResponse")]
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PersonFiles>> SplitExcelAsync(string docName, byte[] docFile, byte[] xmlFile);
@@ -381,7 +376,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppWCFSerivce {
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement>> GetExcelPartsAsync(string excName, byte[] excelFile);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITransitionAppService/GetExcelPartsFromXml", ReplyAction="http://tempuri.org/ITransitionAppService/GetExcelPartsFromXmlResponse")]
-        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse> GetExcelPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile);
+        System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetExcelPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITransitionAppService/MergeWord", ReplyAction="http://tempuri.org/ITransitionAppService/MergeWordResponse")]
         System.Threading.Tasks.Task<byte[]> MergeWordAsync(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PersonFiles> files);
@@ -460,11 +455,11 @@ namespace DocumentTransitionUniversalApp.TransitionAppWCFSerivce {
             return base.Channel.GetPresentationPartsAsync(preName, presentationFile);
         }
         
-        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse> GetWordPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetWordPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
             return base.Channel.GetWordPartsFromXmlAsync(docName, documentFile, splitFile);
         }
         
-        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse> GetPresentationPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetPresentationPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
             return base.Channel.GetPresentationPartsFromXmlAsync(docName, documentFile, splitFile);
         }
         
@@ -480,7 +475,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppWCFSerivce {
             return base.Channel.GetExcelPartsAsync(excName, excelFile);
         }
         
-        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse> GetExcelPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
+        public System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetExcelPartsFromXmlAsync(string docName, byte[] documentFile, byte[] splitFile) {
             return base.Channel.GetExcelPartsFromXmlAsync(docName, documentFile, splitFile);
         }
         

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="ServiceResponse">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" />
+  <xs:complexType name="GetPartsFromXmlServiceResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Data" nillable="true" type="xs:anyType" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="Data" nillable="true" type="q1:ArrayOfPartsSelectionTreeElement" />
       <xs:element minOccurs="0" name="IsError" type="xs:boolean" />
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ServiceResponse" nillable="true" type="tns:ServiceResponse" />
+  <xs:element name="GetPartsFromXmlServiceResponse" nillable="true" type="tns:GetPartsFromXmlServiceResponse" />
 </xs:schema>

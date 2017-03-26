@@ -2,7 +2,7 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" />
   <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" />
-  <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" />
+  <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" />
   <xs:element name="SplitWord">
     <xs:complexType>
       <xs:sequence>
@@ -107,7 +107,7 @@
   <xs:element name="GetWordPartsFromXmlResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" minOccurs="0" name="GetWordPartsFromXmlResult" nillable="true" type="q7:ServiceResponse" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" minOccurs="0" name="GetWordPartsFromXmlResult" nillable="true" type="q7:GetPartsFromXmlServiceResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -123,7 +123,7 @@
   <xs:element name="GetPresentationPartsFromXmlResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" minOccurs="0" name="GetPresentationPartsFromXmlResult" nillable="true" type="q8:ServiceResponse" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" minOccurs="0" name="GetPresentationPartsFromXmlResult" nillable="true" type="q8:GetPartsFromXmlServiceResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -185,7 +185,7 @@
   <xs:element name="GetExcelPartsFromXmlResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" minOccurs="0" name="GetExcelPartsFromXmlResult" nillable="true" type="q12:ServiceResponse" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" minOccurs="0" name="GetExcelPartsFromXmlResult" nillable="true" type="q12:GetPartsFromXmlServiceResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

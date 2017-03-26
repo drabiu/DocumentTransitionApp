@@ -7,7 +7,7 @@
       <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" />
       <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" />
       <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/OpenXMLTools.Helpers" />
-      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" />
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppWCF.Responses" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ITransitionAppService_SplitWord_InputMessage">

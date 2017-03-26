@@ -1,5 +1,5 @@
 ﻿using DocumentEditPartsEngine;
-using DocumentTransitionAppService;
+using DocumentTransitionAppWCF.Responses;
 using SplitDescriptionObjects;
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -29,10 +29,10 @@ namespace DocumentTransitionAppWCF
         List<PartsSelectionTreeElement> GetPresentationParts(string preName, byte[] presentationFile);
 
         [OperationContract]
-        ServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        GetPartsFromXmlServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
 
         [OperationContract]
-        ServiceResponse GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        GetPartsFromXmlServiceResponse GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
 
         [OperationContract]
         PersonFiles[] SplitExcel(string docName, byte[] docFile, byte[] xmlFile);
@@ -44,7 +44,7 @@ namespace DocumentTransitionAppWCF
         List<PartsSelectionTreeElement> GetExcelParts(string excName, byte[] excelFile);
 
         [OperationContract]
-        ServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
+        GetPartsFromXmlServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile);
 
         [OperationContract]
         byte[] MergeWord(PersonFiles[] files);

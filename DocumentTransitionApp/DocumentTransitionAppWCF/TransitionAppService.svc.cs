@@ -4,7 +4,7 @@ using DocumentMergeEngine;
 using DocumentMergeEngine.Interfaces;
 using DocumentSplitEngine;
 using DocumentSplitEngine.Interfaces;
-using DocumentTransitionAppService;
+using DocumentTransitionAppWCF.Responses;
 using SplitDescriptionObjects;
 using System.Collections.Generic;
 using System.IO;
@@ -43,18 +43,18 @@ namespace DocumentTransitionAppWCF
             return parts.Get(new MemoryStream(excelFile));
         }
 
-        public ServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public GetPartsFromXmlServiceResponse GetExcelPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
             ISplitXml split = new ExcelSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetExcelParts(docName, documentFile);
 
             try
             {
-                return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+                return new GetPartsFromXmlServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
             }
             catch (SplitNameDifferenceExcception ex)
             {
-                return new ServiceResponse(ex.Message);
+                return new GetPartsFromXmlServiceResponse(ex.Message);
             }
         }
 
@@ -65,18 +65,18 @@ namespace DocumentTransitionAppWCF
             return parts.GetSlides(new MemoryStream(presentationFile));
         }
 
-        public ServiceResponse GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public GetPartsFromXmlServiceResponse GetPresentationPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
             ISplitXml split = new PresentationSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetPresentationParts(docName, documentFile);
 
             try
             {
-                return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+                return new GetPartsFromXmlServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
             }
             catch (SplitNameDifferenceExcception ex)
             {
-                return new ServiceResponse(ex.Message);
+                return new GetPartsFromXmlServiceResponse(ex.Message);
             }
         }
 
@@ -87,18 +87,18 @@ namespace DocumentTransitionAppWCF
             return parts.Get(new MemoryStream(documentFile));
         }
 
-        public ServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
+        public GetPartsFromXmlServiceResponse GetWordPartsFromXml(string docName, byte[] documentFile, byte[] splitFile)
         {
             ISplitXml split = new WordSplit(Path.GetFileNameWithoutExtension(docName));
             var cleanParts = GetWordParts(docName, documentFile);
 
             try
             {
-                return new ServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
+                return new GetPartsFromXmlServiceResponse(split.SelectPartsFromSplitXml(new MemoryStream(splitFile), cleanParts));
             }
             catch (SplitNameDifferenceExcception ex)
             {
-                return new ServiceResponse(ex.Message);
+                return new GetPartsFromXmlServiceResponse(ex.Message);
             }
         }
 

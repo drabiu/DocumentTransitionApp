@@ -526,11 +526,10 @@ namespace DocumentTransitionUniversalApp
                 return string.Empty;
         }
 
-        private async Task<TransitionAppWCFSerivce.ServiceResponse> GetPartsFromXml()
+        private async Task<TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse> GetPartsFromXml()
         {
-            var result = new TransitionAppWCFSerivce.ServiceResponse();
+            var result = new TransitionAppWCFSerivce.GetPartsFromXmlServiceResponse();
             var serviceClient = MainPage.Service.GetInstanceWCF();
-
             try
             {
                 switch (FileType)

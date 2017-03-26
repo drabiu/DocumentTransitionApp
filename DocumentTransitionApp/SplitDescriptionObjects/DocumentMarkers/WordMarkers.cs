@@ -32,6 +32,19 @@ namespace SplitDescriptionObjects
             return indexes;
         }
 
+        protected static void SelectChildParts(IEnumerable<PartsSelectionTreeElement> parts, Person person)
+        {
+            foreach (var part in parts)
+            {
+                foreach (var child in part.Childs)
+                {
+                    SelectChildParts(child.Childs, person);
+                    child.OwnerName = person.Email;
+                    child.Selected = true;
+                }
+            }
+        }
+
         private string GetParagraphId(OpenXmlElement element)
         {
             string result = string.Empty;
@@ -54,6 +67,12 @@ namespace SplitDescriptionObjects
         }
 
         public static void SetPartsOwner(List<PartsSelectionTreeElement> parts, Person person)
+        {
+            SelectCrossedUniversalParts(parts, person);
+            SelectChildParts(parts, person);
+        }
+
+        private static void SelectCrossedUniversalParts(List<PartsSelectionTreeElement> parts, Person person)
         {
             if (person.UniversalMarker != null)
             {
@@ -92,6 +111,8 @@ namespace SplitDescriptionObjects
                     }
                 }
             }
+
+            SelectChildParts(parts, person);
         }
     }
 
@@ -117,6 +138,8 @@ namespace SplitDescriptionObjects
                     }
                 }
             }
+
+            SelectChildParts(parts, person);
         }
 
         public static IList<PartsSelectionTreeElement> GetSiblings(List<PartsSelectionTreeElement> parts, PartsSelectionTreeElement part)
