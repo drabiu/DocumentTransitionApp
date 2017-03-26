@@ -241,9 +241,12 @@ namespace DocumentSplitEngine
                         person.ListMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = listMarker;
                         break;
                     case ElementType.Picture:
-                        var pictureMarker = new PersonPictureMarker();
-                        pictureMarker.ElementId = part.ElementId;
-                        person.PictureMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = pictureMarker;
+                        if (part.Parent == null || (part.Parent != null && !part.Parent.Selected))
+                        {
+                            var pictureMarker = new PersonPictureMarker();
+                            pictureMarker.ElementId = part.ElementId;
+                            person.PictureMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = pictureMarker;
+                        }
                         break;
                     case ElementType.Table:
                         var tableMarker = new PersonTableMarker();

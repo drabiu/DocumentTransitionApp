@@ -11,6 +11,7 @@ namespace DocumentTransitionUniversalApp
         public string Id { get; private set; }
         public string ElementId { get; private set; }
         public TransitionAppWCFSerivce.ElementType Type { get; private set; }
+        public PartsSelectionTreeElement Parent { get; private set; }
         public List<PartsSelectionTreeElement> Childs { get; private set; }
         public string Name { get; private set; }
         public string Icon { get; private set; }
@@ -138,24 +139,25 @@ namespace DocumentTransitionUniversalApp
         {
             Selected = !Selected;
             this._ownerName = ownerName;
+
             foreach (var child in Childs)
             {
                 if (child.Selected != Selected)
+                {
+                    if (child.Parent != null)
+                        child.Parent.SelectItem(ownerName);
+
                     child.SelectItem(ownerName);
+                }
             }
         }
 
         public TransitionAppWCFSerivce.PartsSelectionTreeElement ConvertToServicePartsSelectionTreeElement()
         {
-            var part = new TransitionAppWCFSerivce.PartsSelectionTreeElement();
-            part.Id = this.Id;
-            part.ElementId = this.ElementId;
-            part.Indent = this.Indent;
-            part.Name = this.Name;
-            part.OwnerName = this._ownerName;
-            part.Selected = this.Selected;
-            part.Type = this.Type;
-            part.Visible = this.Visible;
+            var part = GetServicePartsSelectionTreeElementNoReferences();
+            if (this.Parent != null)
+                part.Parent = this.Parent.GetServicePartsSelectionTreeElementNoReferences();
+
             part.Childs = new ObservableCollection<TransitionAppWCFSerivce.PartsSelectionTreeElement>();
             foreach (var child in this.Childs)
             {
@@ -171,11 +173,8 @@ namespace DocumentTransitionUniversalApp
 
         public static PartsSelectionTreeElement ConvertToPartsSelectionTreeElement(TransitionAppWCFSerivce.PartsSelectionTreeElement element)
         {
-            TreeElementIcon icon = new TreeElementIcon(element.Type);
-            var part = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
-            part.Visible = element.Visible;
-            part._ownerName = element.OwnerName;
-            part.Selected = element.Selected;
+            var part = GetPartsSelectionTreeElementNoReferences(element);
+            part.Parent = GetPartsSelectionTreeElementNoReferences(element);
             foreach (var child in element.Childs)
             {
                 part.Childs.Add(ConvertToPartsSelectionTreeElement(child));
@@ -188,6 +187,31 @@ namespace DocumentTransitionUniversalApp
 
         #region Private methods
 
+        private TransitionAppWCFSerivce.PartsSelectionTreeElement GetServicePartsSelectionTreeElementNoReferences()
+        {
+            var part = new TransitionAppWCFSerivce.PartsSelectionTreeElement();
+            part.Id = this.Id;
+            part.ElementId = this.ElementId;
+            part.Indent = this.Indent;
+            part.Name = this.Name;
+            part.OwnerName = this._ownerName;
+            part.Selected = this.Selected;
+            part.Type = this.Type;
+            part.Visible = this.Visible;
+
+            return part;
+        }
+
+        private static PartsSelectionTreeElement GetPartsSelectionTreeElementNoReferences(TransitionAppWCFSerivce.PartsSelectionTreeElement element)
+        {
+            TreeElementIcon icon = new TreeElementIcon(element.Type);
+            var part = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());
+            part.Visible = element.Visible;
+            part._ownerName = element.OwnerName;
+            part.Selected = element.Selected;
+
+            return part;
+        }
 
         #endregion
     }
