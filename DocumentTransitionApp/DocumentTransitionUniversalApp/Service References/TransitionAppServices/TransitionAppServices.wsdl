@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+    <s:schema elementFormDefault="qualified" targetNamespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/">
       <s:element name="SplitWord">
         <s:complexType>
           <s:sequence>
@@ -64,6 +64,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="ElementId" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:ElementType" />
+          <s:element minOccurs="0" maxOccurs="1" name="Parent" type="tns:PartsSelectionTreeElement" />
           <s:element minOccurs="0" maxOccurs="1" name="Childs" type="tns:ArrayOfPartsSelectionTreeElement" />
           <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="Indent" type="s:int" />
@@ -439,7 +440,7 @@
   <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SplitWord">
-      <soap:operation soapAction="http://tempuri.org/SplitWord" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/SplitWord" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -448,7 +449,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SplitPresentation">
-      <soap:operation soapAction="http://tempuri.org/SplitPresentation" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/SplitPresentation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -457,7 +458,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitWord">
-      <soap:operation soapAction="http://tempuri.org/GenerateSplitWord" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GenerateSplitWord" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -466,7 +467,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitPresentation">
-      <soap:operation soapAction="http://tempuri.org/GenerateSplitPresentation" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GenerateSplitPresentation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -475,7 +476,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetWordParts">
-      <soap:operation soapAction="http://tempuri.org/GetWordParts" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetWordParts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -484,7 +485,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetPresentationParts">
-      <soap:operation soapAction="http://tempuri.org/GetPresentationParts" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetPresentationParts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -493,7 +494,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetWordPartsFromXml">
-      <soap:operation soapAction="http://tempuri.org/GetWordPartsFromXml" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetWordPartsFromXml" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -502,7 +503,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetPresentationPartsFromXml">
-      <soap:operation soapAction="http://tempuri.org/GetPresentationPartsFromXml" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetPresentationPartsFromXml" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -511,7 +512,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SplitExcel">
-      <soap:operation soapAction="http://tempuri.org/SplitExcel" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/SplitExcel" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -520,7 +521,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitExcel">
-      <soap:operation soapAction="http://tempuri.org/GenerateSplitExcel" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GenerateSplitExcel" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -529,7 +530,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetExcelParts">
-      <soap:operation soapAction="http://tempuri.org/GetExcelParts" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetExcelParts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -538,7 +539,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetExcelPartsFromXml">
-      <soap:operation soapAction="http://tempuri.org/GetExcelPartsFromXml" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetExcelPartsFromXml" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -547,7 +548,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MergeWord">
-      <soap:operation soapAction="http://tempuri.org/MergeWord" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/MergeWord" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -556,7 +557,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MergePresentation">
-      <soap:operation soapAction="http://tempuri.org/MergePresentation" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/MergePresentation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -565,7 +566,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MergeExcel">
-      <soap:operation soapAction="http://tempuri.org/MergeExcel" style="document" />
+      <soap:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/MergeExcel" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -577,7 +578,7 @@
   <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SplitWord">
-      <soap12:operation soapAction="http://tempuri.org/SplitWord" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/SplitWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -586,7 +587,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SplitPresentation">
-      <soap12:operation soapAction="http://tempuri.org/SplitPresentation" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/SplitPresentation" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -595,7 +596,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitWord">
-      <soap12:operation soapAction="http://tempuri.org/GenerateSplitWord" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GenerateSplitWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -604,7 +605,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitPresentation">
-      <soap12:operation soapAction="http://tempuri.org/GenerateSplitPresentation" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GenerateSplitPresentation" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -613,7 +614,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetWordParts">
-      <soap12:operation soapAction="http://tempuri.org/GetWordParts" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetWordParts" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -622,7 +623,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetPresentationParts">
-      <soap12:operation soapAction="http://tempuri.org/GetPresentationParts" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetPresentationParts" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -631,7 +632,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetWordPartsFromXml">
-      <soap12:operation soapAction="http://tempuri.org/GetWordPartsFromXml" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetWordPartsFromXml" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -640,7 +641,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetPresentationPartsFromXml">
-      <soap12:operation soapAction="http://tempuri.org/GetPresentationPartsFromXml" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetPresentationPartsFromXml" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -649,7 +650,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SplitExcel">
-      <soap12:operation soapAction="http://tempuri.org/SplitExcel" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/SplitExcel" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -658,7 +659,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GenerateSplitExcel">
-      <soap12:operation soapAction="http://tempuri.org/GenerateSplitExcel" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GenerateSplitExcel" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -667,7 +668,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetExcelParts">
-      <soap12:operation soapAction="http://tempuri.org/GetExcelParts" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetExcelParts" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -676,7 +677,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetExcelPartsFromXml">
-      <soap12:operation soapAction="http://tempuri.org/GetExcelPartsFromXml" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/GetExcelPartsFromXml" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -685,7 +686,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MergeWord">
-      <soap12:operation soapAction="http://tempuri.org/MergeWord" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/MergeWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -694,7 +695,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MergePresentation">
-      <soap12:operation soapAction="http://tempuri.org/MergePresentation" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/MergePresentation" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -703,7 +704,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="MergeExcel">
-      <soap12:operation soapAction="http://tempuri.org/MergeExcel" style="document" />
+      <soap12:operation soapAction="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/MergeExcel" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

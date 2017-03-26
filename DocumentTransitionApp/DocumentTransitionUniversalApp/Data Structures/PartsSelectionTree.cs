@@ -10,7 +10,7 @@ namespace DocumentTransitionUniversalApp
 
         public string Id { get; private set; }
         public string ElementId { get; private set; }
-        public TransitionAppServices.ElementType Type { get; private set; }
+        public TransitionAppWCFSerivce.ElementType Type { get; private set; }
         public List<PartsSelectionTreeElement> Childs { get; private set; }
         public string Name { get; private set; }
         public string Icon { get; private set; }
@@ -27,7 +27,7 @@ namespace DocumentTransitionUniversalApp
         {
         }
 
-        public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, string name, int indent)
+        public PartsSelectionTreeElement(string id, TransitionAppWCFSerivce.ElementType type, string name, int indent)
         {
             this.Id = id;
             this.Type = type;
@@ -38,30 +38,30 @@ namespace DocumentTransitionUniversalApp
             this._ownerName = string.Empty;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, string icon) : this(id, type, name, indent)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppWCFSerivce.ElementType type, string name, int indent, string icon) : this(id, type, name, indent)
         {
             this.ElementId = elementId;
             this.Icon = icon;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent) : this(id, type, name, indent)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppWCFSerivce.ElementType type, string name, int indent) : this(id, type, name, indent)
         {
             this.ElementId = elementId;
         }
 
-        public PartsSelectionTreeElement(string id, TransitionAppServices.ElementType type, PartsSelectionTreeElement child, string name, int indent)
+        public PartsSelectionTreeElement(string id, TransitionAppWCFSerivce.ElementType type, PartsSelectionTreeElement child, string name, int indent)
             : this(id, type, name, indent)
         {
             this.Childs.Add(child);
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, bool selected)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppWCFSerivce.ElementType type, string name, int indent, bool selected)
             : this(id, elementId, type, name, indent)
         {
             this.Selected = selected;
         }
 
-        public PartsSelectionTreeElement(string id, string elementId, TransitionAppServices.ElementType type, string name, int indent, bool selected, string ownerName, string icon)
+        public PartsSelectionTreeElement(string id, string elementId, TransitionAppWCFSerivce.ElementType type, string name, int indent, bool selected, string ownerName, string icon)
             : this(id, elementId, type, name, indent, selected)
         {
             Icon = icon;
@@ -145,9 +145,9 @@ namespace DocumentTransitionUniversalApp
             }
         }
 
-        public TransitionAppServices.PartsSelectionTreeElement ConvertToServicePartsSelectionTreeElement()
+        public TransitionAppWCFSerivce.PartsSelectionTreeElement ConvertToServicePartsSelectionTreeElement()
         {
-            var part = new TransitionAppServices.PartsSelectionTreeElement();
+            var part = new TransitionAppWCFSerivce.PartsSelectionTreeElement();
             part.Id = this.Id;
             part.ElementId = this.ElementId;
             part.Indent = this.Indent;
@@ -156,7 +156,7 @@ namespace DocumentTransitionUniversalApp
             part.Selected = this.Selected;
             part.Type = this.Type;
             part.Visible = this.Visible;
-            part.Childs = new ObservableCollection<TransitionAppServices.PartsSelectionTreeElement>();
+            part.Childs = new ObservableCollection<TransitionAppWCFSerivce.PartsSelectionTreeElement>();
             foreach (var child in this.Childs)
             {
                 part.Childs.Add(child.ConvertToServicePartsSelectionTreeElement());
@@ -169,7 +169,7 @@ namespace DocumentTransitionUniversalApp
 
         #region Public static methods
 
-        public static PartsSelectionTreeElement ConvertToPartsSelectionTreeElement(TransitionAppServices.PartsSelectionTreeElement element)
+        public static PartsSelectionTreeElement ConvertToPartsSelectionTreeElement(TransitionAppWCFSerivce.PartsSelectionTreeElement element)
         {
             TreeElementIcon icon = new TreeElementIcon(element.Type);
             var part = new PartsSelectionTreeElement(element.Id, element.ElementId, element.Type, element.Name, element.Indent, icon.GetIcon());

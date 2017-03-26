@@ -27,38 +27,43 @@ namespace DocumentSplitEngine.Document
         public IList<OpenXMLDocumentPart<OpenXmlElement>> Run()
         {
             IList<OpenXMLDocumentPart<OpenXmlElement>> documentElements = new List<OpenXMLDocumentPart<OpenXmlElement>>();
-            if (SplitDocumentObj != null)
+            if (SplitDocumentObj?.Person != null)
             {
                 foreach (Person person in SplitDocumentObj.Person)
                 {
-                    if (person.UniversalMarker != null)
-                    {
-                        foreach (PersonUniversalMarker marker in person.UniversalMarker)
-                        {
-                            IList<int> result = UniversalDocMarker.GetCrossedParagraphElements(marker.ElementId, marker.SelectionLastelementId);
-                            foreach (int index in result)
-                            {
-                                if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
-                                {
-                                    SubdividedParagraphs[index] = person.Email;
-                                }
-                                else
-                                    throw new ElementToPersonPairException();
-                            }
-                        }
-                    }
+                    //if (person.UniversalMarker != null)
+                    //{
+                    //    foreach (PersonUniversalMarker marker in person.UniversalMarker)
+                    //    {
+                    //        IList<int> result = UniversalDocMarker.GetCrossedParagraphElements(marker.ElementId, marker.SelectionLastelementId);
+                    //        foreach (int index in result)
+                    //        {
+                    //            if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
+                    //            {
+                    //                SubdividedParagraphs[index] = person.Email;
+                    //            }
+                    //            else
+                    //                throw new ElementToPersonPairException();
+                    //        }
+                    //    }
+                    //}
 
-                    if (person.ListMarker != null)
-                    {
-                    }
+                    //if (person.ListMarker != null)
+                    //{
+                    //}
 
-                    if (person.PictureMarker != null)
-                    {
-                    }
+                    //if (person.PictureMarker != null)
+                    //{
+                    //}
 
-                    if (person.TableMarker != null)
-                    {
-                    }
+                    //if (person.TableMarker != null)
+                    //{
+                    //}
+
+                    //UniversalWordMarker.SetPartsOwner(parts, person);
+                    //TableWordMarker.SetPartsOwner(parts, person);
+                    //ListWordMarker.SetPartsOwner(parts, person);
+                    //PictureWordMarker.SetPartsOwner(parts, person);
                 }
 
                 string email = string.Empty;

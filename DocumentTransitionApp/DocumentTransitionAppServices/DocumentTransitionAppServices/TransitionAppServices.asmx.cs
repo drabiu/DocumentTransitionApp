@@ -15,11 +15,11 @@ namespace DocumentTransitionAppServices
     /// <summary>
     /// Summary description for Service1
     /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
+    [WebService(Namespace = "https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    // [System.Web.Script.Services.ScriptService]
+    //[System.Web.Script.Services.ScriptService]
     public class Service1 : WebService, ITransitionAppService
     {
         [WebMethod]

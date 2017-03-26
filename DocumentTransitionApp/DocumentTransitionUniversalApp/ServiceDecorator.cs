@@ -1,5 +1,6 @@
-﻿using System.ServiceModel;
-using DocumentTransitionUniversalApp.TransitionAppServices;
+﻿using DocumentTransitionUniversalApp.TransitionAppServices;
+using DocumentTransitionUniversalApp.TransitionAppWCFSerivce;
+using System.ServiceModel;
 using Windows.Storage;
 
 namespace DocumentTransitionUniversalApp
@@ -30,6 +31,25 @@ namespace DocumentTransitionUniversalApp
 
             EndpointAddress myEndpoint = new EndpointAddress(DefaultEndpoint);
             Service1SoapClient serviceClient = new Service1SoapClient(myBinding, myEndpoint);
+
+            return serviceClient;
+        }
+
+        public TransitionAppServiceClient GetInstanceWCF()
+        {
+            BasicHttpBinding myBinding = new BasicHttpBinding();
+            myBinding.MaxBufferPoolSize = 2147483647;
+            myBinding.MaxReceivedMessageSize = 2147483647;
+            myBinding.MaxBufferSize = 2147483647;
+            myBinding.TransferMode = TransferMode.Buffered;
+            myBinding.ReaderQuotas.MaxArrayLength = 2147483647;
+            myBinding.ReaderQuotas.MaxBytesPerRead = 2147483647;
+            myBinding.ReaderQuotas.MaxNameTableCharCount = 2147483647;
+            myBinding.ReaderQuotas.MaxDepth = 128;
+            myBinding.ReaderQuotas.MaxStringContentLength = 2147483647;
+
+            EndpointAddress myEndpoint = new EndpointAddress(DefaultEndpoint);
+            TransitionAppServiceClient serviceClient = new TransitionAppServiceClient(myBinding, myEndpoint);
 
             return serviceClient;
         }

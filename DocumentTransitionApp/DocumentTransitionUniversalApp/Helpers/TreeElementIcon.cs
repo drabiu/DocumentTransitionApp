@@ -1,4 +1,4 @@
-﻿using DocumentTransitionUniversalApp.TransitionAppServices;
+﻿using DocumentTransitionUniversalApp.TransitionAppWCFSerivce;
 
 namespace DocumentTransitionUniversalApp.Helpers
 {

@@ -154,6 +154,34 @@
     <None Include="project.json" />
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
     <None Include="Service References\TransitionAppServices\TransitionAppServices.wsdl" />
+    <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PartsSelectionTreeElement.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.PersonFiles.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\DocumentTransitionUniversalApp.TransitionAppWCFSerivce.ServiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService.wsdl" />
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -172,6 +200,11 @@
     <Compile Include="Data Structures\PartsSelectionTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\TransitionAppServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TransitionAppWCFSerivce\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -217,6 +250,13 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <None Include="Service References\TransitionAppWCFSerivce\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\TransitionAppWCFSerivce\configuration.svcinfo" />
+    <None Include="Service References\TransitionAppWCFSerivce\configuration91.svcinfo" />
+    <None Include="Service References\TransitionAppWCFSerivce\TransitionAppService.disco" />
     <None Include="Service References\TransitionAppServices\TransitionAppServices.disco" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +278,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\TransitionAppServices\" />
+    <WCFMetadataStorage Include="Service References\TransitionAppWCFSerivce\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

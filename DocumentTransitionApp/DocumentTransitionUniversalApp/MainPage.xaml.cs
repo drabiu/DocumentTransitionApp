@@ -134,27 +134,24 @@ namespace DocumentTransitionUniversalApp
 
         private async void buttonSplit_Click(object sender, RoutedEventArgs e)
         {
-            var serviceClient = Service.GetInstance();
+            var serviceClient = Service.GetInstanceWCF();
             string extension = string.Empty;
-            ObservableCollection<TransitionAppServices.PersonFiles> result = new ObservableCollection<TransitionAppServices.PersonFiles>();
+            ObservableCollection<TransitionAppWCFSerivce.PersonFiles> result = new ObservableCollection<TransitionAppWCFSerivce.PersonFiles>();
             try
             {
                 switch (FileType)
                 {
                     case (DocumentType.Word):
                         extension = ".docx";
-                        var response = await serviceClient.SplitWordAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
-                        result = response.Body.SplitWordResult;
+                        result = await serviceClient.SplitWordAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
                         break;
                     case (DocumentType.Excel):
                         extension = ".xlsx";
-                        var response1 = await serviceClient.SplitExcelAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
-                        result = response1.Body.SplitExcelResult;
+                        result = await serviceClient.SplitExcelAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
                         break;
                     case (DocumentType.Presentation):
                         extension = ".pptx";
-                        var response2 = await serviceClient.SplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
-                        result = response2.Body.SplitPresentationResult;
+                        result = await serviceClient.SplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), documentBinary, xmlBinary);
                         break;
                 }
 
@@ -170,25 +167,26 @@ namespace DocumentTransitionUniversalApp
 
         private async void buttonMerge_Click(object sender, RoutedEventArgs e)
         {
-            var serviceClient = Service.GetInstance();
+            var serviceClient = Service.GetInstanceWCF();
             var files = await GetFiles();
             if (files.Any())
             {
                 try
                 {
+                    byte[] result;
                     switch (FileType)
                     {
                         case (DocumentType.Word):
-                            var result = await serviceClient.MergeWordAsync(files);
-                            FileHelper.SaveFile(result.Body.MergeWordResult, "Merged Document Name", ".docx");
+                            result = await serviceClient.MergeWordAsync(files);
+                            FileHelper.SaveFile(result, "Merged Document Name", ".docx");
                             break;
                         case (DocumentType.Excel):
-                            var result1 = await serviceClient.MergeExcelAsync(files);
-                            FileHelper.SaveFile(result1.Body.MergeExcelResult, "Merged Document Name", ".xlsx");
+                            result = await serviceClient.MergeExcelAsync(files);
+                            FileHelper.SaveFile(result, "Merged Document Name", ".xlsx");
                             break;
                         case (DocumentType.Presentation):
-                            var result2 = await serviceClient.MergePresentationAsync(files);
-                            FileHelper.SaveFile(result2.Body.MergePresentationResult, "Merged Document Name", ".pptx");
+                            result = await serviceClient.MergePresentationAsync(files);
+                            FileHelper.SaveFile(result, "Merged Document Name", ".pptx");
                             break;
                     }
                 }
@@ -209,27 +207,28 @@ namespace DocumentTransitionUniversalApp
 
         private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)
         {
-            var serviceClient = MainPage.Service.GetInstance();
-            var selectionParts = new ObservableCollection<Service.PartsSelectionTreeElement>();
+            var serviceClient = MainPage.Service.GetInstanceWCF();
+            var selectionParts = new ObservableCollection<TransitionAppWCFSerivce.PartsSelectionTreeElement>();
             foreach (var part in WordPartPage._pageData.SelectionParts)
                 selectionParts.Add(part.ConvertToServicePartsSelectionTreeElement());
 
             string splitFileName = string.Format("split_{1}_{0}.xml", DateTime.UtcNow.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture), FileName);
             try
             {
+                byte[] result;
                 switch (FileType)
                 {
                     case (DocumentType.Word):
-                        var result = await serviceClient.GenerateSplitWordAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-                        FileHelper.SaveFile(result.Body.GenerateSplitWordResult, splitFileName, ".xml");
+                        result = await serviceClient.GenerateSplitWordAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result, splitFileName, ".xml");
                         break;
                     case (DocumentType.Excel):
-                        var result1 = await serviceClient.GenerateSplitExcelAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-                        FileHelper.SaveFile(result1.Body.GenerateSplitExcelResult, splitFileName, ".xml");
+                        result = await serviceClient.GenerateSplitExcelAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result, splitFileName, ".xml");
                         break;
                     case (DocumentType.Presentation):
-                        var result2 = await serviceClient.GenerateSplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
-                        FileHelper.SaveFile(result2.Body.GenerateSplitPresentationResult, splitFileName, ".xml");
+                        result = await serviceClient.GenerateSplitPresentationAsync(Path.GetFileNameWithoutExtension(FileName), selectionParts);
+                        FileHelper.SaveFile(result, splitFileName, ".xml");
                         break;
                 }
 
@@ -260,7 +259,7 @@ namespace DocumentTransitionUniversalApp
                     var response = await GetPartsFromXml();
                     if (!response.IsError)
                     {
-                        var partsFromXml = response.Data as ObservableCollection<Service.PartsSelectionTreeElement>;
+                        var partsFromXml = response.Data as ObservableCollection<TransitionAppWCFSerivce.PartsSelectionTreeElement>;
                         foreach (var element in partsFromXml)
                         {
                             var item = PartsSelectionTreeElement.ConvertToPartsSelectionTreeElement(element);
@@ -299,7 +298,7 @@ namespace DocumentTransitionUniversalApp
 
         #region Private methods
 
-        private async void SaveFiles(ObservableCollection<Service.PersonFiles> personFiles, string fileExtension)
+        private async void SaveFiles(ObservableCollection<TransitionAppWCFSerivce.PersonFiles> personFiles, string fileExtension)
         {
             FolderPicker folderPicker = new FolderPicker();
             folderPicker.SuggestedStartLocation = PickerLocationId.Downloads;
@@ -323,7 +322,7 @@ namespace DocumentTransitionUniversalApp
                     filesSaveFolder = await folder.CreateFolderAsync(string.Format("Split Files ({0})", FileName));
                 }
 
-                foreach (Service.PersonFiles file in personFiles)
+                foreach (TransitionAppWCFSerivce.PersonFiles file in personFiles)
                 {
                     if (file.Person == "/")
                     {
@@ -373,9 +372,9 @@ namespace DocumentTransitionUniversalApp
             }
         }
 
-        private async Task<ObservableCollection<Service.PersonFiles>> GetFiles()
+        private async Task<ObservableCollection<TransitionAppWCFSerivce.PersonFiles>> GetFiles()
         {
-            ObservableCollection<Service.PersonFiles> files = new ObservableCollection<Service.PersonFiles>();
+            ObservableCollection<TransitionAppWCFSerivce.PersonFiles> files = new ObservableCollection<TransitionAppWCFSerivce.PersonFiles>();
             FolderPicker folderPicker = new FolderPicker();
             folderPicker.FileTypeFilter.Add(".docx");
             folderPicker.FileTypeFilter.Add(".pptx");
@@ -424,7 +423,7 @@ namespace DocumentTransitionUniversalApp
                 {
                     foreach (StorageFile fileToLoad in await subFolder.GetFilesAsync())
                     {
-                        var personFile = new Service.PersonFiles();
+                        var personFile = new TransitionAppWCFSerivce.PersonFiles();
                         personFile.Name = Path.GetFileNameWithoutExtension(fileToLoad.Name);
                         personFile.Data = await StorageFileToByteArray(fileToLoad);
                         personFile.Person = subFolder.Name;
@@ -432,14 +431,14 @@ namespace DocumentTransitionUniversalApp
                     }
                 }
 
-                var personXmlFile = new Service.PersonFiles();
+                var personXmlFile = new TransitionAppWCFSerivce.PersonFiles();
                 personXmlFile.Name = xmlFile.Name;
                 personXmlFile.Data = await StorageFileToByteArray(xmlFile);
                 personXmlFile.Person = "/";
 
                 files.Add(personXmlFile);
 
-                var personTemplateFile = new Service.PersonFiles();
+                var personTemplateFile = new TransitionAppWCFSerivce.PersonFiles();
                 personTemplateFile.Name = templateFile.Name;
                 personTemplateFile.Data = await StorageFileToByteArray(templateFile);
                 personTemplateFile.Person = "/";
@@ -527,26 +526,23 @@ namespace DocumentTransitionUniversalApp
                 return string.Empty;
         }
 
-        private async Task<Service.ServiceResponse> GetPartsFromXml()
+        private async Task<TransitionAppWCFSerivce.ServiceResponse> GetPartsFromXml()
         {
-            var result = new TransitionAppServices.ServiceResponse();
-            var serviceClient = MainPage.Service.GetInstance();
+            var result = new TransitionAppWCFSerivce.ServiceResponse();
+            var serviceClient = MainPage.Service.GetInstanceWCF();
 
             try
             {
                 switch (FileType)
                 {
                     case (DocumentType.Word):
-                        var response = await serviceClient.GetWordPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                        result = response.Body.GetWordPartsFromXmlResult;
+                        result = await serviceClient.GetWordPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                         break;
                     case (DocumentType.Excel):
-                        var response1 = await serviceClient.GetExcelPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                        result = response1.Body.GetExcelPartsFromXmlResult;
+                        result = await serviceClient.GetExcelPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                         break;
                     case (DocumentType.Presentation):
-                        var response2 = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
-                        result = response2.Body.GetPresentationPartsFromXmlResult;
+                        result = await serviceClient.GetPresentationPartsFromXmlAsync(FileName, documentBinary, xmlBinary);
                         break;
                 }
             }

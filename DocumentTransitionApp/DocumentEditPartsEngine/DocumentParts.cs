@@ -37,7 +37,13 @@ namespace DocumentEditPartsEngine
                         if (parent != null)
                         {
                             var parentElement = elementToAdd ?? parent;
-                            parentElement.Childs.AddRange(CreatePartsSelectionTreeElements(elmentChild, parentElement, Index, supportedType, indent, visible));
+                            var childrenToAdd = CreatePartsSelectionTreeElements(elmentChild, parentElement, Index, supportedType, indent, visible);
+                            foreach (var child in childrenToAdd)
+                            {
+                                child.Parent = parentElement;
+                                parentElement.Childs.Add(child);
+                            }
+                           
                         }
                         else
                         {

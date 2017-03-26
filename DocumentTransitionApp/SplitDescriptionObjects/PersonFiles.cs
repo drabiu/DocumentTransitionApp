@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace SplitDescriptionObjects
 {
-	public class PersonFiles
-	{		
-		public string Person { get; set; }
-		public string Name { get; set; }
-		public byte[] Data { get; set; }
-	}
+    [DataContract]
+    public class PersonFiles
+    {
+        [DataMember]
+        public string Person { get; set; }
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public byte[] Data { get; set; }
+    }
 }

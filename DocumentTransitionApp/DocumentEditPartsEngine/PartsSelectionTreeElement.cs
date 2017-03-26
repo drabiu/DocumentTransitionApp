@@ -1,22 +1,33 @@
 ﻿using OpenXMLTools.Helpers;
-using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace DocumentEditPartsEngine
 {
-    [Serializable]
+    [DataContract(IsReference = true)]
     public class PartsSelectionTreeElement
     {
         #region Fields
 
+        [DataMember]
         public string Id { get; set; }
+        [DataMember]
         public string ElementId { get; set; }
+        [DataMember]
         public ElementType Type { get; set; }
+        [DataMember]
+        public PartsSelectionTreeElement Parent { get; set; }
+        [DataMember]
         public List<PartsSelectionTreeElement> Childs { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public int Indent { get; set; }
+        [DataMember]
         public string OwnerName { get; set; }
+        [DataMember]
         public bool Selected { get; set; }
+        [DataMember]
         public bool Visible { get; set; }
 
         #endregion

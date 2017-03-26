@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
-using Service = DocumentTransitionUniversalApp.TransitionAppServices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -76,7 +75,7 @@ namespace DocumentTransitionUniversalApp.Views
             this.Frame.Navigate(typeof(MainPage), _source);
         }
 
-        private void PrepareListOfItems(ObservableCollection<Service.PartsSelectionTreeElement> elements)
+        private void PrepareListOfItems(ObservableCollection<TransitionAppWCFSerivce.PartsSelectionTreeElement> elements)
         {
             foreach (var element in elements)
             {
@@ -258,11 +257,11 @@ namespace DocumentTransitionUniversalApp.Views
         private async void InitWord()
         {
 
-            var serviceClient = MainPage.Service.GetInstance();
+            var serviceClient = MainPage.Service.GetInstanceWCF();
             try
             {
                 var result = await serviceClient.GetWordPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetWordPartsResult);
+                PrepareListOfItems(result);
             }
             catch (System.ServiceModel.CommunicationException ex)
             {
@@ -273,11 +272,11 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitPresentation()
         {
-            var serviceClient = MainPage.Service.GetInstance();
+            var serviceClient = MainPage.Service.GetInstanceWCF();
             try
             {
                 var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetPresentationPartsResult);
+                PrepareListOfItems(result);
             }
             catch (System.ServiceModel.CommunicationException ex)
             {
@@ -288,11 +287,11 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitExcel()
         {
-            var serviceClient = MainPage.Service.GetInstance();
+            var serviceClient = MainPage.Service.GetInstanceWCF();
             try
             {
                 var result = await serviceClient.GetExcelPartsAsync(_source.FileName, _source.documentBinary);
-                PrepareListOfItems(result.Body.GetExcelPartsResult);
+                PrepareListOfItems(result);
             }
             catch (System.ServiceModel.CommunicationException ex)
             {

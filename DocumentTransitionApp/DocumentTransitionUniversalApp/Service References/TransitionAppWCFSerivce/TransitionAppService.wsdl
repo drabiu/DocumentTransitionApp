@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TransitionAppService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" />
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" />
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/OpenXMLTools.Helpers" />
+      <xsd:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ITransitionAppService_SplitWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:SplitWord" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_SplitWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SplitWordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_SplitPresentation_InputMessage">
+    <wsdl:part name="parameters" element="tns:SplitPresentation" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_SplitPresentation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SplitPresentationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GenerateSplitWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:GenerateSplitWord" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GenerateSplitWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GenerateSplitWordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GenerateSplitPresentation_InputMessage">
+    <wsdl:part name="parameters" element="tns:GenerateSplitPresentation" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GenerateSplitPresentation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GenerateSplitPresentationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetWordParts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordParts" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetWordParts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordPartsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetPresentationParts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPresentationParts" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetPresentationParts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPresentationPartsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetWordPartsFromXml_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordPartsFromXml" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetWordPartsFromXml_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWordPartsFromXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetPresentationPartsFromXml_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPresentationPartsFromXml" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetPresentationPartsFromXml_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPresentationPartsFromXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_SplitExcel_InputMessage">
+    <wsdl:part name="parameters" element="tns:SplitExcel" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_SplitExcel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SplitExcelResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GenerateSplitExcel_InputMessage">
+    <wsdl:part name="parameters" element="tns:GenerateSplitExcel" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GenerateSplitExcel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GenerateSplitExcelResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetExcelParts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetExcelParts" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetExcelParts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetExcelPartsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetExcelPartsFromXml_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetExcelPartsFromXml" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_GetExcelPartsFromXml_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetExcelPartsFromXmlResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_MergeWord_InputMessage">
+    <wsdl:part name="parameters" element="tns:MergeWord" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_MergeWord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MergeWordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_MergePresentation_InputMessage">
+    <wsdl:part name="parameters" element="tns:MergePresentation" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_MergePresentation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MergePresentationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_MergeExcel_InputMessage">
+    <wsdl:part name="parameters" element="tns:MergeExcel" />
+  </wsdl:message>
+  <wsdl:message name="ITransitionAppService_MergeExcel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MergeExcelResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ITransitionAppService">
+    <wsdl:operation name="SplitWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/SplitWord" message="tns:ITransitionAppService_SplitWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/SplitWordResponse" message="tns:ITransitionAppService_SplitWord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SplitPresentation">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/SplitPresentation" message="tns:ITransitionAppService_SplitPresentation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/SplitPresentationResponse" message="tns:ITransitionAppService_SplitPresentation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GenerateSplitWord" message="tns:ITransitionAppService_GenerateSplitWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GenerateSplitWordResponse" message="tns:ITransitionAppService_GenerateSplitWord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitPresentation">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GenerateSplitPresentation" message="tns:ITransitionAppService_GenerateSplitPresentation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GenerateSplitPresentationResponse" message="tns:ITransitionAppService_GenerateSplitPresentation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWordParts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GetWordParts" message="tns:ITransitionAppService_GetWordParts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GetWordPartsResponse" message="tns:ITransitionAppService_GetWordParts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPresentationParts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GetPresentationParts" message="tns:ITransitionAppService_GetPresentationParts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GetPresentationPartsResponse" message="tns:ITransitionAppService_GetPresentationParts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWordPartsFromXml">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GetWordPartsFromXml" message="tns:ITransitionAppService_GetWordPartsFromXml_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GetWordPartsFromXmlResponse" message="tns:ITransitionAppService_GetWordPartsFromXml_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPresentationPartsFromXml">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GetPresentationPartsFromXml" message="tns:ITransitionAppService_GetPresentationPartsFromXml_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GetPresentationPartsFromXmlResponse" message="tns:ITransitionAppService_GetPresentationPartsFromXml_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SplitExcel">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/SplitExcel" message="tns:ITransitionAppService_SplitExcel_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/SplitExcelResponse" message="tns:ITransitionAppService_SplitExcel_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitExcel">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GenerateSplitExcel" message="tns:ITransitionAppService_GenerateSplitExcel_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GenerateSplitExcelResponse" message="tns:ITransitionAppService_GenerateSplitExcel_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelParts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GetExcelParts" message="tns:ITransitionAppService_GetExcelParts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GetExcelPartsResponse" message="tns:ITransitionAppService_GetExcelParts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelPartsFromXml">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/GetExcelPartsFromXml" message="tns:ITransitionAppService_GetExcelPartsFromXml_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/GetExcelPartsFromXmlResponse" message="tns:ITransitionAppService_GetExcelPartsFromXml_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MergeWord">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/MergeWord" message="tns:ITransitionAppService_MergeWord_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/MergeWordResponse" message="tns:ITransitionAppService_MergeWord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MergePresentation">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/MergePresentation" message="tns:ITransitionAppService_MergePresentation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/MergePresentationResponse" message="tns:ITransitionAppService_MergePresentation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MergeExcel">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITransitionAppService/MergeExcel" message="tns:ITransitionAppService_MergeExcel_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITransitionAppService/MergeExcelResponse" message="tns:ITransitionAppService_MergeExcel_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ITransitionAppService" type="tns:ITransitionAppService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SplitWord">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/SplitWord" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitPresentation">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/SplitPresentation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitWord">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GenerateSplitWord" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitPresentation">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GenerateSplitPresentation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWordParts">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GetWordParts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresentationParts">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GetPresentationParts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWordPartsFromXml">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GetWordPartsFromXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPresentationPartsFromXml">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GetPresentationPartsFromXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SplitExcel">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/SplitExcel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateSplitExcel">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GenerateSplitExcel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelParts">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GetExcelParts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExcelPartsFromXml">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/GetExcelPartsFromXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergeWord">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/MergeWord" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergePresentation">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/MergePresentation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MergeExcel">
+      <soap:operation soapAction="http://tempuri.org/ITransitionAppService/MergeExcel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TransitionAppService">
+    <wsdl:port name="BasicHttpBinding_ITransitionAppService" binding="tns:BasicHttpBinding_ITransitionAppService">
+      <soap:address location="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

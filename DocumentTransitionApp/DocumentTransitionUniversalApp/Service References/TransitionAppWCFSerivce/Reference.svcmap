@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fc04a048-f9a2-459d-bd4a-5fe4ba733274" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TransitionAppService.disco" MetadataType="Disco" ID="8b0a2e70-8286-4437-bb32-b48e668b0ff6" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?disco" />
+    <MetadataFile FileName="TransitionAppService.xsd" MetadataType="Schema" ID="b42c7390-5d18-4812-882e-12d57637a345" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd0" />
+    <MetadataFile FileName="TransitionAppService1.xsd" MetadataType="Schema" ID="34e0b68c-da0d-4c7a-b9a2-b065eca5854f" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd2" />
+    <MetadataFile FileName="TransitionAppService2.xsd" MetadataType="Schema" ID="28c53915-0c8c-43ac-b177-b1c5ee65aca0" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" />
+    <MetadataFile FileName="TransitionAppService3.xsd" MetadataType="Schema" ID="70f96c63-93c4-4f7d-89e3-2bffbb1d4f4d" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd1" />
+    <MetadataFile FileName="TransitionAppService4.xsd" MetadataType="Schema" ID="7090dea4-5204-4b17-b682-8d5856ff8c60" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd4" />
+    <MetadataFile FileName="TransitionAppService5.xsd" MetadataType="Schema" ID="f0feb1c5-8f3a-4e88-853e-d0cc65515d73" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd3" />
+    <MetadataFile FileName="TransitionAppService.wsdl" MetadataType="Wsdl" ID="f520da4f-a3dc-4ca5-9547-c262d17c0711" SourceId="1" SourceUrl="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

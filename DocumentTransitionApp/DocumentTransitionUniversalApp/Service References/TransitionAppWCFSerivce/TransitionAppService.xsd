@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" />
+  <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" />
+  <xs:import schemaLocation="http://localhost/DocumentTransitionAppWCF/TransitionAppService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" />
+  <xs:element name="SplitWord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="docxFile" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="xmlFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SplitWordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" minOccurs="0" name="SplitWordResult" nillable="true" type="q1:ArrayOfPersonFiles" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SplitPresentation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="docFile" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="xmlFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SplitPresentationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" minOccurs="0" name="SplitPresentationResult" nillable="true" type="q2:ArrayOfPersonFiles" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GenerateSplitWord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="parts" nillable="true" type="q3:ArrayOfPartsSelectionTreeElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GenerateSplitWordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GenerateSplitWordResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GenerateSplitPresentation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="parts" nillable="true" type="q4:ArrayOfPartsSelectionTreeElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GenerateSplitPresentationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GenerateSplitPresentationResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWordParts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="documentFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWordPartsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="GetWordPartsResult" nillable="true" type="q5:ArrayOfPartsSelectionTreeElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPresentationParts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="preName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="presentationFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPresentationPartsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="GetPresentationPartsResult" nillable="true" type="q6:ArrayOfPartsSelectionTreeElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWordPartsFromXml">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="documentFile" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="splitFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWordPartsFromXmlResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" minOccurs="0" name="GetWordPartsFromXmlResult" nillable="true" type="q7:ServiceResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPresentationPartsFromXml">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="documentFile" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="splitFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPresentationPartsFromXmlResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" minOccurs="0" name="GetPresentationPartsFromXmlResult" nillable="true" type="q8:ServiceResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SplitExcel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="docFile" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="xmlFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SplitExcelResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" minOccurs="0" name="SplitExcelResult" nillable="true" type="q9:ArrayOfPersonFiles" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GenerateSplitExcel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="parts" nillable="true" type="q10:ArrayOfPartsSelectionTreeElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GenerateSplitExcelResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GenerateSplitExcelResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExcelParts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="excName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="excelFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExcelPartsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DocumentEditPartsEngine" minOccurs="0" name="GetExcelPartsResult" nillable="true" type="q11:ArrayOfPartsSelectionTreeElement" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExcelPartsFromXml">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="docName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="documentFile" nillable="true" type="xs:base64Binary" />
+        <xs:element minOccurs="0" name="splitFile" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExcelPartsFromXmlResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/DocumentTransitionAppService" minOccurs="0" name="GetExcelPartsFromXmlResult" nillable="true" type="q12:ServiceResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergeWord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" minOccurs="0" name="files" nillable="true" type="q13:ArrayOfPersonFiles" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergeWordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MergeWordResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergePresentation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" minOccurs="0" name="files" nillable="true" type="q14:ArrayOfPersonFiles" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergePresentationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MergePresentationResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergeExcel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/SplitDescriptionObjects" minOccurs="0" name="files" nillable="true" type="q15:ArrayOfPersonFiles" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MergeExcelResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="MergeExcelResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -17,7 +17,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PersonFiles", Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PersonFiles", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class PersonFiles : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string PersonField;
@@ -77,7 +78,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PartsSelectionTreeElement", Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PartsSelectionTreeElement", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class PartsSelectionTreeElement : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string IdField;
@@ -85,6 +87,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         private string ElementIdField;
         
         private DocumentTransitionUniversalApp.TransitionAppServices.ElementType TypeField;
+        
+        private DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement ParentField;
         
         private System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> ChildsField;
         
@@ -138,6 +142,19 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement Parent {
+            get {
+                return this.ParentField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ParentField, value) != true)) {
+                    this.ParentField = value;
+                    this.RaisePropertyChanged("Parent");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
         public System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement> Childs {
             get {
                 return this.ChildsField;
@@ -150,7 +167,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
         public string Name {
             get {
                 return this.NameField;
@@ -163,7 +180,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=5)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=6)]
         public int Indent {
             get {
                 return this.IndentField;
@@ -176,7 +193,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=7)]
         public string OwnerName {
             get {
                 return this.OwnerNameField;
@@ -189,7 +206,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
         public bool Selected {
             get {
                 return this.SelectedField;
@@ -202,7 +219,7 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=9)]
         public bool Visible {
             get {
                 return this.VisibleField;
@@ -226,7 +243,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ElementType", Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ElementType", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public enum ElementType : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -265,7 +283,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceResponse", Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DocumentTransitionUniversalApp.TransitionAppServices.PersonFiles))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DocumentTransitionUniversalApp.TransitionAppServices.PartsSelectionTreeElement>))]
@@ -329,52 +348,68 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TransitionAppServices.Service1Soap")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/", ConfigurationName="TransitionAppServices.Service1Soap")]
     public interface Service1Soap {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SplitWord", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/SplitWord", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.SplitWordResponse> SplitWordAsync(DocumentTransitionUniversalApp.TransitionAppServices.SplitWordRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SplitPresentation", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/SplitPresentation", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.SplitPresentationResponse> SplitPresentationAsync(DocumentTransitionUniversalApp.TransitionAppServices.SplitPresentationRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GenerateSplitWord", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GenerateSplitWord", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitWordResponse> GenerateSplitWordAsync(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitWordRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GenerateSplitPresentation", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GenerateSplitPresentation", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponse> GenerateSplitPresentationAsync(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetWordParts", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GetWordParts", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsResponse> GetWordPartsAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetPresentationParts", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GetPresentationParts", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponse> GetPresentationPartsAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetWordPartsFromXml", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GetWordPartsFromXml", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsFromXmlResponse> GetWordPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsFromXmlRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetPresentationPartsFromXml", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GetPresentationPartsFromXml", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponse> GetPresentationPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SplitExcel", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/SplitExcel", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.SplitExcelResponse> SplitExcelAsync(DocumentTransitionUniversalApp.TransitionAppServices.SplitExcelRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GenerateSplitExcel", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GenerateSplitExcel", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitExcelResponse> GenerateSplitExcelAsync(DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitExcelRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetExcelParts", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GetExcelParts", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsResponse> GetExcelPartsAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetExcelPartsFromXml", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/GetExcelPartsFromXml", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsFromXmlResponse> GetExcelPartsFromXmlAsync(DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsFromXmlRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergeWord", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/MergeWord", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.MergeWordResponse> MergeWordAsync(DocumentTransitionUniversalApp.TransitionAppServices.MergeWordRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergePresentation", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/MergePresentation", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.MergePresentationResponse> MergePresentationAsync(DocumentTransitionUniversalApp.TransitionAppServices.MergePresentationRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MergeExcel", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/MergeExcel", ReplyAction="*")]
         System.Threading.Tasks.Task<DocumentTransitionUniversalApp.TransitionAppServices.MergeExcelResponse> MergeExcelAsync(DocumentTransitionUniversalApp.TransitionAppServices.MergeExcelRequest request);
     }
     
@@ -384,7 +419,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SplitWordRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitWord", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitWord", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.SplitWordRequestBody Body;
         
         public SplitWordRequest() {
@@ -398,7 +434,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class SplitWordRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -426,7 +463,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SplitWordResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitWordResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitWordResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.SplitWordResponseBody Body;
         
         public SplitWordResponse() {
@@ -440,7 +478,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class SplitWordResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -460,7 +499,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SplitPresentationRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitPresentation", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitPresentation", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.SplitPresentationRequestBody Body;
         
         public SplitPresentationRequest() {
@@ -474,7 +514,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class SplitPresentationRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -502,7 +543,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SplitPresentationResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitPresentationResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitPresentationResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.SplitPresentationResponseBody Body;
         
         public SplitPresentationResponse() {
@@ -516,7 +558,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class SplitPresentationResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -536,7 +579,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GenerateSplitWordRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitWord", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitWord", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitWordRequestBody Body;
         
         public GenerateSplitWordRequest() {
@@ -550,7 +594,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GenerateSplitWordRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -574,7 +619,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GenerateSplitWordResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitWordResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitWordResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitWordResponseBody Body;
         
         public GenerateSplitWordResponse() {
@@ -588,7 +634,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GenerateSplitWordResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -608,7 +655,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GenerateSplitPresentationRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitPresentation", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitPresentation", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationRequestBody Body;
         
         public GenerateSplitPresentationRequest() {
@@ -622,7 +670,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GenerateSplitPresentationRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -646,7 +695,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GenerateSplitPresentationResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitPresentationResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitPresentationResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitPresentationResponseBody Body;
         
         public GenerateSplitPresentationResponse() {
@@ -660,7 +710,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GenerateSplitPresentationResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -680,7 +731,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetWordPartsRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordParts", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordParts", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsRequestBody Body;
         
         public GetWordPartsRequest() {
@@ -694,7 +746,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetWordPartsRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -718,7 +771,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetWordPartsResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordPartsResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordPartsResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsResponseBody Body;
         
         public GetWordPartsResponse() {
@@ -732,7 +786,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetWordPartsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -752,7 +807,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetPresentationPartsRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationParts", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationParts", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsRequestBody Body;
         
         public GetPresentationPartsRequest() {
@@ -766,7 +822,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetPresentationPartsRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -790,7 +847,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetPresentationPartsResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsResponseBody Body;
         
         public GetPresentationPartsResponse() {
@@ -804,7 +862,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetPresentationPartsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -824,7 +883,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetWordPartsFromXmlRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordPartsFromXml", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordPartsFromXml", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsFromXmlRequestBody Body;
         
         public GetWordPartsFromXmlRequest() {
@@ -838,7 +898,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetWordPartsFromXmlRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -866,7 +927,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetWordPartsFromXmlResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordPartsFromXmlResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetWordPartsFromXmlResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetWordPartsFromXmlResponseBody Body;
         
         public GetWordPartsFromXmlResponse() {
@@ -880,7 +942,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetWordPartsFromXmlResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -900,7 +963,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetPresentationPartsFromXmlRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsFromXml", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsFromXml", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlRequestBody Body;
         
         public GetPresentationPartsFromXmlRequest() {
@@ -914,7 +978,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetPresentationPartsFromXmlRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -942,7 +1007,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetPresentationPartsFromXmlResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsFromXmlResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetPresentationPartsFromXmlResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetPresentationPartsFromXmlResponseBody Body;
         
         public GetPresentationPartsFromXmlResponse() {
@@ -956,7 +1022,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetPresentationPartsFromXmlResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -976,7 +1043,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SplitExcelRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitExcel", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitExcel", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.SplitExcelRequestBody Body;
         
         public SplitExcelRequest() {
@@ -990,7 +1058,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class SplitExcelRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1018,7 +1087,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class SplitExcelResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitExcelResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SplitExcelResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.SplitExcelResponseBody Body;
         
         public SplitExcelResponse() {
@@ -1032,7 +1102,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class SplitExcelResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1052,7 +1123,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GenerateSplitExcelRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitExcel", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitExcel", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitExcelRequestBody Body;
         
         public GenerateSplitExcelRequest() {
@@ -1066,7 +1138,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GenerateSplitExcelRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1090,7 +1163,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GenerateSplitExcelResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitExcelResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GenerateSplitExcelResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GenerateSplitExcelResponseBody Body;
         
         public GenerateSplitExcelResponse() {
@@ -1104,7 +1178,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GenerateSplitExcelResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1124,7 +1199,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetExcelPartsRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelParts", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelParts", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsRequestBody Body;
         
         public GetExcelPartsRequest() {
@@ -1138,7 +1214,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetExcelPartsRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1162,7 +1239,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetExcelPartsResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelPartsResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelPartsResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsResponseBody Body;
         
         public GetExcelPartsResponse() {
@@ -1176,7 +1254,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetExcelPartsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1196,7 +1275,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetExcelPartsFromXmlRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelPartsFromXml", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelPartsFromXml", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsFromXmlRequestBody Body;
         
         public GetExcelPartsFromXmlRequest() {
@@ -1210,7 +1290,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetExcelPartsFromXmlRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1238,7 +1319,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetExcelPartsFromXmlResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelPartsFromXmlResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetExcelPartsFromXmlResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.GetExcelPartsFromXmlResponseBody Body;
         
         public GetExcelPartsFromXmlResponse() {
@@ -1252,7 +1334,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class GetExcelPartsFromXmlResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1272,7 +1355,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class MergeWordRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeWord", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeWord", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.MergeWordRequestBody Body;
         
         public MergeWordRequest() {
@@ -1286,7 +1370,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class MergeWordRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1306,7 +1391,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class MergeWordResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeWordResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeWordResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.MergeWordResponseBody Body;
         
         public MergeWordResponse() {
@@ -1320,7 +1406,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class MergeWordResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1340,7 +1427,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class MergePresentationRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergePresentation", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergePresentation", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.MergePresentationRequestBody Body;
         
         public MergePresentationRequest() {
@@ -1354,7 +1442,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class MergePresentationRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1374,7 +1463,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class MergePresentationResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergePresentationResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergePresentationResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.MergePresentationResponseBody Body;
         
         public MergePresentationResponse() {
@@ -1388,7 +1478,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class MergePresentationResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1408,7 +1499,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class MergeExcelRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeExcel", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeExcel", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.MergeExcelRequestBody Body;
         
         public MergeExcelRequest() {
@@ -1422,7 +1514,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class MergeExcelRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1442,7 +1535,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class MergeExcelResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeExcelResponse", Namespace="http://tempuri.org/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MergeExcelResponse", Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+            "pp/", Order=0)]
         public DocumentTransitionUniversalApp.TransitionAppServices.MergeExcelResponseBody Body;
         
         public MergeExcelResponse() {
@@ -1456,7 +1550,8 @@ namespace DocumentTransitionUniversalApp.TransitionAppServices {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionA" +
+        "pp/")]
     public partial class MergeExcelResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/OpenXMLTools.Helpers" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/OpenXMLTools.Helpers" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="ElementType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Paragraph" />
+      <xs:enumeration value="BulletList" />
+      <xs:enumeration value="NumberedList" />
+      <xs:enumeration value="Hyperlink" />
+      <xs:enumeration value="Table" />
+      <xs:enumeration value="Picture" />
+      <xs:enumeration value="Sheet" />
+      <xs:enumeration value="Column" />
+      <xs:enumeration value="Row" />
+      <xs:enumeration value="Cell" />
+      <xs:enumeration value="Slide" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ElementType" nillable="true" type="tns:ElementType" />
+</xs:schema>
