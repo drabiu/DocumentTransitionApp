@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SplitDescriptionObjects;
-using DocumentEditPartsEngine;
+﻿using DocumentEditPartsEngine;
 using DocumentFormat.OpenXml.Packaging;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SplitDescriptionObjects;
 using SplitDescriptionObjects.Interfaces;
+using System.Collections.Generic;
 
 namespace SplitDescriptionObjectsTests
 {
@@ -14,6 +14,8 @@ namespace SplitDescriptionObjectsTests
         IUniversalWordMarker UniversalDocParagraphIdMarker;
         WordprocessingDocument WordNoParagraphIdDoc;
         WordprocessingDocument WordDemoDoc;
+        List<MarkerWordSelector> MarkerWordNoParagraphIdSelectors;
+        List<MarkerWordSelector> MarkerWordDemoDocSelectors;
 
         [TestInitialize]
         public void Init()
@@ -22,8 +24,10 @@ namespace SplitDescriptionObjectsTests
             WordDemoDoc = WordprocessingDocument.Open(@"../../../Files/demo.docx", false);
 
             //test scenarios when paragraphs have an Id and a paragraph hasn`t got an Id
-            UniversalDocNoParagraphIdMarker = new UniversalWordMarker(WordNoParagraphIdDoc.MainDocumentPart.Document.Body);
-            UniversalDocParagraphIdMarker = new UniversalWordMarker(WordDemoDoc.MainDocumentPart.Document.Body);
+            MarkerWordNoParagraphIdSelectors = MarkerWordSelector.InitializeSelectorsList(WordNoParagraphIdDoc.MainDocumentPart.Document.Body);
+            MarkerWordDemoDocSelectors = MarkerWordSelector.InitializeSelectorsList(WordDemoDoc.MainDocumentPart.Document.Body);
+            UniversalDocNoParagraphIdMarker = new UniversalWordMarker(WordNoParagraphIdDoc.MainDocumentPart.Document.Body, MarkerWordNoParagraphIdSelectors);
+            UniversalDocParagraphIdMarker = new UniversalWordMarker(WordDemoDoc.MainDocumentPart.Document.Body, MarkerWordDemoDocSelectors);
         }
 
         [TestMethod]

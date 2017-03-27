@@ -29,6 +29,11 @@ namespace DocumentEditPartsEngine
             return string.Format("{0}{1}{2}", id, NumIdTag, numberingId);
         }
 
+        public static string GetParagraphIdFromListIdFormatter(string paragraphListId)
+        {
+            return paragraphListId.Split(new string[] { NumIdTag }, StringSplitOptions.None).First();
+        }
+
         public static int GetNumberingIdFromListId(string paragraphListId)
         {
             return int.Parse(paragraphListId.Split(new string[] { NumIdTag }, StringSplitOptions.None).Last());

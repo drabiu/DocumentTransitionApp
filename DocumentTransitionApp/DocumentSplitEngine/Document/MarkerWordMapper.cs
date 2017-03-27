@@ -13,69 +13,50 @@ namespace DocumentSplitEngine.Document
     {
         SplitDocument SplitDocumentObj { get; set; }
         Body DocumentBody { get; set; }
-        IUniversalWordMarker UniversalDocMarker;
+        List<MarkerWordSelector> _markerWordSelectors;
 
         public MarkerWordMapper(string documentName, Split xml, Body body)
         {
             Xml = xml;
             SplitDocumentObj = (SplitDocument)Xml.Items.Where(it => it is SplitDocument && string.Equals(((SplitDocument)it).Name, documentName)).SingleOrDefault();
             DocumentBody = body;
-            UniversalDocMarker = new UniversalWordMarker(DocumentBody);
-            SubdividedParagraphs = new string[body.ChildElements.Count];
+            _markerWordSelectors = MarkerWordSelector.InitializeSelectorsList(DocumentBody);
         }
 
         public IList<OpenXMLDocumentPart<OpenXmlElement>> Run()
         {
+            IUniversalWordMarker universalDocMarker;
+            IPictureWordMarker pictureDocMarker;
+            IListWordMarker listDocMarker;
+            ITableWordMarker tableDocMarker;
+
             IList<OpenXMLDocumentPart<OpenXmlElement>> documentElements = new List<OpenXMLDocumentPart<OpenXmlElement>>();
             if (SplitDocumentObj?.Person != null)
             {
                 foreach (Person person in SplitDocumentObj.Person)
                 {
-                    //if (person.UniversalMarker != null)
-                    //{
-                    //    foreach (PersonUniversalMarker marker in person.UniversalMarker)
-                    //    {
-                    //        IList<int> result = UniversalDocMarker.GetCrossedParagraphElements(marker.ElementId, marker.SelectionLastelementId);
-                    //        foreach (int index in result)
-                    //        {
-                    //            if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
-                    //            {
-                    //                SubdividedParagraphs[index] = person.Email;
-                    //            }
-                    //            else
-                    //                throw new ElementToPersonPairException();
-                    //        }
-                    //    }
-                    //}
+                    universalDocMarker = new UniversalWordMarker(DocumentBody, _markerWordSelectors);
+                    _markerWordSelectors = universalDocMarker.GetSubdividedParts(person);
 
-                    //if (person.ListMarker != null)
-                    //{
-                    //}
+                    listDocMarker = new ListWordMarker(DocumentBody, _markerWordSelectors);
+                    _markerWordSelectors = listDocMarker.GetSubdividedParts(person);
 
-                    //if (person.PictureMarker != null)
-                    //{
-                    //}
+                    pictureDocMarker = new PictureWordMarker(DocumentBody, _markerWordSelectors);
+                    _markerWordSelectors = pictureDocMarker.GetSubdividedParts(person);
 
-                    //if (person.TableMarker != null)
-                    //{
-                    //}
-
-                    //UniversalWordMarker.SetPartsOwner(parts, person);
-                    //TableWordMarker.SetPartsOwner(parts, person);
-                    //ListWordMarker.SetPartsOwner(parts, person);
-                    //PictureWordMarker.SetPartsOwner(parts, person);
+                    tableDocMarker = new TableWordMarker(DocumentBody, _markerWordSelectors);
+                    _markerWordSelectors = tableDocMarker.GetSubdividedParts(person);
                 }
 
                 string email = string.Empty;
                 OpenXMLDocumentPart<OpenXmlElement> part = new OpenXMLDocumentPart<OpenXmlElement>();
-                for (int index = 0; index < DocumentBody.ChildElements.Count; index++)
+                foreach (var wordSelector in _markerWordSelectors)
                 {
-                    //check if parts are neighbours then join into one document
-                    if (SubdividedParagraphs[index] != email)
+                    if (wordSelector.Email != email)
                     {
                         part = new OpenXMLDocumentPart<OpenXmlElement>();
-                        part.CompositeElements.Add(DocumentBody.ChildElements[index]);
-                        email = SubdividedParagraphs[index];
+                        part.CompositeElements.Add(wordSelector.Element);
+                        email = wordSelector.Email;
                         if (string.IsNullOrEmpty(email))
                             part.PartOwner = "undefined";
                         else
@@ -84,7 +65,7 @@ namespace DocumentSplitEngine.Document
                         documentElements.Add(part);
                     }
                     else
-                        part.CompositeElements.Add(DocumentBody.ChildElements[index]);
+                        part.CompositeElements.Add(wordSelector.Element);
                 }
             }
 

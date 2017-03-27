@@ -52,5 +52,16 @@ namespace OpenXMLTools.Word.OpenXmlElements
         {
             return ElementType.Picture;
         }
+
+        public Paragraph CreateParagraph()
+        {
+            Run run = new Run();
+            run.Append(_drawing.CloneNode(true));
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.Append(run);
+
+            return paragraph;
+        }
     }
 }
