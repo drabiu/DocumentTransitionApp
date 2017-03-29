@@ -9,6 +9,7 @@ using DocumentSplitEngine.Interfaces;
 using OpenXmlPowerTools;
 using OpenXMLTools;
 using OpenXMLTools.Helpers;
+using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,12 @@ namespace DocumentSplitEngine
 {
     public class WordSplit : MergeXml<OpenXmlElement>, ISplit, ISplitXml, ILocalSplit
     {
+        IWordTools WordTools;
+
         public WordSplit(string docName)
         {
             DocumentName = docName;
+            WordTools = new WordTools();
         }
 
         public void OpenAndSearchDocument(Stream docxFile, Stream xmlFile)
@@ -155,6 +159,8 @@ namespace DocumentSplitEngine
                         foreach (OpenXmlElement compo in element.CompositeElements)
                             body.Append(compo.CloneNode(true));
 
+                        WordTools.RemoveUnusedMedia(wordDoc);
+                        WordTools.RemoveUnusedEmbeddings(wordDoc);
                         wordDoc.MainDocumentPart.Document.Save();
 
                         var person = new PersonFiles();

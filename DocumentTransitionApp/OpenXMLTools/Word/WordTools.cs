@@ -20,13 +20,9 @@ namespace OpenXMLTools
         public WordprocessingDocument MergeWordMedia(WordprocessingDocument target, WordprocessingDocument source)
         {
             var sourceImageParts = source.MainDocumentPart.ImageParts;
-            var targetImageParts = target.MainDocumentPart.ImageParts;
             var sourceRelIds = sourceImageParts.Select(s => source.MainDocumentPart.GetIdOfPart(s));
-            var targetRelIds = targetImageParts.Select(t => target.MainDocumentPart.GetIdOfPart(t));
-            //need to check differences if RemoveUnusedMedia hasn`t been used
-            var relIdToAdd = sourceRelIds.Except(targetRelIds);
             HashSet<WordPartRelId> insertedItemsRelId = new HashSet<WordPartRelId>();
-            foreach (var relId in relIdToAdd)
+            foreach (var relId in sourceRelIds)
             {
                 var sourcePart = source.MainDocumentPart.GetPartById(relId);
                 var targetPart = target.MainDocumentPart.AddPart(sourcePart);
@@ -42,12 +38,9 @@ namespace OpenXMLTools
         public WordprocessingDocument MergeWordEmbeddings(WordprocessingDocument target, WordprocessingDocument source)
         {
             var sourceEmbbedings = source.MainDocumentPart.EmbeddedPackageParts;
-            var targetEmbbedings = target.MainDocumentPart.EmbeddedPackageParts;
             var sourceRelIds = sourceEmbbedings.Select(s => source.MainDocumentPart.GetIdOfPart(s));
-            var targetRelIds = targetEmbbedings.Select(t => target.MainDocumentPart.GetIdOfPart(t));
-            var relIdToAdd = sourceRelIds.Except(targetRelIds);
             HashSet<WordPartRelId> insertedItemsRelId = new HashSet<WordPartRelId>();
-            foreach (var relId in relIdToAdd)
+            foreach (var relId in sourceRelIds)
             {
                 var sourcePart = source.MainDocumentPart.GetPartById(relId);
                 var targetPart = target.MainDocumentPart.AddPart(sourcePart);
@@ -68,12 +61,43 @@ namespace OpenXMLTools
 
         public WordprocessingDocument RemoveUnusedMedia(WordprocessingDocument target)
         {
+            List<string> imageDataRelIds = new List<string>();
+            Body body = target.MainDocumentPart.Document.Body;
+            var targetRelIds = target.MainDocumentPart.ImageParts.Select(t => target.MainDocumentPart.GetIdOfPart(t)).ToList();
+            var embeddedObjects = body.Descendants<EmbeddedObject>();
+            var drawings = body.Descendants<Drawing>();
+            foreach (var embeddedObject in embeddedObjects)
+            {
+                imageDataRelIds.AddRange(embeddedObject.Descendants<ImageData>().Select(img => img.RelationshipId.Value));
+            }
+
+            foreach (var drawing in drawings)
+            {
+                imageDataRelIds.AddRange(drawing.Descendants<D.Blip>().Select(blip => blip.Embed.Value));
+            }
+
+            var relIdsToRemove = targetRelIds.Except(imageDataRelIds);
+            foreach (var relId in relIdsToRemove)
+                target.MainDocumentPart.DeletePart(relId);
 
             return target;
         }
 
         public WordprocessingDocument RemoveUnusedEmbeddings(WordprocessingDocument target)
         {
+            List<string> oleObjectRelIds = new List<string>();
+            Body body = target.MainDocumentPart.Document.Body;
+            var targetRelIds = target.MainDocumentPart.EmbeddedPackageParts.Select(t => target.MainDocumentPart.GetIdOfPart(t)).ToList();
+            var embeddedObjects = body.Descendants<EmbeddedObject>();
+            foreach (var embeddedObject in embeddedObjects)
+            {
+                oleObjectRelIds.AddRange(embeddedObject.Elements<OleObject>().Select(ole => ole.Id.Value));
+            }
+
+            var relIdsToRemove = targetRelIds.Except(oleObjectRelIds);
+            foreach (var relId in relIdsToRemove)
+                target.MainDocumentPart.DeletePart(relId);
+
             return target;
         }
 
@@ -159,17 +183,13 @@ namespace OpenXMLTools
         private void FixMediaIds(WordprocessingDocument document, HashSet<WordPartRelId> insertedItemsRelId)
         {
             Body body = document.MainDocumentPart.Document.Body;
-            var embeddedObjects = body.Descendants<EmbeddedObject>();
+            var imageDataList = body.Descendants<ImageData>();
             var drawings = body.Descendants<Drawing>();
-            foreach (var embeddedObject in embeddedObjects)
+            foreach (var imageData in imageDataList)
             {
-                var imageDataObjects = embeddedObject.Descendants<ImageData>();
-                foreach (var imageData in imageDataObjects)
-                {
-                    var changedRelId = insertedItemsRelId.FirstOrDefault(it => it.OldId == imageData.RelationshipId);
-                    if (changedRelId != null)
-                        imageData.RelationshipId = changedRelId.NewId;
-                }
+                var changedRelId = insertedItemsRelId.FirstOrDefault(it => it.OldId == imageData.RelationshipId);
+                if (changedRelId != null)
+                    imageData.RelationshipId = changedRelId.NewId;
             }
 
             foreach (var drawing in drawings)

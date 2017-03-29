@@ -7,5 +7,7 @@ namespace OpenXMLTools.Interfaces
         WordprocessingDocument MergeWordMedia(WordprocessingDocument target, WordprocessingDocument source);
         WordprocessingDocument MergeWordEmbeddings(WordprocessingDocument target, WordprocessingDocument source);
         WordprocessingDocument MergeWordCharts(WordprocessingDocument target, WordprocessingDocument source);
+        WordprocessingDocument RemoveUnusedMedia(WordprocessingDocument target);
+        WordprocessingDocument RemoveUnusedEmbeddings(WordprocessingDocument target);
     }
 }
