@@ -35,11 +35,11 @@ namespace DocumentSplitEngine.Presentation
             {
                 foreach (Person person in SplitPresentationObj.Person)
                 {
-                    if (person.UniversalMarker != null)
+                    if (person.SlideMarker != null)
                     {
-                        foreach (PersonUniversalMarker marker in person.UniversalMarker)
+                        foreach (PersonSlideMarker marker in person.SlideMarker)
                         {
-                            IList<int> result = UniversalPreMarker.GetCrossedSlideIdElements(marker.ElementId, marker.SelectionLastelementId);
+                            IList<int> result = UniversalPreMarker.GetCrossedSlideIdElements(marker.ElementId, marker.ElementId);
                             foreach (int index in result)
                             {
                                 if (string.IsNullOrEmpty(SubdividedParagraphs[index]))

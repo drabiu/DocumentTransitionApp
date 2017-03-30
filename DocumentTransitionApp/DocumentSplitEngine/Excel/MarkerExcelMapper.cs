@@ -30,11 +30,11 @@ namespace DocumentSplitEngine.Excel
             {
                 foreach (Person person in SplitExcelObj.Person)
                 {
-                    if (person.UniversalMarker != null)
+                    if (person.SheetMarker != null)
                     {
-                        foreach (PersonUniversalMarker marker in person.UniversalMarker)
+                        foreach (PersonSheetMarker marker in person.SheetMarker)
                         {
-                            IList<int> result = UniversalExcMarker.GetCrossedSheetElements(marker.ElementId, marker.SelectionLastelementId);
+                            IList<int> result = UniversalExcMarker.GetCrossedSheetElements(marker.ElementId, marker.ElementId);
                             foreach (int index in result)
                             {
                                 if (string.IsNullOrEmpty(SubdividedParagraphs[index]))
