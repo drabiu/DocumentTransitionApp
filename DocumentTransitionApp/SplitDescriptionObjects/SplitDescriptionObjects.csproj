@@ -46,7 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentMarkers\ListWordMarker.cs" />
     <Compile Include="DocumentMarkers\MarkerWordSelector.cs" />
+    <Compile Include="DocumentMarkers\PictureWordMarker.cs" />
+    <Compile Include="DocumentMarkers\TableWordMarker.cs" />
+    <Compile Include="DocumentMarkers\UniversalWordMarker.cs" />
     <Compile Include="DocumentMarkers\WordMarkers.cs" />
     <Compile Include="ExcelMarkers\ExcelMarkers.cs" />
     <Compile Include="Interfaces\IExcelMarker.cs" />

@@ -94,14 +94,9 @@ namespace DocumentSplitEngineTests
             var person = xdoc.Descendants(Xlmns + "Person").Where(el => el.Attribute("Email").Value == "test1");
             var markers = person.Elements(Xlmns + "UniversalMarker");
 
-
-            Assert.AreEqual(3, markers.Count());
-            Assert.AreEqual("el3", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual(1, markers.Count());
+            Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
             Assert.AreEqual("el3", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
-            Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
-            Assert.AreEqual("el1", markers.ElementAt(2).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el1", markers.ElementAt(2).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]

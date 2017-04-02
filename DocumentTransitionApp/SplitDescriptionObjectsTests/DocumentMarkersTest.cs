@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SplitDescriptionObjects;
+using SplitDescriptionObjects.DocumentMarkers;
 using SplitDescriptionObjects.Interfaces;
 using System.Collections.Generic;
 

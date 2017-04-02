@@ -11,6 +11,7 @@ using OpenXMLTools;
 using OpenXMLTools.Helpers;
 using OpenXMLTools.Interfaces;
 using SplitDescriptionObjects;
+using SplitDescriptionObjects.DocumentMarkers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,12 +24,12 @@ namespace DocumentSplitEngine
 {
     public class WordSplit : MergeXml<OpenXmlElement>, ISplit, ISplitXml, ILocalSplit
     {
-        IWordTools WordTools;
+        IWordTools _wordTools;
 
         public WordSplit(string docName)
         {
             DocumentName = docName;
-            WordTools = new WordTools();
+            _wordTools = new WordTools();
         }
 
         public void OpenAndSearchDocument(Stream docxFile, Stream xmlFile)
@@ -159,8 +160,8 @@ namespace DocumentSplitEngine
                         foreach (OpenXmlElement compo in element.CompositeElements)
                             body.Append(compo.CloneNode(true));
 
-                        WordTools.RemoveUnusedMedia(wordDoc);
-                        WordTools.RemoveUnusedEmbeddings(wordDoc);
+                        _wordTools.RemoveUnusedMedia(wordDoc);
+                        _wordTools.RemoveUnusedEmbeddings(wordDoc);
                         wordDoc.MainDocumentPart.Document.Save();
 
                         var person = new PersonFiles();
@@ -220,46 +221,11 @@ namespace DocumentSplitEngine
                 var ownerParts = traversedParts.Where(p => p.OwnerName == name);
                 var person = new Person();
                 person.Email = name;
-                person.UniversalMarker = new PersonUniversalMarker[ownerParts.Where(p => p.Type == ElementType.Paragraph).Count()];
-                person.TableMarker = new PersonTableMarker[ownerParts.Where(p => p.Type == ElementType.Table).Count()];
-                person.PictureMarker = new PersonPictureMarker[ownerParts.Where(p => p.Type == ElementType.Picture).Count()];
-                person.ListMarker = new PersonListMarker[ownerParts.Where(p => p.IsListElement()).Count()];
+                person.UniversalMarker = UniversalWordMarker.GetUniversalMarkers(ownerParts);
+                person.TableMarker = TableWordMarker.GetTableMarkers(ownerParts);
+                person.PictureMarker = PictureWordMarker.GetPictureMarkers(ownerParts);
+                person.ListMarker = ListWordMarker.GetListMarkers(ownerParts);
                 splitDocument.Person[nameList.IndexOf(name)] = person;
-            }
-
-            foreach (var part in traversedParts.Where(p => !string.IsNullOrEmpty(p.OwnerName)))
-            {
-                var person = splitDocument.Person[nameList.IndexOf(part.OwnerName)];
-                switch (part.Type)
-                {
-                    case ElementType.Paragraph:
-                        var universalMarker = new PersonUniversalMarker();
-                        universalMarker.ElementId = part.ElementId;
-                        universalMarker.SelectionLastelementId = part.ElementId;
-                        person.UniversalMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = universalMarker;
-                        break;
-                    case ElementType.BulletList:
-                    case ElementType.NumberedList:
-                        var listMarker = new PersonListMarker();
-                        listMarker.ElementId = part.ElementId;
-                        var lastSibling = ListWordMarker.GetSiblings(parts.ToList(), part).Last();
-                        listMarker.SelectionLastelementId = lastSibling.ElementId;
-                        person.ListMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = listMarker;
-                        break;
-                    case ElementType.Picture:
-                        if (part.Parent == null || (part.Parent != null && !part.Parent.Selected))
-                        {
-                            var pictureMarker = new PersonPictureMarker();
-                            pictureMarker.ElementId = part.ElementId;
-                            person.PictureMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = pictureMarker;
-                        }
-                        break;
-                    case ElementType.Table:
-                        var tableMarker = new PersonTableMarker();
-                        tableMarker.ElementId = part.ElementId;
-                        person.TableMarker[indexer.GetNextIndex(part.OwnerName, part.Type)] = tableMarker;
-                        break;
-                }
             }
 
             using (MemoryStream splitStream = new MemoryStream())
@@ -293,6 +259,5 @@ namespace DocumentSplitEngine
 
             return parts;
         }
-
     }
 }
