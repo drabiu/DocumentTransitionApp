@@ -54,7 +54,7 @@ namespace OpenXMLTools
                 SlidePart newSlidePart = presentationPart.AddPart(templateSlide, newIdFromTemplateId);
 
                 SetSlideMaster(target, newSlidePart, uniqueId);
-                //SetNotesMaster(newSlidePart, newIdFromTemplateId);
+                SetNotesMaster(target, newSlidePart, newIdFromTemplateId);
 
                 //Insert the new slide into the slide list.
                 SlideId newSlideId = slideIdList.AppendChild(new SlideId());
@@ -392,23 +392,6 @@ namespace OpenXMLTools
         {
             if (slidePart.SlideLayoutPart != null)
             {
-                //var newSlideMaster = slidePart.SlideLayoutPart.SlideMasterPart;
-                //string newSlideMasterId = slidePart.SlideLayoutPart.GetIdOfPart(newSlideMaster);
-                //string newSlideLayoutId = slidePart.GetIdOfPart(slidePart.SlideLayoutPart);
-                //foreach (var slideMaster in target.PresentationPart.SlideMasterParts)
-                //{
-                //    if (newSlideMasterId == target.PresentationPart.GetIdOfPart(slideMaster))
-                //    {
-                //        slidePart.SlideLayoutPart.
-                //        //foreach (var slideLayout in slideMaster.SlideLayoutParts)
-                //        //{
-                //        //    slidePart.SlideLayoutPart.FeedData(slideLayout.GetStream());
-                //        //}
-                //        //slidePart.SlideLayoutPart.DeletePart(newSlideMasterId);
-                //        //slidePart.SlideLayoutPart.AddPart(slideMaster);
-                //        break;
-                //    }
-                //}
                 var presentationPart = target.PresentationPart;
                 SlideMasterPart destMasterPart = slidePart.SlideLayoutPart.SlideMasterPart;
                 presentationPart.AddPart(destMasterPart);
@@ -421,19 +404,13 @@ namespace OpenXMLTools
             }
         }
 
-        private static void SetNotesMaster(SlidePart slidePart, string slideId)
+        private static void SetNotesMaster(PresentationDocument target, SlidePart slidePart, string slideRelId)
         {
             if (slidePart.NotesSlidePart != null)
             {
-                //var presentationPart = target.PresentationPart;
-                //NotesMasterPart destMasterPart = slidePart.NotesSlidePart.NotesMasterPart;
-                //presentationPart.AddPart(destMasterPart);
-
-                //NotesMasterId newNotesMasterId = new NotesMasterId();
-                //newNotesMasterId.Id = uniqueId.ToString();
-
-                //presentationPart.Presentation.NotesMasterIdList.Append(newNotesMasterId);
-                slidePart.ChangeIdOfPart(slidePart.NotesSlidePart, slideId);
+                var NotesMasterPart = target.PresentationPart.NotesMasterPart;
+                slidePart.NotesSlidePart.DeletePart(slidePart.NotesSlidePart.NotesMasterPart);
+                slidePart.NotesSlidePart.AddPart(NotesMasterPart);
             }
         }
 

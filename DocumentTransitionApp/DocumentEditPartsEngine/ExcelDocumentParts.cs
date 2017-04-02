@@ -83,28 +83,30 @@ namespace DocumentEditPartsEngine
         public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
         {
             PartsSelectionTreeElement elementToAdd = null;
+            if (supportedType(element))
+            {
+                if (element is Sheet)
+                {
+                    string sheetName = string.Format("{0}", (element as Sheet).Name);
+                    string elementId = ExcelDocumentPartAttributes.GetSheetIdFormatter(id);
+                    elementToAdd = new PartsSelectionTreeElement(elementId, elementId, sheetName, indent, ElementType.Sheet);
+                }
+                else if (element is Row)
+                {
+                    Row row = element as Row;
+                    string rowName = string.Format("Row index: {0}", row.RowIndex);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, indent, ElementType.Row);
+                }
+                else if (element is Column)
+                {
 
-            if (element is Sheet)
-            {
-                string sheetName = string.Format("{0}", (element as Sheet).Name);
-                string elementId = ExcelDocumentPartAttributes.GetSheetIdFormatter(id);
-                elementToAdd = new PartsSelectionTreeElement(elementId, elementId, sheetName, indent, ElementType.Sheet);
-            }
-            else if (element is Row)
-            {
-                Row row = element as Row;
-                string rowName = string.Format("Row index: {0}", row.RowIndex);
-                elementToAdd = new PartsSelectionTreeElement(id.ToString(), row.RowIndex, rowName, indent, ElementType.Row);
-            }
-            else if (element is Column)
-            {
-
-            }
-            else if (element is Cell)
-            {
-                Cell cell = element as Cell;
-                string cellName = string.Format("Cell name: {0}", cell.CellReference.Value);
-                elementToAdd = new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, indent, ElementType.Cell);
+                }
+                else if (element is Cell)
+                {
+                    Cell cell = element as Cell;
+                    string cellName = string.Format("Cell name: {0}", cell.CellReference.Value);
+                    elementToAdd = new PartsSelectionTreeElement(id.ToString(), cell.CellReference.Value, cellName, indent, ElementType.Cell);
+                }
             }
 
             return elementToAdd;
