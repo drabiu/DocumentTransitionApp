@@ -61,7 +61,7 @@ namespace SplitDescriptionObjects
 
         public IList<int> GetCrossedParagraphElements(string id, string id2)
         {
-            var indexes = MarkerHelper<OpenXmlElement>.GetCrossedElements(id, id2, ElementsList, el => el is Paragraph, element => GetParagraphId(element));
+            var indexes = MarkerHelper<OpenXmlElement>.GetCrossedElements(id, id2, ElementsList, el => el is Paragraph || !WordDocumentPartAttributes.IsSupportedType(el), element => GetParagraphId(element));
 
             return indexes;
         }

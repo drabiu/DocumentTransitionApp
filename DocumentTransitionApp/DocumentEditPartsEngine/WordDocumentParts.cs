@@ -53,7 +53,7 @@ namespace DocumentEditPartsEngine
         {
             bool isSupported = false;
             isSupported = element is Paragraph
-                || element is Picture
+                //|| element is Picture
                 || element is Table
                 || element is Drawing
                 || element is Run;
@@ -135,10 +135,10 @@ namespace DocumentEditPartsEngine
                 string elementId = WordDocumentPartAttributes.GetDrawingIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, drawingDecorator.GetElementType()));
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
             }
-            else if (element is Picture)
-            {
+            //else if (element is Picture)
+            //{
 
-            }
+            //}
             else if (element is Table)
             {
                 TableDecorator tableDecorator = new TableDecorator(element);
