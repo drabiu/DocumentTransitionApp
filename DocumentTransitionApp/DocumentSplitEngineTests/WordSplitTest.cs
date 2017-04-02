@@ -96,12 +96,12 @@ namespace DocumentSplitEngineTests
 
 
             Assert.AreEqual(3, markers.Count());
-            Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
+            Assert.AreEqual("el3", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual("el3", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
             Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
-            Assert.AreEqual("el3", markers.ElementAt(2).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el3", markers.ElementAt(2).Element(Xlmns + "SelectionLastelementId").Value);
+            Assert.AreEqual("el1", markers.ElementAt(2).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual("el1", markers.ElementAt(2).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]
@@ -112,10 +112,10 @@ namespace DocumentSplitEngineTests
             var markers = person.Elements(Xlmns + "UniversalMarker");
 
             Assert.AreEqual(2, markers.Count());
-            Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
-            Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
+            Assert.AreEqual("el7", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual("el7", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
+            Assert.AreEqual("el5", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual("el5", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]

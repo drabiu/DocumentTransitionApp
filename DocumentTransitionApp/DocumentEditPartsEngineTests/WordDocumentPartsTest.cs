@@ -45,9 +45,9 @@ namespace DocumentEditPartsEngineTests
         [TestMethod]
         public void WordGetMethodShouldHaveCorrectElementsNoParagraphId()
         {
-            Assert.AreEqual(WordDocumentPartAttributes.GetParagraphNoIdFormatter(10), PartsSelectionElementsNoParagraphId[10].ElementId);
-            Assert.AreEqual(WordDocumentPartAttributes.GetParagraphNoIdFormatter(100), PartsSelectionElementsNoParagraphId[100].ElementId);
-            Assert.AreEqual(WordDocumentPartAttributes.GetParagraphNoIdFormatter(200), PartsSelectionElementsNoParagraphId[200].ElementId);
+            Assert.AreEqual(WordDocumentPartAttributes.GetParagraphNoIdFormatter(9), PartsSelectionElementsNoParagraphId[10].ElementId);
+            Assert.AreEqual(WordDocumentPartAttributes.GetParagraphNoIdFormatter(96), PartsSelectionElementsNoParagraphId[100].ElementId);
+            Assert.AreEqual(WordDocumentPartAttributes.GetParagraphNoIdFormatter(193), PartsSelectionElementsNoParagraphId[200].ElementId);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace DocumentEditPartsEngineTests
             Assert.AreEqual("Text Formatting", elementsParagraphDemo[5].Name);
             Assert.AreEqual("Next, we have something a little more", elementsParagraphDemo[21].Name);
             Assert.AreEqual("Nazwa handlowa Pułapka na szczury", elementsParagraphNoId[2].Name);
-            Assert.AreEqual("Klasyfikacja produktu", elementsParagraphNoId[17].Name);
+            Assert.AreEqual("Klasyfikacja produktu", elementsParagraphNoId[16].Name);
         }
 
         [TestMethod]

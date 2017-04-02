@@ -88,34 +88,29 @@ namespace DocumentSplitEngineTests
         }
 
         [TestMethod]
-        public void CreateSplitXMLShouldReturnPersonWith3UniversalMarkersAndProperSelection()
+        public void CreateSplitXMLShouldReturnPersonWith3SheetMarkersAndProperSelection()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(CreateSplitXmlBinary));
             var person = xdoc.Descendants(Xlmns + "Person").Where(el => el.Attribute("Email").Value == "test1");
-            var markers = person.Elements(Xlmns + "UniversalMarker");
+            var markers = person.Elements(Xlmns + "SheetMarker");
 
 
             Assert.AreEqual(3, markers.Count());
             Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el3", markers.ElementAt(2).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el3", markers.ElementAt(2).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]
-        public void CreateSplitXMLShouldReturnPersonWith2UniversalMarkersAndProperSelection()
+        public void CreateSplitXMLShouldReturnPersonWith2ShettMarkersAndProperSelection()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(CreateSplitXmlBinary));
             var person = xdoc.Descendants(Xlmns + "Person").Where(el => el.Attribute("Email").Value == "test2");
-            var markers = person.Elements(Xlmns + "UniversalMarker");
+            var markers = person.Elements(Xlmns + "SheetMarker");
 
             Assert.AreEqual(2, markers.Count());
             Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]

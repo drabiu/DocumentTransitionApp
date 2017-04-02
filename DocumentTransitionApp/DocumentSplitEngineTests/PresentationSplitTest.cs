@@ -26,7 +26,7 @@ namespace DocumentSplitEngineTests
         //testing merge since it`s abstract
         IMergeXml PreSampleMerge;
 
-        byte[] CreateSplitXmlBinary; 
+        byte[] CreateSplitXmlBinary;
         byte[] MergeXmlBinary;
         XNamespace Xlmns = "https://sourceforge.net/p/documenttransitionapp/svn/HEAD/tree/DocumentTransitionApp/";
 
@@ -40,13 +40,13 @@ namespace DocumentSplitEngineTests
 
             DocValidator = new OpenXmlValidator();
 
-            var parts = PartsSelectionTreeElementMock.GetListMock();           
+            var parts = PartsSelectionTreeElementMock.GetListMock();
             CreateSplitXmlBinary = SplitXml.CreateSplitXml(parts);
-          
+
             PreSampleDocInMemory = new MemoryStream(File.ReadAllBytes(@"../../../Files/przykladowa-prezentacja.pptx"));
 
             byte[] sampleXmlBinary = File.ReadAllBytes(@"../../../Files/split_przykladowa-prezentacja.pptx_20170227215707619.xml");
-            presentationSplit.OpenAndSearchDocument(PreSampleDocInMemory, new MemoryStream(sampleXmlBinary));            
+            presentationSplit.OpenAndSearchDocument(PreSampleDocInMemory, new MemoryStream(sampleXmlBinary));
 
             MergeXmlBinary = PreSampleMerge.CreateMergeXml();
 
@@ -87,34 +87,29 @@ namespace DocumentSplitEngineTests
         }
 
         [TestMethod]
-        public void CreateSplitXMLShouldReturnPersonWith3UniversalMarkersAndProperSelection()
+        public void CreateSplitXMLShouldReturnPersonWith3SlideMarkersAndProperSelection()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(CreateSplitXmlBinary));
             var person = xdoc.Descendants(Xlmns + "Person").Where(el => el.Attribute("Email").Value == "test1");
-            var markers = person.Elements(Xlmns + "UniversalMarker");
+            var markers = person.Elements(Xlmns + "SlideMarker");
 
-            
+
             Assert.AreEqual(3, markers.Count());
             Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el1", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el2", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el3", markers.ElementAt(2).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el3", markers.ElementAt(2).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]
-        public void CreateSplitXMLShouldReturnPersonWith2UniversalMarkersAndProperSelection()
+        public void CreateSplitXMLShouldReturnPersonWith2SlideMarkersAndProperSelection()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(CreateSplitXmlBinary));
             var person = xdoc.Descendants(Xlmns + "Person").Where(el => el.Attribute("Email").Value == "test2");
-            var markers = person.Elements(Xlmns + "UniversalMarker");
+            var markers = person.Elements(Xlmns + "SlideMarker");
 
             Assert.AreEqual(2, markers.Count());
             Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
             Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]

@@ -3,28 +3,23 @@
   <Presentation>
     <Name>przykladowa-prezentacja</Name>
     <Person Email="test">
-      <UniversalMarker>
+      <SlideMarker>
         <ElementId>rId2</ElementId>
-        <SelectionLastelementId>rId2</SelectionLastelementId>
-      </UniversalMarker>
-      <UniversalMarker>
+      </SlideMarker>
+      <SlideMarker>
         <ElementId>rId3</ElementId>
-        <SelectionLastelementId>rId3</SelectionLastelementId>
-      </UniversalMarker>
-      <UniversalMarker>
+      </SlideMarker>
+      <SlideMarker>
         <ElementId>rId4</ElementId>
-        <SelectionLastelementId>rId4</SelectionLastelementId>
-      </UniversalMarker>
+      </SlideMarker>
     </Person>
     <Person Email="test2">
-      <UniversalMarker>
+      <SlideMarker>
         <ElementId>rId9</ElementId>
-        <SelectionLastelementId>rId9</SelectionLastelementId>
-      </UniversalMarker>
-      <UniversalMarker>
+      </SlideMarker>
+      <SlideMarker>
         <ElementId>rId11</ElementId>
-        <SelectionLastelementId>rId11</SelectionLastelementId>
-      </UniversalMarker>
+      </SlideMarker>
     </Person>
   </Presentation>
 </Split>

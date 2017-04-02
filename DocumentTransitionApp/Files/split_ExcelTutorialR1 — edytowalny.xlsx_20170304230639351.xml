@@ -3,28 +3,23 @@
   <Excel>
     <Name>ExcelTutorialR1 — edytowalny</Name>
     <Person Email="test">
-      <UniversalMarker>
+      <SheetMarker>
         <ElementId>shId2</ElementId>
-        <SelectionLastelementId>shId2</SelectionLastelementId>
-      </UniversalMarker>
-      <UniversalMarker>
+      </SheetMarker>
+      <SheetMarker>
         <ElementId>shId3</ElementId>
-        <SelectionLastelementId>shId3</SelectionLastelementId>
-      </UniversalMarker>
-      <UniversalMarker>
+      </SheetMarker>
+      <SheetMarker>
         <ElementId>shId4</ElementId>
-        <SelectionLastelementId>shId4</SelectionLastelementId>
-      </UniversalMarker>
+      </SheetMarker>
     </Person>
     <Person Email="test2">
-      <UniversalMarker>
+      <SheetMarker>
         <ElementId>shId36</ElementId>
-        <SelectionLastelementId>shId36</SelectionLastelementId>
-      </UniversalMarker>
-      <UniversalMarker>
+      </SheetMarker>
+      <SheetMarker>
         <ElementId>shId39</ElementId>
-        <SelectionLastelementId>shId39</SelectionLastelementId>
-      </UniversalMarker>
+      </SheetMarker>
     </Person>
   </Excel>
 </Split>
