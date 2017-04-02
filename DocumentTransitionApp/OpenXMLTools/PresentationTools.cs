@@ -392,6 +392,18 @@ namespace OpenXMLTools
         {
             if (slidePart.SlideLayoutPart != null)
             {
+                //var slideMasterToRemoveId = slidePart.SlideLayoutPart.GetIdOfPart(slidePart.SlideLayoutPart.SlideMasterPart);
+                //slidePart.SlideLayoutPart.DeletePart(slidePart.SlideLayoutPart.SlideMasterPart);
+                //foreach (var slideMaster in target.PresentationPart.SlideMasterParts)
+                //{
+                //    var slideMasterId = target.PresentationPart.GetIdOfPart(slideMaster);
+                //    if (slideMasterId == slideMasterToRemoveId)
+                //    {
+                //        slidePart.SlideLayoutPart.AddPart(slideMaster);
+                //        break;
+                //    }
+                //}
+
                 var presentationPart = target.PresentationPart;
                 SlideMasterPart destMasterPart = slidePart.SlideLayoutPart.SlideMasterPart;
                 presentationPart.AddPart(destMasterPart);
@@ -408,9 +420,9 @@ namespace OpenXMLTools
         {
             if (slidePart.NotesSlidePart != null)
             {
-                var NotesMasterPart = target.PresentationPart.NotesMasterPart;
+                var notesMasterPart = target.PresentationPart.NotesMasterPart;
                 slidePart.NotesSlidePart.DeletePart(slidePart.NotesSlidePart.NotesMasterPart);
-                slidePart.NotesSlidePart.AddPart(NotesMasterPart);
+                slidePart.NotesSlidePart.AddPart(notesMasterPart);
             }
         }
 

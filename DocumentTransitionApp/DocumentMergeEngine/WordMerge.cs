@@ -89,7 +89,7 @@ namespace DocumentMergeEngine
                     MergeDocument documentXml = mergeXml.Items.First();
                     foreach (MergeDocumentPart part in documentXml.Part)
                     {
-                        byte[] byteArray = files.Where(p => p.Person == part.Name && p.Name == part.Id).Select(d => d.Data).FirstOrDefault();
+                        byte[] byteArray = files.Where(p => p.Person == part.Name.Trim() && p.Name == part.Id).Select(d => d.Data).FirstOrDefault();
                         using (MemoryStream docPartInMemoryStream = new MemoryStream(byteArray, 0, byteArray.Length, true, true))
                         {
                             OpenXmlPowerToolsDocument docPartPowerTools = new OpenXmlPowerToolsDocument(string.Empty, docPartInMemoryStream);
