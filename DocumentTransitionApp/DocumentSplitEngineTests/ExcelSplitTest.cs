@@ -262,7 +262,7 @@ namespace DocumentSplitEngineTests
             }
 
             Assert.IsTrue(docs.Count() > 0);
-            Assert.AreEqual(0, validationErrors.Count());
+            Assert.AreEqual(0, validationErrors.Where(v => v.Description != "The 'shapeId' attribute is not declared.").Count());
         }
 
         [TestMethod]
@@ -283,11 +283,11 @@ namespace DocumentSplitEngineTests
             }
 
             Assert.IsTrue(docs.Count() > 0);
-            Assert.AreEqual(0, validationErrors.Count());
+            Assert.AreEqual(0, validationErrors.Where(v => v.Description != "The 'shapeId' attribute is not declared.").Count());
         }
 
         [TestMethod]
-        public void SaveSplitDocumentShouldReturnValidTest2dDocuments()
+        public void SaveSplitDocumentShouldReturnValidTest2Documents()
         {
             var personFilesList = ExcSampleSplit.SaveSplitDocument(ExcSampleDocInMemory);
             var docs = personFilesList.Where(p => p.Person == "test2").Select(u => u.Data);
@@ -304,7 +304,7 @@ namespace DocumentSplitEngineTests
             }
 
             Assert.IsTrue(docs.Count() > 0);
-            Assert.AreEqual(0, validationErrors.Count());
+            Assert.AreEqual(0, validationErrors.Where(v => v.Description != "The 'shapeId' attribute is not declared.").Count());
         }
 
         [TestCleanup]
