@@ -25,7 +25,7 @@ namespace OpenXMLTools
             ReplaceWorkSheetparts(target, mergeData);
 
             FixSheetsIds(target, mergeData);
-            GetMergedCalculationChainPart();
+            MergeCalculationChainPart(target, source);
             target.WorkbookPart.Workbook.Sheets.Append(mergeData.Sheets);
 
             target.Save();
@@ -60,19 +60,22 @@ namespace OpenXMLTools
 
         public SpreadsheetDocument RemoveReferencedCalculationChainCell(SpreadsheetDocument target)
         {
-            var calculationCells = target.WorkbookPart.CalculationChainPart.CalculationChain.Elements<CalculationCell>().ToList();
-            var sheetIds = new HashSet<uint>(target.WorkbookPart.Workbook.Sheets.Select(s => (s as Sheet).SheetId.Value));
-            foreach (var calculationCell in calculationCells)
+            var calculationCells = target.WorkbookPart.CalculationChainPart?.CalculationChain?.Elements<CalculationCell>().ToList();
+            if (calculationCells != null)
             {
-                if (!sheetIds.Contains((uint)calculationCell.SheetId.Value))
-                    target.WorkbookPart.CalculationChainPart.CalculationChain.RemoveChild(calculationCell);
+                var sheetIds = new HashSet<uint>(target.WorkbookPart.Workbook.Sheets.Select(s => (s as Sheet).SheetId.Value));
+                foreach (var calculationCell in calculationCells)
+                {
+                    if (!sheetIds.Contains((uint)calculationCell.SheetId.Value))
+                        target.WorkbookPart.CalculationChainPart.CalculationChain.RemoveChild(calculationCell);
+                }
+
+                target.WorkbookPart.CalculationChainPart.CalculationChain.Save();
+
+                var calculationChainPart = target.WorkbookPart.CalculationChainPart;
+                if (calculationChainPart.CalculationChain.ChildElements.Count == 0)
+                    target.WorkbookPart.DeletePart(calculationChainPart);
             }
-
-            target.WorkbookPart.CalculationChainPart.CalculationChain.Save();
-
-            var calculationChainPart = target.WorkbookPart.CalculationChainPart;
-            if (calculationChainPart.CalculationChain.ChildElements.Count == 0)
-                target.WorkbookPart.DeletePart(calculationChainPart);
 
             return target;
         }
@@ -90,10 +93,35 @@ namespace OpenXMLTools
 
         #region Private methods
 
-        private void GetMergedCalculationChainPart()
+        private void MergeCalculationChainPart(SpreadsheetDocument target, SpreadsheetDocument source)
         {
-            //when spliting need to remove unused references to removed sheets
-            //excelDoc.WorkbookPart.CalculationChainPart 
+            var calculationCells = source.WorkbookPart.CalculationChainPart?.CalculationChain?.Elements<CalculationCell>();
+            var targetCalculationCells = new HashSet<CalculationCell>();
+            var targetCalculationCellElements = target.WorkbookPart.CalculationChainPart?.CalculationChain?.Elements<CalculationCell>();
+            if (targetCalculationCellElements != null)
+            {
+                foreach (var targetCalculationCellElement in targetCalculationCellElements)
+                {
+                    targetCalculationCells.Add(targetCalculationCellElement);
+                }
+            }
+
+            if (targetCalculationCellElements == null)
+            {
+                var newCalculationChainPart = target.WorkbookPart.AddNewPart<CalculationChainPart>();
+                newCalculationChainPart.CalculationChain = new CalculationChain();
+            }
+
+            if (calculationCells != null)
+            {
+                foreach (var calculationCell in calculationCells)
+                {
+                    if (!targetCalculationCells.Any(t => t.CellReference.Value == calculationCell.CellReference.Value && t.SheetId.Value == calculationCell.SheetId.Value))
+                        target.WorkbookPart.CalculationChainPart.CalculationChain.Append(calculationCell.CloneNode(true));
+                }
+
+                target.WorkbookPart.CalculationChainPart.CalculationChain.Save();
+            }
         }
 
         private Dictionary<string, WorksheetPart> FixSharedStringReference(Dictionary<string, WorksheetPart> workSheetPartList, IList<SharedStringIndex> indexes)
