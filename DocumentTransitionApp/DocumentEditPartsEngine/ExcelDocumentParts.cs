@@ -80,7 +80,7 @@ namespace DocumentEditPartsEngine
             return workBookElements;
         }
 
-        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
+        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, ref int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
         {
             PartsSelectionTreeElement elementToAdd = null;
             if (supportedType(element))

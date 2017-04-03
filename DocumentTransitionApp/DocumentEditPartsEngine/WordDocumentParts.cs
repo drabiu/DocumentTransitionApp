@@ -100,7 +100,6 @@ namespace DocumentEditPartsEngine
                         }
 
                         documentElements.AddRange(_documentParts.CreatePartsSelectionTreeElements(element, null, _documentParts.Index, supportedType, 0, visible));
-                        _documentParts.Index++;
                     }
                 }
             }
@@ -113,7 +112,7 @@ namespace DocumentEditPartsEngine
             return Get(file, el => WordDocumentPartAttributes.IsSupportedType(el));
         }
 
-        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
+        public PartsSelectionTreeElement GetParagraphSelectionTreeElement(OpenXmlElement element, PartsSelectionTreeElement parent, ref int id, Predicate<OpenXmlElement> supportedType, int indent, bool visible)
         {
             PartsSelectionTreeElement elementToAdd = null;
             if (element is Paragraph)
@@ -128,12 +127,14 @@ namespace DocumentEditPartsEngine
 
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, paragraphDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, paragraphDecorator.GetElementType());
                 elementToAdd.Visible = visible;
+                id++;
             }
             else if (element is Drawing)
             {
                 DrawingDecorator drawingDecorator = new DrawingDecorator(element);
                 string elementId = WordDocumentPartAttributes.GetDrawingIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, drawingDecorator.GetElementType()));
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, drawingDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, drawingDecorator.GetElementType());
+                id++;
             }
             //else if (element is Picture)
             //{
@@ -144,6 +145,7 @@ namespace DocumentEditPartsEngine
                 TableDecorator tableDecorator = new TableDecorator(element);
                 string elementId = WordDocumentPartAttributes.GetTableIdFormatter(_indexer.GetNextIndex(WordDocumentPartAttributes.CounterName, tableDecorator.GetElementType()));
                 elementToAdd = new PartsSelectionTreeElement(id.ToString(), elementId, tableDecorator.GetElementName(WordDocumentPartAttributes.MaxNameLength), indent, tableDecorator.GetElementType());
+                id++;
             }
 
             return elementToAdd;

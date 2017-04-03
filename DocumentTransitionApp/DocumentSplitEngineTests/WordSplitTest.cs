@@ -107,10 +107,10 @@ namespace DocumentSplitEngineTests
             var markers = person.Elements(Xlmns + "UniversalMarker");
 
             Assert.AreEqual(2, markers.Count());
-            Assert.AreEqual("el7", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el7", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
-            Assert.AreEqual("el5", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
-            Assert.AreEqual("el5", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
+            Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual("el5", markers.ElementAt(0).Element(Xlmns + "SelectionLastelementId").Value);
+            Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "ElementId").Value);
+            Assert.AreEqual("el7", markers.ElementAt(1).Element(Xlmns + "SelectionLastelementId").Value);
         }
 
         [TestMethod]

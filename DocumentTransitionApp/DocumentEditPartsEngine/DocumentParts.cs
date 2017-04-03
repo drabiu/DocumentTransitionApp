@@ -20,7 +20,8 @@ namespace DocumentEditPartsEngine
             List<PartsSelectionTreeElement> result = new List<PartsSelectionTreeElement>();
             if (supportedType(element))
             {
-                PartsSelectionTreeElement elementToAdd = _documentParts.GetParagraphSelectionTreeElement(element, parent, id, supportedType, indent, visible);
+                Index = id;
+                PartsSelectionTreeElement elementToAdd = _documentParts.GetParagraphSelectionTreeElement(element, parent, ref Index, supportedType, indent, visible);
 
                 if (elementToAdd != null)
                 {
@@ -33,7 +34,9 @@ namespace DocumentEditPartsEngine
                     indent++;
                     foreach (var elmentChild in element.ChildElements)
                     {
-                        Index++;
+                        //if (supportedType(elmentChild) && !elmentChild is Run)
+                        //    Index++;
+
                         if (parent != null)
                         {
                             var parentElement = elementToAdd ?? parent;
@@ -43,7 +46,7 @@ namespace DocumentEditPartsEngine
                                 child.Parent = parentElement;
                                 parentElement.Childs.Add(child);
                             }
-                           
+
                         }
                         else
                         {

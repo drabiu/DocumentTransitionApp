@@ -61,7 +61,7 @@ namespace SplitDescriptionObjects.DocumentMarkers
             int lastPartId = -2;
             int iterationCounter = paragraphParts.Count;
             PersonUniversalMarker universalMarker = new PersonUniversalMarker();
-            foreach (var part in paragraphParts.OrderBy(p => p.Id))
+            foreach (var part in paragraphParts.OrderBy(p => int.Parse(p.Id)))
             {
                 iterationCounter--;
                 if (lastPartId + 1 == int.Parse(part.Id))
