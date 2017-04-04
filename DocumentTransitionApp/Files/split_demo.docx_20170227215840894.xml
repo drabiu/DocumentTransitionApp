@@ -15,6 +15,22 @@
         <ElementId>3C090013</ElementId>
         <SelectionLastelementId>3C090013</SelectionLastelementId>
       </UniversalMarker>
+      <ListMarker>
+        <ElementId>3514579C[numId]2</ElementId>
+        <SelectionLastelementId>4320E267[numId]2</SelectionLastelementId>
+      </ListMarker>
+      <TableMarker>
+        <ElementId>tab1</ElementId>
+      </TableMarker>
+      <TableMarker>
+        <ElementId>tab0</ElementId>
+      </TableMarker>
+      <PictureMarker>
+        <ElementId>drw1</ElementId>
+      </PictureMarker>
+      <PictureMarker>
+        <ElementId>drw0</ElementId>
+      </PictureMarker>
     </Person>
     <Person Email="test2">
       <UniversalMarker>
@@ -25,6 +41,16 @@
         <ElementId>5BC56C46</ElementId>
         <SelectionLastelementId>5BC56C46</SelectionLastelementId>
       </UniversalMarker>
+      <TableMarker>
+        <ElementId>tab2</ElementId>
+      </TableMarker>
+      <ListMarker>
+        <ElementId>4764E788[numId]7</ElementId>
+        <SelectionLastelementId>1A04F5D9[numId]7</SelectionLastelementId>
+      </ListMarker>
+      <PictureMarker>
+        <ElementId>drw3</ElementId>
+      </PictureMarker>
     </Person>
   </Document>
 </Split>

@@ -90,13 +90,23 @@ namespace SplitDescriptionObjects.DocumentMarkers
         public static PersonListMarker[] GetListMarkers(IEnumerable<PartsSelectionTreeElement> parts)
         {
             IList<PersonListMarker> result = new List<PersonListMarker>();
-
-            foreach (var part in parts.Where(p => p.Type == ElementType.BulletList || p.Type == ElementType.NumberedList))
+            var visibleParts = parts.Where(p => p.Visible);
+            foreach (var part in visibleParts.Where(p => p.Type == ElementType.BulletList || p.Type == ElementType.NumberedList))
             {
                 PersonListMarker listMarker = new PersonListMarker();
                 listMarker.ElementId = part.ElementId;
-                var lastSibling = GetSiblings(parts.ToList(), part).Last();
-                listMarker.SelectionLastelementId = lastSibling.ElementId;
+                var siblings = GetSiblings(parts.ToList(), part);
+                if (siblings.Count > 0)
+                {
+                    var lastSibling = siblings.Last();
+                    listMarker.SelectionLastelementId = lastSibling.ElementId;
+
+                }
+                else
+                {
+                    listMarker.SelectionLastelementId = part.ElementId;
+                }
+
                 result.Add(listMarker);
             }
 

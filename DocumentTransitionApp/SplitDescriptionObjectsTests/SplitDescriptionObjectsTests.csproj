@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -74,6 +75,10 @@
       <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
       <Name>DocumentEditPartsEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DocumentSplitEngine\DocumentSplitEngine.csproj">
+      <Project>{13bc6bc9-e590-491c-8eb3-37559c25994c}</Project>
+      <Name>DocumentSplitEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenXMLTools\OpenXMLTools.csproj">
       <Project>{46987be4-7719-42d4-a2e3-d0a60fa5f2c7}</Project>
       <Name>OpenXMLTools</Name>
@@ -81,6 +86,10 @@
     <ProjectReference Include="..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
       <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>
       <Name>SplitDescriptionObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnmarshallingSplitXml\UnmarshallingSplitXml.csproj">
+      <Project>{84cbcbe8-ceae-43f0-a73a-856494db5e4f}</Project>
+      <Name>UnmarshallingSplitXml</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
