@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="DocumentMarkersTest.cs" />
     <Compile Include="ExcelMarkersTest.cs" />
+    <Compile Include="Mocks\PartsSelectionTreeElementMock.cs" />
     <Compile Include="PresentationMarkersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +73,10 @@
     <ProjectReference Include="..\DocumentEditPartsEngine\DocumentEditPartsEngine.csproj">
       <Project>{55fc58a3-200e-4fe1-84f5-337427620426}</Project>
       <Name>DocumentEditPartsEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenXMLTools\OpenXMLTools.csproj">
+      <Project>{46987be4-7719-42d4-a2e3-d0a60fa5f2c7}</Project>
+      <Name>OpenXMLTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\SplitDescriptionObjects\SplitDescriptionObjects.csproj">
       <Project>{60f4c12a-49ba-4831-abce-6d83ff46fbde}</Project>

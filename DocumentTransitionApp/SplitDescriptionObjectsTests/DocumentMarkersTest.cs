@@ -13,6 +13,12 @@ namespace SplitDescriptionObjectsTests
     {
         IUniversalWordMarker UniversalDocNoParagraphIdMarker;
         IUniversalWordMarker UniversalDocParagraphIdMarker;
+        ITableWordMarker TableDocNoParagraphIdMarker;
+        ITableWordMarker TableDocParagraphIdMarker;
+        IListWordMarker ListDocNoParagraphIdMarker;
+        IListWordMarker ListDocParagraphIdMarker;
+        IPictureWordMarker PictureDocNoParagraphIdMarker;
+        IPictureWordMarker PictureDocParagraphIdMarker;
         WordprocessingDocument WordNoParagraphIdDoc;
         WordprocessingDocument WordDemoDoc;
         List<MarkerWordSelector> MarkerWordNoParagraphIdSelectors;
