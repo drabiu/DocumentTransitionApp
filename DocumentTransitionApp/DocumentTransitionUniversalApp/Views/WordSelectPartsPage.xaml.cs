@@ -1,6 +1,7 @@
 ﻿using DocumentTransitionUniversalApp.Data_Structures;
 using DocumentTransitionUniversalApp.Extension_Methods;
 using DocumentTransitionUniversalApp.Helpers;
+using DocumentTransitionUniversalApp.Repositories;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace DocumentTransitionUniversalApp.Views
 
         MainPage _source;
         public WordPartsPageData _pageData { get; private set; }
+        ServiceRepository _serviceRepo;
 
         #endregion
 
@@ -33,6 +35,8 @@ namespace DocumentTransitionUniversalApp.Views
 
         public WordSelectPartsPage()
         {
+            _serviceRepo = new ServiceRepository();
+
             this.InitializeComponent();
             InitializeVariables();
         }
@@ -256,11 +260,9 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitWord()
         {
-
-            var serviceClient = MainPage.Service.GetInstanceWCF();
             try
             {
-                var result = await serviceClient.GetWordPartsAsync(_source.FileName, _source.documentBinary);
+                var result = await _serviceRepo.GetWordPartsAsync(_source.FileName, _source.documentBinary);
                 PrepareListOfItems(result);
             }
             catch (System.ServiceModel.CommunicationException ex)
@@ -272,10 +274,9 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitPresentation()
         {
-            var serviceClient = MainPage.Service.GetInstanceWCF();
             try
             {
-                var result = await serviceClient.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
+                var result = await _serviceRepo.GetPresentationPartsAsync(_source.FileName, _source.documentBinary);
                 PrepareListOfItems(result);
             }
             catch (System.ServiceModel.CommunicationException ex)
@@ -287,10 +288,9 @@ namespace DocumentTransitionUniversalApp.Views
 
         private async void InitExcel()
         {
-            var serviceClient = MainPage.Service.GetInstanceWCF();
             try
             {
-                var result = await serviceClient.GetExcelPartsAsync(_source.FileName, _source.documentBinary);
+                var result = await _serviceRepo.GetExcelPartsAsync(_source.FileName, _source.documentBinary);
                 PrepareListOfItems(result);
             }
             catch (System.ServiceModel.CommunicationException ex)

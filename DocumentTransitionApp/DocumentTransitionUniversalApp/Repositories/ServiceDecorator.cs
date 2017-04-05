@@ -3,7 +3,7 @@ using DocumentTransitionUniversalApp.TransitionAppWCFSerivce;
 using System.ServiceModel;
 using Windows.Storage;
 
-namespace DocumentTransitionUniversalApp
+namespace DocumentTransitionUniversalApp.Repositories
 {
     public class ServiceDecorator
     {
