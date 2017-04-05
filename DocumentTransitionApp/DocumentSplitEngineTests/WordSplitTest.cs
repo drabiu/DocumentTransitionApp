@@ -161,71 +161,71 @@ namespace DocumentSplitEngineTests
         }
 
         [TestMethod]
-        public void CreateMergeXMLShouldReturn7Parts()
+        public void CreateMergeXMLShouldReturn20Parts()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(MergeXmlBinary));
             var parts = xdoc.Descendants(Xlmns + "Part");
 
-            Assert.AreEqual(7, parts.Count());
+            Assert.AreEqual(20, parts.Count());
         }
 
         [TestMethod]
-        public void CreateMergeXMLShouldReturn4UndefinedParts()
+        public void CreateMergeXMLShouldReturn10UndefinedParts()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(MergeXmlBinary));
             var parts = xdoc.Descendants(Xlmns + "Part").Where(el => el.Element(Xlmns + "Name").Value == "undefined");
 
-            Assert.AreEqual(4, parts.Count());
+            Assert.AreEqual(10, parts.Count());
         }
 
         [TestMethod]
-        public void CreateMergeXMLShouldReturn2Test2Parts()
+        public void CreateMergeXMLShouldReturn5Test2Parts()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(MergeXmlBinary));
             var parts = xdoc.Descendants(Xlmns + "Part").Where(el => el.Element(Xlmns + "Name").Value == "test2");
 
-            Assert.AreEqual(2, parts.Count());
+            Assert.AreEqual(5, parts.Count());
         }
 
         [TestMethod]
-        public void CreateMergeXMLShouldReturn1TestParts()
+        public void CreateMergeXMLShouldReturn5TestParts()
         {
             XDocument xdoc = XDocument.Load(new MemoryStream(MergeXmlBinary));
             var parts = xdoc.Descendants(Xlmns + "Part").Where(el => el.Element(Xlmns + "Name").Value == "test");
 
-            Assert.AreEqual(1, parts.Count());
+            Assert.AreEqual(5, parts.Count());
         }
 
         [TestMethod]
-        public void SaveSplitDocumentShouldReturn9PersonFiles()
+        public void SaveSplitDocumentShouldReturn22PersonFiles()
         {
             var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
-            Assert.AreEqual(9, personFilesList.Count);
+            Assert.AreEqual(22, personFilesList.Count);
         }
 
         [TestMethod]
-        public void SaveSplitDocumentShouldReturn4Undefined()
+        public void SaveSplitDocumentShouldReturn10Undefined()
         {
             var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
-            Assert.AreEqual(4, personFilesList.Where(p => p.Person == "undefined").Count());
+            Assert.AreEqual(10, personFilesList.Where(p => p.Person == "undefined").Count());
         }
 
         [TestMethod]
-        public void SaveSplitDocumentShouldReturn1Test()
+        public void SaveSplitDocumentShouldReturn5Test()
         {
             var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
-            Assert.AreEqual(1, personFilesList.Where(p => p.Person == "test").Count());
+            Assert.AreEqual(5, personFilesList.Where(p => p.Person == "test").Count());
         }
 
         [TestMethod]
-        public void SaveSplitDocumentShouldReturn2Test2()
+        public void SaveSplitDocumentShouldReturn5Test2()
         {
             var personFilesList = WordSampleSplit.SaveSplitDocument(WordSampleDocInMemory);
 
-            Assert.AreEqual(2, personFilesList.Where(p => p.Person == "test2").Count());
+            Assert.AreEqual(5, personFilesList.Where(p => p.Person == "test2").Count());
         }
 
         [TestMethod]

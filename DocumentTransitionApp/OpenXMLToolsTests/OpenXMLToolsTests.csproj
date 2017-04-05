@@ -59,6 +59,7 @@
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="PresentationToolsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DocumentFormat\DocumentFormat.OpenXml.csproj">

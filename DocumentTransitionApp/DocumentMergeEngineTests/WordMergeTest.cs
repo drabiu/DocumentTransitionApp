@@ -9,7 +9,6 @@ namespace DocumentMergeEngineTests
         [TestInitialize]
         public void Init()
         {
-
         }
 
         [TestCleanup]

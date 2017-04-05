@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DocumentMergeEngineTests
+namespace OpenXMLToolsTests
 {
     [TestClass]
-    public class PresentationMergeTest
+    public class WordToolsTest
     {
         [TestInitialize]
         public void Init()
@@ -12,6 +12,7 @@ namespace DocumentMergeEngineTests
 
         [TestCleanup]
         public void Finish()
-        { }
+        {
+        }
     }
 }

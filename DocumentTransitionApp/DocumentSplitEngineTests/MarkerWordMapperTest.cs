@@ -29,20 +29,20 @@ namespace DocumentSplitEngineTests
         }
 
         [TestMethod]
-        public void RunShouldReturn6Parts()
+        public void RunShouldReturn20Parts()
         {
             var documentPartList = MarkerDocumentMapper.Run();
 
-            Assert.AreEqual(7, documentPartList.Count);
+            Assert.AreEqual(20, documentPartList.Count);
         }
 
         [TestMethod]
         public void RunShouldReturn1ElementForPartByOwner()
         {
             var documentPartList = MarkerDocumentMapper.Run();
-            var ownerCompositeElements = documentPartList.SingleOrDefault(p => p.PartOwner == "test").CompositeElements;
+            var ownerCompositeElements = documentPartList.Where(p => p.PartOwner == "test").Select(o => o.CompositeElements);
 
-            Assert.AreEqual(3, ownerCompositeElements.Count);
+            Assert.AreEqual(5, ownerCompositeElements.Count());
         }
         [TestMethod]
         public void RunShouldReturn1ElementForEachPartByOwner()
@@ -50,7 +50,7 @@ namespace DocumentSplitEngineTests
             var documentPartList = MarkerDocumentMapper.Run();
             var ownerCompositeElements = documentPartList.Where(p => p.PartOwner == "test2").Select(o => o.CompositeElements);
 
-            Assert.AreEqual(2, ownerCompositeElements.Count());
+            Assert.AreEqual(5, ownerCompositeElements.Count());
             Assert.AreEqual(1, ownerCompositeElements.ElementAt(0).Count);
             Assert.AreEqual(1, ownerCompositeElements.ElementAt(1).Count);
         }

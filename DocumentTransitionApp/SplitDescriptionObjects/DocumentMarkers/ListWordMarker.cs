@@ -119,7 +119,8 @@ namespace SplitDescriptionObjects.DocumentMarkers
             if (element is Paragraph)
             {
                 Paragraph parahraph = (element as Paragraph);
-                result = parahraph.ParagraphId.Value;
+                int index = ParagraphsList.FindIndex(el => el.Equals(element));
+                result = parahraph.ParagraphId != null ? parahraph.ParagraphId.Value : WordDocumentPartAttributes.GetParagraphNoIdFormatter(index);
             }
 
             return result;
