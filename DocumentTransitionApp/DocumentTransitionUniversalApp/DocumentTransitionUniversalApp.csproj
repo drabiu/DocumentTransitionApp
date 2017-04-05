@@ -209,7 +209,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="ServiceDecorator.cs" />
+    <Compile Include="Repositories\ServiceDecorator.cs" />
     <Compile Include="Views\WordSelectPartsPage.xaml.cs">
       <DependentUpon>WordSelectPartsPage.xaml</DependentUpon>
     </Compile>
