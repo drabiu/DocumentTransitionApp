@@ -32,7 +32,19 @@ namespace DocumentTransitionUniversalApp
 
         public WordSelectPartsPage WordPartPage;
         public StorageFile DocumentFile;
-        public string FileName;
+        private string _fileName;
+        public string FileName
+        {
+            get
+            {
+                return _fileName;
+            }
+            set
+            {
+                loadedDocument.Text = value;
+                _fileName = value;
+            }
+        }
         public DocumentType FileType;
 
         public Frame AppFrame { get { return this.frame; } }

@@ -52,7 +52,8 @@
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Settings</TextBlock>
                             <Image Source="Assets/ic_settings_black_36dp.png" Stretch="Uniform" Margin="-142,0,157,0" />
                         </Grid>
-                    </Button>
+                    </Button> 
+                    <TextBlock x:Name="loadedDocument" HorizontalAlignment="Left" TextAlignment="Center" Margin="10,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="22"/>
                 </Grid>
             </Frame>
         </Grid>
