@@ -431,6 +431,12 @@ namespace DocumentTransitionUniversalApp
                     await dialog.ShowAsync();
                     return files;
                 }
+                catch (ArgumentException ex)
+                {
+                    var dialog = new MessageDialog(string.Format("template file does not exist", templateName));
+                    await dialog.ShowAsync();
+                    return files;
+                }
 
                 foreach (StorageFolder subFolder in await folder.GetFoldersAsync())
                 {
