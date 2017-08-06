@@ -490,6 +490,7 @@ namespace DocumentTransitionUniversalApp
             _wasSplit = false;
             _wasEditParts = false;
             DocumentFile = null;
+            FileName = string.Empty;
             XmlFile = null;
         }
 
