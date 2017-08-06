@@ -72,7 +72,7 @@ namespace DocumentTransitionUniversalApp
 
             SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
 
-            _serviceRepo = new ServiceRepository();
+            _serviceRepo = new ServiceRepository(Service);
         }
 
         private void SystemNavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
@@ -216,7 +216,10 @@ namespace DocumentTransitionUniversalApp
         {
             var endpointAdress = await InputTextDialogAsync("Set service adress", Service.DefaultEndpoint);
             if (!string.IsNullOrEmpty(endpointAdress))
+            {
                 Service.DefaultEndpoint = endpointAdress;
+                _serviceRepo = new ServiceRepository(Service);
+            }
         }
 
         private async void buttonGenerateSplit_Click(object sender, RoutedEventArgs e)

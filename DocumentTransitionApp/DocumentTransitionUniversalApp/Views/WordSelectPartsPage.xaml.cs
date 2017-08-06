@@ -35,7 +35,7 @@ namespace DocumentTransitionUniversalApp.Views
 
         public WordSelectPartsPage()
         {
-            _serviceRepo = new ServiceRepository();
+            _serviceRepo = new ServiceRepository(MainPage.Service);
 
             this.InitializeComponent();
             InitializeVariables();

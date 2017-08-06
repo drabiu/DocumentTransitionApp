@@ -8,9 +8,8 @@ namespace DocumentTransitionUniversalApp.Repositories
     {
         TransitionAppServiceClient _serviceClient;
 
-        public ServiceRepository()
+        public ServiceRepository(ServiceDecorator service)
         {
-            ServiceDecorator service = new ServiceDecorator();
             _serviceClient = service.GetInstanceWCF();
         }
 
