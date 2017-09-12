@@ -28,11 +28,14 @@ namespace SplitDescriptionObjects
         {
             foreach (var part in parts)
             {
-                foreach (var child in part.Childs)
+                if (part.Selected && part.OwnerName == person.Email)
                 {
-                    SelectChildParts(child.Childs, person);
-                    child.OwnerName = person.Email;
-                    child.Selected = true;
+                    foreach (var child in part.Childs)
+                    {
+                        SelectChildParts(child.Childs, person);
+                        child.OwnerName = person.Email;
+                        child.Selected = true;
+                    }
                 }
             }
         }

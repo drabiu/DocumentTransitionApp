@@ -36,7 +36,6 @@ namespace DocumentEditPartsEngine
                     {
                         //if (supportedType(elmentChild) && !elmentChild is Run)
                         //    Index++;
-
                         if (parent != null)
                         {
                             var parentElement = elementToAdd ?? parent;
@@ -46,14 +45,12 @@ namespace DocumentEditPartsEngine
                                 child.Parent = parentElement;
                                 parentElement.Childs.Add(child);
                             }
-
                         }
                         else
                         {
                             result.AddRange(CreatePartsSelectionTreeElements(elmentChild, elementToAdd, Index, supportedType, indent, visible));
                         }
                     }
-
                 }
             }
 

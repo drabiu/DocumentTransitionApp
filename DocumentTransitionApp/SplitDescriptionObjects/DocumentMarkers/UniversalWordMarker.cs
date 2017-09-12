@@ -57,7 +57,7 @@ namespace SplitDescriptionObjects.DocumentMarkers
         public static PersonUniversalMarker[] GetUniversalMarkers(IEnumerable<PartsSelectionTreeElement> parts)
         {
             IList<PersonUniversalMarker> result = new List<PersonUniversalMarker>();
-            var paragraphParts = parts.Where(p => p.Type == ElementType.Paragraph).ToList();
+            var paragraphParts = parts.Where(p => p.Type == ElementType.Paragraph || p.Type == ElementType.Hyperlink).ToList();
             int lastPartId = -2;
             int iterationCounter = paragraphParts.Count;
             PersonUniversalMarker universalMarker = new PersonUniversalMarker();
