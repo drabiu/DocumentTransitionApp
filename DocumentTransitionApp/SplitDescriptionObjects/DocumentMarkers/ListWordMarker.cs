@@ -87,10 +87,10 @@ namespace SplitDescriptionObjects.DocumentMarkers
             return result;
         }
 
-        public static PersonListMarker[] GetListMarkers(IEnumerable<PartsSelectionTreeElement> parts)
+        public static PersonListMarker[] GetListMarkers(IEnumerable<PartsSelectionTreeElement> parts, string ownerName)
         {
             IList<PersonListMarker> result = new List<PersonListMarker>();
-            var visibleParts = parts.Where(p => p.Visible);
+            var visibleParts = parts.Where(p => p.OwnerName == ownerName).Where(p => p.Visible);
             foreach (var part in visibleParts.Where(p => p.Type == ElementType.BulletList || p.Type == ElementType.NumberedList))
             {
                 PersonListMarker listMarker = new PersonListMarker();

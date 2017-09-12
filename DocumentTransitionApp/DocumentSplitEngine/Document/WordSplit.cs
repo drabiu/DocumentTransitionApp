@@ -224,7 +224,7 @@ namespace DocumentSplitEngine
                 person.UniversalMarker = UniversalWordMarker.GetUniversalMarkers(ownerParts);
                 person.TableMarker = TableWordMarker.GetTableMarkers(ownerParts);
                 person.PictureMarker = PictureWordMarker.GetPictureMarkers(ownerParts);
-                person.ListMarker = ListWordMarker.GetListMarkers(parts.Where(p => p.OwnerName == name));
+                person.ListMarker = ListWordMarker.GetListMarkers(parts, name);
                 splitDocument.Person[nameList.IndexOf(name)] = person;
             }
 
