@@ -215,7 +215,7 @@ namespace SplitDescriptionObjectsTests
         public void ListMarkerGetListMarkersShouldReturn1PersonListMarkerForTest1()
         {
             var ownerParts = PartsSelectionTreeElementMock.GetListMock().Where(p => p.Selected && p.OwnerName == "test1");
-            var personListMarkers = ListWordMarker.GetListMarkers(ownerParts);
+            var personListMarkers = ListWordMarker.GetListMarkers(ownerParts, "test1");
 
             Assert.AreEqual(1, personListMarkers.Count());
             Assert.AreEqual("el12[numId]2", personListMarkers.First().ElementId);
@@ -226,7 +226,7 @@ namespace SplitDescriptionObjectsTests
         public void ListMarkerGetListMarkersShouldReturn1PersonListMarkerForTest2()
         {
             var ownerParts = PartsSelectionTreeElementMock.GetListMock().Where(p => p.Selected && p.OwnerName == "test2");
-            var personListMarkers = ListWordMarker.GetListMarkers(ownerParts);
+            var personListMarkers = ListWordMarker.GetListMarkers(ownerParts, "test2");
 
             Assert.AreEqual(1, personListMarkers.Count());
             Assert.AreEqual("el13[numId]2", personListMarkers.First().ElementId);

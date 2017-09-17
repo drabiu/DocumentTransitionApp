@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="DocumentTransitionAppWCF.csproj" Guid="{5D47EFDF-BCDB-484D-B433-3E9550A4E6DD}">
+                <File Id="DocumentTransitionAppWCF.csproj" KeyPath="yes" Source="$(var.FileSource)\DocumentTransitionAppWCF.csproj" />
+            </Component>
+            <Component Id="DocumentTransitionAppWCF.csproj.user" Guid="{0D80D582-8A91-427B-9F1E-EDE12E0A1C76}">
+                <File Id="DocumentTransitionAppWCF.csproj.user" KeyPath="yes" Source="$(var.FileSource)\DocumentTransitionAppWCF.csproj.user" />
+            </Component>
+            <Component Id="ITransitionAppService.cs" Guid="{D05ABC24-1205-4BC6-9716-0D3421CCE30D}">
+                <File Id="ITransitionAppService.cs" KeyPath="yes" Source="$(var.FileSource)\ITransitionAppService.cs" />
+            </Component>
+            <Component Id="TransitionAppService.svc" Guid="{6092EF17-CB17-400E-B1F1-110FA0E617E9}">
+                <File Id="TransitionAppService.svc" KeyPath="yes" Source="$(var.FileSource)\TransitionAppService.svc" />
+            </Component>
+            <Component Id="TransitionAppService.svc.cs" Guid="{380CC5DB-6A5A-4FC9-A6E3-64DE50AA217C}">
+                <File Id="TransitionAppService.svc.cs" KeyPath="yes" Source="$(var.FileSource)\TransitionAppService.svc.cs" />
+            </Component>
+            <Component Id="Web.config" Guid="{D897F079-BAD8-41E9-8271-8B887CE532A3}">
+                <File Id="Web.config" KeyPath="yes" Source="$(var.FileSource)\Web.config" />
+            </Component>
+            <Component Id="Web.Debug.config" Guid="{A2D0B8F2-CEE8-43DE-9B4A-DE5949D48E19}">
+                <File Id="Web.Debug.config" KeyPath="yes" Source="$(var.FileSource)\Web.Debug.config" />
+            </Component>
+            <Component Id="Web.Release.config" Guid="{F061957E-07EE-4C81-B2A5-9EEECF4C7AA0}">
+                <File Id="Web.Release.config" KeyPath="yes" Source="$(var.FileSource)\Web.Release.config" />
+            </Component>
+            <Directory Id="bin" Name="bin">
+                <Component Id="DocumentEditPartsEngine.dll" Guid="{9F3523A0-A5FA-4715-BA49-A2E177743F7F}">
+                    <File Id="DocumentEditPartsEngine.dll" KeyPath="yes" Source="$(var.FileSource)\bin\DocumentEditPartsEngine.dll" />
+                </Component>
+                <Component Id="DocumentFormat.OpenXml.dll" Guid="{2588FAD6-5FDC-4015-A1F9-A24B11D8FDED}">
+                    <File Id="DocumentFormat.OpenXml.dll" KeyPath="yes" Source="$(var.FileSource)\bin\DocumentFormat.OpenXml.dll" />
+                </Component>
+                <Component Id="DocumentMergeEngine.dll" Guid="{61916F90-CE15-4384-A742-E2DA84324D5C}">
+                    <File Id="DocumentMergeEngine.dll" KeyPath="yes" Source="$(var.FileSource)\bin\DocumentMergeEngine.dll" />
+                </Component>
+                <Component Id="DocumentSplitEngine.dll" Guid="{29C8B464-51A1-4459-AFC6-36F5B256C3CC}">
+                    <File Id="DocumentSplitEngine.dll" KeyPath="yes" Source="$(var.FileSource)\bin\DocumentSplitEngine.dll" />
+                </Component>
+                <Component Id="OpenXMLTools.dll" Guid="{9FA66DF1-12B1-4916-9485-184B9C8D5EFA}">
+                    <File Id="OpenXMLTools.dll" KeyPath="yes" Source="$(var.FileSource)\bin\OpenXMLTools.dll" />
+                </Component>
+                <Component Id="SplitDescriptionObjects.dll" Guid="{A41BA276-5838-4141-B523-E51F9E7180B2}">
+                    <File Id="SplitDescriptionObjects.dll" KeyPath="yes" Source="$(var.FileSource)\bin\SplitDescriptionObjects.dll" />
+                </Component>
+                <Component Id="System.IO.Packaging.dll" Guid="{FEF02B92-4AC8-4F90-AF60-F721987EA063}">
+                    <File Id="System.IO.Packaging.dll" KeyPath="yes" Source="$(var.FileSource)\bin\System.IO.Packaging.dll" />
+                </Component>
+                <Component Id="UnmarshallingSplitXml.dll" Guid="{8C690814-5954-43BE-B474-96F4168162B1}">
+                    <File Id="UnmarshallingSplitXml.dll" KeyPath="yes" Source="$(var.FileSource)\bin\UnmarshallingSplitXml.dll" />
+                </Component>
+            </Directory>
+            <Directory Id="obj" Name="obj">
+                <Directory Id="Debug" Name="Debug">
+                    <Component Id="DesignTimeResolveAssemblyReferencesInput.cache" Guid="{604CFE28-4077-4065-90AF-ADBD6D56D5E3}">
+                        <File Id="DesignTimeResolveAssemblyReferencesInput.cache" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+                    </Component>
+                    <Component Id="DocumentTransitionAppWCF.csproj.FileListAbsolute.txt" Guid="{A9C5A55C-9B9D-42D8-8EBD-12D06E9E8DA4}">
+                        <File Id="DocumentTransitionAppWCF.csproj.FileListAbsolute.txt" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\DocumentTransitionAppWCF.csproj.FileListAbsolute.txt" />
+                    </Component>
+                    <Component Id="DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache" Guid="{F0EE7005-143A-41EE-BD19-952696B5DC00}">
+                        <File Id="DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache" />
+                    </Component>
+                    <Component Id="DocumentTransitionAppWCF.dll" Guid="{F97EDB98-CECA-403D-B4A9-20CB981A33EF}">
+                        <File Id="DocumentTransitionAppWCF.dll" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\DocumentTransitionAppWCF.dll" />
+                    </Component>
+                    <Component Id="DocumentTransitionAppWCF.pdb" Guid="{F952BF25-F4DA-4D1C-8CE4-DC05A68258F4}">
+                        <File Id="DocumentTransitionAppWCF.pdb" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\DocumentTransitionAppWCF.pdb" />
+                    </Component>
+                    <Component Id="TemporaryGeneratedFile_036C0B5B_1481_4323_8D20_8F5ADCB23D92.cs" Guid="{38AD148B-8E90-41B6-ACB6-CEF294683718}">
+                        <File Id="TemporaryGeneratedFile_036C0B5B_1481_4323_8D20_8F5ADCB23D92.cs" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+                    </Component>
+                    <Component Id="TemporaryGeneratedFile_5937a670_0e60_4077_877b_f7221da3dda1.cs" Guid="{DD437BCC-962C-4CA9-88DA-F7A191C8CDF3}">
+                        <File Id="TemporaryGeneratedFile_5937a670_0e60_4077_877b_f7221da3dda1.cs" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+                    </Component>
+                    <Component Id="TemporaryGeneratedFile_E7A71F73_0F8D_4B9B_B56E_8E70B10BC5D3.cs" Guid="{0E4DA193-305B-4CAF-8876-04D4034ECE82}">
+                        <File Id="TemporaryGeneratedFile_E7A71F73_0F8D_4B9B_B56E_8E70B10BC5D3.cs" KeyPath="yes" Source="$(var.FileSource)\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+                    </Component>
+                </Directory>
+                <Directory Id="Release" Name="Release">
+                    <Component Id="DesignTimeResolveAssemblyReferencesInput.cache_1" Guid="{82BDC184-D5E0-4D4F-97A5-829044F2937A}">
+                        <File Id="DesignTimeResolveAssemblyReferencesInput.cache_1" KeyPath="yes" Source="$(var.FileSource)\obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+                    </Component>
+                    <Component Id="DocumentTransitionAppWCF.csproj.FileListAbsolute.txt_1" Guid="{AF472086-E171-4299-A2D4-D92E60C7E310}">
+                        <File Id="DocumentTransitionAppWCF.csproj.FileListAbsolute.txt_1" KeyPath="yes" Source="$(var.FileSource)\obj\Release\DocumentTransitionAppWCF.csproj.FileListAbsolute.txt" />
+                    </Component>
+                    <Component Id="DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache_1" Guid="{8A8D19BC-A66E-4D2A-9C71-3F59CAA2FCCB}">
+                        <File Id="DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache_1" KeyPath="yes" Source="$(var.FileSource)\obj\Release\DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache" />
+                    </Component>
+                    <Component Id="TemporaryGeneratedFile_036C0B5B_1481_4323_8D20_8F5ADCB23D92.cs_1" Guid="{DA7EEFCE-0AB8-40A4-BF52-6FFF94EBE1FA}">
+                        <File Id="TemporaryGeneratedFile_036C0B5B_1481_4323_8D20_8F5ADCB23D92.cs_1" KeyPath="yes" Source="$(var.FileSource)\obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+                    </Component>
+                    <Component Id="TemporaryGeneratedFile_5937a670_0e60_4077_877b_f7221da3dda1.cs_1" Guid="{2A2439D1-C727-4637-9CCB-F84052BFB5BB}">
+                        <File Id="TemporaryGeneratedFile_5937a670_0e60_4077_877b_f7221da3dda1.cs_1" KeyPath="yes" Source="$(var.FileSource)\obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+                    </Component>
+                    <Component Id="TemporaryGeneratedFile_E7A71F73_0F8D_4B9B_B56E_8E70B10BC5D3.cs_1" Guid="{B5AAED6C-24EC-4DF8-AB02-400ED0144C93}">
+                        <File Id="TemporaryGeneratedFile_E7A71F73_0F8D_4B9B_B56E_8E70B10BC5D3.cs_1" KeyPath="yes" Source="$(var.FileSource)\obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="Properties" Name="Properties">
+                <Component Id="AssemblyInfo.cs" Guid="{A457040E-415B-425B-BACB-43460D5EDD6C}">
+                    <File Id="AssemblyInfo.cs" KeyPath="yes" Source="$(var.FileSource)\Properties\AssemblyInfo.cs" />
+                </Component>
+            </Directory>
+            <Directory Id="Responses" Name="Responses">
+                <Component Id="ServiceResponse.cs" Guid="{A47EA7A2-735B-4E58-8680-738E99E34F89}">
+                    <File Id="ServiceResponse.cs" KeyPath="yes" Source="$(var.FileSource)\Responses\ServiceResponse.cs" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="MyWebComponents">
+            <ComponentRef Id="DocumentTransitionAppWCF.csproj" />
+            <ComponentRef Id="DocumentTransitionAppWCF.csproj.user" />
+            <ComponentRef Id="ITransitionAppService.cs" />
+            <ComponentRef Id="TransitionAppService.svc" />
+            <ComponentRef Id="TransitionAppService.svc.cs" />
+            <ComponentRef Id="Web.config" />
+            <ComponentRef Id="Web.Debug.config" />
+            <ComponentRef Id="Web.Release.config" />
+            <ComponentRef Id="DocumentEditPartsEngine.dll" />
+            <ComponentRef Id="DocumentFormat.OpenXml.dll" />
+            <ComponentRef Id="DocumentMergeEngine.dll" />
+            <ComponentRef Id="DocumentSplitEngine.dll" />
+            <ComponentRef Id="OpenXMLTools.dll" />
+            <ComponentRef Id="SplitDescriptionObjects.dll" />
+            <ComponentRef Id="System.IO.Packaging.dll" />
+            <ComponentRef Id="UnmarshallingSplitXml.dll" />
+            <ComponentRef Id="DesignTimeResolveAssemblyReferencesInput.cache" />
+            <ComponentRef Id="DocumentTransitionAppWCF.csproj.FileListAbsolute.txt" />
+            <ComponentRef Id="DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache" />
+            <ComponentRef Id="DocumentTransitionAppWCF.dll" />
+            <ComponentRef Id="DocumentTransitionAppWCF.pdb" />
+            <ComponentRef Id="TemporaryGeneratedFile_036C0B5B_1481_4323_8D20_8F5ADCB23D92.cs" />
+            <ComponentRef Id="TemporaryGeneratedFile_5937a670_0e60_4077_877b_f7221da3dda1.cs" />
+            <ComponentRef Id="TemporaryGeneratedFile_E7A71F73_0F8D_4B9B_B56E_8E70B10BC5D3.cs" />
+            <ComponentRef Id="DesignTimeResolveAssemblyReferencesInput.cache_1" />
+            <ComponentRef Id="DocumentTransitionAppWCF.csproj.FileListAbsolute.txt_1" />
+            <ComponentRef Id="DocumentTransitionAppWCF.csprojResolveAssemblyReference.cache_1" />
+            <ComponentRef Id="TemporaryGeneratedFile_036C0B5B_1481_4323_8D20_8F5ADCB23D92.cs_1" />
+            <ComponentRef Id="TemporaryGeneratedFile_5937a670_0e60_4077_877b_f7221da3dda1.cs_1" />
+            <ComponentRef Id="TemporaryGeneratedFile_E7A71F73_0F8D_4B9B_B56E_8E70B10BC5D3.cs_1" />
+            <ComponentRef Id="AssemblyInfo.cs" />
+            <ComponentRef Id="ServiceResponse.cs" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
