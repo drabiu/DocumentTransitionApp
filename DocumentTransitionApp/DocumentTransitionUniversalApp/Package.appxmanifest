@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="7f42c3bf-701f-4fad-bb41-b7dd192dc83a" Publisher="CN=drabiu" Version="1.0.1.0" />
+  <Identity Name="7f42c3bf-701f-4fad-bb41-b7dd192dc83a" Publisher="CN=drabiu" Version="1.0.2.0" />
   <mp:PhoneIdentity PhoneProductId="7f42c3bf-701f-4fad-bb41-b7dd192dc83a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>DocumentTransitionUniversalApp</DisplayName>
-    <PublisherDisplayName>drabiu</PublisherDisplayName>
+    <PublisherDisplayName>Mateusz Drab</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -27,5 +27,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="removableStorage" />
   </Capabilities>
 </Package>

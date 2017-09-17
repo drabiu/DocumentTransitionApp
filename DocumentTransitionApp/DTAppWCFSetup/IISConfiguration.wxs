@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="InstallFolderPermission" Guid="">
+        <CreateFolder>
+          <util:PermissionEx User="Everyone" GenericAll="yes"/>
+        </CreateFolder>
+      </Component>
+      <Component Id="APIAppPool" Guid="" KeyPath="yes">
+        <iis:WebAppPool Id="DocumentTransitionAPIAppPool)"
+                        ManagedPipelineMode="integrated"
+                        Name="DocumentTransitionAPIAppPool"
+                        Identity="other"
+                        User="DocumentTransitionAPIAppPool_User"
+                        ManagedRuntimeVersion="v4.0" />
+        <util:User Id="DocumentTransitionAPIAppPool_User"
+                   CreateUser="no"
+                   Name="[APPPOOLUSER]"
+                   Password="[APPPOOLPWD]"
+                   Domain="[APPPOOLDOMAIN]"/>
+      </Component>
+      <Component Id="InstallAPI" Guid="" KeyPath="yes">
+        <CreateFolder />
+        <iis:WebSite Id="DocumentTransitionAPI" Description='[IIS_APPLICATION_NAME]' Directory='INSTALLFOLDER' AutoStart='yes' StartOnInstall='yes'>
+          <iis:WebAddress Id="DocumentTransitionAPIWeb" Port="[IIS_PORT]" />
+          <iis:WebApplication Id="DocumentTransitionAPIApplication" Name="[IIS_APPLICATION_NAME]" WebAppPool="DocumentTransitionAPIAppPool"/>
+          <iis:WebDirProperties Id="DocumentTransitionAPIWebMVCDirProperties" WindowsAuthentication="yes" AnonymousAccess="yes" Read="yes" Script="yes" Execute="yes"/>
+        </iis:WebSite>
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="MVCIISConfiguration">
+      <ComponentRef Id="APIAppPool" />
+      <ComponentRef Id="InstallAPI" />
+      <ComponentRef Id="InstallFolderPermission"/>
+    </ComponentGroup>
+
+  </Fragment>
+</Wix>

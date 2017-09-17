@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Product Id="*" Name="DTAppWCFService" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="d99d34ea-b555-4f9c-9bed-9055aab732ad">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="no" DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"/>
+    <Media Id="1" Cabinet="cab1.cab" EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="DTApp.WCF.Service.Installer" Level="1">
+      <ComponentGroupRef Id="MVCIISConfiguration" />
+      <ComponentGroupRef Id="MyWebComponents" />
+    </Feature>
+
+    <Property Id="IIS_PORT">$(var.DTAppAPIPort)</Property>
+    <Property Id="IIS_APPLICATION_NAME">DTApp API Service</Property>
+
+    <Property Id="IISROOT">
+      <RegistrySearch Id="IISROOT"
+                      Type="directory"
+                      Root="HKLM"
+                      Key="Software\Microsoft\InetStp"
+                      Name="PathWWWRoot" />
+    </Property>
+
+    <SetProperty Id="INSTALLFOLDER"
+				Value="[IISROOT]Applications\[IIS_APPLICATION_NAME]" After="CostInitialize"/>
+    
+  </Product>
+ 
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- Will reference to IISROOT found earlier-->
+      <Directory Id="IISROOT" Name='WebDir'>
+        <Directory Id="AppFolder" Name="Applications">
+          <Directory Id="INSTALLFOLDER" Name="[IIS_APPLICATION_NAME]" >
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+</Wix>
